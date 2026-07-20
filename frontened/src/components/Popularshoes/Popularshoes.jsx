@@ -1,25 +1,27 @@
 import React from "react";
 import { shoes } from "../../assets/assets";
-import "./Shoes.css";
+import "./Popularshoes.css";
 
-const Shoes = () => {
+const Popularshoes = () => {
+
+  const displayedShoes = shoes.slice(0, 6);
 
   return (
     <section className="shoes-section">
 
       <div className="shoes-heading">
 
-        <h2>Our Shoes Collection</h2>
+        <h2>Demanded Articles</h2>
 
         <p>
-          Explore all of our latest shoe designs
+          Check out our popular shoe designs
         </p>
 
       </div>
 
       <div className="shoes-grid">
 
-        {shoes.map((shoe) => (
+        {displayedShoes.map((shoe) => (
 
           <div
             className="shoe-card"
@@ -37,9 +39,7 @@ const Shoes = () => {
 
             <div className="shoe-info">
 
-              <h3>
-                {shoe.name}
-              </h3>
+              <h3>{shoe.name}</h3>
 
               <p className="shoe-category">
                 {shoe.category}
@@ -56,11 +56,9 @@ const Shoes = () => {
               <div className="sizes">
 
                 {shoe.sizes.map((size) => (
-
                   <button key={size}>
                     {size}
                   </button>
-
                 ))}
 
               </div>
@@ -81,4 +79,4 @@ const Shoes = () => {
   );
 };
 
-export default Shoes;
+export default Popularshoes;
