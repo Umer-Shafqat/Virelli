@@ -1,0 +1,200 @@
+/* Main Men Page */
+
+.kid-page {
+  padding: 120px 5% 70px;
+  background: #c6b7b7;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+
+/* Heading */
+
+.kid-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.kid-heading h2 {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.kid-heading p {
+  color: #777;
+  font-size: 16px;
+}
+
+
+/* Shoes Grid */
+
+.shoes-grid {
+  max-width: 1200px;
+  margin: auto;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 30px;
+}
+
+
+/* Shoe Card */
+
+.shoe-card {
+  background: #FFEED6;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  transition: 0.3s;
+}
+
+.shoe-card:hover {
+  transform: translateY(-8px);
+}
+
+
+/* Shoe Image */
+
+.shoe-image {
+  width: 100%;
+  height: 280px;
+
+  overflow: hidden;
+}
+
+.shoe-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: 0.4s;
+}
+
+.shoe-card:hover .shoe-image img {
+  transform: scale(1.05);
+}
+
+
+/* Shoe Information */
+
+.shoe-info {
+  padding: 22px;
+}
+
+.shoe-info h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.shoe-category {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.shoe-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+
+  min-height: 42px;
+}
+
+.shoe-price {
+  font-size: 20px;
+  margin: 15px 0;
+}
+
+
+/* Sizes */
+
+.sizes {
+  display: flex;
+  gap: 8px;
+
+  flex-wrap: wrap;
+
+  margin-bottom: 20px;
+}
+
+.sizes button {
+  width: 38px;
+  height: 35px;
+
+  background: white;
+
+  border: 1px solid #ddd;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.sizes button:hover {
+  background: black;
+  color: white;
+}
+
+
+/* Add to Cart Button */
+
+.add-cart {
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+
+  background: black;
+
+  color: white;
+
+  font-size: 15px;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.add-cart:hover {
+  background: #333;
+}
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+
+  .shoes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .kid-page {
+    padding: 100px 20px 50px;
+  }
+
+  .shoes-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
