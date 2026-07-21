@@ -1,10 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-
 import Navbar from "./components/Navbar/Navbar";
-
+import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
 import Shoes from "./components/Shoes/Shoes";
-
 import Men from "./pages/Men/Men";
 import Women from "./pages/Women/Women";
 import Kids from "./pages/Kids/Kids";
@@ -48,6 +46,7 @@ function App() {
         />
 
       </Routes>
+       <Footer />
     </>
   );
 }
