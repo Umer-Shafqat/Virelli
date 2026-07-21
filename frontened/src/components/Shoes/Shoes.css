@@ -1,8 +1,9 @@
 /* Main Section */
 
 .shoes-section {
-  padding: 70px 5%;
+  padding: 120px 5% 70px; /* Top space for fixed Navbar */
   background: #c6b7b7;
+  min-height: 100vh;
 }
 
 
@@ -187,7 +188,7 @@
 @media (max-width: 600px) {
 
   .shoes-section {
-    padding: 50px 20px;
+    padding: 100px 20px 50px;
   }
 
   .shoes-grid {
