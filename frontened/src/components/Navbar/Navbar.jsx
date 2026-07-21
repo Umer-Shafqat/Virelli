@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
 
-      {/* Logo */}
+      {/* Logo - Click to open Home */}
       <div className="navbar-left">
         <Link to="/">
           <img

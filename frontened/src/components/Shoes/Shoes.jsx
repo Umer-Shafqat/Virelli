@@ -19,61 +19,88 @@ const Shoes = () => {
 
       <div className="shoes-grid">
 
-        {shoes.map((shoe) => (
+        {shoes.map((shoe) => {
 
-          <div
-            className="shoe-card"
-            key={shoe.id}
-          >
+          // Calculate discounted price for each shoe
+          const discountedPrice =
+            shoe.price -
+            (shoe.price * (shoe.discount || 0)) / 100;
 
-            <div className="shoe-image">
+          return (
+            <div
+              className="shoe-card"
+              key={shoe.id}
+            >
 
-              <img
-                src={shoe.image}
-                alt={shoe.name}
-              />
+              <div className="shoe-image">
 
-            </div>
+                {/* Discount Badge */}
+                {shoe.discount > 0 && (
+                  <span className="discount-badge">
+                    {shoe.discount}% OFF
+                  </span>
+                )}
 
-            <div className="shoe-info">
-
-              <h3>
-                {shoe.name}
-              </h3>
-
-              <p className="shoe-category">
-                {shoe.category}
-              </p>
-
-              <p className="shoe-description">
-                {shoe.description}
-              </p>
-
-              <h4 className="shoe-price">
-                Rs. {shoe.price.toLocaleString()}
-              </h4>
-
-              <div className="sizes">
-
-                {shoe.sizes.map((size) => (
-
-                  <button key={size}>
-                    {size}
-                  </button>
-
-                ))}
+                <img
+                  src={shoe.image}
+                  alt={shoe.name}
+                />
 
               </div>
 
-              <button className="add-cart">
-                Add to Cart
-              </button>
+              <div className="shoe-info">
+
+                <h3>
+                  {shoe.name}
+                </h3>
+
+                <p className="shoe-category">
+                  {shoe.category}
+                </p>
+
+                <p className="shoe-description">
+                  {shoe.description}
+                </p>
+
+                {/* Price */}
+                <div className="price-section">
+
+                  {/* Discounted Price */}
+                  <h4 className="shoe-price">
+                    Rs. {discountedPrice.toLocaleString()}
+                  </h4>
+
+                  {/* Original Price */}
+                  {shoe.discount > 0 && (
+                    <span className="original-price">
+                      Rs. {shoe.price.toLocaleString()}
+                    </span>
+                  )}
+
+                </div>
+
+                {/* Sizes */}
+                <div className="sizes">
+
+                  {shoe.sizes.map((size) => (
+                    <button key={size}>
+                      {size}
+                    </button>
+                  ))}
+
+                </div>
+
+                {/* Add Cart */}
+                <button className="add-cart">
+                  Add to Cart
+                </button>
+
+              </div>
 
             </div>
+          );
 
-          </div>
-
-        ))}
+        })}
 
       </div>
 

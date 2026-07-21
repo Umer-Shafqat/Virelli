@@ -24,62 +24,77 @@ const Kids = () => {
 
       <div className="shoes-grid">
 
-        {kidShoes.map((shoe) => (
+ {kidShoes.map((shoe) => {
 
-          <div
-            className="shoe-card"
-            key={shoe.id}
-          >
+  const discountedPrice =
+    shoe.price - (shoe.price * (shoe.discount || 0)) / 100;
 
-            <div className="shoe-image">
+  return (
+    <div
+      className="shoe-card"
+      key={shoe.id}
+    >
 
-              <img
-                src={shoe.image}
-                alt={shoe.name}
-              />
+      <div className="shoe-image">
 
-            </div>
+        {shoe.discount > 0 && (
+          <span className="discount-badge">
+            {shoe.discount}% OFF
+          </span>
+        )}
 
-            <div className="shoe-info">
+        <img
+          src={shoe.image}
+          alt={shoe.name}
+        />
 
-              <h3>
-                {shoe.name}
-              </h3>
+      </div>
 
-              <p className="shoe-category">
-                {shoe.category}
-              </p>
+      <div className="shoe-info">
 
-              <p className="shoe-description">
-                {shoe.description}
-              </p>
+        <h3>{shoe.name}</h3>
 
-              <h4 className="shoe-price">
-                Rs. {shoe.price.toLocaleString()}
-              </h4>
+        <p className="shoe-category">
+          {shoe.category}
+        </p>
 
-              <div className="sizes">
+        <p className="shoe-description">
+          {shoe.description}
+        </p>
 
-                {shoe.sizes.map((size) => (
+        <div className="price-section">
 
-                  <button key={size}>
-                    {size}
-                  </button>
+          <h4 className="shoe-price">
+            Rs. {discountedPrice.toLocaleString()}
+          </h4>
 
-                ))}
+          {shoe.discount > 0 && (
+            <span className="original-price">
+              Rs. {shoe.price.toLocaleString()}
+            </span>
+          )}
 
-              </div>
+        </div>
 
-              <button className="add-cart">
-                Add to Cart
-              </button>
+        <div className="sizes">
 
-            </div>
+          {shoe.sizes.map((size) => (
+            <button key={size}>
+              {size}
+            </button>
+          ))}
 
-          </div>
+        </div>
 
-        ))}
+        <button className="add-cart">
+          Add to Cart
+        </button>
 
+      </div>
+
+    </div>
+  );
+})}
       </div>
 
     </section>
