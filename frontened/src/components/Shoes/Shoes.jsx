@@ -21,10 +21,16 @@ const Shoes = () => {
 
         {shoes.map((shoe) => {
 
-          // Calculate discounted price for each shoe
+          // Calculate discounted price
           const discountedPrice =
             shoe.price -
             (shoe.price * (shoe.discount || 0)) / 100;
+
+          // Calculate average rating
+          const averageRating =
+            shoe.rating && shoe.rating.totalRatings > 0
+              ? shoe.rating.ratingSum / shoe.rating.totalRatings
+              : 5;
 
           return (
             <div
@@ -32,6 +38,7 @@ const Shoes = () => {
               key={shoe.id}
             >
 
+              {/* Image */}
               <div className="shoe-image">
 
                 {/* Discount Badge */}
@@ -48,6 +55,8 @@ const Shoes = () => {
 
               </div>
 
+
+              {/* Information */}
               <div className="shoe-info">
 
                 <h3>
@@ -62,15 +71,47 @@ const Shoes = () => {
                   {shoe.description}
                 </p>
 
+
+                {/* Rating */}
+                <div className="rating">
+
+                  <div className="stars">
+
+                    {[1, 2, 3, 4, 5].map((star) => (
+
+                      <span
+                        key={star}
+                        className={
+                          star <= Math.round(averageRating)
+                            ? "star filled"
+                            : "star"
+                        }
+                      >
+                        ★
+                      </span>
+
+                    ))}
+
+                  </div>
+
+                  <span className="rating-number">
+                    {averageRating.toFixed(1)}
+                  </span>
+
+                  <span className="rating-count">
+                    ({shoe.rating?.totalRatings || 0})
+                  </span>
+
+                </div>
+
+
                 {/* Price */}
                 <div className="price-section">
 
-                  {/* Discounted Price */}
                   <h4 className="shoe-price">
                     Rs. {discountedPrice.toLocaleString()}
                   </h4>
 
-                  {/* Original Price */}
                   {shoe.discount > 0 && (
                     <span className="original-price">
                       Rs. {shoe.price.toLocaleString()}
@@ -79,16 +120,20 @@ const Shoes = () => {
 
                 </div>
 
+
                 {/* Sizes */}
                 <div className="sizes">
 
                   {shoe.sizes.map((size) => (
+
                     <button key={size}>
                       {size}
                     </button>
+
                   ))}
 
                 </div>
+
 
                 {/* Add Cart */}
                 <button className="add-cart">
