@@ -101,11 +101,11 @@ export const shoes = [
     discount: 20,
     description: "Traditional and comfortable chapal for everyday use.",
     sizes: [39, 40, 41, 42, 43],
-    rating: {
-      totalRatings: 0,
-      ratingSum: 0
-    }
-  },
+   rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
+},
   {
     id: 2,
     type: "MEN",
@@ -116,10 +116,10 @@ export const shoes = [
     discount: 10,
     description: "Premium leather chapal with a stylish traditional design.",
     sizes: [40, 41, 42, 43, 44],
-    rating: {
-      totalRatings: 0,
-      ratingSum: 0
-    }
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 3,
@@ -130,7 +130,11 @@ export const shoes = [
     price: 4500,
     discount: 40,
     description: "Elegant formal shoes perfect for office and business meetings.",
-    sizes: [39, 40, 41, 42, 43]
+    sizes: [39, 40, 41, 42, 43],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 4,
@@ -141,7 +145,11 @@ export const shoes = [
     price: 5000,
     discount: 40,
     description: "Classic black formal shoes with a premium finish.",
-    sizes: [40, 41, 42, 43, 44]
+    sizes: [40, 41, 42, 43, 44],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 5,
@@ -152,7 +160,11 @@ export const shoes = [
     price: 5500,
     discount: 13,
     description: "Premium formal shoes designed for a sophisticated look.",
-    sizes: [39, 40, 41, 42, 43]
+    sizes: [39, 40, 41, 42, 43],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 6,
@@ -163,7 +175,11 @@ export const shoes = [
     price: 2000,
     discount: 15,
     description: "Comfortable and stylish shoes for kids.",
-    sizes: [28, 29, 30, 31, 32]
+    sizes: [28, 29, 30, 31, 32],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 7,
@@ -174,7 +190,11 @@ export const shoes = [
     price: 2200,
     discount: 30,
     description: "Lightweight sports shoes for active kids.",
-    sizes: [28, 29, 30, 31, 32]
+    sizes: [28, 29, 30, 31, 32],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 8,
@@ -185,7 +205,11 @@ export const shoes = [
     price: 2500,
     discount: 17,
     description: "Stylish premium shoes designed for kids.",
-    sizes: [29, 30, 31, 32, 33]
+    sizes: [29, 30, 31, 32, 33],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 9,
@@ -196,7 +220,11 @@ export const shoes = [
     price: 2300,
     discount: 22,
     description: "Comfortable walking shoes for everyday activities.",
-    sizes: [28, 29, 30, 31, 32]
+    sizes: [28, 29, 30, 31, 32],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 10,
@@ -207,7 +235,11 @@ export const shoes = [
     price: 4000,
     discount: 26,
     description: "Classic loafers with a comfortable and stylish design.",
-    sizes: [39, 40, 41, 42, 43]
+    sizes: [39, 40, 41, 42, 43],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 11,
@@ -218,7 +250,11 @@ export const shoes = [
     price: 4500,
     discount: 21,
     description: "Premium loafers perfect for casual and formal occasions.",
-    sizes: [40, 41, 42, 43, 44]
+    sizes: [40, 41, 42, 43, 44],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 12,
@@ -229,7 +265,11 @@ export const shoes = [
     price: 5000,
     discount: 12,
     description: "Premium leather loafers with a modern design.",
-    sizes: [39, 40, 41, 42, 43]
+    sizes: [39, 40, 41, 42, 43],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 13,
@@ -240,7 +280,11 @@ export const shoes = [
     price: 3500,
     discount: 5,
     description: "Comfortable casual shoes for everyday men's fashion.",
-    sizes: [40, 41, 42, 43, 44]
+    sizes: [40, 41, 42, 43, 44],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 14,
@@ -251,7 +295,11 @@ export const shoes = [
     price: 4000,
     discount: 14,
     description: "Classic men's shoes with a stylish premium look.",
-    sizes: [40, 41, 42, 43, 44]
+    sizes: [40, 41, 42, 43, 44],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 15,
@@ -262,7 +310,11 @@ export const shoes = [
     price: 3500,
     discount: 11,
     description: "Clean and stylish white sneakers for everyday wear.",
-    sizes: [39, 40, 41, 42, 43, 44]
+    sizes: [39, 40, 41, 42, 43, 44],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 16,
@@ -273,7 +325,11 @@ export const shoes = [
     price: 3800,
     discount: 8,
     description: "Comfortable sneakers with a modern casual design.",
-    sizes: [40, 41, 42, 43, 44]
+    sizes: [40, 41, 42, 43, 44],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 17,
@@ -284,7 +340,11 @@ export const shoes = [
     price: 4200,
     discount: 9,
     description: "Lightweight sport sneakers designed for active lifestyles.",
-    sizes: [39, 40, 41, 42, 43]
+    sizes: [39, 40, 41, 42, 43],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 18,
@@ -295,7 +355,11 @@ export const shoes = [
     price: 5000,
     discount: 16,
     description: "Premium sneakers with a stylish modern appearance.",
-    sizes: [40, 41, 42, 43, 44]
+    sizes: [40, 41, 42, 43, 44],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 19,
@@ -306,7 +370,11 @@ export const shoes = [
     price: 3500,
     discount: 24,
     description: "Elegant and comfortable women's casual shoes.",
-    sizes: [36, 37, 38, 39, 40]
+    sizes: [36, 37, 38, 39, 40],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   },
   {
     id: 20,
@@ -317,7 +385,11 @@ export const shoes = [
     price: 4500,
     discount: 4,
     description: "Fashionable women's shoes with premium comfort.",
-    sizes: [36, 37, 38, 39, 40]
+    sizes: [36, 37, 38, 39, 40],
+      rating: {
+    totalRatings: 1,
+    ratingSum: 5
+  }
   }
 ];
 

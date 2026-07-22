@@ -255,3 +255,76 @@
   color: red;
   text-decoration: line-through;
 }
+
+/* ================================
+   STAR RATING
+================================ */
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+
+/* Stars Container */
+
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+
+/* Individual Star Button */
+
+.star {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+
+  font-size: 22px;
+  line-height: 1;
+
+  color: #d3d3d3;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* Filled Star */
+
+.star.filled {
+  color: #ffc107;
+}
+
+
+/* Hover Effect */
+
+.star:hover {
+  color: #ffb300;
+  transform: scale(1.2);
+}
+
+
+/* Rating Number */
+
+.rating-number {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+
+/* Total Rating Count */
+
+.rating-count {
+  font-size: 13px;
+  color: #777;
+}
