@@ -1,65 +1,67 @@
-.shipping-page {
+.terms-page {
   min-height: 100vh;
   padding: 140px 5% 80px;
   background: #f8f8f8;
   box-sizing: border-box;
 }
 
-.shipping-header {
+.terms-header {
   text-align: center;
   margin-bottom: 55px;
 }
 
-.shipping-header h1 {
+.terms-header h1 {
   margin: 0 0 15px;
   font-size: 45px;
   color: #222;
 }
 
-.shipping-header p {
+.terms-header p {
   margin: 0;
   color: #666;
   font-size: 17px;
 }
 
-.shipping-container {
+.terms-container {
   max-width: 900px;
   margin: auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
-}
-
-.shipping-card {
   background: white;
-  padding: 30px;
+  padding: 45px;
   border-radius: 12px;
   border: 1px solid #eee;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }
 
-.shipping-card h2 {
-  margin: 0 0 15px;
-  color: #222;
-  font-size: 23px;
+.terms-section {
+  margin-bottom: 35px;
 }
 
-.shipping-card p {
+.terms-section:last-child {
+  margin-bottom: 0;
+}
+
+.terms-section h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  color: #222;
+}
+
+.terms-section p {
   margin: 0;
   color: #666;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
-@media (max-width: 700px) {
-  .shipping-page {
+@media (max-width: 600px) {
+  .terms-page {
     padding: 120px 20px 60px;
   }
 
-  .shipping-header h1 {
+  .terms-header h1 {
     font-size: 34px;
   }
 
-  .shipping-container {
-    grid-template-columns: 1fr;
+  .terms-container {
+    padding: 28px 22px;
   }
 }

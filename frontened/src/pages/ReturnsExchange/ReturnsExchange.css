@@ -1,36 +1,36 @@
-.size-page {
+.returns-page {
   min-height: 100vh;
   padding: 140px 5% 80px;
   background: #f8f8f8;
   box-sizing: border-box;
 }
 
-.size-header {
+.returns-header {
   text-align: center;
   margin-bottom: 55px;
 }
 
-.size-header h1 {
+.returns-header h1 {
   margin: 0 0 15px;
   font-size: 45px;
   color: #222;
 }
 
-.size-header p {
+.returns-header p {
   margin: 0;
   color: #666;
   font-size: 17px;
 }
 
-.size-container {
+.returns-container {
   max-width: 900px;
   margin: auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
+  gap: 25px;
 }
 
-.size-card {
+.returns-card {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -38,43 +38,28 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }
 
-.size-card h2 {
-  margin: 0 0 25px;
+.returns-card h2 {
+  margin: 0 0 15px;
   color: #222;
-  text-align: center;
+  font-size: 23px;
 }
 
-.size-card table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.size-card th,
-.size-card td {
-  padding: 13px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-
-.size-card th {
-  background: #222;
-  color: white;
-}
-
-.size-card td {
+.returns-card p {
+  margin: 0;
   color: #666;
+  line-height: 1.7;
 }
 
 @media (max-width: 700px) {
-  .size-page {
+  .returns-page {
     padding: 120px 20px 60px;
   }
 
-  .size-header h1 {
+  .returns-header h1 {
     font-size: 34px;
   }
 
-  .size-container {
+  .returns-container {
     grid-template-columns: 1fr;
   }
 }

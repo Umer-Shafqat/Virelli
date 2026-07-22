@@ -10,7 +10,10 @@ const Footer = () => {
 
       <div className="footer-container">
 
-        {/* Brand */}
+        {/* ========================================
+            BRAND
+        ======================================== */}
+
         <div className="footer-brand">
 
           <Link to="/">
@@ -26,50 +29,54 @@ const Footer = () => {
             comfort, confidence and style.
           </p>
 
-       <div className="social-icons">
+          {/* Social Icons */}
+          <div className="social-icons">
 
-  <a
-    href="https://www.facebook.com/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Facebook"
-  >
-    f
-  </a>
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              f
+            </a>
 
-  <a
-    href="https://www.instagram.com/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Instagram"
-  >
-    ◎
-  </a>
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              ◎
+            </a>
 
-  <a
-    href="https://www.tiktok.com/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="TikTok"
-  >
-    ♪
-  </a>
+            <a
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+            >
+              ♪
+            </a>
 
-  <a
-    href="https://www.youtube.com/"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="YouTube"
-  >
-    ▶
-  </a>
+            <a
+              href="https://www.youtube.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+            >
+              ▶
+            </a>
 
-</div>
+          </div>
 
         </div>
 
 
-        {/* Shop */}
+        {/* ========================================
+            SHOP
+        ======================================== */}
+
         <div className="footer-column">
 
           <h3>SHOP</h3>
@@ -97,7 +104,10 @@ const Footer = () => {
         </div>
 
 
-        {/* Quick Links */}
+        {/* ========================================
+            QUICK LINKS
+        ======================================== */}
+
         <div className="footer-column">
 
           <h3>QUICK LINKS</h3>
@@ -121,16 +131,19 @@ const Footer = () => {
         </div>
 
 
-        {/* Customer Care */}
+        {/* ========================================
+            CUSTOMER CARE
+        ======================================== */}
+
         <div className="footer-column">
 
           <h3>CUSTOMER CARE</h3>
 
-          <Link to="/shipping">
+          <Link to="/shipping-delivery">
             Shipping & Delivery
           </Link>
 
-          <Link to="/returns">
+          <Link to="/returns-exchange">
             Returns & Exchange
           </Link>
 
@@ -138,11 +151,11 @@ const Footer = () => {
             Size Guide
           </Link>
 
-          <Link to="/privacy">
+          <Link to="/privacy-policy">
             Privacy Policy
           </Link>
 
-          <Link to="/terms">
+          <Link to="/terms-conditions">
             Terms & Conditions
           </Link>
 
@@ -151,7 +164,10 @@ const Footer = () => {
       </div>
 
 
-      {/* Bottom */}
+      {/* ========================================
+          FOOTER BOTTOM
+      ======================================== */}
+
       <div className="footer-bottom">
 
         <p>
@@ -159,8 +175,11 @@ const Footer = () => {
         </p>
 
         <p>
-  Designed by <strong>Umer Shafqat</strong> | Contact: <a href="tel:+923227473989">+92 322 7473989</a>
-</p>
+          Designed by <strong>Umer Shafqat</strong> | Contact:{" "}
+          <a href="tel:+923227473989">
+            +92 322 7473989
+          </a>
+        </p>
 
       </div>
 
