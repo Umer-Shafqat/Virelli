@@ -111,7 +111,7 @@ const Footer = () => {
           </Link>
 
           <Link to="/contact">
-            Contact
+            Contact Us
           </Link>
 
           <Link to="/faq">

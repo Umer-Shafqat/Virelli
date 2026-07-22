@@ -1,0 +1,172 @@
+.about-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+
+/* Hero */
+
+.about-hero {
+  width: 100%;
+  min-height: 380px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.55)
+    ),
+    url("../../assets/hero1.png");
+
+  background-size: cover;
+  background-position: center;
+}
+
+
+.about-hero-content {
+  max-width: 700px;
+  padding: 30px;
+  color: white;
+}
+
+
+.about-hero-content h1 {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+
+.about-hero-content p {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+
+/* Container */
+
+.about-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 70px 5%;
+}
+
+
+/* Content */
+
+.about-content {
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 50px;
+}
+
+
+.about-content h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+
+.about-content p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 15px;
+}
+
+
+/* Features */
+
+.about-features {
+  display: grid;
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 25px;
+  margin-top: 50px;
+}
+
+
+.about-feature {
+  padding: 30px 20px;
+  text-align: center;
+
+  border-radius: 12px;
+
+  background: #f8f8f8;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.about-feature:hover {
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 10px 25px
+    rgba(0, 0, 0, 0.1);
+}
+
+
+.feature-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+
+.about-feature h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+
+.about-feature p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+  .about-features {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .about-hero {
+    min-height: 300px;
+  }
+
+  .about-hero-content h1 {
+    font-size: 36px;
+  }
+
+  .about-hero-content p {
+    font-size: 15px;
+  }
+
+  .about-container {
+    padding: 50px 20px;
+  }
+
+  .about-features {
+    grid-template-columns: 1fr;
+  }
+
+}

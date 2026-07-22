@@ -6,6 +6,9 @@ import Shoes from "./components/Shoes/Shoes";
 import Men from "./pages/Men/Men";
 import Women from "./pages/Women/Women";
 import Kids from "./pages/Kids/Kids";
+import About from "./pages/About/About";
+import Contact from "./pages/Contact/Contact";
+import FAQ from "./pages/FAQ/FAQ";
 
 function App() {
   return (
@@ -44,6 +47,11 @@ function App() {
           path="/kids"
           element={<Kids />}
         />
+        <Route path="/about" element={<About />} />
+
+<Route path="/contact" element={<Contact />} />
+
+<Route path="/faq" element={<FAQ />} />
 
       </Routes>
        <Footer />
