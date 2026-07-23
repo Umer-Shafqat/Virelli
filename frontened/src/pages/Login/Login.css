@@ -1,0 +1,494 @@
+/* ================================
+   LOGIN PAGE
+================================ */
+
+.login-page {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  /* Navbar height + extra gap */
+  padding: 120px 20px 40px;
+
+  background: #f6f8f8;
+}
+
+
+/* ================================
+   MAIN CONTAINER
+================================ */
+
+.login-container {
+  position: relative;
+
+  width: 900px;
+  max-width: 100%;
+
+  min-height: 560px;
+
+  background: white;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 10px 35px
+    rgba(0, 0, 0, 0.12);
+}
+
+
+/* ================================
+   FORM CONTAINER
+================================ */
+
+.form-container {
+  position: absolute;
+
+  top: 0;
+
+  width: 50%;
+
+  height: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background: white;
+
+  transition:
+    transform 0.6s
+    ease-in-out;
+
+  z-index: 2;
+}
+
+
+.form-container form {
+  width: 70%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+
+/* ================================
+   SIGN IN FORM
+================================ */
+
+.signin-form {
+  left: 0;
+
+  z-index: 2;
+}
+
+
+/* ================================
+   SIGN UP FORM
+================================ */
+
+.signup-form {
+  left: 0;
+
+  opacity: 0;
+
+  z-index: 1;
+}
+
+
+/* ================================
+   WHEN SIGN UP IS ACTIVE
+================================ */
+
+.login-container.show-signup
+.signin-form {
+  transform: translateX(100%);
+
+  opacity: 0;
+
+  z-index: 1;
+}
+
+
+.login-container.show-signup
+.signup-form {
+  transform: translateX(100%);
+
+  opacity: 1;
+
+  z-index: 2;
+}
+
+
+/* ================================
+   HEADINGS
+================================ */
+
+.form-container h1 {
+  color: #cf5e18;
+
+  font-size: 30px;
+
+  margin-bottom: 20px;
+
+  text-align: center;
+}
+
+
+/* ================================
+   FORM TEXT
+================================ */
+
+.form-container span {
+  font-size: 12px;
+
+  color: #999;
+
+  margin-bottom: 15px;
+
+  text-align: center;
+}
+
+
+/* ================================
+   INPUTS
+================================ */
+
+.form-container input {
+  width: 100%;
+
+  padding: 12px 15px;
+
+  margin-bottom: 10px;
+
+  box-sizing: border-box;
+
+  border: none;
+
+  outline: none;
+
+  background: #f2f6f6;
+
+  font-size: 13px;
+}
+
+
+.form-container input:focus {
+  border-bottom:
+    2px solid #cf5e18;
+}
+
+
+/* ================================
+   FORGOT PASSWORD
+================================ */
+
+.forgot-password {
+  color: #555;
+
+  font-size: 12px;
+
+  text-decoration: none;
+
+  margin: 10px 0 20px;
+}
+
+
+.forgot-password:hover {
+  color: #cf5e18;
+}
+
+
+/* ================================
+   MAIN BUTTON
+================================ */
+
+.main-button {
+  margin-top: 15px;
+
+  width: 150px;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 25px;
+
+  background: #e8ded8;
+
+  color: #333;
+
+  font-size: 12px;
+
+  font-weight: bold;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+
+.main-button:hover {
+  background: #333;
+
+  color: #e8ded8;
+
+  transform: scale(1.03);
+}
+
+
+/* ================================
+   OVERLAY CONTAINER
+================================ */
+
+.overlay-container {
+  position: absolute;
+
+  top: 0;
+
+  left: 50%;
+
+  width: 50%;
+
+  height: 100%;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.6s
+    ease-in-out;
+
+  z-index: 5;
+}
+
+
+/* ================================
+   MOVE OVERLAY
+================================ */
+
+.login-container.show-signup
+.overlay-container {
+  transform: translateX(-100%);
+}
+
+
+/* ================================
+   OVERLAY
+================================ */
+
+.overlay {
+  position: relative;
+
+  left: -100%;
+
+  width: 200%;
+
+  height: 100%;
+
+  background: #e8ded8;
+
+  color: #333;
+
+  transform:
+    translateX(0);
+
+  transition:
+    transform 0.6s
+    ease-in-out;
+}
+
+
+.login-container.show-signup
+.overlay {
+  transform:
+    translateX(50%);
+}
+
+
+/* ================================
+   OVERLAY PANEL
+================================ */
+
+.overlay-panel {
+  position: absolute;
+
+  top: 0;
+
+  width: 50%;
+
+  height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  box-sizing: border-box;
+}
+
+
+/* ================================
+   OVERLAY HEADING
+================================ */
+
+.overlay-panel h1 {
+  font-size: 32px;
+
+  margin-bottom: 15px;
+
+  color: #333;
+}
+
+
+/* ================================
+   OVERLAY PARAGRAPH
+================================ */
+
+.overlay-panel p {
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  max-width: 280px;
+
+  margin-bottom: 25px;
+
+  color: #555;
+}
+
+
+/* ================================
+   LEFT PANEL
+================================ */
+
+.overlay-left {
+  left: 0;
+}
+
+
+/* ================================
+   RIGHT PANEL
+================================ */
+
+.overlay-right {
+  right: 0;
+}
+
+
+/* ================================
+   GHOST BUTTON
+================================ */
+
+.ghost-button {
+  width: 150px;
+
+  padding: 12px;
+
+  border-radius: 25px;
+
+  border: 1px solid #333;
+
+  background: transparent;
+
+  color: #333;
+
+  font-size: 12px;
+
+  font-weight: bold;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+
+.ghost-button:hover {
+  background: #333;
+
+  color: #e8ded8;
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+  .login-page {
+    padding: 100px 20px 20px;
+  }
+
+
+  .login-container {
+    min-height: 650px;
+  }
+
+
+  .form-container {
+    width: 100%;
+  }
+
+
+  /* Hide sliding overlay on mobile */
+
+  .overlay-container {
+    display: none;
+  }
+
+
+  /* Hide Sign Up initially */
+
+  .signup-form {
+    display: none;
+  }
+
+
+  /* Show Sign In */
+
+  .signin-form {
+    transform: translateX(0);
+  }
+
+
+  /* When Sign Up is active */
+
+  .login-container.show-signup
+  .signin-form {
+    display: none;
+
+    transform: translateX(0);
+  }
+
+
+  .login-container.show-signup
+  .signup-form {
+    display: flex;
+
+    transform: translateX(0);
+
+    opacity: 1;
+  }
+
+}

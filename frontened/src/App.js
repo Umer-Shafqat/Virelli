@@ -16,6 +16,7 @@ import SizeGuide from "./pages/SizeGuide/SizeGuide";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions/TermsConditions";
 import Cart from "./pages/Cart/Cart";
+import Login from "./pages/Login/Login";
 
 function App() {
   return (
@@ -89,6 +90,11 @@ function App() {
           path="/cart"
           element={<Cart />}
         />
+
+  <Route
+  path="/login"
+  element={<Login />}
+/>
 
       </Routes>
        <Footer />

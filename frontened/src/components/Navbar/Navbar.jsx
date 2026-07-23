@@ -74,10 +74,12 @@ const Navbar = () => {
 
 
         {/* Profile */}
-        <img
-          src={profile_image}
-          alt="Profile"
-        />
+        <Link to="/login">
+  <img
+    src={profile_image}
+    alt="Profile"
+  />
+</Link>
 
 
         {/* Cart */}

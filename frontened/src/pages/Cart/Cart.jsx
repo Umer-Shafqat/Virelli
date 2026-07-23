@@ -1,11 +1,8 @@
 import React, { useContext } from "react";
 
-import {
-  StoreContext
-} from "../../Context/StoreContext/StoreContext";
+import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 import "./Cart.css";
-
 
 const Cart = () => {
 
@@ -15,6 +12,32 @@ const Cart = () => {
     removeFromCart,
     deleteFromCart
   } = useContext(StoreContext);
+
+
+  // =========================
+  // DELIVERY CHARGES
+  // =========================
+
+  const deliveryCharges = 300;
+
+
+  // =========================
+  // SUBTOTAL
+  // =========================
+
+  const subtotal = cartItems.reduce(
+    (total, item) =>
+      total + item.price * item.quantity,
+    0
+  );
+
+
+  // =========================
+  // TOTAL AMOUNT
+  // =========================
+
+  const totalAmount =
+    subtotal + deliveryCharges;
 
 
   return (
@@ -27,6 +50,10 @@ const Cart = () => {
 
 
       {cartItems.length === 0 ? (
+
+        /* =========================
+           EMPTY CART
+        ========================= */
 
         <div className="empty-cart">
 
@@ -42,101 +69,159 @@ const Cart = () => {
 
       ) : (
 
-        <div className="cart-container">
+        /* =========================
+           CART ITEMS
+        ========================= */
 
-          {cartItems.map((item) => (
+        <>
 
-            <div
-              className="cart-item"
-              key={item.id}
-            >
+          <div className="cart-container">
 
-              {/* Shoe Image */}
+            {cartItems.map((item) => (
 
-              <img
-                src={item.image}
-                alt={item.name}
-                className="cart-shoe-image"
-              />
-
-
-              {/* Shoe Details */}
-
-              <div className="cart-item-details">
-
-                <h2>
-                  {item.name}
-                </h2>
-
-                <p>
-                  {item.description}
-                </p>
-
-                <h3>
-                  Rs. {item.price.toLocaleString()}
-                </h3>
-
-              </div>
-
-
-              {/* Quantity */}
-
-              <div className="quantity-control">
-
-                <button
-                  onClick={() =>
-                    removeFromCart(item.id)
-                  }
-                >
-                  -
-                </button>
-
-
-                <span>
-                  {item.quantity}
-                </span>
-
-
-                <button
-                  onClick={() =>
-                    addToCart(item)
-                  }
-                >
-                  +
-                </button>
-
-              </div>
-
-
-              {/* Total */}
-
-              <div className="item-total">
-
-                Rs.{" "}
-                {(
-                  item.price *
-                  item.quantity
-                ).toLocaleString()}
-
-              </div>
-
-
-              {/* Delete */}
-
-              <button
-                className="remove-btn"
-                onClick={() =>
-                  deleteFromCart(item.id)
-                }
+              <div
+                className="cart-item"
+                key={item.id}
               >
-                Remove
-              </button>
+
+                {/* Shoe Image */}
+
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="cart-shoe-image"
+                />
+
+
+                {/* Shoe Details */}
+
+                <div className="cart-item-details">
+
+                  <h2>
+                    {item.name}
+                  </h2>
+
+                  <p>
+                    {item.description}
+                  </p>
+
+                  <h3>
+                    Rs. {item.price.toLocaleString()}
+                  </h3>
+
+                </div>
+
+
+                {/* Quantity */}
+
+                <div className="quantity-control">
+
+                  <button
+                    onClick={() =>
+                      removeFromCart(item.id)
+                    }
+                  >
+                    -
+                  </button>
+
+
+                  <span>
+                    {item.quantity}
+                  </span>
+
+
+                  <button
+                    onClick={() =>
+                      addToCart(item)
+                    }
+                  >
+                    +
+                  </button>
+
+                </div>
+
+
+                {/* Item Total */}
+
+                <div className="item-total">
+
+                  Rs.{" "}
+
+                  {(
+                    item.price *
+                    item.quantity
+                  ).toLocaleString()}
+
+                </div>
+
+
+                {/* Delete */}
+
+                <button
+                  className="remove-btn"
+                  onClick={() =>
+                    deleteFromCart(item.id)
+                  }
+                >
+                  Remove
+                </button>
+
+              </div>
+
+            ))}
+
+          </div>
+
+
+          {/* =========================
+              TOTAL AMOUNT
+          ========================= */}
+
+          <div className="total-amount">
+
+            <div className="amount-row">
+
+              <span>
+                Subtotal
+              </span>
+
+              <span>
+                PKR {subtotal.toLocaleString()}
+              </span>
 
             </div>
 
-          ))}
 
-        </div>
+            <div className="amount-row">
+
+              <span>
+                Delivery Charges
+              </span>
+
+              <span>
+                PKR {deliveryCharges.toLocaleString()}
+              </span>
+
+            </div>
+
+
+            <div className="amount-row total-row">
+
+              <span>
+                Total Amount
+              </span>
+
+              <span>
+                PKR {totalAmount.toLocaleString()}
+              </span>
+
+            </div>
+<button className="checkout-btn">
+  PROCEED TO CHECKOUT
+</button>
+          </div>
+
+        </>
 
       )}
 
@@ -145,6 +230,5 @@ const Cart = () => {
   );
 
 };
-
 
 export default Cart;
