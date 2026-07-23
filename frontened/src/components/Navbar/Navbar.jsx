@@ -75,7 +75,7 @@ const Navbar = () => {
             alt="Cart"
           />
 
-          <span>0</span>
+          
 
         </div>
 
