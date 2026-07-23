@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter } from 'react-router-dom';
+import StoreContextProvider from "./Context/StoreContext/StoreContext";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <HashRouter>
-      <App />
+      <StoreContextProvider>
+    <App />
+  </StoreContextProvider>
   </HashRouter>
 );
 

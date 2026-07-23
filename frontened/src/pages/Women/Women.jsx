@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { shoes } from "../../assets/assets";
 import "./Women.css";
 
+import { StoreContext } from "../../Context/StoreContext/StoreContext";
+
 const Women = () => {
+
+  // Get addToCart function from StoreContext
+  const { addToCart } = useContext(StoreContext);
 
   // Only WOMEN shoes
   const womenShoes = shoes.filter(
@@ -154,6 +159,7 @@ const Women = () => {
                         <button
                           key={star}
                           type="button"
+
                           className={
                             star <=
                             Math.round(
@@ -162,6 +168,7 @@ const Women = () => {
                               ? "star filled"
                               : "star"
                           }
+
                           onClick={() =>
                             handleRating(
                               shoe.id,
@@ -187,8 +194,7 @@ const Women = () => {
                   {/* Total Ratings */}
                   <span className="rating-count">
                     (
-                    {shoe.rating?.totalRatings ||
-                      0}
+                    {shoe.rating?.totalRatings || 0}
                     )
                   </span>
 
@@ -239,10 +245,12 @@ const Women = () => {
 
 
 
-                {/* Add Cart */}
+                {/* ================= ADD TO CART ================= */}
+
                 <button
                   className="add-cart"
                   type="button"
+                  onClick={() => addToCart(shoe)}
                 >
                   Add to Cart
                 </button>

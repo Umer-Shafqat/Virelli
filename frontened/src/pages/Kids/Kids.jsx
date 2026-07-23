@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { shoes } from "../../assets/assets";
 import "./Kids.css";
 
+import { StoreContext } from "../../Context/StoreContext/StoreContext";
+
 const Kids = () => {
+
+  // Get addToCart function from StoreContext
+  const { addToCart } = useContext(StoreContext);
+
 
   // Only KID shoes
   const kidShoes = shoes.filter(
     (shoe) => shoe.type === "KID"
   );
 
+
   // Store updated ratings
   const [shoeList, setShoeList] = useState(kidShoes);
 
 
   // Handle user rating
-  const handleRating = (shoeId, selectedRating) => {
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
 
     setShoeList((prevShoes) =>
       prevShoes.map((shoe) => {
@@ -27,6 +37,7 @@ const Kids = () => {
           const oldRatingSum =
             shoe.rating?.ratingSum || 0;
 
+
           return {
             ...shoe,
 
@@ -35,23 +46,30 @@ const Kids = () => {
                 oldTotalRatings + 1,
 
               ratingSum:
-                oldRatingSum + selectedRating,
+                oldRatingSum +
+                selectedRating,
             },
           };
+
         }
 
         return shoe;
 
       })
     );
+
   };
 
 
   return (
+
     <section className="kid-page">
 
 
-      {/* Heading */}
+      {/* =========================
+          HEADING
+      ========================= */}
+
       <div className="kid-heading">
 
         <h2>
@@ -66,28 +84,42 @@ const Kids = () => {
 
 
 
-      {/* Shoes Grid */}
+      {/* =========================
+          SHOES GRID
+      ========================= */}
+
       <div className="shoes-grid">
 
         {shoeList.map((shoe) => {
 
 
-          // Calculate discounted price
+          // =========================
+          // DISCOUNTED PRICE
+          // =========================
+
           const discountedPrice =
             shoe.price -
-            (shoe.price *
-              (shoe.discount || 0)) /
-              100;
+            (
+              shoe.price *
+              (shoe.discount || 0)
+            ) /
+            100;
 
 
-          // Calculate average rating
-          // Default rating is 5
+
+          // =========================
+          // AVERAGE RATING
+          // =========================
+
           const averageRating =
             shoe.rating &&
             shoe.rating.totalRatings > 0
+
               ? shoe.rating.ratingSum /
                 shoe.rating.totalRatings
+
               : 5;
+
 
 
           return (
@@ -98,17 +130,27 @@ const Kids = () => {
             >
 
 
-              {/* Shoe Image */}
+              {/* =========================
+                  SHOE IMAGE
+              ========================= */}
+
               <div className="shoe-image">
 
+
                 {/* Discount Badge */}
+
                 {shoe.discount > 0 && (
 
                   <span className="discount-badge">
+
                     {shoe.discount}% OFF
+
                   </span>
 
                 )}
+
+
+                {/* Shoe Image */}
 
                 <img
                   src={shoe.image}
@@ -119,32 +161,47 @@ const Kids = () => {
 
 
 
-              {/* Shoe Information */}
+              {/* =========================
+                  SHOE INFORMATION
+              ========================= */}
+
               <div className="shoe-info">
 
 
                 {/* Name */}
+
                 <h3>
                   {shoe.name}
                 </h3>
 
 
                 {/* Category */}
+
                 <p className="shoe-category">
+
                   {shoe.category}
+
                 </p>
 
 
                 {/* Description */}
+
                 <p className="shoe-description">
+
                   {shoe.description}
+
                 </p>
 
 
 
-                {/* ================= RATING ================= */}
+                {/* =========================
+                    RATING
+                ========================= */}
 
                 <div className="rating">
+
+
+                  {/* Stars */}
 
                   <div className="stars">
 
@@ -154,6 +211,7 @@ const Kids = () => {
                         <button
                           key={star}
                           type="button"
+
                           className={
                             star <=
                             Math.round(
@@ -162,14 +220,18 @@ const Kids = () => {
                               ? "star filled"
                               : "star"
                           }
+
                           onClick={() =>
                             handleRating(
                               shoe.id,
                               star
                             )
                           }
+
                         >
+
                           ★
+
                         </button>
 
                       )
@@ -179,37 +241,56 @@ const Kids = () => {
 
 
                   {/* Average Rating */}
+
                   <span className="rating-number">
+
                     {averageRating.toFixed(1)}
+
                   </span>
 
 
                   {/* Total Ratings */}
+
                   <span className="rating-count">
+
                     (
-                    {shoe.rating?.totalRatings ||
-                      0}
+                    {shoe.rating?.totalRatings || 0}
                     )
+
                   </span>
 
                 </div>
 
 
 
-                {/* ================= PRICE ================= */}
+                {/* =========================
+                    PRICE
+                ========================= */}
 
                 <div className="price-section">
 
+
+                  {/* Discounted Price */}
+
                   <h4 className="shoe-price">
+
                     Rs.{" "}
+
                     {discountedPrice.toLocaleString()}
+
                   </h4>
+
+
+                  {/* Original Price */}
 
                   {shoe.discount > 0 && (
 
                     <span className="original-price">
+
                       Rs.{" "}
+
                       {shoe.price.toLocaleString()}
+
                     </span>
 
                   )}
@@ -218,7 +299,9 @@ const Kids = () => {
 
 
 
-                {/* ================= SIZES ================= */}
+                {/* =========================
+                    SIZES
+                ========================= */}
 
                 <div className="sizes">
 
@@ -229,7 +312,9 @@ const Kids = () => {
                         key={size}
                         type="button"
                       >
+
                         {size}
+
                       </button>
 
                     )
@@ -239,12 +324,20 @@ const Kids = () => {
 
 
 
-                {/* Add Cart */}
+                {/* =========================
+                    ADD TO CART
+                ========================= */}
+
                 <button
                   className="add-cart"
                   type="button"
+                  onClick={() =>
+                    addToCart(shoe)
+                  }
                 >
+
                   Add to Cart
+
                 </button>
 
 
@@ -259,7 +352,10 @@ const Kids = () => {
       </div>
 
     </section>
+
   );
+
 };
+
 
 export default Kids;

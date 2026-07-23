@@ -1,20 +1,33 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { shoes } from "../../assets/assets";
 import "./Popularshoes.css";
 
+import { StoreContext } from "../../Context/StoreContext/StoreContext";
+
 const Popularshoes = () => {
+
+  // Get addToCart function from StoreContext
+  const { addToCart } = useContext(StoreContext);
+
 
   // Show only first 6 shoes
   const displayedShoes = shoes.slice(0, 6);
 
+
   // Store updated shoe ratings
-  const [shoeList, setShoeList] = useState(displayedShoes);
+  const [shoeList, setShoeList] = useState(
+    displayedShoes
+  );
 
 
   // Handle user rating
-  const handleRating = (shoeId, selectedRating) => {
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
 
     setShoeList((prevShoes) =>
+
       prevShoes.map((shoe) => {
 
         // Find selected shoe
@@ -30,27 +43,37 @@ const Popularshoes = () => {
 
           // Add new rating
           return {
+
             ...shoe,
 
             rating: {
+
               totalRatings:
                 oldTotalRatings + 1,
 
               ratingSum:
-                oldRatingSum + selectedRating,
+                oldRatingSum +
+                selectedRating,
+
             },
+
           };
+
         }
+
 
         // Other shoes remain unchanged
         return shoe;
 
       })
+
     );
+
   };
 
 
   return (
+
     <section className="shoes-section">
 
 
@@ -81,7 +104,11 @@ const Popularshoes = () => {
           // Calculate discounted price
           const discountedPrice =
             shoe.price -
-            (shoe.price * (shoe.discount || 0)) / 100;
+            (
+              shoe.price *
+              (shoe.discount || 0)
+            ) /
+            100;
 
 
 
@@ -90,8 +117,10 @@ const Popularshoes = () => {
           const averageRating =
             shoe.rating &&
             shoe.rating.totalRatings > 0
+
               ? shoe.rating.ratingSum /
                 shoe.rating.totalRatings
+
               : 5;
 
 
@@ -110,16 +139,20 @@ const Popularshoes = () => {
 
 
                 {/* Discount Badge */}
+
                 {shoe.discount > 0 && (
 
                   <span className="discount-badge">
+
                     {shoe.discount}% OFF
+
                   </span>
 
                 )}
 
 
                 {/* Shoe Image */}
+
                 <img
                   src={shoe.image}
                   alt={shoe.name}
@@ -135,6 +168,7 @@ const Popularshoes = () => {
 
 
                 {/* Shoe Name */}
+
                 <h3>
                   {shoe.name}
                 </h3>
@@ -142,15 +176,21 @@ const Popularshoes = () => {
 
 
                 {/* Category */}
+
                 <p className="shoe-category">
+
                   {shoe.category}
+
                 </p>
 
 
 
                 {/* Description */}
+
                 <p className="shoe-description">
+
                   {shoe.description}
+
                 </p>
 
 
@@ -161,6 +201,7 @@ const Popularshoes = () => {
 
 
                   {/* Stars */}
+
                   <div className="stars">
 
                     {[1, 2, 3, 4, 5].map(
@@ -169,6 +210,7 @@ const Popularshoes = () => {
                         <button
                           key={star}
                           type="button"
+
                           className={
                             star <=
                             Math.round(
@@ -177,14 +219,18 @@ const Popularshoes = () => {
                               ? "star filled"
                               : "star"
                           }
+
                           onClick={() =>
                             handleRating(
                               shoe.id,
                               star
                             )
                           }
+
                         >
+
                           ★
+
                         </button>
 
                       )
@@ -195,18 +241,23 @@ const Popularshoes = () => {
 
 
                   {/* Average Rating */}
+
                   <span className="rating-number">
+
                     {averageRating.toFixed(1)}
+
                   </span>
 
 
 
                   {/* Number Of Ratings */}
+
                   <span className="rating-count">
+
                     (
-                    {shoe.rating?.totalRatings ||
-                      0}
+                    {shoe.rating?.totalRatings || 0}
                     )
+
                   </span>
 
 
@@ -220,9 +271,11 @@ const Popularshoes = () => {
 
 
                   {/* Discounted Price */}
+
                   <h4 className="shoe-price">
 
                     Rs.{" "}
+
                     {discountedPrice.toLocaleString()}
 
                   </h4>
@@ -230,11 +283,13 @@ const Popularshoes = () => {
 
 
                   {/* Original Price */}
+
                   {shoe.discount > 0 && (
 
                     <span className="original-price">
 
                       Rs.{" "}
+
                       {shoe.price.toLocaleString()}
 
                     </span>
@@ -257,7 +312,9 @@ const Popularshoes = () => {
                         key={size}
                         type="button"
                       >
+
                         {size}
+
                       </button>
 
                     )
@@ -272,8 +329,13 @@ const Popularshoes = () => {
                 <button
                   className="add-cart"
                   type="button"
+                  onClick={() =>
+                    addToCart(shoe)
+                  }
                 >
+
                   Add to Cart
+
                 </button>
 
 
@@ -289,7 +351,9 @@ const Popularshoes = () => {
       </div>
 
     </section>
+
   );
+
 };
 
 

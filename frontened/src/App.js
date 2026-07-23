@@ -15,6 +15,7 @@ import ReturnsExchange from "./pages/ReturnsExchange/ReturnsExchange";
 import SizeGuide from "./pages/SizeGuide/SizeGuide";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions/TermsConditions";
+import Cart from "./pages/Cart/Cart";
 
 function App() {
   return (
@@ -83,6 +84,11 @@ function App() {
   path="/terms-conditions"
   element={<TermsConditions />}
 />
+
+ <Route
+          path="/cart"
+          element={<Cart />}
+        />
 
       </Routes>
        <Footer />

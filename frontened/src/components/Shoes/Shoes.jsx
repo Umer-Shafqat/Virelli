@@ -1,57 +1,92 @@
-import React, { useState } from "react";
+import React, {useContext,useState} from "react";
+
 import { shoes } from "../../assets/assets";
+
 import "./Shoes.css";
 
-const Shoes = () => {
+import {StoreContext} from "../../Context/StoreContext/StoreContext";
+
+
+const Shoes = ({ limit, products }) => {
+
+  // Get addToCart from StoreContext
+  const {addToCart} = useContext(StoreContext);
+
 
   // Store shoes with updated ratings
-  const [shoeList, setShoeList] = useState(shoes);
+ const [shoeList, setShoeList] = useState(
+  products || shoes
+);
 
 
-  // Handle user rating
-  const handleRating = (shoeId, selectedRating) => {
+  // Show limited shoes or all shoes
+  const displayedShoes = limit
+    ? shoeList.slice(0, limit)
+    : shoeList;
 
-    setShoeList((prevShoes) =>
-      prevShoes.map((shoe) => {
 
-        // Find selected shoe
+  // =====================================
+  // HANDLE RATING
+  // =====================================
+
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
+
+    setShoeList((prevShoes) => {
+
+      return prevShoes.map((shoe) => {
+
         if (shoe.id === shoeId) {
 
-          // Get previous ratings
           const oldTotalRatings =
             shoe.rating?.totalRatings || 0;
+
 
           const oldRatingSum =
             shoe.rating?.ratingSum || 0;
 
 
-          // Add new rating
           return {
+
             ...shoe,
 
             rating: {
+
               totalRatings:
                 oldTotalRatings + 1,
 
               ratingSum:
-                oldRatingSum + selectedRating,
-            },
+                oldRatingSum +
+                selectedRating
+
+            }
+
           };
+
         }
 
-        // Return other shoes unchanged
+
+        // Return unchanged shoe
         return shoe;
 
-      })
-    );
+      });
+
+    });
+
   };
 
 
   return (
+
     <section className="shoes-section">
 
 
-      {/* Heading */}
+      {/* =========================
+          HEADING
+      ========================= */}
+
       <div className="shoes-heading">
 
         <h2>
@@ -65,30 +100,39 @@ const Shoes = () => {
       </div>
 
 
+      {/* =========================
+          SHOES GRID
+      ========================= */}
 
-      {/* Shoes Grid */}
       <div className="shoes-grid">
 
+        {displayedShoes.map((shoe) => {
 
-        {shoeList.map((shoe) => {
 
+          // =========================
+          // DISCOUNT PRICE
+          // =========================
 
-          // Calculate discounted price
           const discountedPrice =
             shoe.price -
-            (shoe.price * (shoe.discount || 0)) / 100;
+            (
+              shoe.price *
+              (shoe.discount || 0)
+            ) / 100;
 
 
+          // =========================
+          // AVERAGE RATING
+          // =========================
 
-          // Calculate average rating
-          // If no rating exists, show 5 stars
           const averageRating =
             shoe.rating &&
             shoe.rating.totalRatings > 0
+
               ? shoe.rating.ratingSum /
                 shoe.rating.totalRatings
-              : 5;
 
+              : 5;
 
 
           return (
@@ -99,22 +143,23 @@ const Shoes = () => {
             >
 
 
-              {/* ================= IMAGE ================= */}
+              {/* =========================
+                  IMAGE
+              ========================= */}
 
               <div className="shoe-image">
 
-
-                {/* Discount Badge */}
                 {shoe.discount > 0 && (
 
                   <span className="discount-badge">
+
                     {shoe.discount}% OFF
+
                   </span>
 
                 )}
 
 
-                {/* Shoe Image */}
                 <img
                   src={shoe.image}
                   alt={shoe.name}
@@ -123,39 +168,45 @@ const Shoes = () => {
               </div>
 
 
-
-              {/* ================= INFORMATION ================= */}
+              {/* =========================
+                  INFORMATION
+              ========================= */}
 
               <div className="shoe-info">
 
 
-                {/* Shoe Name */}
+                {/* Name */}
+
                 <h3>
                   {shoe.name}
                 </h3>
 
 
-
                 {/* Category */}
-                <p className="shoe-category">
-                  {shoe.category}
-                </p>
 
+                <p className="shoe-category">
+
+                  {shoe.category}
+
+                </p>
 
 
                 {/* Description */}
+
                 <p className="shoe-description">
+
                   {shoe.description}
+
                 </p>
 
 
-
-                {/* ================= RATING ================= */}
+                {/* =========================
+                    RATING
+                ========================= */}
 
                 <div className="rating">
 
 
-                  {/* Stars */}
                   <div className="stars">
 
                     {[1, 2, 3, 4, 5].map(
@@ -164,6 +215,7 @@ const Shoes = () => {
                         <button
                           key={star}
                           type="button"
+
                           className={
                             star <=
                             Math.round(
@@ -172,14 +224,18 @@ const Shoes = () => {
                               ? "star filled"
                               : "star"
                           }
+
                           onClick={() =>
                             handleRating(
                               shoe.id,
                               star
                             )
                           }
+
                         >
+
                           ★
+
                         </button>
 
                       )
@@ -188,68 +244,60 @@ const Shoes = () => {
                   </div>
 
 
-
-                  {/* Average Rating */}
                   <span className="rating-number">
+
                     {averageRating.toFixed(1)}
+
                   </span>
 
 
-
-                  {/* Total Ratings */}
                   <span className="rating-count">
-                    (
-                    {shoe.rating?.totalRatings ||
-                      0}
-                    )
-                  </span>
 
+                    (
+                    {shoe.rating?.totalRatings || 0}
+                    )
+
+                  </span>
 
                 </div>
 
 
-
-                {/* ================= PRICE ================= */}
+                {/* =========================
+                    PRICE
+                ========================= */}
 
                 <div className="price-section">
 
 
-                  {/* Discounted Price */}
                   <h4 className="shoe-price">
 
                     Rs.{" "}
+
                     {discountedPrice.toLocaleString()}
 
                   </h4>
 
 
-
-                  {/* Original Price */}
                   {shoe.discount > 0 && (
 
                     <span className="original-price">
 
                       Rs.{" "}
+
                       {shoe.price.toLocaleString()}
 
                     </span>
 
                   )}
 
-
                 </div>
 
 
-
-                {/* ================= SIZES ================= */}
+                {/* =========================
+                    SIZES
+                ========================= */}
 
                 <div className="sizes">
-
-
-                  {/* 
-                    (shoe.sizes || [])
-                    prevents .map() error
-                  */}
 
                   {(shoe.sizes || []).map(
                     (size) => (
@@ -258,24 +306,33 @@ const Shoes = () => {
                         key={size}
                         type="button"
                       >
+
                         {size}
+
                       </button>
 
                     )
                   )}
 
-
                 </div>
 
 
-
-                {/* ================= ADD TO CART ================= */}
+                {/* =========================
+                    ADD TO CART
+                ========================= */}
 
                 <button
                   className="add-cart"
                   type="button"
+
+                  onClick={() =>
+                    addToCart(shoe)
+                  }
+
                 >
+
                   Add to Cart
+
                 </button>
 
 
@@ -287,11 +344,12 @@ const Shoes = () => {
 
         })}
 
-
       </div>
 
     </section>
+
   );
+
 };
 
 
