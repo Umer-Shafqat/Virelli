@@ -11,7 +11,7 @@ const Shoes = ({ limit, products }) => {
 
   // Get addToCart from StoreContext
   const {addToCart} = useContext(StoreContext);
-
+  const [selectedSize, setSelectedSize] = useState(null);
 
   // Store shoes with updated ratings
  const [shoeList, setShoeList] = useState(
@@ -326,7 +326,7 @@ const Shoes = ({ limit, products }) => {
                   type="button"
 
                   onClick={() =>
-                    addToCart(shoe)
+                    addToCart(shoe,selectedSize)
                   }
 
                 >

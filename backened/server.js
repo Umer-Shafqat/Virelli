@@ -5,75 +5,97 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
 import shoeRouter from "./routes/shoeRoute.js";
+import orderRouter from "./routes/orderRoute.js";
+import cartRouter from "./routes/cartRoute.js";
+import userRouter from "./routes/userRoute.js";
 
 
-// Load Environment Variables
 dotenv.config();
 
 
-// Create Express App
 const app = express();
 
-
-// ================================
-// MIDDLEWARE
-// ================================
 
 app.use(cors());
 
 app.use(express.json());
 
 
-// ================================
-// SHOE ROUTES
-// ================================
+// =====================================
+// CONNECT MONGODB
+// =====================================
 
-app.use("/api/shoes", shoeRouter);
+connectDB();
 
 
-// ================================
-// HOME ROUTE
-// ================================
+// =====================================
+// TEST API
+// =====================================
 
 app.get("/", (req, res) => {
-  res.send("Virelli Backend Running...");
+
+  res.send(
+    "Virelli Backend Running..."
+  );
+
 });
 
 
-// ================================
-// PORT
-// ================================
+// =====================================
+// USER / AUTHENTICATION
+// =====================================
 
-const PORT = process.env.PORT || 4000;
+app.use(
+  "/api/user",
+  userRouter
+);
 
 
-// ================================
-// START SERVER
-// ================================
+// =====================================
+// SHOES
+// =====================================
 
-const startServer = async () => {
-  try {
+app.use(
+  "/api/shoes",
+  shoeRouter
+);
 
-    // Connect MongoDB
-    await connectDB();
 
-    // Start Express Server
-    app.listen(PORT, () => {
-      console.log(
-        `Server Starting on http://localhost:${PORT}`
-      );
-    });
+// =====================================
+// CART
+// =====================================
 
-  } catch (error) {
+app.use(
+  "/api/cart",
+  cartRouter
+);
 
-    console.error(
-      "Failed to start server:",
-      error.message
+
+// =====================================
+// ORDERS
+// =====================================
+
+app.use(
+  "/api/order",
+  orderRouter
+);
+
+
+// =====================================
+// SERVER
+// =====================================
+
+const PORT =
+  process.env.PORT || 4000;
+
+
+app.listen(
+  PORT,
+  () => {
+
+    console.log(
+      `Server running on http://localhost:${PORT}`
     );
 
   }
-};
-
-
-// Run Server
-startServer();
+);

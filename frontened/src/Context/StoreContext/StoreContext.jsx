@@ -1,7 +1,10 @@
 import React, {
   createContext,
+  useEffect,
   useState
 } from "react";
+
+import axios from "axios";
 
 
 export const StoreContext = createContext();
@@ -9,59 +12,191 @@ export const StoreContext = createContext();
 
 const StoreContextProvider = ({ children }) => {
 
-  // All cart items are stored here
-  const [cartItems, setCartItems] = useState([]);
+  // =====================================
+  // BACKEND URL
+  // =====================================
+
+  const url = "http://localhost:4000";
+
+
+  // =====================================
+  // CART ITEMS
+  // =====================================
+
+  // Cart format:
+  // {
+  //   "shoeId-size": quantity
+  // }
+
+  const [cartItems, setCartItems] = useState({});
+
+
+  // =====================================
+  // AUTH TOKEN
+  // =====================================
+
+  const [token, setToken] = useState(
+    localStorage.getItem("token") || ""
+  );
 
 
   // =====================================
   // ADD TO CART
   // =====================================
 
-  const addToCart = (shoe) => {
+  const addToCart = async (
+    shoe,
+    size
+  ) => {
 
-    setCartItems((prevItems) => {
+    // Check login
+    if (!token) {
 
-      // Check if shoe already exists
-      // using unique shoe ID
-      const existingItem = prevItems.find(
-        (item) => item.id === shoe.id
+      alert("Please login first");
+
+      return;
+
+    }
+
+
+    try {
+
+      const response = await axios.post(
+
+        `${url}/api/cart/add`,
+
+        {
+          // Your current shoe data
+          // uses "id"
+          shoeId: shoe.id,
+
+          // Selected shoe size
+          size: size
+        },
+
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+
       );
 
 
-      // If shoe already exists
-      // increase quantity
-      if (existingItem) {
+      if (
+        response.data.success
+      ) {
 
-        return prevItems.map((item) => {
-
-          if (item.id === shoe.id) {
-
-            return {
-              ...item,
-              quantity: item.quantity + 1
-            };
-
-          }
-
-          return item;
-
-        });
+        // Update cart from backend
+        setCartItems(
+          response.data.cart
+        );
 
       }
 
 
-      // If shoe does not exist
-      // add it as a new item
-      return [
-        ...prevItems,
+    } catch (error) {
+
+      console.log(
+        "Add to cart error:",
+        error
+      );
+
+
+      if (
+        error.response?.status === 401
+      ) {
+
+        alert(
+          "Session expired. Please login again."
+        );
+
+        localStorage.removeItem(
+          "token"
+        );
+
+        setToken("");
+
+      } else {
+
+        alert(
+          error.response?.data?.message ||
+          "Error adding item to cart"
+        );
+
+      }
+
+    }
+
+  };
+
+
+  // =====================================
+  // GET CART FROM MONGODB
+  // =====================================
+
+  const getCart = async () => {
+
+    if (!token) {
+
+      setCartItems({});
+
+      return;
+
+    }
+
+
+    try {
+
+      const response = await axios.get(
+
+        `${url}/api/cart/get`,
 
         {
-          ...shoe,
-          quantity: 1
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
         }
-      ];
 
-    });
+      );
+
+
+      if (
+        response.data.success
+      ) {
+
+        setCartItems(
+          response.data.cartData
+        );
+
+      }
+
+
+    } catch (error) {
+
+      console.log(
+        "Get cart error:",
+        error
+      );
+
+
+      if (
+        error.response?.status === 401
+      ) {
+
+        localStorage.removeItem(
+          "token"
+        );
+
+        setToken("");
+
+        setCartItems({});
+
+      }
+
+    }
 
   };
 
@@ -70,30 +205,62 @@ const StoreContextProvider = ({ children }) => {
   // REMOVE ONE QUANTITY
   // =====================================
 
-  const removeFromCart = (shoeId) => {
+  const removeFromCart = async (
+    shoeId,
+    size
+  ) => {
 
-    setCartItems((prevItems) => {
+    if (!token) {
 
-      return prevItems
-        .map((item) => {
+      alert(
+        "Please login first"
+      );
 
-          if (item.id === shoeId) {
+      return;
 
-            return {
-              ...item,
-              quantity: item.quantity - 1
-            };
+    }
 
+
+    try {
+
+      const response = await axios.post(
+
+        `${url}/api/cart/remove`,
+
+        {
+          shoeId: shoeId,
+          size: size
+        },
+
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
           }
+        }
 
-          return item;
+      );
 
-        })
-        .filter(
-          (item) => item.quantity > 0
+
+      if (
+        response.data.success
+      ) {
+
+        setCartItems(
+          response.data.cart
         );
 
-    });
+      }
+
+
+    } catch (error) {
+
+      console.log(
+        "Remove from cart error:",
+        error
+      );
+
+    }
 
   };
 
@@ -102,17 +269,172 @@ const StoreContextProvider = ({ children }) => {
   // REMOVE ITEM COMPLETELY
   // =====================================
 
-  const deleteFromCart = (shoeId) => {
+  const deleteFromCart = async (
+    shoeId,
+    size
+  ) => {
 
-    setCartItems((prevItems) => {
+    if (!token) {
 
-      return prevItems.filter(
-        (item) => item.id !== shoeId
+      alert(
+        "Please login first"
       );
 
-    });
+      return;
+
+    }
+
+
+    try {
+
+      // First get current quantity
+      const currentKey =
+        `${shoeId}-${size}`;
+
+
+      const currentQuantity =
+        cartItems[currentKey] || 0;
+
+
+      // Remove item quantity
+      // until quantity becomes zero
+      for (
+        let i = 0;
+        i < currentQuantity;
+        i++
+      ) {
+
+        await axios.post(
+
+          `${url}/api/cart/remove`,
+
+          {
+            shoeId: shoeId,
+            size: size
+          },
+
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+
+        );
+
+      }
+
+
+      // Get updated cart
+      await getCart();
+
+
+    } catch (error) {
+
+      console.log(
+        "Delete cart item error:",
+        error
+      );
+
+    }
 
   };
+
+
+  // =====================================
+  // CLEAR ENTIRE CART
+  // =====================================
+
+  const clearCart = async () => {
+
+    if (!token) {
+
+      setCartItems({});
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await axios.delete(
+
+          `${url}/api/cart/clear`,
+
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+
+        );
+
+
+      if (
+        response.data.success
+      ) {
+
+        setCartItems({});
+
+      }
+
+
+    } catch (error) {
+
+      console.log(
+        "Clear cart error:",
+        error
+      );
+
+    }
+
+  };
+
+
+  // =====================================
+  // LOAD CART WHEN USER LOGS IN
+  // =====================================
+
+  useEffect(() => {
+
+    if (token) {
+
+      getCart();
+
+    } else {
+
+      setCartItems({});
+
+    }
+
+  }, [token]);
+
+
+  // =====================================
+  // SAVE TOKEN
+  // =====================================
+
+  useEffect(() => {
+
+    if (token) {
+
+      localStorage.setItem(
+        "token",
+        token
+      );
+
+    } else {
+
+      localStorage.removeItem(
+        "token"
+      );
+
+    }
+
+  }, [token]);
 
 
   // =====================================
@@ -121,13 +443,30 @@ const StoreContextProvider = ({ children }) => {
 
   const contextValue = {
 
+    // Backend
+    url,
+
+
+    // Cart
     cartItems,
+
+    setCartItems,
 
     addToCart,
 
     removeFromCart,
 
-    deleteFromCart
+    deleteFromCart,
+
+    clearCart,
+
+    getCart,
+
+
+    // Authentication
+    token,
+
+    setToken
 
   };
 
