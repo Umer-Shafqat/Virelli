@@ -1,10 +1,12 @@
-import React, {createContext,useEffect,useState
+import React, {
+  createContext,
+  useEffect,
+  useState,
 } from "react";
 
 import axios from "axios";
 
 export const StoreContext = createContext();
-
 
 const StoreContextProvider = ({ children }) => {
 
@@ -19,10 +21,22 @@ const StoreContextProvider = ({ children }) => {
   // CART ITEMS
   // =====================================
 
-  // Cart format:
-  // {
-  //   "shoeId-size": quantity
-  // }
+  /*
+    Cart format:
+
+    {
+      "1-40": 2,
+      "2-42": 1,
+      "3-39": 3,
+      "4-43": 1
+    }
+
+    Key:
+    shoeId-size
+
+    This allows unlimited different shoes
+    and different sizes.
+  */
 
   const [cartItems, setCartItems] = useState({});
 
@@ -55,6 +69,26 @@ const StoreContextProvider = ({ children }) => {
     }
 
 
+    // Check shoe
+    if (!shoe?.id) {
+
+      alert("Shoe ID is missing");
+
+      return;
+
+    }
+
+
+    // Check size
+    if (!size) {
+
+      alert("Please select a size");
+
+      return;
+
+    }
+
+
     try {
 
       const response = await axios.post(
@@ -63,14 +97,14 @@ const StoreContextProvider = ({ children }) => {
 
         {
           shoeId: shoe.id,
-          size: size
+          size: size,
         },
 
         {
           headers: {
             Authorization:
-              `Bearer ${token}`
-          }
+              `Bearer ${token}`,
+          },
         }
 
       );
@@ -80,13 +114,26 @@ const StoreContextProvider = ({ children }) => {
         response.data.success
       ) {
 
-        // Update cart from backend
+        /*
+          Backend returns the complete cart.
+
+          Example:
+
+          {
+            "1-40": 1,
+            "2-42": 1,
+            "3-39": 1
+          }
+
+          So we replace frontend cart
+          with complete backend cart.
+        */
+
         setCartItems(
-          response.data.cart
+          response.data.cart || {}
         );
 
       }
-
 
     } catch (error) {
 
@@ -96,6 +143,10 @@ const StoreContextProvider = ({ children }) => {
       );
 
 
+      // =================================
+      // SESSION EXPIRED
+      // =================================
+
       if (
         error.response?.status === 401
       ) {
@@ -104,13 +155,16 @@ const StoreContextProvider = ({ children }) => {
           "Session expired. Please login again."
         );
 
+
         localStorage.removeItem(
           "token"
         );
 
+
         setToken("");
 
         setCartItems({});
+
 
       } else {
 
@@ -132,6 +186,7 @@ const StoreContextProvider = ({ children }) => {
 
   const getCart = async () => {
 
+    // If user is not logged in
     if (!token) {
 
       setCartItems({});
@@ -150,8 +205,8 @@ const StoreContextProvider = ({ children }) => {
         {
           headers: {
             Authorization:
-              `Bearer ${token}`
-          }
+              `Bearer ${token}`,
+          },
         }
 
       );
@@ -161,12 +216,27 @@ const StoreContextProvider = ({ children }) => {
         response.data.success
       ) {
 
+        /*
+          Load complete cart from MongoDB.
+
+          If cart is empty:
+
+          {}
+
+          If cart contains items:
+
+          {
+            "1-40": 2,
+            "2-42": 1,
+            "3-39": 1
+          }
+        */
+
         setCartItems(
-          response.data.cartData
+          response.data.cartData || {}
         );
 
       }
-
 
     } catch (error) {
 
@@ -175,6 +245,10 @@ const StoreContextProvider = ({ children }) => {
         error
       );
 
+
+      // =================================
+      // SESSION EXPIRED
+      // =================================
 
       if (
         error.response?.status === 401
@@ -204,6 +278,7 @@ const StoreContextProvider = ({ children }) => {
     size
   ) => {
 
+    // Check login
     if (!token) {
 
       alert(
@@ -223,14 +298,14 @@ const StoreContextProvider = ({ children }) => {
 
         {
           shoeId: shoeId,
-          size: size
+          size: size,
         },
 
         {
           headers: {
             Authorization:
-              `Bearer ${token}`
-          }
+              `Bearer ${token}`,
+          },
         }
 
       );
@@ -240,12 +315,30 @@ const StoreContextProvider = ({ children }) => {
         response.data.success
       ) {
 
+        /*
+          Backend returns updated
+          complete cart.
+
+          Example:
+
+          Before:
+          {
+            "1-40": 2,
+            "2-42": 1
+          }
+
+          After pressing -:
+          {
+            "1-40": 1,
+            "2-42": 1
+          }
+        */
+
         setCartItems(
-          response.data.cart
+          response.data.cart || {}
         );
 
       }
-
 
     } catch (error) {
 
@@ -263,9 +356,11 @@ const StoreContextProvider = ({ children }) => {
           "Session expired. Please login again."
         );
 
+
         localStorage.removeItem(
           "token"
         );
+
 
         setToken("");
 
@@ -287,6 +382,7 @@ const StoreContextProvider = ({ children }) => {
     size
   ) => {
 
+    // Check login
     if (!token) {
 
       alert(
@@ -300,48 +396,92 @@ const StoreContextProvider = ({ children }) => {
 
     try {
 
-      // Current cart key
-      const currentKey =
-        `${shoeId}-${size}`;
+      const response = await axios.post(
+
+        `${url}/api/cart/remove`,
+
+        {
+          shoeId: shoeId,
+          size: size,
+        },
+
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+
+      );
 
 
-      // Current quantity
-      const currentQuantity =
-        cartItems[currentKey] || 0;
-
-
-      // Remove item quantity
-      // until quantity becomes zero
-      for (
-        let i = 0;
-        i < currentQuantity;
-        i++
+      if (
+        response.data.success
       ) {
 
-        await axios.post(
+        /*
+          We only remove one quantity
+          per API request.
 
-          `${url}/api/cart/remove`,
+          So keep calling remove
+          until quantity becomes zero.
+        */
 
-          {
-            shoeId: shoeId,
-            size: size
-          },
+        let updatedCart =
+          response.data.cart || {};
 
-          {
-            headers: {
-              Authorization:
-                `Bearer ${token}`
-            }
+
+        const key =
+          `${shoeId}-${size}`;
+
+
+        while (
+          updatedCart[key] &&
+          updatedCart[key] > 0
+        ) {
+
+          const removeResponse =
+            await axios.post(
+
+              `${url}/api/cart/remove`,
+
+              {
+                shoeId: shoeId,
+                size: size,
+              },
+
+              {
+                headers: {
+                  Authorization:
+                    `Bearer ${token}`,
+                },
+              }
+
+            );
+
+
+          if (
+            removeResponse.data.success
+          ) {
+
+            updatedCart =
+              removeResponse.data.cart || {};
+
+          } else {
+
+            break;
+
           }
 
+        }
+
+
+        // Update frontend cart
+        setCartItems(
+          updatedCart
         );
 
       }
-
-
-      // Get updated cart
-      await getCart();
-
 
     } catch (error) {
 
@@ -349,6 +489,27 @@ const StoreContextProvider = ({ children }) => {
         "Delete cart item error:",
         error
       );
+
+
+      if (
+        error.response?.status === 401
+      ) {
+
+        alert(
+          "Session expired. Please login again."
+        );
+
+
+        localStorage.removeItem(
+          "token"
+        );
+
+
+        setToken("");
+
+        setCartItems({});
+
+      }
 
     }
 
@@ -361,6 +522,7 @@ const StoreContextProvider = ({ children }) => {
 
   const clearCart = async () => {
 
+    // If not logged in
     if (!token) {
 
       setCartItems({});
@@ -380,8 +542,8 @@ const StoreContextProvider = ({ children }) => {
           {
             headers: {
               Authorization:
-                `Bearer ${token}`
-            }
+                `Bearer ${token}`,
+            },
           }
 
         );
@@ -391,10 +553,10 @@ const StoreContextProvider = ({ children }) => {
         response.data.success
       ) {
 
+        // Empty frontend cart
         setCartItems({});
 
       }
-
 
     } catch (error) {
 
@@ -403,26 +565,44 @@ const StoreContextProvider = ({ children }) => {
         error
       );
 
+
+      if (
+        error.response?.status === 401
+      ) {
+
+        localStorage.removeItem(
+          "token"
+        );
+
+
+        setToken("");
+
+        setCartItems({});
+
+      }
+
     }
 
   };
 
 
   // =====================================
-  // LOGOUT / SIGN OUT
+  // LOGOUT
   // =====================================
 
   const logout = () => {
 
-    // Remove token from browser
+    // Remove token
     localStorage.removeItem(
       "token"
     );
 
-    // Remove token from React state
+
+    // Remove token from state
     setToken("");
 
-    // Clear current user's cart
+
+    // Clear cart from frontend
     setCartItems({});
 
   };
@@ -440,7 +620,6 @@ const StoreContextProvider = ({ children }) => {
 
     } else {
 
-      // Clear cart when logged out
       setCartItems({});
 
     }
@@ -503,10 +682,14 @@ const StoreContextProvider = ({ children }) => {
 
     setToken,
 
-    logout
+    logout,
 
   };
 
+
+  // =====================================
+  // PROVIDER
+  // =====================================
 
   return (
 

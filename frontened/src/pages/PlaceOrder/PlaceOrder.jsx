@@ -1,113 +1,407 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
-import { shoes } from "../../assets/assets";
+import React, {
+  useContext,
+  useState,
+} from "react";
+
+import {
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  StoreContext,
+} from "../../Context/StoreContext/StoreContext";
+
+import {
+  shoes,
+} from "../../assets/assets";
+
+import axios from "axios";
+
 import "./PlaceOrder.css";
 
+
 const PlaceOrder = () => {
-  const navigate = useNavigate();
 
-  const { cartItems } = useContext(StoreContext);
+  const navigate =
+    useNavigate();
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    country: "Pakistan",
-    paymentMethod: "Cash on Delivery",
-  });
 
-  // Delivery charges
-  const deliveryCharges = 300;
+  // =====================================
+  // STORE CONTEXT
+  // =====================================
 
-  // Cart entries
-  const cartEntries = Object.entries(cartItems);
-
-  // Calculate subtotal
-  const subtotal = cartEntries.reduce(
-    (total, [key, quantity]) => {
-      const [shoeId] = key.split("-");
-
-      const shoe = shoes.find(
-        (item) => item.id.toString() === shoeId
-      );
-
-      if (!shoe) {
-        return total;
-      }
-
-      return total + shoe.price * quantity;
-    },
-    0
+  const {
+    cartItems,
+    token,
+    setCartItems,
+  } = useContext(
+    StoreContext
   );
 
-  // Total amount
-  const totalAmount = subtotal + deliveryCharges;
 
-  // Handle input changes
-  const handleChange = (e) => {
+  // =====================================
+  // FORM DATA
+  // =====================================
+
+  const [
+    formData,
+    setFormData
+  ] = useState({
+
+    firstName: "",
+
+    lastName: "",
+
+    email: "",
+
+    phone: "",
+
+    address: "",
+
+    city: "",
+
+    country: "Pakistan",
+
+    paymentMethod:
+      "Cash on Delivery",
+
+  });
+
+
+  // =====================================
+  // ORDER LOADING
+  // =====================================
+
+  const [
+    loading,
+    setLoading
+  ] = useState(false);
+
+
+  // =====================================
+  // DELIVERY CHARGES
+  // =====================================
+
+  const deliveryCharges = 300;
+
+
+  // =====================================
+  // CART ENTRIES
+  // =====================================
+
+  const cartEntries =
+    Object.entries(
+      cartItems
+    );
+
+
+  // =====================================
+  // SUBTOTAL
+  // =====================================
+
+  const subtotal =
+    cartEntries.reduce(
+
+      (
+        total,
+        [key, quantity]
+      ) => {
+
+        const [
+          shoeId
+        ] = key.split("-");
+
+
+        const shoe =
+          shoes.find(
+
+            (item) =>
+              item.id.toString() ===
+              shoeId
+
+          );
+
+
+        if (!shoe) {
+
+          return total;
+
+        }
+
+
+        return (
+
+          total +
+
+          shoe.price *
+
+          quantity
+
+        );
+
+      },
+
+      0
+
+    );
+
+
+  // =====================================
+  // TOTAL
+  // =====================================
+
+  const totalAmount =
+    subtotal +
+    deliveryCharges;
+
+
+  // =====================================
+  // HANDLE INPUT
+  // =====================================
+
+  const handleChange = (
+    e
+  ) => {
+
     setFormData({
+
       ...formData,
-      [e.target.name]: e.target.value,
+
+      [e.target.name]:
+        e.target.value,
+
     });
+
   };
 
-  // Confirm order
-  const handleSubmit = (e) => {
+
+  // =====================================
+  // CONFIRM ORDER
+  // =====================================
+
+  const handleSubmit = async (
+    e
+  ) => {
+
     e.preventDefault();
 
-    const orderData = {
-      customer: formData,
-      items: cartEntries,
-      subtotal,
-      deliveryCharges,
-      totalAmount,
-    };
 
-    console.log("Order Data:", orderData);
+    // Check login
+    if (!token) {
 
-    alert("Your order has been placed successfully!");
+      alert(
+        "Please login first"
+      );
 
-    // You can later navigate to order confirmation page
-    // navigate("/order-success");
+      navigate("/login");
+
+      return;
+
+    }
+
+
+    // Check cart
+    if (
+      cartEntries.length === 0
+    ) {
+
+      alert(
+        "Your cart is empty"
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      setLoading(true);
+
+
+      // =================================
+      // ORDER DATA
+      // =================================
+
+      const orderData = {
+
+        customer:
+          formData,
+
+        items:
+          cartEntries,
+
+        subtotal,
+
+        deliveryCharges,
+
+        totalAmount,
+
+      };
+
+
+      console.log(
+        "Sending Order:",
+        orderData
+      );
+
+
+      // =================================
+      // SEND ORDER TO BACKEND
+      // =================================
+
+      const response =
+        await axios.post(
+
+          "http://localhost:4000/api/order/place",
+
+          orderData,
+
+          {
+
+            headers: {
+
+              Authorization:
+                `Bearer ${token}`,
+
+            },
+
+          }
+
+        );
+
+
+      // =================================
+      // ORDER SUCCESS
+      // =================================
+
+      if (
+        response.data.success
+      ) {
+
+        // Clear frontend cart
+        setCartItems({});
+
+
+        alert(
+          "Your order has been placed successfully!"
+        );
+
+
+        // Go to My Orders
+        navigate(
+          "/my-orders"
+        );
+
+      }
+
+
+    } catch (error) {
+
+      console.log(
+        "Place order error:",
+        error
+      );
+
+
+      if (
+        error.response?.status === 401
+      ) {
+
+        alert(
+          "Session expired. Please login again."
+        );
+
+      } else {
+
+        alert(
+
+          error.response
+            ?.data
+            ?.message ||
+
+          "Error placing order"
+
+        );
+
+      }
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
   };
 
-  // If cart is empty
-  if (cartEntries.length === 0) {
+
+  // =====================================
+  // EMPTY CART
+  // =====================================
+
+  if (
+    cartEntries.length === 0
+  ) {
+
     return (
+
       <div className="empty-order">
-        <h2>Your cart is empty</h2>
+
+        <h2>
+          Your cart is empty
+        </h2>
 
         <p>
-          Please add some shoes before placing your order.
+          Please add some shoes
+          before placing your order.
         </p>
 
-        <button onClick={() => navigate("/shoes")}>
+        <button
+          onClick={() =>
+            navigate("/shoes")
+          }
+        >
+
           Continue Shopping
+
         </button>
+
       </div>
+
     );
+
   }
 
+
   return (
+
     <div className="place-order-page">
 
-      <h1>Place Your Order</h1>
+      <h1>
+        Place Your Order
+      </h1>
+
 
       <div className="place-order-container">
 
-        {/* =========================
-            CUSTOMER INFORMATION
-        ========================= */}
+
+        {/* =================================
+            DELIVERY INFORMATION
+        ================================= */}
 
         <div className="delivery-section">
 
-          <h2>Delivery Information</h2>
+          <h2>
+            Delivery Information
+          </h2>
 
-          <form onSubmit={handleSubmit}>
+
+          <form
+            onSubmit={
+              handleSubmit
+            }
+          >
+
 
             <div className="name-fields">
 
@@ -115,76 +409,116 @@ const PlaceOrder = () => {
                 type="text"
                 name="firstName"
                 placeholder="First Name"
-                value={formData.firstName}
-                onChange={handleChange}
+                value={
+                  formData.firstName
+                }
+                onChange={
+                  handleChange
+                }
                 required
               />
+
 
               <input
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
-                value={formData.lastName}
-                onChange={handleChange}
+                value={
+                  formData.lastName
+                }
+                onChange={
+                  handleChange
+                }
                 required
               />
 
             </div>
 
+
             <input
               type="email"
               name="email"
               placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
+              value={
+                formData.email
+              }
+              onChange={
+                handleChange
+              }
               required
             />
+
 
             <input
               type="tel"
               name="phone"
               placeholder="Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
+              value={
+                formData.phone
+              }
+              onChange={
+                handleChange
+              }
               required
             />
+
 
             <input
               type="text"
               name="address"
               placeholder="Complete Address"
-              value={formData.address}
-              onChange={handleChange}
+              value={
+                formData.address
+              }
+              onChange={
+                handleChange
+              }
               required
             />
+
 
             <input
               type="text"
               name="city"
               placeholder="City"
-              value={formData.city}
-              onChange={handleChange}
+              value={
+                formData.city
+              }
+              onChange={
+                handleChange
+              }
               required
             />
+
 
             <input
               type="text"
               name="country"
               placeholder="Country"
-              value={formData.country}
-              onChange={handleChange}
+              value={
+                formData.country
+              }
+              onChange={
+                handleChange
+              }
               required
             />
 
-            {/* =========================
-                PAYMENT METHOD
-            ========================= */}
+
+            {/* =================================
+                PAYMENT
+            ================================= */}
 
             <div className="payment-section">
 
-              <h2>Payment Method</h2>
+              <h2>
+                Payment Method
+              </h2>
 
-              <label className="payment-option">
+
+              <label
+                className="payment-option"
+              >
 
                 <input
                   type="radio"
@@ -194,14 +528,21 @@ const PlaceOrder = () => {
                     formData.paymentMethod ===
                     "Cash on Delivery"
                   }
-                  onChange={handleChange}
+                  onChange={
+                    handleChange
+                  }
                 />
 
-                <span>Cash on Delivery</span>
+                <span>
+                  Cash on Delivery
+                </span>
 
               </label>
 
-              <label className="payment-option">
+
+              <label
+                className="payment-option"
+              >
 
                 <input
                   type="radio"
@@ -211,20 +552,31 @@ const PlaceOrder = () => {
                     formData.paymentMethod ===
                     "Online Payment"
                   }
-                  onChange={handleChange}
+                  onChange={
+                    handleChange
+                  }
                 />
 
-                <span>Online Payment</span>
+                <span>
+                  Online Payment
+                </span>
 
               </label>
 
             </div>
 
+
             <button
               type="submit"
               className="confirm-order-btn"
+              disabled={loading}
             >
-              Confirm Order
+
+              {loading
+                ? "Placing Order..."
+                : "Confirm Order"
+              }
+
             </button>
 
           </form>
@@ -232,19 +584,21 @@ const PlaceOrder = () => {
         </div>
 
 
-        {/* =========================
+        {/* =================================
             ORDER SUMMARY
-        ========================= */}
+        ================================= */}
 
         <div className="order-summary">
 
-          <h2>Order Summary</h2>
+          <h2>
+            Order Summary
+          </h2>
 
-          {/* Cart Items */}
 
           <div className="summary-items">
 
             {cartEntries.map(
+
               ([key, quantity]) => {
 
                 const [
@@ -252,35 +606,54 @@ const PlaceOrder = () => {
                   size
                 ] = key.split("-");
 
-                const shoe = shoes.find(
-                  (item) =>
-                    item.id.toString() === shoeId
-                );
+
+                const shoe =
+                  shoes.find(
+
+                    (item) =>
+                      item.id.toString() ===
+                      shoeId
+
+                  );
+
 
                 if (!shoe) {
+
                   return null;
+
                 }
 
+
                 return (
+
                   <div
                     className="summary-item"
                     key={key}
                   >
 
                     <img
-                      src={shoe.image}
-                      alt={shoe.name}
+                      src={
+                        shoe.image
+                      }
+                      alt={
+                        shoe.name
+                      }
                     />
 
-                    <div className="summary-item-info">
+
+                    <div
+                      className="summary-item-info"
+                    >
 
                       <h3>
                         {shoe.name}
                       </h3>
 
+
                       <p>
                         Size: {size}
                       </p>
+
 
                       <p>
                         Quantity: {quantity}
@@ -288,70 +661,98 @@ const PlaceOrder = () => {
 
                     </div>
 
+
                     <strong>
+
                       PKR{" "}
+
                       {(
                         shoe.price *
                         quantity
-                      ).toLocaleString("en-PK")}
+
+                      ).toLocaleString(
+                        "en-PK"
+                      )}
+
                     </strong>
 
                   </div>
+
                 );
 
               }
+
             )}
 
           </div>
 
 
-          {/* Price Details */}
+          {/* =================================
+              PRICE
+          ================================= */}
 
-          <div className="summary-prices">
+          <div
+            className="summary-prices"
+          >
 
-            <div className="summary-row">
+            <div
+              className="summary-row"
+            >
 
               <span>
                 Subtotal
               </span>
 
               <span>
+
                 PKR{" "}
+
                 {subtotal.toLocaleString(
                   "en-PK"
                 )}
+
               </span>
 
             </div>
 
 
-            <div className="summary-row">
+            <div
+              className="summary-row"
+            >
 
               <span>
                 Delivery Charges
               </span>
 
               <span>
+
                 PKR{" "}
+
                 {deliveryCharges.toLocaleString(
                   "en-PK"
                 )}
+
               </span>
 
             </div>
 
 
-            <div className="summary-row total-row">
+            <div
+              className="summary-row total-row"
+            >
 
               <strong>
                 Total Amount
               </strong>
 
               <strong>
+
                 PKR{" "}
+
                 {totalAmount.toLocaleString(
                   "en-PK"
                 )}
+
               </strong>
 
             </div>
@@ -363,8 +764,10 @@ const PlaceOrder = () => {
       </div>
 
     </div>
+
   );
+
 };
 
-export default PlaceOrder;
 
+export default PlaceOrder;

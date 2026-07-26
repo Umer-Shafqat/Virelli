@@ -1,113 +1,142 @@
 import orderModel from "../models/orderModel.js";
 import cartModel from "../models/cartModel.js";
 
-// ================================
-// PLACE ORDER - COD
-// ================================
+
+// =====================================
+// PLACE ORDER
+// =====================================
 
 const placeOrder = async (req, res) => {
+
   try {
+
+    // Get logged-in user ID
     const userId = req.userId;
 
+
+    // Get order data from frontend
     const {
+      customer,
       items,
-      amount,
-      address,
+      subtotal,
+      deliveryCharges,
+      totalAmount,
     } = req.body;
 
-    // Check user
+
+    // =================================
+    // CHECK USER
+    // =================================
+
     if (!userId) {
+
       return res.status(401).json({
         success: false,
         message: "User not authenticated",
       });
+
     }
 
-    // Check items
+
+    // =================================
+    // CHECK ORDER ITEMS
+    // =================================
+
     if (!items || items.length === 0) {
+
       return res.status(400).json({
         success: false,
-        message: "Cart is empty",
+        message: "Your cart is empty",
       });
+
     }
 
-    // Check address
-    if (!address) {
-      return res.status(400).json({
-        success: false,
-        message: "Address is required",
-      });
-    }
 
-    // Create order
+    // =================================
+    // CREATE ORDER
+    // =================================
+
     const newOrder = new orderModel({
+
       userId,
+
+      customer,
+
       items,
-      amount,
-      address,
 
-      paymentMethod: "COD",
+      subtotal,
 
-      payment: false,
+      deliveryCharges,
 
-      status: "Order Placed",
+      totalAmount,
+
     });
 
-    // Save order
-    const savedOrder = await newOrder.save();
 
-    // Clear user's cart
+    // =================================
+    // SAVE ORDER TO MONGODB
+    // =================================
+
+    const savedOrder =
+      await newOrder.save();
+
+
+    // =================================
+    // CLEAR USER CART
+    // =================================
+
     await cartModel.findOneAndUpdate(
-      { userId },
+
+      {
+        userId,
+      },
+
       {
         items: {},
       }
+
     );
 
+
+    // =================================
+    // RESPONSE
+    // =================================
+
     res.status(201).json({
+
       success: true,
-      message: "Order placed successfully",
-      orderId: savedOrder._id,
+
+      message:
+        "Order placed successfully",
+
+      order:
+        savedOrder,
+
     });
+
+
   } catch (error) {
-    console.log("Place Order Error:", error);
+
+    console.log(
+      "Place Order Error:",
+      error
+    );
+
 
     res.status(500).json({
+
       success: false,
-      message: "Error placing order",
+
+      message:
+        "Error placing order",
+
     });
+
   }
-};
 
-
-// ================================
-// GET USER ORDERS
-// ================================
-
-const getUserOrders = async (req, res) => {
-  try {
-    const userId = req.userId;
-
-    const orders = await orderModel
-      .find({ userId })
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      orders,
-    });
-  } catch (error) {
-    console.log("Get Orders Error:", error);
-
-    res.status(500).json({
-      success: false,
-      message: "Error fetching orders",
-    });
-  }
 };
 
 
 export {
   placeOrder,
-  getUserOrders,
 };

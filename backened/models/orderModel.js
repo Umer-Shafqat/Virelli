@@ -8,46 +8,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
 
-    items: [
-      {
-        shoeId: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-        },
-
-        name: {
-          type: String,
-          required: true,
-        },
-
-        price: {
-          type: Number,
-          required: true,
-        },
-
-        quantity: {
-          type: Number,
-          required: true,
-        },
-
-        size: {
-          type: Number,
-          required: true,
-        },
-
-        image: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
-
-    amount: {
-      type: Number,
-      required: true,
-    },
-
-    address: {
+    customer: {
       firstName: {
         type: String,
         required: true,
@@ -63,7 +24,12 @@ const orderSchema = new mongoose.Schema(
         required: true,
       },
 
-      street: {
+      phone: {
+        type: String,
+        required: true,
+      },
+
+      address: {
         type: String,
         required: true,
       },
@@ -73,40 +39,40 @@ const orderSchema = new mongoose.Schema(
         required: true,
       },
 
-      state: {
-        type: String,
-        required: true,
-      },
-
-      zipCode: {
-        type: String,
-        required: true,
-      },
-
       country: {
         type: String,
         required: true,
       },
 
-      phone: {
+      paymentMethod: {
         type: String,
         required: true,
       },
     },
 
+    items: {
+      type: Array,
+      required: true,
+    },
+
+    subtotal: {
+      type: Number,
+      required: true,
+    },
+
+    deliveryCharges: {
+      type: Number,
+      required: true,
+    },
+
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+
     status: {
       type: String,
-      default: "Order Placed",
-    },
-
-    paymentMethod: {
-      type: String,
-      default: "COD",
-    },
-
-    payment: {
-      type: Boolean,
-      default: false,
+      default: "Pending",
     },
   },
 
