@@ -328,3 +328,9 @@
   font-size: 13px;
   color: #777;
 }
+
+.selected-size {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}

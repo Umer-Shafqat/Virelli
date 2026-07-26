@@ -1,17 +1,13 @@
 import React, { useContext } from "react";
-
-import {
-  StoreContext
-} from "../../Context/StoreContext/StoreContext";
-
-import {
-  shoes
-} from "../../assets/assets";
-
+import {StoreContext} from "../../Context/StoreContext/StoreContext";
+import {shoes} from "../../assets/assets";
 import "./Cart.css";
-
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+
+
+  const navigate = useNavigate();
 
   const {
     cartItems,
@@ -363,11 +359,9 @@ const Cart = () => {
 
             {/* Checkout */}
 
-            <button
-              className="checkout-btn"
-            >
-              PROCEED TO CHECKOUT
-            </button>
+            <button onClick={() => navigate("/place-order")}>
+  Proceed to Checkout
+</button>
 
           </div>
 

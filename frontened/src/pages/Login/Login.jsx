@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, {
+  useContext,
+  useState
+} from "react";
+
+import axios from "axios";
+
 import "./Login.css";
 
+import { StoreContext } from "../../Context/StoreContext/StoreContext";
+
+
 const Login = () => {
+
+  // Get setToken from StoreContext
+  const { setToken } = useContext(StoreContext);
+
 
   // false = Sign In
   // true = Sign Up
   const [isSignUp, setIsSignUp] = useState(false);
+
+
+  // Backend URL
+  const url = "http://localhost:4000";
 
 
   // =========================
@@ -65,16 +82,71 @@ const Login = () => {
   // SIGN UP
   // =========================
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
 
     e.preventDefault();
 
-    console.log(
-      "Sign Up Data:",
-      signUpData
-    );
+    try {
 
-    alert("Account created successfully!");
+      const response = await axios.post(
+        `${url}/api/user/register`,
+        signUpData
+      );
+
+
+      console.log(
+        "Register Response:",
+        response.data
+      );
+
+
+      if (response.data.success) {
+
+        alert(
+          "Account created successfully!"
+        );
+
+
+        // Clear signup form
+        setSignUpData({
+          name: "",
+          email: "",
+          password: "",
+        });
+
+
+        // Switch to Sign In
+        setIsSignUp(false);
+
+      } else {
+
+        alert(
+          response.data.message ||
+          "Registration failed"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.log(
+        "Registration Error:",
+        error
+      );
+
+
+      console.log(
+        "Server Response:",
+        error.response?.data
+      );
+
+
+      alert(
+        error.response?.data?.message ||
+        "Registration failed"
+      );
+
+    }
 
   };
 
@@ -83,16 +155,89 @@ const Login = () => {
   // SIGN IN
   // =========================
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
 
     e.preventDefault();
 
-    console.log(
-      "Sign In Data:",
-      signInData
-    );
+    try {
 
-    alert("Sign in successful!");
+      const response = await axios.post(
+        `${url}/api/user/login`,
+        signInData
+      );
+
+
+      console.log(
+        "Login Response:",
+        response.data
+      );
+
+
+      if (response.data.success) {
+
+        // Get JWT token
+        const token =
+          response.data.token;
+
+
+        // =================================
+        // SAVE TOKEN
+        // =================================
+
+        // Save in localStorage
+        localStorage.setItem(
+          "token",
+          token
+        );
+
+
+        // IMPORTANT:
+        // Update StoreContext token state
+        // This makes Add to Cart work
+        setToken(token);
+
+
+        alert(
+          "Sign in successful!"
+        );
+
+
+        // Clear form
+        setSignInData({
+          email: "",
+          password: "",
+        });
+
+
+      } else {
+
+        alert(
+          response.data.message ||
+          "Login failed"
+        );
+
+      }
+
+    } catch (error) {
+
+      console.log(
+        "Login Error:",
+        error
+      );
+
+
+      console.log(
+        "Server Response:",
+        error.response?.data
+      );
+
+
+      alert(
+        error.response?.data?.message ||
+        "Login failed"
+      );
+
+    }
 
   };
 
@@ -101,11 +246,6 @@ const Login = () => {
 
     <div className="login-page">
 
-
-      {/* =========================
-          MAIN CONTAINER
-      ========================= */}
-
       <div
         className={`login-container ${
           isSignUp
@@ -113,7 +253,6 @@ const Login = () => {
             : ""
         }`}
       >
-
 
         {/* =========================
             SIGN UP FORM
@@ -130,17 +269,10 @@ const Login = () => {
             </h1>
 
 
-            {/* Social Icons */}
-
-          
-
-
             <span>
               Use your email for registration:
             </span>
 
-
-            {/* Name */}
 
             <input
               type="text"
@@ -152,8 +284,6 @@ const Login = () => {
             />
 
 
-            {/* Email */}
-
             <input
               type="email"
               name="email"
@@ -163,8 +293,6 @@ const Login = () => {
               required
             />
 
-
-            {/* Password */}
 
             <input
               type="password"
@@ -188,7 +316,6 @@ const Login = () => {
         </div>
 
 
-
         {/* =========================
             SIGN IN FORM
         ========================= */}
@@ -204,15 +331,10 @@ const Login = () => {
             </h1>
 
 
-            {/* Social Icons */}
-
-          
             <span>
               Use your email account:
             </span>
 
-
-            {/* Email */}
 
             <input
               type="email"
@@ -224,8 +346,6 @@ const Login = () => {
             />
 
 
-            {/* Password */}
-
             <input
               type="password"
               name="password"
@@ -235,8 +355,6 @@ const Login = () => {
               required
             />
 
-
-            {/* Forgot Password */}
 
             <a
               href="#forgot"
@@ -258,7 +376,6 @@ const Login = () => {
         </div>
 
 
-
         {/* =========================
             OVERLAY
         ========================= */}
@@ -266,7 +383,6 @@ const Login = () => {
         <div className="overlay-container">
 
           <div className="overlay">
-
 
             {/* Sign In Side */}
 
@@ -276,13 +392,16 @@ const Login = () => {
                 Welcome Back!
               </h1>
 
+
               <p>
                 To keep connected with us
                 please login with your
                 personal info
               </p>
 
+
               <button
+                type="button"
                 className="ghost-button"
                 onClick={() =>
                   setIsSignUp(false)
@@ -294,7 +413,6 @@ const Login = () => {
             </div>
 
 
-
             {/* Sign Up Side */}
 
             <div className="overlay-panel overlay-right">
@@ -303,12 +421,15 @@ const Login = () => {
                 Hello, Friend!
               </h1>
 
+
               <p>
                 Enter your personal details
                 and start your journey with us
               </p>
 
+
               <button
+                type="button"
                 className="ghost-button"
                 onClick={() =>
                   setIsSignUp(true)
@@ -318,7 +439,6 @@ const Login = () => {
               </button>
 
             </div>
-
 
           </div>
 

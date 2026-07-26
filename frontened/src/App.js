@@ -17,6 +17,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions/TermsConditions";
 import Cart from "./pages/Cart/Cart";
 import Login from "./pages/Login/Login";
+import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 
 function App() {
   return (
@@ -94,6 +95,11 @@ function App() {
   <Route
   path="/login"
   element={<Login />}
+/>
+
+  <Route
+  path="/place-order"
+  element={<PlaceOrder />}
 />
 
       </Routes>

@@ -292,3 +292,47 @@
   box-shadow:
     0 6px 15px rgba(0, 0, 0, 0.2);
 }
+
+/* =========================================
+   PROCEED TO CHECKOUT BUTTON
+========================================= */
+
+.total-amount button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px 20px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #222;
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.total-amount button:hover {
+  background: #444;
+  transform: translateY(-2px);
+}
+
+.total-amount button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+  .total-amount button {
+    padding: 13px 15px;
+    font-size: 15px;
+  }
+}

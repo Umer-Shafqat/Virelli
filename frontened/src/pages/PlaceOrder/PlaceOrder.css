@@ -1,0 +1,475 @@
+```css
+/* =========================================
+   PLACE ORDER PAGE
+========================================= */
+
+.place-order-page {
+  min-height: 100vh;
+  padding: 120px 40px 60px;
+  background: #f6f8f8;
+  box-sizing: border-box;
+}
+
+.place-order-page > h1 {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #222;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.place-order-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 30px;
+
+  align-items: start;
+}
+
+
+/* =========================================
+   DELIVERY SECTION
+========================================= */
+
+.delivery-section {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.delivery-section h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 23px;
+  color: #222;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.delivery-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+/* =========================================
+   FIRST NAME + LAST NAME
+========================================= */
+
+.name-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.delivery-section input[type="text"],
+.delivery-section input[type="email"],
+.delivery-section input[type="tel"] {
+  width: 100%;
+  padding: 14px 15px;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  font-size: 15px;
+  color: #333;
+
+  outline: none;
+  box-sizing: border-box;
+
+  transition: border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.delivery-section input:focus {
+  border-color: #222;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+.delivery-section input::placeholder {
+  color: #999;
+}
+
+
+/* =========================================
+   PAYMENT SECTION
+========================================= */
+
+.payment-section {
+  margin-top: 15px;
+  padding-top: 20px;
+
+  border-top: 1px solid #eee;
+}
+
+.payment-section h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+
+/* =========================================
+   PAYMENT OPTIONS
+========================================= */
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 13px 15px;
+  margin-bottom: 10px;
+
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: background 0.3s ease,
+              border-color 0.3s ease;
+}
+
+.payment-option:hover {
+  background: #f7f7f7;
+  border-color: #aaa;
+}
+
+.payment-option input {
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+}
+
+.payment-option span {
+  font-size: 15px;
+  color: #333;
+}
+
+
+/* =========================================
+   CONFIRM ORDER BUTTON
+========================================= */
+
+.confirm-order-btn {
+  width: 100%;
+  margin-top: 10px;
+
+  padding: 15px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #222;
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.3s ease,
+              transform 0.2s ease;
+}
+
+.confirm-order-btn:hover {
+  background: #444;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   ORDER SUMMARY
+========================================= */
+
+.order-summary {
+  background: #ffffff;
+  padding: 30px;
+
+  border-radius: 10px;
+
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+
+  position: sticky;
+  top: 100px;
+}
+
+.order-summary > h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+
+  font-size: 23px;
+  color: #222;
+}
+
+
+/* =========================================
+   SUMMARY ITEMS
+========================================= */
+
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  max-height: 400px;
+  overflow-y: auto;
+
+  padding-right: 5px;
+}
+
+
+/* =========================================
+   SINGLE SUMMARY ITEM
+========================================= */
+
+.summary-item {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 12px;
+
+  align-items: center;
+
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #eee;
+}
+
+
+/* =========================================
+   SHOE IMAGE
+========================================= */
+
+.summary-item img {
+  width: 70px;
+  height: 70px;
+
+  object-fit: cover;
+
+  border-radius: 6px;
+  background: #f5f5f5;
+}
+
+
+/* =========================================
+   SHOE INFORMATION
+========================================= */
+
+.summary-item-info {
+  min-width: 0;
+}
+
+.summary-item-info h3 {
+  margin: 0 0 7px;
+
+  font-size: 15px;
+  color: #222;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summary-item-info p {
+  margin: 3px 0;
+
+  font-size: 13px;
+  color: #777;
+}
+
+
+/* =========================================
+   ITEM PRICE
+========================================= */
+
+.summary-item > strong {
+  font-size: 14px;
+  color: #222;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   PRICE DETAILS
+========================================= */
+
+.summary-prices {
+  margin-top: 25px;
+  padding-top: 20px;
+
+  border-top: 1px solid #ddd;
+}
+
+
+/* =========================================
+   SUMMARY ROW
+========================================= */
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 15px;
+
+  font-size: 15px;
+  color: #555;
+}
+
+
+/* =========================================
+   TOTAL ROW
+========================================= */
+
+.summary-row.total-row {
+  margin-top: 20px;
+  padding-top: 18px;
+
+  border-top: 1px solid #ddd;
+
+  font-size: 18px;
+  color: #222;
+}
+
+
+/* =========================================
+   EMPTY CART / ORDER
+========================================= */
+
+.empty-order {
+  min-height: 70vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px;
+  background: #f6f8f8;
+}
+
+.empty-order h2 {
+  margin-bottom: 10px;
+  font-size: 28px;
+  color: #222;
+}
+
+.empty-order p {
+  margin-bottom: 25px;
+  color: #666;
+}
+
+
+/* =========================================
+   CONTINUE SHOPPING BUTTON
+========================================= */
+
+.empty-order button {
+  padding: 13px 25px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #222;
+  color: white;
+
+  font-size: 15px;
+  cursor: pointer;
+
+  transition: background 0.3s ease;
+}
+
+.empty-order button:hover {
+  background: #444;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .place-order-page {
+    padding: 110px 25px 50px;
+  }
+
+  .place-order-container {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    position: static;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .place-order-page {
+    padding: 100px 15px 40px;
+  }
+
+  .place-order-page > h1 {
+    font-size: 26px;
+    margin-bottom: 25px;
+  }
+
+  .delivery-section,
+  .order-summary {
+    padding: 20px;
+  }
+
+  .delivery-section h2,
+  .order-summary > h2 {
+    font-size: 20px;
+  }
+
+  .name-fields {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .summary-item {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .summary-item img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .summary-item > strong {
+    grid-column: 2;
+  }
+
+  .summary-row.total-row {
+    font-size: 16px;
+  }
+
+}
