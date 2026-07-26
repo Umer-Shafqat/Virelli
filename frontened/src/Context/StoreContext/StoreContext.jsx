@@ -1,11 +1,7 @@
-import React, {
-  createContext,
-  useEffect,
-  useState
+import React, {createContext,useEffect,useState
 } from "react";
 
 import axios from "axios";
-
 
 export const StoreContext = createContext();
 
@@ -66,11 +62,7 @@ const StoreContextProvider = ({ children }) => {
         `${url}/api/cart/add`,
 
         {
-          // Your current shoe data
-          // uses "id"
           shoeId: shoe.id,
-
-          // Selected shoe size
           size: size
         },
 
@@ -117,6 +109,8 @@ const StoreContextProvider = ({ children }) => {
         );
 
         setToken("");
+
+        setCartItems({});
 
       } else {
 
@@ -260,6 +254,25 @@ const StoreContextProvider = ({ children }) => {
         error
       );
 
+
+      if (
+        error.response?.status === 401
+      ) {
+
+        alert(
+          "Session expired. Please login again."
+        );
+
+        localStorage.removeItem(
+          "token"
+        );
+
+        setToken("");
+
+        setCartItems({});
+
+      }
+
     }
 
   };
@@ -287,11 +300,12 @@ const StoreContextProvider = ({ children }) => {
 
     try {
 
-      // First get current quantity
+      // Current cart key
       const currentKey =
         `${shoeId}-${size}`;
 
 
+      // Current quantity
       const currentQuantity =
         cartItems[currentKey] || 0;
 
@@ -395,6 +409,26 @@ const StoreContextProvider = ({ children }) => {
 
 
   // =====================================
+  // LOGOUT / SIGN OUT
+  // =====================================
+
+  const logout = () => {
+
+    // Remove token from browser
+    localStorage.removeItem(
+      "token"
+    );
+
+    // Remove token from React state
+    setToken("");
+
+    // Clear current user's cart
+    setCartItems({});
+
+  };
+
+
+  // =====================================
   // LOAD CART WHEN USER LOGS IN
   // =====================================
 
@@ -406,6 +440,7 @@ const StoreContextProvider = ({ children }) => {
 
     } else {
 
+      // Clear cart when logged out
       setCartItems({});
 
     }
@@ -466,7 +501,9 @@ const StoreContextProvider = ({ children }) => {
     // Authentication
     token,
 
-    setToken
+    setToken,
+
+    logout
 
   };
 

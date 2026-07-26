@@ -16,6 +16,11 @@ const Login = () => {
   const { setToken } = useContext(StoreContext);
 
 
+const logout = () => {
+  localStorage.removeItem("token");
+  setToken("");
+};
+
   // false = Sign In
   // true = Sign Up
   const [isSignUp, setIsSignUp] = useState(false);

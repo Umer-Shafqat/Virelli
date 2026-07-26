@@ -164,3 +164,42 @@
   font-size: 11px;
   font-weight: bold;
 }
+
+/* ================================
+   SIGN OUT BUTTON
+================================ */
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid #222;
+
+  color: #222;
+
+  padding: 9px 18px;
+
+  border-radius: 5px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #222;
+  color: #fff;
+}
+
+.logout-btn:active {
+  transform: scale(0.97);
+}
+
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}

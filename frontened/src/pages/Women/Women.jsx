@@ -1,62 +1,183 @@
-import React, { useContext, useState } from "react";
+import React, {
+  useContext,
+  useState
+} from "react";
+
 import { shoes } from "../../assets/assets";
+
 import "./Women.css";
 
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
+import {
+  StoreContext
+} from "../../Context/StoreContext/StoreContext";
+
 
 const Women = () => {
 
-  // Get addToCart function from StoreContext
-  const { addToCart } = useContext(StoreContext);
+  // =====================================
+  // GET ADD TO CART FROM STORE CONTEXT
+  // =====================================
 
-  // Only WOMEN shoes
-  const womenShoes = shoes.filter(
-    (shoe) => shoe.type === "WOMEN"
-  );
-
-  // Store updated ratings
-  const [shoeList, setShoeList] = useState(womenShoes);
+  const {
+    addToCart
+  } = useContext(StoreContext);
 
 
-  // Handle user rating
-  const handleRating = (shoeId, selectedRating) => {
+  // =====================================
+  // ONLY WOMEN SHOES
+  // =====================================
 
-    setShoeList((prevShoes) =>
-      prevShoes.map((shoe) => {
+  const womenShoes =
+    shoes.filter(
+      (shoe) =>
+        shoe.type === "WOMEN"
+    );
 
-        if (shoe.id === shoeId) {
 
-          const oldTotalRatings =
-            shoe.rating?.totalRatings || 0;
+  // =====================================
+  // STORE UPDATED RATINGS
+  // =====================================
 
-          const oldRatingSum =
-            shoe.rating?.ratingSum || 0;
+  const [
+    shoeList,
+    setShoeList
+  ] = useState(womenShoes);
 
-          return {
-            ...shoe,
 
-            rating: {
-              totalRatings:
-                oldTotalRatings + 1,
+  // =====================================
+  // SELECTED SIZE
+  // =====================================
 
-              ratingSum:
-                oldRatingSum + selectedRating,
-            },
-          };
-        }
+  const [
+    selectedSizes,
+    setSelectedSizes
+  ] = useState({});
 
-        return shoe;
+
+  // =====================================
+  // HANDLE SIZE SELECTION
+  // =====================================
+
+  const handleSizeSelect = (
+    shoeId,
+    size
+  ) => {
+
+    setSelectedSizes(
+      (prev) => ({
+
+        ...prev,
+
+        [shoeId]: size
 
       })
     );
+
+  };
+
+
+  // =====================================
+  // HANDLE ADD TO CART
+  // =====================================
+
+  const handleAddToCart = (
+    shoe
+  ) => {
+
+    // Get selected size
+    const selectedSize =
+      selectedSizes[shoe.id];
+
+
+    // Check size
+    if (!selectedSize) {
+
+      alert(
+        "Please select a size first"
+      );
+
+      return;
+
+    }
+
+
+    // Add shoe with selected size
+    // StoreContext checks login
+    addToCart(
+      shoe,
+      selectedSize
+    );
+
+  };
+
+
+  // =====================================
+  // HANDLE USER RATING
+  // =====================================
+
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
+
+    setShoeList(
+      (prevShoes) =>
+
+        prevShoes.map(
+          (shoe) => {
+
+            if (
+              shoe.id === shoeId
+            ) {
+
+              const oldTotalRatings =
+                shoe.rating?.totalRatings ||
+                0;
+
+              const oldRatingSum =
+                shoe.rating?.ratingSum ||
+                0;
+
+
+              return {
+
+                ...shoe,
+
+                rating: {
+
+                  totalRatings:
+                    oldTotalRatings + 1,
+
+                  ratingSum:
+                    oldRatingSum +
+                    selectedRating
+
+                }
+
+              };
+
+            }
+
+
+            return shoe;
+
+          }
+        )
+
+    );
+
   };
 
 
   return (
+
     <section className="women-page">
 
 
-      {/* Heading */}
+      {/* =================================
+          HEADING
+      ================================= */}
+
       <div className="women-heading">
 
         <h2>
@@ -64,210 +185,333 @@ const Women = () => {
         </h2>
 
         <p>
-          Explore our latest women's shoe designs
+          Explore our latest women's
+          shoe designs
         </p>
 
       </div>
 
 
 
-      {/* Shoes Grid */}
+      {/* =================================
+          SHOES GRID
+      ================================= */}
+
       <div className="shoes-grid">
 
-        {shoeList.map((shoe) => {
+        {shoeList.map(
+          (shoe) => {
 
 
-          // Calculate discounted price
-          const discountedPrice =
-            shoe.price -
-            (shoe.price *
-              (shoe.discount || 0)) /
+            // =============================
+            // DISCOUNTED PRICE
+            // =============================
+
+            const discountedPrice =
+              shoe.price -
+              (
+                shoe.price *
+                (
+                  shoe.discount || 0
+                )
+              ) /
               100;
 
 
-          // Calculate average rating
-          // Default rating is 5
-          const averageRating =
-            shoe.rating &&
-            shoe.rating.totalRatings > 0
-              ? shoe.rating.ratingSum /
-                shoe.rating.totalRatings
-              : 5;
 
+            // =============================
+            // AVERAGE RATING
+            // =============================
 
-          return (
+            const averageRating =
+              shoe.rating &&
+              shoe.rating.totalRatings > 0
 
-            <div
-              className="shoe-card"
-              key={shoe.id}
-            >
+                ? shoe.rating.ratingSum /
+                  shoe.rating.totalRatings
 
-
-              {/* Shoe Image */}
-              <div className="shoe-image">
-
-                {/* Discount Badge */}
-                {shoe.discount > 0 && (
-
-                  <span className="discount-badge">
-                    {shoe.discount}% OFF
-                  </span>
-
-                )}
-
-                <img
-                  src={shoe.image}
-                  alt={shoe.name}
-                />
-
-              </div>
+                : 5;
 
 
 
-              {/* Shoe Information */}
-              <div className="shoe-info">
+            return (
+
+              <div
+                className="shoe-card"
+                key={shoe.id}
+              >
 
 
-                {/* Name */}
-                <h3>
-                  {shoe.name}
-                </h3>
+                {/* =========================
+                    SHOE IMAGE
+                ========================= */}
+
+                <div className="shoe-image">
 
 
-                {/* Category */}
-                <p className="shoe-category">
-                  {shoe.category}
-                </p>
+                  {/* Discount Badge */}
+
+                  {shoe.discount > 0 && (
+
+                    <span
+                      className="discount-badge"
+                    >
+
+                      {shoe.discount}%
+                      OFF
+
+                    </span>
+
+                  )}
 
 
-                {/* Description */}
-                <p className="shoe-description">
-                  {shoe.description}
-                </p>
+                  {/* Shoe Image */}
+
+                  <img
+                    src={shoe.image}
+                    alt={shoe.name}
+                  />
+
+                </div>
 
 
 
-                {/* ================= RATING ================= */}
+                {/* =========================
+                    SHOE INFORMATION
+                ========================= */}
 
-                <div className="rating">
+                <div className="shoe-info">
 
-                  <div className="stars">
 
-                    {[1, 2, 3, 4, 5].map(
-                      (star) => (
+                  {/* Name */}
 
-                        <button
-                          key={star}
-                          type="button"
+                  <h3>
+                    {shoe.name}
+                  </h3>
 
-                          className={
-                            star <=
-                            Math.round(
-                              averageRating
-                            )
-                              ? "star filled"
-                              : "star"
-                          }
 
-                          onClick={() =>
-                            handleRating(
-                              shoe.id,
-                              star
-                            )
-                          }
-                        >
-                          ★
-                        </button>
+                  {/* Category */}
 
+                  <p className="shoe-category">
+
+                    {shoe.category}
+
+                  </p>
+
+
+                  {/* Description */}
+
+                  <p className="shoe-description">
+
+                    {shoe.description}
+
+                  </p>
+
+
+
+                  {/* =========================
+                      RATING
+                  ========================= */}
+
+                  <div className="rating">
+
+
+                    {/* Stars */}
+
+                    <div className="stars">
+
+                      {[1, 2, 3, 4, 5].map(
+                        (star) => (
+
+                          <button
+                            key={star}
+                            type="button"
+
+                            className={
+                              star <=
+                              Math.round(
+                                averageRating
+                              )
+                                ? "star filled"
+                                : "star"
+                            }
+
+                            onClick={() =>
+                              handleRating(
+                                shoe.id,
+                                star
+                              )
+                            }
+                          >
+
+                            ★
+
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
+
+
+                    {/* Average Rating */}
+
+                    <span
+                      className="rating-number"
+                    >
+
+                      {averageRating.toFixed(
+                        1
+                      )}
+
+                    </span>
+
+
+                    {/* Total Ratings */}
+
+                    <span
+                      className="rating-count"
+                    >
+
+                      (
+                      {
+                        shoe.rating
+                          ?.totalRatings ||
+                        0
+                      }
                       )
+
+                    </span>
+
+                  </div>
+
+
+
+                  {/* =========================
+                      PRICE
+                  ========================= */}
+
+                  <div
+                    className="price-section"
+                  >
+
+                    <h4
+                      className="shoe-price"
+                    >
+
+                      Rs.{" "}
+
+                      {
+                        discountedPrice.toLocaleString()
+                      }
+
+                    </h4>
+
+
+                    {shoe.discount > 0 && (
+
+                      <span
+                        className="original-price"
+                      >
+
+                        Rs.{" "}
+
+                        {
+                          shoe.price.toLocaleString()
+                        }
+
+                      </span>
+
                     )}
 
                   </div>
 
 
-                  {/* Average Rating */}
-                  <span className="rating-number">
-                    {averageRating.toFixed(1)}
-                  </span>
+
+                  {/* =========================
+                      SELECT SIZE
+                  ========================= */}
+
+                  <div className="sizes">
+
+                    
 
 
-                  {/* Total Ratings */}
-                  <span className="rating-count">
-                    (
-                    {shoe.rating?.totalRatings || 0}
-                    )
-                  </span>
+                    <div className="size-buttons">
+
+                      {(shoe.sizes || []).map(
+                        (size) => (
+
+                          <button
+                            key={size}
+                            type="button"
+
+                            className={
+                              selectedSizes[
+                                shoe.id
+                              ] === size
+                                ? "selected-size"
+                                : ""
+                            }
+
+                            onClick={() =>
+                              handleSizeSelect(
+                                shoe.id,
+                                size
+                              )
+                            }
+                          >
+
+                            {size}
+
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+
+
+                  {/* =========================
+                      ADD TO CART
+                  ========================= */}
+
+                  <button
+                    className="add-cart"
+                    type="button"
+
+                    onClick={() =>
+                      handleAddToCart(
+                        shoe
+                      )
+                    }
+                  >
+
+                    Add to Cart
+
+                  </button>
+
 
                 </div>
-
-
-
-                {/* ================= PRICE ================= */}
-
-                <div className="price-section">
-
-                  <h4 className="shoe-price">
-                    Rs.{" "}
-                    {discountedPrice.toLocaleString()}
-                  </h4>
-
-                  {shoe.discount > 0 && (
-
-                    <span className="original-price">
-                      Rs.{" "}
-                      {shoe.price.toLocaleString()}
-                    </span>
-
-                  )}
-
-                </div>
-
-
-
-                {/* ================= SIZES ================= */}
-
-                <div className="sizes">
-
-                  {(shoe.sizes || []).map(
-                    (size) => (
-
-                      <button
-                        key={size}
-                        type="button"
-                      >
-                        {size}
-                      </button>
-
-                    )
-                  )}
-
-                </div>
-
-
-
-                {/* ================= ADD TO CART ================= */}
-
-                <button
-                  className="add-cart"
-                  type="button"
-                  onClick={() => addToCart(shoe)}
-                >
-                  Add to Cart
-                </button>
-
 
               </div>
 
-            </div>
+            );
 
-          );
-
-        })}
+          }
+        )}
 
       </div>
 
     </section>
+
   );
+
 };
 
+
 export default Women;
+
