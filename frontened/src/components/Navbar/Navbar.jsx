@@ -1,19 +1,15 @@
 import React, { useContext } from "react";
-import {
-  Link,
-  useNavigate
-} from "react-router-dom";
-
+import {Link,useNavigate} from "react-router-dom";
+import { useState } from "react";
 import "./Navbar.css";
+import { shoes } from "../../assets/assets";
 
 import logo1 from "../../assets/logo1.png";
 import search_icon from "../../assets/search_icon.png";
 import profile_image from "../../assets/profile_image.png";
 import basket_icon from "../../assets/basket_icon.png";
 
-import {
-  StoreContext
-} from "../../Context/StoreContext/StoreContext";
+import {StoreContext} from "../../Context/StoreContext/StoreContext";
 
 
 const Navbar = () => {
@@ -28,7 +24,8 @@ const Navbar = () => {
     logout
   } = useContext(StoreContext);
 
-
+   const [showSearch, setShowSearch] = useState(false);
+const [search, setSearch] = useState("");
   // =====================================
   // NAVIGATION
   // =====================================
@@ -63,6 +60,16 @@ const Navbar = () => {
     navigate("/login");
 
   };
+
+  const filteredShoes =
+  search.trim() === ""
+    ? []
+    : shoes.filter(
+        (shoe) =>
+          shoe.name.toLowerCase().includes(search.toLowerCase()) ||
+          shoe.category.toLowerCase().includes(search.toLowerCase()) ||
+          shoe.type.toLowerCase().includes(search.toLowerCase())
+      );
 
 
   return (
@@ -151,11 +158,54 @@ const Navbar = () => {
             SEARCH
         ================================= */}
 
-        <img
-          src={search_icon}
-          alt="Search"
-        />
+      <div className="search-box">
+  <img
+    src={search_icon}
+    alt="Search"
+    className="search-icon"
+    onClick={() => setShowSearch(!showSearch)}
+  />
 
+  {showSearch && (
+    <>
+      <input
+        type="text"
+        placeholder="Search shoes..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {filteredShoes.length > 0 && (
+        <div className="search-results">
+          {filteredShoes.map((shoe) => (
+            <div
+              key={shoe.id}
+              className="search-item"
+              onClick={() => {
+                navigate("/shoes"); // Change this later if you have a shoe details page
+                setSearch("");
+                setShowSearch(false);
+              }}
+            >
+              <img src={shoe.image} alt={shoe.name} />
+
+              <div>
+                <h4>{shoe.name}</h4>
+                <p>Rs. {shoe.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {search && filteredShoes.length === 0 && (
+        <div className="search-results">
+          <p style={{ padding: "10px" }}>No shoes found.</p>
+        </div>
+      )}
+    </>
+  )}
+</div>
 
         {/* =================================
             PROFILE / LOGIN / LOGOUT
