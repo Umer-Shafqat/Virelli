@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 
 });
 
-
+app.use("/api/order", orderRouter);
 // =====================================
 // USER / AUTHENTICATION
 // =====================================
