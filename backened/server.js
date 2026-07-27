@@ -9,6 +9,7 @@ import orderRouter from "./routes/orderRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import userRouter from "./routes/userRoute.js";
 import authMiddleware from "./middleware/authMiddleware.js";
+import adminRouter from "./routes/adminRoute.js";
 
 
 dotenv.config();
@@ -82,7 +83,7 @@ app.use(
 );
 
 
-
+app.use("/api/admin", adminRouter);
 
 // =====================================
 // SERVER
