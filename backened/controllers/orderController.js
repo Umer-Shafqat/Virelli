@@ -129,6 +129,53 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+
+// =====================================
+// GET MY ORDERS
+// =====================================
+
+const getMyOrders = async (req, res) => {
+
+  try {
+
+    // Logged-in user ID
+    const userId = req.userId;
+
+
+    // Find orders belonging to this user
+    const orders = await orderModel
+      .find({ userId })
+      .sort({ createdAt: -1 });
+
+
+    res.status(200).json({
+
+      success: true,
+
+      orders: orders,
+
+    });
+
+
+  } catch (error) {
+
+    console.log(
+      "Get My Orders Error:",
+      error
+    );
+
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message,
+
+    });
+
+  }
+
+};
 // =====================================
 // EXPORT CONTROLLERS
 // =====================================
@@ -136,4 +183,5 @@ const deleteOrder = async (req, res) => {
 export {
   placeOrder,
   deleteOrder,
+  getMyOrders,
 };

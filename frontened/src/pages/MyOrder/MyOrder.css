@@ -405,3 +405,111 @@
   }
 
 }
+
+/* =====================================
+   ORDERS LIST
+===================================== */
+
+.orders-list {
+  width: 100%;
+  max-width: 1000px;
+
+  margin: 0 auto;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================
+   ORDER CARD
+===================================== */
+
+.order-card {
+  width: 100%;
+
+  padding: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =====================================
+   PRINT RECEIPT BUTTON
+===================================== */
+
+.print-receipt-btn {
+  display: block;
+
+  width: 220px;
+
+  margin: 25px auto 0;
+
+  padding: 12px 20px;
+
+  background: #111111;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 6px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+
+/* HOVER */
+
+.print-receipt-btn:hover {
+  background: #333333;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* CLICK */
+
+.print-receipt-btn:active {
+  transform: translateY(0);
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+  .orders-list {
+    padding: 10px;
+    gap: 20px;
+  }
+
+  .order-card {
+    padding: 15px;
+  }
+
+  .print-receipt-btn {
+    width: 100%;
+  }
+
+}

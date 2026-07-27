@@ -3,6 +3,7 @@ import express from "express";
 import {
   placeOrder,
   deleteOrder,
+  getMyOrders,
 } from "../controllers/orderController.js";
 
 import authMiddleware from "../middleware/authMiddleware.js";
@@ -17,6 +18,16 @@ orderRouter.post(
   "/place",
   authMiddleware,
   placeOrder
+);
+
+// =====================================
+// GET MY ORDERS
+// =====================================
+
+orderRouter.get(
+  "/myorders",
+  authMiddleware,
+  getMyOrders
 );
 
 // =====================================

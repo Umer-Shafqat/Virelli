@@ -18,6 +18,7 @@ import TermsConditions from "./pages/TermsConditions/TermsConditions";
 import Cart from "./pages/Cart/Cart";
 import Login from "./pages/Login/Login";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
+import MyOrder from "./pages/MyOrder/MyOrder";
 
 function App() {
   return (
@@ -100,6 +101,11 @@ function App() {
   <Route
   path="/place-order"
   element={<PlaceOrder />}
+/>
+
+<Route
+  path="/my-orders"
+  element={<MyOrder />}
 />
 
       </Routes>

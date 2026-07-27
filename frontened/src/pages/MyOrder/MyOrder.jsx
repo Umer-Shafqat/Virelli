@@ -10,7 +10,7 @@ import {
   StoreContext,
 } from "../../Context/StoreContext/StoreContext";
 
-import "./MyOrders.css";
+import "./MyOrder.css";
 
 
 const MyOrders = () => {
@@ -633,7 +633,11 @@ const MyOrders = () => {
 
       </div>
 
+      
+
     </div>
+
+   
 
   );
 

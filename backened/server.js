@@ -8,6 +8,7 @@ import shoeRouter from "./routes/shoeRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import userRouter from "./routes/userRoute.js";
+import authMiddleware from "./middleware/authMiddleware.js";
 
 
 dotenv.config();
@@ -79,6 +80,8 @@ app.use(
   "/api/order",
   orderRouter
 );
+
+
 
 
 // =====================================
