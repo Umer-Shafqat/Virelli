@@ -22,8 +22,7 @@ import "./PlaceOrder.css";
 
 const PlaceOrder = () => {
 
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
 
 
   // =====================================
@@ -62,8 +61,7 @@ const PlaceOrder = () => {
 
     country: "Pakistan",
 
-    paymentMethod:
-      "Cash on Delivery",
+    paymentMethod: "Cash on Delivery",
 
   });
 
@@ -90,9 +88,7 @@ const PlaceOrder = () => {
   // =====================================
 
   const cartEntries =
-    Object.entries(
-      cartItems
-    );
+    Object.entries(cartItems);
 
 
   // =====================================
@@ -130,13 +126,8 @@ const PlaceOrder = () => {
 
 
         return (
-
           total +
-
-          shoe.price *
-
-          quantity
-
+          shoe.price * quantity
         );
 
       },
@@ -147,7 +138,7 @@ const PlaceOrder = () => {
 
 
   // =====================================
-  // TOTAL
+  // TOTAL AMOUNT
   // =====================================
 
   const totalAmount =
@@ -186,7 +177,10 @@ const PlaceOrder = () => {
     e.preventDefault();
 
 
-    // Check login
+    // =================================
+    // CHECK LOGIN
+    // =================================
+
     if (!token) {
 
       alert(
@@ -200,7 +194,10 @@ const PlaceOrder = () => {
     }
 
 
-    // Check cart
+    // =================================
+    // CHECK CART
+    // =================================
+
     if (
       cartEntries.length === 0
     ) {
@@ -220,6 +217,100 @@ const PlaceOrder = () => {
 
 
       // =================================
+      // CREATE DETAILED ORDER ITEMS
+      // =================================
+
+      const orderItems =
+        cartEntries
+          .map(
+            ([key, quantity]) => {
+
+              // key example:
+              // "1-43"
+
+              const [
+                shoeId,
+                size
+              ] = key.split("-");
+
+
+              // Find shoe from assets
+              const shoe =
+                shoes.find(
+
+                  (item) =>
+                    item.id.toString() ===
+                    shoeId
+
+                );
+
+
+              // If shoe doesn't exist
+              if (!shoe) {
+
+                return null;
+
+              }
+
+
+              // Return detailed item
+              return {
+
+                id:
+                  shoe.id,
+
+                name:
+                  shoe.name,
+
+                category:
+                  shoe.category,
+
+                type:
+                  shoe.type,
+
+                price:
+                  shoe.price,
+
+                image:
+                   `${window.location.origin}${shoe.image}`,
+
+                size:
+                  Number(size),
+
+                quantity:
+                  Number(quantity),
+
+                discount:
+                  shoe.discount || 0,
+
+                description:
+                  shoe.description || "",
+
+              };
+
+            }
+          )
+          .filter(Boolean);
+
+
+      // =================================
+      // CHECK ORDER ITEMS
+      // =================================
+
+      if (
+        orderItems.length === 0
+      ) {
+
+        alert(
+          "No valid items found in cart"
+        );
+
+        return;
+
+      }
+
+
+      // =================================
       // ORDER DATA
       // =================================
 
@@ -229,7 +320,7 @@ const PlaceOrder = () => {
           formData,
 
         items:
-          cartEntries,
+          orderItems,
 
         subtotal,
 
@@ -240,9 +331,19 @@ const PlaceOrder = () => {
       };
 
 
+      // =================================
+      // DEBUG
+      // =================================
+
       console.log(
         "Sending Order:",
         orderData
+      );
+
+
+      console.log(
+        "Order Items:",
+        orderItems
       );
 
 
@@ -288,7 +389,7 @@ const PlaceOrder = () => {
         );
 
 
-        // Go to My Orders
+        // Navigate to My Orders
         navigate(
           "/my-orders"
         );
@@ -648,6 +749,12 @@ const PlaceOrder = () => {
                       <h3>
                         {shoe.name}
                       </h3>
+
+
+                      <p>
+                        Category:{" "}
+                        {shoe.category}
+                      </p>
 
 
                       <p>

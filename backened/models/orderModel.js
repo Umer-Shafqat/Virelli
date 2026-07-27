@@ -1,12 +1,80 @@
 import mongoose from "mongoose";
 
+const orderItemSchema = new mongoose.Schema(
+  {
+    id: {
+      type: Number,
+      required: true,
+    },
+
+    name: {
+      type: String,
+      required: true,
+    },
+
+    category: {
+      type: String,
+      required: true,
+    },
+
+    type: {
+      type: String,
+      required: true,
+    },
+
+    price: {
+      type: Number,
+      required: true,
+    },
+
+    image: {
+      type: String,
+      required: true,
+    },
+
+    size: {
+      type: Number,
+      required: true,
+    },
+
+    quantity: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+
+    discount: {
+      type: Number,
+      default: 0,
+    },
+
+    description: {
+      type: String,
+      default: "",
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+
 const orderSchema = new mongoose.Schema(
   {
+    // =====================================
+    // USER
+    // =====================================
+
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
+
+    // =====================================
+    // CUSTOMER INFORMATION
+    // =====================================
 
     customer: {
       firstName: {
@@ -50,10 +118,20 @@ const orderSchema = new mongoose.Schema(
       },
     },
 
+
+    // =====================================
+    // ORDER ITEMS
+    // =====================================
+
     items: {
-      type: Array,
+      type: [orderItemSchema],
       required: true,
     },
+
+
+    // =====================================
+    // PRICE INFORMATION
+    // =====================================
 
     subtotal: {
       type: Number,
@@ -70,19 +148,27 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
 
+
+    // =====================================
+    // ORDER STATUS
+    // =====================================
+
     status: {
       type: String,
       default: "Pending",
     },
   },
 
+
   {
     timestamps: true,
   }
 );
 
+
 const orderModel =
   mongoose.models.order ||
   mongoose.model("order", orderSchema);
+
 
 export default orderModel;

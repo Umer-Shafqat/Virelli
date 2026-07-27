@@ -228,13 +228,7 @@ const removeFromCart = async (req, res) => {
 
     const key =
       `${shoeId},
-      ${size},
-      ${name},
-      ${quantity},
-      ${price},
-      ${image},
-      ${category},
-      ${type}`;
+      ${size}`;
 
 
     // =================================
