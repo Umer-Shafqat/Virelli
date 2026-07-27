@@ -1,7 +1,4 @@
-import React, {
-  useContext,
-  useState
-} from "react";
+import React, {useContext,useState} from "react";
 
 import { shoes } from "../../assets/assets";
 import "./Men.css";
@@ -428,11 +425,6 @@ const Men = () => {
 
                   </div>
 
-
-
-                  {/* =========================
-                      SELECT SIZE
-                  ========================= */}
 {/* =========================
     SELECT SIZE
 ========================= */}
