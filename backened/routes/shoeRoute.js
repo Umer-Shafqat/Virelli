@@ -5,6 +5,7 @@ import {
   getShoes,
   getShoeById,
   deleteShoe,
+  listShoes,
 } from "../controllers/shoeController.js";
 
 const shoeRouter = express.Router();
@@ -36,6 +37,8 @@ shoeRouter.get("/:id", getShoeById);
 // DELETE /api/shoes/:id
 // ================================
 shoeRouter.delete("/:id", deleteShoe);
+shoeRouter.get("/list", listShoes);     // GET /api/shoes/list
+
 
 
 // Export Router

@@ -8,20 +8,18 @@ import shoeRouter from "./routes/shoeRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import userRouter from "./routes/userRoute.js";
-import authMiddleware from "./middleware/authMiddleware.js";
 import adminRouter from "./routes/adminRoute.js";
-
 
 dotenv.config();
 
-
 const app = express();
 
+// =====================================
+// MIDDLEWARE
+// =====================================
 
 app.use(cors());
-
 app.use(express.json());
-
 
 // =====================================
 // CONNECT MONGODB
@@ -29,59 +27,41 @@ app.use(express.json());
 
 connectDB();
 
-
 // =====================================
 // TEST API
 // =====================================
 
 app.get("/", (req, res) => {
-
-  res.send(
-    "Virelli Backend Running..."
-  );
-
+  res.send("Virelli Backend Running...");
 });
 
-app.use("/api/order", orderRouter);
 // =====================================
 // USER / AUTHENTICATION
 // =====================================
 
-app.use(
-  "/api/user",
-  userRouter
-);
-
+app.use("/api/user", userRouter);
 
 // =====================================
 // SHOES
 // =====================================
 
-app.use(
-  "/api/shoes",
-  shoeRouter
-);
-
+app.use("/api/shoes", shoeRouter);
 
 // =====================================
 // CART
 // =====================================
 
-app.use(
-  "/api/cart",
-  cartRouter
-);
-
+app.use("/api/cart", cartRouter);
 
 // =====================================
 // ORDERS
 // =====================================
 
-app.use(
-  "/api/order",
-  orderRouter
-);
+app.use("/api/order", orderRouter);
 
+// =====================================
+// ADMIN
+// =====================================
 
 app.use("/api/admin", adminRouter);
 
@@ -89,17 +69,8 @@ app.use("/api/admin", adminRouter);
 // SERVER
 // =====================================
 
-const PORT =
-  process.env.PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
-
-app.listen(
-  PORT,
-  () => {
-
-    console.log(
-      `Server running on http://localhost:${PORT}`
-    );
-
-  }
-);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});

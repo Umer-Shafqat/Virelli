@@ -1,0 +1,104 @@
+/* ===================================
+   DASHBOARD CARD
+=================================== */
+
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ===================================
+   ICON
+=================================== */
+
+.card-icon {
+  width: 65px;
+  height: 65px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+/* ===================================
+   DETAILS
+=================================== */
+
+.card-details {
+  flex: 1;
+}
+
+.card-details h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.card-details h2 {
+  margin: 8px 0 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  word-break: break-word;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 18px;
+    gap: 15px;
+  }
+
+  .card-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 26px;
+  }
+
+  .card-details h2 {
+    font-size: 24px;
+  }
+
+  .card-details h4 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-card {
+    padding: 16px;
+  }
+
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .card-details h2 {
+    font-size: 22px;
+  }
+
+  .card-details h4 {
+    font-size: 13px;
+  }
+}

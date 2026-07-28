@@ -34,7 +34,6 @@ const addShoe = async (req, res) => {
   }
 };
 
-
 // ================================
 // GET ALL SHOES
 // ================================
@@ -44,7 +43,7 @@ const getShoes = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      shoes: shoes,
+      shoes,
     });
   } catch (error) {
     console.error("Error getting shoes:", error);
@@ -56,7 +55,6 @@ const getShoes = async (req, res) => {
     });
   }
 };
-
 
 // ================================
 // GET SINGLE SHOE
@@ -74,7 +72,7 @@ const getShoeById = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      shoe: shoe,
+      shoe,
     });
   } catch (error) {
     console.error("Error getting shoe:", error);
@@ -87,36 +85,43 @@ const getShoeById = async (req, res) => {
   }
 };
 
-
 // ================================
-// DELETE SHOE
+// GET /api/shoes/list
 // ================================
-const deleteShoe = async (req, res) => {
+export const listShoes = async (req, res) => {
   try {
-    const shoe = await ShoeModel.findByIdAndDelete(req.params.id);
+    const shoes = await ShoeModel.find({});
 
-    if (!shoe) {
-      return res.status(404).json({
-        success: false,
-        message: "Shoe not found",
-      });
-    }
-
-    res.status(200).json({
+    res.json({
       success: true,
-      message: "Shoe deleted successfully",
+      data: shoes,
     });
   } catch (error) {
-    console.error("Error deleting shoe:", error);
-
-    res.status(500).json({
+    res.json({
       success: false,
-      message: "Error deleting shoe",
-      error: error.message,
+      message: error.message,
     });
   }
 };
 
+// ================================
+// DELETE /api/shoes/:id
+// ================================
+export const deleteShoe = async (req, res) => {
+  try {
+    await ShoeModel.findByIdAndDelete(req.params.id);
+
+    res.json({
+      success: true,
+      message: "Shoe deleted successfully",
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 // ================================
 // EXPORT
@@ -125,5 +130,4 @@ export {
   addShoe,
   getShoes,
   getShoeById,
-  deleteShoe,
 };

@@ -1,0 +1,143 @@
+/* ===================================
+   DASHBOARD LAYOUT
+=================================== */
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.dashboard-content {
+  flex: 1;
+  margin-left: 260px;
+  margin-top: 75px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* ===================================
+   HEADER
+=================================== */
+
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dashboard-header p {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #64748b;
+}
+
+/* ===================================
+   DASHBOARD CARDS
+=================================== */
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+/* ===================================
+   CHART SECTION
+=================================== */
+
+.dashboard-chart {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 25px;
+  margin-bottom: 35px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* ===================================
+   TABLE SECTION
+=================================== */
+
+.dashboard-table {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-table h2 {
+  margin: 0 0 20px;
+  font-size: 22px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 992px) {
+  .dashboard-content {
+    margin-left: 220px;
+    padding: 25px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 28px;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    margin-left: 70px;
+    margin-top: 90px;
+    padding: 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+
+  .dashboard-header p {
+    font-size: 14px;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-chart,
+  .dashboard-table {
+    padding: 18px;
+  }
+
+  .dashboard-table h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 15px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 22px;
+  }
+
+  .dashboard-chart,
+  .dashboard-table {
+    padding: 15px;
+    border-radius: 10px;
+  }
+}

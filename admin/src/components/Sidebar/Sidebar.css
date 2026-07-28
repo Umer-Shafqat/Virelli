@@ -1,0 +1,134 @@
+/* ===========================
+   SIDEBAR
+=========================== */
+
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #1e293b;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  box-shadow: 3px 0 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================
+   LOGO
+=========================== */
+
+.sidebar-logo {
+  padding: 28px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.sidebar-logo p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+/* ===========================
+   MENU
+=========================== */
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 24px;
+  text-decoration: none;
+  color: #e2e8f0;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.sidebar-link.active {
+  background: #38bdf8;
+  color: #ffffff;
+  border-left: 5px solid #ffffff;
+}
+
+.sidebar-icon {
+  font-size: 20px;
+  width: 26px;
+  text-align: center;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+
+.sidebar-footer {
+  padding: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #94a3b8;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .sidebar-logo h2 {
+    font-size: 22px;
+  }
+
+  .sidebar-link {
+    font-size: 15px;
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar-logo h2,
+  .sidebar-logo p,
+  .sidebar-link span:last-child,
+  .sidebar-footer {
+    display: none;
+  }
+
+  .sidebar-link {
+    justify-content: center;
+    padding: 18px 0;
+  }
+
+  .sidebar-icon {
+    font-size: 22px;
+    width: auto;
+  }
+}

@@ -1,0 +1,260 @@
+/* ===================================
+   ORDERS PAGE
+=================================== */
+
+.orders-page {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.orders-content {
+  flex: 1;
+  margin-left: 260px;
+  margin-top: 75px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* ===================================
+   CARD
+=================================== */
+
+.orders-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* ===================================
+   HEADER
+=================================== */
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.orders-header h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.orders-header span {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ===================================
+   ORDERS LIST
+=================================== */
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===================================
+   ORDER ITEM
+=================================== */
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 25px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 22px;
+  transition: all 0.3s ease;
+}
+
+.order-item:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ===================================
+   LEFT SECTION
+=================================== */
+
+.order-left {
+  display: flex;
+  gap: 18px;
+  flex: 1;
+}
+
+.order-icon {
+  width: 60px;
+  height: 60px;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.order-details {
+  flex: 1;
+}
+
+.order-details h3 {
+  margin: 0 0 10px;
+  color: #1e293b;
+  font-size: 20px;
+}
+
+.order-details p {
+  margin: 5px 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.order-details strong {
+  display: block;
+  margin-top: 12px;
+  color: #16a34a;
+  font-size: 18px;
+}
+
+.items-list {
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.items-list p {
+  margin: 4px 0;
+  color: #334155;
+  font-size: 14px;
+}
+
+/* ===================================
+   RIGHT SECTION
+=================================== */
+
+.order-right {
+  display: flex;
+  align-items: center;
+}
+
+.order-right select {
+  min-width: 180px;
+  padding: 12px 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.order-right select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ===================================
+   LOADING
+=================================== */
+
+.loading-text {
+  text-align: center;
+  color: #64748b;
+  padding: 50px 0;
+  font-size: 18px;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 992px) {
+  .orders-content {
+    margin-left: 220px;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .orders-content {
+    margin-left: 70px;
+    margin-top: 90px;
+    padding: 20px;
+  }
+
+  .orders-card {
+    padding: 20px;
+  }
+
+  .orders-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .order-item {
+    flex-direction: column;
+  }
+
+  .order-right {
+    width: 100%;
+  }
+
+  .order-right select {
+    width: 100%;
+  }
+
+  .order-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+
+  .order-details h3 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-content {
+    padding: 15px;
+  }
+
+  .orders-card {
+    padding: 15px;
+  }
+
+  .orders-header h2 {
+    font-size: 22px;
+  }
+
+  .order-details h3 {
+    font-size: 17px;
+  }
+
+  .order-details p,
+  .items-list p {
+    font-size: 13px;
+  }
+
+  .order-details strong {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,178 @@
+/* ===================================
+   ADMIN NAVBAR
+=================================== */
+
+.admin-navbar {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  right: 0;
+  height: 75px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  z-index: 999;
+}
+
+/* ===================================
+   LEFT
+=================================== */
+
+.navbar-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-left h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.navbar-left p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ===================================
+   CENTER
+=================================== */
+
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 40px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 450px;
+  padding: 12px 18px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.search-input:focus {
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ===================================
+   RIGHT
+=================================== */
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.profile-info h4 {
+  margin: 0;
+  font-size: 15px;
+  color: #1e293b;
+}
+
+.profile-info span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.logout-btn {
+  border: none;
+  background: #ef4444;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 992px) {
+  .admin-navbar {
+    left: 220px;
+    padding: 0 20px;
+  }
+
+  .navbar-center {
+    padding: 0 20px;
+  }
+
+  .search-input {
+    max-width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-navbar {
+    left: 70px;
+    height: auto;
+    padding: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .navbar-left {
+    width: 100%;
+  }
+
+  .navbar-center {
+    width: 100%;
+    padding: 0;
+    justify-content: flex-start;
+  }
+
+  .search-input {
+    max-width: 100%;
+  }
+
+  .navbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .profile-info {
+    display: none;
+  }
+}

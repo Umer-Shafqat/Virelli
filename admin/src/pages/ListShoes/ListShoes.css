@@ -1,0 +1,207 @@
+/* ===================================
+   LIST SHOES PAGE
+=================================== */
+
+.listshoes-page {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.listshoes-content {
+  flex: 1;
+  margin-left: 260px;
+  margin-top: 75px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+/* ===================================
+   CARD
+=================================== */
+
+.listshoes-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* ===================================
+   HEADER
+=================================== */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #1e293b;
+}
+
+.page-header span {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ===================================
+   TABLE
+=================================== */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.shoe-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.shoe-table thead {
+  background: #1e293b;
+}
+
+.shoe-table thead th {
+  color: #ffffff;
+  padding: 16px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.shoe-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: 0.3s;
+}
+
+.shoe-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.shoe-table tbody td {
+  padding: 16px;
+  color: #334155;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* ===================================
+   IMAGE
+=================================== */
+
+.shoe-image {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+/* ===================================
+   DELETE BUTTON
+=================================== */
+
+.delete-btn {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* ===================================
+   LOADING
+=================================== */
+
+.loading-text {
+  text-align: center;
+  color: #64748b;
+  padding: 40px 0;
+  font-size: 18px;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 992px) {
+  .listshoes-content {
+    margin-left: 220px;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .listshoes-content {
+    margin-left: 70px;
+    margin-top: 90px;
+    padding: 20px;
+  }
+
+  .listshoes-card {
+    padding: 20px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .page-header h2 {
+    font-size: 24px;
+  }
+
+  .shoe-table {
+    min-width: 750px;
+  }
+
+  .shoe-image {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .listshoes-content {
+    padding: 15px;
+  }
+
+  .listshoes-card {
+    padding: 15px;
+  }
+
+  .page-header h2 {
+    font-size: 22px;
+  }
+
+  .shoe-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .delete-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}

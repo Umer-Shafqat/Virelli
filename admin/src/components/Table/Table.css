@@ -1,0 +1,119 @@
+/* ===================================
+   TABLE CONTAINER
+=================================== */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* ===================================
+   TABLE
+=================================== */
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  min-width: 700px;
+}
+
+.dashboard-table thead {
+  background: #1e293b;
+}
+
+.dashboard-table thead th {
+  color: #ffffff;
+  text-align: left;
+  padding: 16px 18px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.dashboard-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.3s ease;
+}
+
+.dashboard-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.dashboard-table tbody td {
+  padding: 16px 18px;
+  font-size: 14px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+/* ===================================
+   STATUS BADGES
+=================================== */
+
+.status {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 90px;
+}
+
+.status.delivered {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status.shipped {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status.cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width: 768px) {
+  .dashboard-table {
+    min-width: 650px;
+  }
+
+  .dashboard-table thead th,
+  .dashboard-table tbody td {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .status {
+    min-width: 80px;
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-table {
+    min-width: 600px;
+  }
+
+  .dashboard-table thead th,
+  .dashboard-table tbody td {
+    padding: 12px;
+  }
+
+  .status {
+    min-width: 75px;
+    font-size: 11px;
+  }
+}

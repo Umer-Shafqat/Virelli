@@ -93,6 +93,38 @@ const placeOrder = async (req, res) => {
   }
 };
 
+
+export const updateStatus = async (req, res) => {
+  console.log("=========== UPDATE STATUS ===========");
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
+
+  try {
+    if (!req.body) {
+      return res.status(400).json({
+        success: false,
+        message: "req.body is undefined",
+      });
+    }
+
+    const { orderId, status } = req.body;
+
+    await orderModel.findByIdAndUpdate(orderId, { status });
+
+    return res.json({
+      success: true,
+      message: "Order status updated",
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // =====================================
 // DELETE ORDER
 // =====================================
@@ -175,6 +207,22 @@ const getMyOrders = async (req, res) => {
 
   }
 
+};
+
+export const listOrders = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+
+    res.json({
+      success: true,
+      data: orders,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 // =====================================
 // EXPORT CONTROLLERS

@@ -300,6 +300,54 @@ const loginUser = async (
 
 };
 
+// =====================================
+// GET ALL USERS
+// =====================================
+
+export const listUsers = async (req, res) => {
+  try {
+    const users = await userModel.find({}, "-password");
+
+    res.json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// =====================================
+// DELETE USER
+// =====================================
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await userModel.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 export {
   registerUser,

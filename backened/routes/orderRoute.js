@@ -1,42 +1,37 @@
 import express from "express";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 import {
   placeOrder,
-  deleteOrder,
   getMyOrders,
+  deleteOrder,
+  listOrders,
+  updateStatus,
 } from "../controllers/orderController.js";
-
-import authMiddleware from "../middleware/authMiddleware.js";
 
 const orderRouter = express.Router();
 
 // =====================================
-// PLACE ORDER
+// USER ROUTES
 // =====================================
 
-orderRouter.post(
-  "/place",
-  authMiddleware,
-  placeOrder
-);
+// Place Order
+orderRouter.post("/place", authMiddleware, placeOrder);
+
+// Get My Orders
+orderRouter.get("/myorders", authMiddleware, getMyOrders);
 
 // =====================================
-// GET MY ORDERS
+// ADMIN ROUTES
 // =====================================
 
-orderRouter.get(
-  "/myorders",
-  authMiddleware,
-  getMyOrders
-);
+// Get All Orders
+orderRouter.get("/list", listOrders);
 
-// =====================================
-// DELETE ORDER
-// =====================================
+// Update Order Status
+orderRouter.post("/status", updateStatus);
 
-orderRouter.delete(
-  "/:id",
-  deleteOrder
-);
+// Delete Order
+orderRouter.delete("/:id", deleteOrder);
 
 export default orderRouter;
