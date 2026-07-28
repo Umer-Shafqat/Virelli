@@ -14,7 +14,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   // Change this to your backend URL if deployed
-  const API_URL = "http://localhost:4000/api/user/admin";
+  const API_URL = "http://localhost:4000/api/admin/login";
 
   const handleChange = (e) => {
     setFormData((prev) => ({

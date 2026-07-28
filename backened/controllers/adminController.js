@@ -1,7 +1,7 @@
 import userModel from "../models/userModel.js";
 import shoeModel from "../models/shoeModel.js";
 import orderModel from "../models/orderModel.js";
-
+import jwt from "jsonwebtoken";
 
 // =====================================
 // DASHBOARD
@@ -42,6 +42,60 @@ const getDashboard = async (req, res) => {
 
   }
 };
+
+
+
+
+const adminLogin = async (req, res) => {
+
+    const { email, password } = req.body;
+
+    try {
+
+        if (
+            email === process.env.ADMIN_EMAIL &&
+            password === process.env.ADMIN_PASSWORD
+        ) {
+
+            const token = jwt.sign(
+                {
+                    email: email,
+                    role: "admin"
+                },
+                process.env.JWT_SECRET,
+                {
+                    expiresIn: "7d"
+                }
+            );
+
+
+            return res.json({
+                success: true,
+                message: "Login successful",
+                token
+            });
+
+        } else {
+
+            return res.json({
+                success: false,
+                message: "Invalid email or password"
+            });
+
+        }
+
+
+    } catch(error){
+
+        res.json({
+            success:false,
+            message:error.message
+        });
+
+    }
+
+};
+
 
 
 // =====================================
@@ -243,4 +297,5 @@ export {
   getAllOrders,
   updateOrderStatus,
   getAnalytics,
+  adminLogin,
 };

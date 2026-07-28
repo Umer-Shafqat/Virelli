@@ -8,7 +8,8 @@ import {
   getAllUsers,
   getAnalytics,
   getAllOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  adminLogin,
 } from "../controllers/adminController.js";
 
 const adminRouter = express.Router();
@@ -47,5 +48,8 @@ adminRouter.put(
   adminMiddleware,
   updateOrderStatus
 );
+
+
+adminRouter.post("/login", adminLogin);
 
 export default adminRouter;
