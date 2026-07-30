@@ -5,15 +5,18 @@ import ShoeModel from "../models/shoeModel.js";
 // ================================
 const addShoe = async (req, res) => {
   try {
+    console.log(req.file);
+    console.log(req.body);
+
     const shoe = new ShoeModel({
       name: req.body.name,
       type: req.body.type,
       category: req.body.category,
-      image: req.body.image,
+      image: req.file.filename, // ✅ FIXED
       price: req.body.price,
       discount: req.body.discount,
       description: req.body.description,
-      sizes: req.body.sizes,
+      sizes: req.body.sizes.split(",").map((size) => Number(size.trim())),
     });
 
     const savedShoe = await shoe.save();
@@ -23,17 +26,16 @@ const addShoe = async (req, res) => {
       message: "Shoe added successfully",
       shoe: savedShoe,
     });
+
   } catch (error) {
-    console.error("Error adding shoe:", error);
+    console.error(error);
 
     res.status(500).json({
       success: false,
-      message: "Error adding shoe",
-      error: error.message,
+      message: error.message,
     });
   }
 };
-
 // ================================
 // GET ALL SHOES
 // ================================

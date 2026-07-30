@@ -10,6 +10,7 @@ import {
   getAllOrders,
   updateOrderStatus,
   adminLogin,
+  getMonthlySales,
 } from "../controllers/adminController.js";
 
 const adminRouter = express.Router();
@@ -51,5 +52,12 @@ adminRouter.put(
 
 
 adminRouter.post("/login", adminLogin);
+
+adminRouter.get(
+  "/monthly-sales",
+  authMiddleware,
+  adminMiddleware,
+  getMonthlySales
+);
 
 export default adminRouter;

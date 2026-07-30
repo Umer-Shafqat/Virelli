@@ -15,7 +15,7 @@ const Orders = () => {
       const response = await axios.get(`${backendUrl}/api/order/list`);
 
       if (response.data.success) {
-        setOrders(response.data.data);
+        setOrders(response.data.data || []);
       } else {
         alert(response.data.message);
       }
@@ -75,35 +75,86 @@ const Orders = () => {
                 <div className="order-item" key={order._id}>
 
                   <div className="order-left">
+
                     <div className="order-icon">📦</div>
 
                     <div className="order-details">
+
                       <h3>
                         {order.address?.firstName}{" "}
                         {order.address?.lastName}
                       </h3>
 
                       <p>
-                        {order.address?.street},{" "}
-                        {order.address?.city}
+                        <strong>Order ID:</strong>{" "}
+                        {order._id.slice(-6).toUpperCase()}
+                      </p>
+
+                      <p>
+                        {order.address?.street}, {order.address?.city}
                       </p>
 
                       <p>
                         {order.address?.phone}
                       </p>
 
-                      <strong>
-                        Rs. {order.amount}
-                      </strong>
+                      <p>
+                        <strong>Date:</strong>{" "}
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </p>
 
-                      <div className="items-list">
-                        {order.items?.map((item, index) => (
-                          <p key={index}>
-                            {item.name} × {item.quantity}
-                          </p>
-                        ))}
-                      </div>
+                      <hr />
+
+                      {order.items?.map((item, index) => (
+                        <div
+                          key={index}
+                          className="order-product"
+                        >
+                          <img
+                            src={`${backendUrl}/images/${item.image}`}
+                            alt={item.name}
+                            className="order-product-image"
+                          />
+
+                          <div className="product-info">
+
+                            <h4>{item.name}</h4>
+
+                            <p>
+                              <strong>Type:</strong> {item.type}
+                            </p>
+
+                            <p>
+                              <strong>Size:</strong> {item.size}
+                            </p>
+
+                            <p>
+                              <strong>Quantity:</strong>{" "}
+                              {item.quantity}
+                            </p>
+
+                            <p>
+                              <strong>Price:</strong> Rs. {item.price}
+                            </p>
+
+                          </div>
+                        </div>
+                      ))}
+
+                      <hr />
+
+                      <p>
+                        <strong>Subtotal:</strong>{" "}
+                        Rs. {order.subtotal || order.amount}
+                      </p>
+
+                      <p>
+                        <strong>Total Amount:</strong>{" "}
+                        Rs. {order.totalAmount || order.amount}
+                      </p>
+
                     </div>
+
                   </div>
 
                   <div className="order-right">
@@ -135,6 +186,10 @@ const Orders = () => {
 
                       <option value="Delivered">
                         Delivered
+                      </option>
+
+                      <option value="Cancelled">
+                        Cancelled
                       </option>
                     </select>
 

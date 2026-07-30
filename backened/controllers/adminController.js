@@ -11,16 +11,18 @@ export const getDashboard = async (req, res) => {
   try {
     const totalUsers = await userModel.countDocuments();
     const totalShoes = await shoeModel.countDocuments();
-    const totalOrders = await orderModel.countDocuments();
+    const totalOrders = await orderModel.countDocuments({
+      status: { $ne: "Cancelled" },
+    });
 
-    const orders = await orderModel.find();
+    const orders = await orderModel.find({
+      status: { $ne: "Cancelled" },
+    });
 
     let revenue = 0;
 
     orders.forEach((order) => {
-      if (order.payment === true || order.status !== "Cancelled") {
-        revenue += order.amount;
-      }
+      revenue += order.amount;
     });
 
     const recentOrders = await orderModel
@@ -288,13 +290,68 @@ const getAnalytics = async (req, res) => {
   }
 };
 
+export const getMonthlySales = async (req, res) => {
+  try {
+
+    const sales = await orderModel.aggregate([
+      {
+        $match: {
+          status: { $ne: "Cancelled" }
+        }
+      },
+      {
+        $group: {
+          _id: { $month: "$createdAt" },
+          revenue: { $sum: "$amount" }
+        }
+      },
+      {
+        $sort: { "_id": 1 }
+      }
+    ]);
+
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+
+    const monthlySales = months.map((month, index) => {
+      const found = sales.find(item => item._id === index + 1);
+
+      return {
+        month,
+        value: found ? found.revenue : 0
+      };
+    });
+
+    res.json({
+      success: true,
+      monthlySales
+    });
+
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message
+    });
+  }
+};
 
 // =====================================
 // EXPORTS
 // =====================================
 
 export {
-  getDashboard,
   getAllUsers,
   getAllOrders,
   updateOrderStatus,

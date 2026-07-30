@@ -7,8 +7,8 @@ import "./AddShoe.css";
 const AddShoe = () => {
   const [shoeData, setShoeData] = useState({
     name: "",
-    category: "Sneakers",
-    gender: "MEN",
+    category: "",
+    gender: "",
     price: "",
     discount: "",
     sizes: "",

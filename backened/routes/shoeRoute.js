@@ -5,18 +5,17 @@ import {
   getShoes,
   getShoeById,
   deleteShoe,
-  listShoes,
 } from "../controllers/shoeController.js";
 
-const shoeRouter = express.Router();
+import upload from "../middleware/multer.js";
 
+const shoeRouter = express.Router();
 
 // ================================
 // ADD SHOE
 // POST /api/shoes/add
 // ================================
-shoeRouter.post("/add", addShoe);
-
+shoeRouter.post("/add", upload.single("image"), addShoe);
 
 // ================================
 // GET ALL SHOES
@@ -24,22 +23,16 @@ shoeRouter.post("/add", addShoe);
 // ================================
 shoeRouter.get("/list", getShoes);
 
-
 // ================================
 // GET SINGLE SHOE
 // GET /api/shoes/:id
 // ================================
 shoeRouter.get("/:id", getShoeById);
 
-
 // ================================
 // DELETE SHOE
 // DELETE /api/shoes/:id
 // ================================
 shoeRouter.delete("/:id", deleteShoe);
-shoeRouter.get("/list", listShoes);     // GET /api/shoes/list
 
-
-
-// Export Router
 export default shoeRouter;

@@ -258,3 +258,30 @@
     font-size: 16px;
   }
 }
+
+.order-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.order-product-image {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.product-info h4 {
+  margin-bottom: 6px;
+}
+
+.product-info p {
+  margin: 3px 0;
+}
+
+.order-details hr {
+  margin: 15px 0;
+}

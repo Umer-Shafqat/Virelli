@@ -16,8 +16,8 @@ const ListShoes = () => {
       const response = await axios.get(`${backendUrl}/api/shoes/list`);
 
       if (response.data.success) {
-        setShoes(response.data.data);
-      } else {
+  setShoes(Array.isArray(response.data.data) ? response.data.data : []);
+    }else {
         alert(response.data.message);
       }
     } catch (error) {
@@ -67,12 +67,12 @@ const ListShoes = () => {
 
           <div className="page-header">
             <h2>All Shoes</h2>
-            <span>Total: {shoes.length}</span>
+            <span>Total: {shoes?.length || 0}</span>
           </div>
 
           {loading ? (
             <h3 className="loading-text">Loading Shoes...</h3>
-          ) : shoes.length === 0 ? (
+          ) : (shoes?.length || 0) === 0 ? (
             <h3 className="loading-text">No shoes found.</h3>
           ) : (
             <div className="table-wrapper">
@@ -90,7 +90,7 @@ const ListShoes = () => {
                 </thead>
 
                 <tbody>
-                  {shoes.map((shoe) => (
+                  {(shoes || []).map((shoe) => (
                     <tr key={shoe._id}>
                       <td>
                         <img
