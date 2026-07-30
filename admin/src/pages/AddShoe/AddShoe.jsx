@@ -7,8 +7,8 @@ import "./AddShoe.css";
 const AddShoe = () => {
   const [shoeData, setShoeData] = useState({
     name: "",
-    category: "",
-    gender: "",
+    category: "Loafer",
+    gender: "Men",
     price: "",
     discount: "",
     sizes: "",
@@ -88,11 +88,15 @@ const AddShoe = () => {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error(error);
-      alert("Failed to add shoe.");
-    } finally {
-      setLoading(false);
-    }
+  console.error(error);
+
+  if (error.response) {
+    console.log(error.response.data);
+    alert(error.response.data.message);
+  } else {
+    alert(error.message);
+  }
+}
   };
 
   return (

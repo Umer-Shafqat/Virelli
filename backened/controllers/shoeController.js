@@ -5,8 +5,9 @@ import ShoeModel from "../models/shoeModel.js";
 // ================================
 const addShoe = async (req, res) => {
   try {
-    console.log(req.file);
-    console.log(req.body);
+    
+console.log("req.file:", req.file);
+console.log("req.body:", req.body);
 
     const shoe = new ShoeModel({
       name: req.body.name,
