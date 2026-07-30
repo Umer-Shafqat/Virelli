@@ -1,45 +1,7 @@
 import React from "react";
 import "./Table.css";
 
-const Table = () => {
-  const orders = [
-    {
-      id: "#1001",
-      customer: "Ali Khan",
-      product: "Classic Sneakers",
-      amount: "Rs. 4,500",
-      status: "Delivered",
-    },
-    {
-      id: "#1002",
-      customer: "Ahmed Raza",
-      product: "Leather Loafers",
-      amount: "Rs. 5,800",
-      status: "Pending",
-    },
-    {
-      id: "#1003",
-      customer: "Sara Ahmed",
-      product: "Running Shoes",
-      amount: "Rs. 6,200",
-      status: "Shipped",
-    },
-    {
-      id: "#1004",
-      customer: "Usman Ali",
-      product: "Sports Shoes",
-      amount: "Rs. 3,900",
-      status: "Cancelled",
-    },
-    {
-      id: "#1005",
-      customer: "Fatima Noor",
-      product: "Casual Sneakers",
-      amount: "Rs. 5,200",
-      status: "Delivered",
-    },
-  ];
-
+const Table = ({ orders = [] }) => {
   return (
     <div className="table-container">
       <table className="dashboard-table">
@@ -54,23 +16,42 @@ const Table = () => {
         </thead>
 
         <tbody>
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.customer}</td>
-              <td>{order.product}</td>
-              <td>{order.amount}</td>
-              <td>
-                <span
-                  className={`status ${order.status
-                    .toLowerCase()
-                    .replace(" ", "-")}`}
-                >
-                  {order.status}
-                </span>
+          {orders.length > 0 ? (
+            orders.map((item) => (
+              <tr key={item._id}>
+                {/* Order ID */}
+                <td>{item._id.slice(-6).toUpperCase()}</td>
+
+                {/* Customer Name */}
+                <td>{item.userId?.name || "N/A"}</td>
+
+                {/* Product Name(s) */}
+                <td>
+                  {item.items?.map((shoe) => shoe.name).join(", ") || "N/A"}
+                </td>
+
+                {/* Amount */}
+                <td>Rs. {item.amount?.toLocaleString()}</td>
+
+                {/* Status */}
+                <td>
+                  <span
+                    className={`status ${item.status
+                      ?.toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    {item.status}
+                  </span>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="5" style={{ textAlign: "center" }}>
+                No recent orders found.
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

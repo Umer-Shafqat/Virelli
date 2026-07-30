@@ -7,44 +7,46 @@ import jwt from "jsonwebtoken";
 // DASHBOARD
 // =====================================
 
-const getDashboard = async (req, res) => {
+export const getDashboard = async (req, res) => {
   try {
-
     const totalUsers = await userModel.countDocuments();
-
     const totalShoes = await shoeModel.countDocuments();
-
     const totalOrders = await orderModel.countDocuments();
 
     const orders = await orderModel.find();
 
-    const totalRevenue = orders.reduce(
-      (sum, order) => sum + (order.amount || 0),
-      0
-    );
+    let revenue = 0;
+
+    orders.forEach((order) => {
+      if (order.payment === true || order.status !== "Cancelled") {
+        revenue += order.amount;
+      }
+    });
+
+    const recentOrders = await orderModel
+      .find()
+      .populate("userId", "name email")
+      .sort({ createdAt: -1 })
+      .limit(5);
 
     res.json({
       success: true,
-      data: {
+      dashboard: {
         totalUsers,
         totalShoes,
         totalOrders,
-        totalRevenue,
+        revenue,
+        recentOrders,
       },
     });
-
   } catch (error) {
-
+    console.log(error);
     res.json({
       success: false,
       message: error.message,
     });
-
   }
 };
-
-
-
 
 const adminLogin = async (req, res) => {
 
