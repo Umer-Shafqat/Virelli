@@ -10,14 +10,18 @@ const ListShoes = () => {
 
   const backendUrl = "http://localhost:4000";
 
-  // Fetch all shoes
+  // ================================
+  // Fetch Shoes
+  // ================================
   const fetchShoes = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/shoes/list`);
+      const response = await axios.get(
+        `${backendUrl}/api/shoes/list`
+      );
 
       if (response.data.success) {
-  setShoes(Array.isArray(response.data.data) ? response.data.data : []);
-    }else {
+        setShoes(response.data.data || []);
+      } else {
         alert(response.data.message);
       }
     } catch (error) {
@@ -32,7 +36,9 @@ const ListShoes = () => {
     fetchShoes();
   }, []);
 
-  // Delete shoe
+  // ================================
+  // Delete Shoe
+  // ================================
   const deleteShoe = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this shoe?"
@@ -67,13 +73,13 @@ const ListShoes = () => {
 
           <div className="page-header">
             <h2>All Shoes</h2>
-            <span>Total: {shoes?.length || 0}</span>
+            <span>Total: {shoes.length}</span>
           </div>
 
           {loading ? (
             <h3 className="loading-text">Loading Shoes...</h3>
-          ) : (shoes?.length || 0) === 0 ? (
-            <h3 className="loading-text">No shoes found.</h3>
+          ) : shoes.length === 0 ? (
+            <h3 className="loading-text">No Shoes Found</h3>
           ) : (
             <div className="table-wrapper">
               <table className="shoe-table">
@@ -90,24 +96,23 @@ const ListShoes = () => {
                 </thead>
 
                 <tbody>
-                  {(shoes || []).map((shoe) => (
+                  {shoes.map((shoe) => (
                     <tr key={shoe._id}>
                       <td>
                         <img
                           src={`${backendUrl}/images/${shoe.image}`}
                           alt={shoe.name}
                           className="shoe-image"
+                          onError={(e) => {
+                            e.target.src = "/no-image.png";
+                          }}
                         />
                       </td>
 
                       <td>{shoe.name}</td>
-
                       <td>{shoe.category}</td>
-
                       <td>{shoe.type}</td>
-
                       <td>Rs. {shoe.price}</td>
-
                       <td>{shoe.discount}%</td>
 
                       <td>

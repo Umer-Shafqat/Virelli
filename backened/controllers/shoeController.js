@@ -45,24 +45,24 @@ console.log("req.body:", req.body);
     });
   }
 };
+
 // ================================
 // GET ALL SHOES
 // ================================
 const getShoes = async (req, res) => {
   try {
-    const shoes = await ShoeModel.find({});
+    const shoes = await ShoeModel.find().sort({ createdAt: -1 });
 
-    res.status(200).json({
+    res.json({
       success: true,
-      shoes,
+      data: shoes,
     });
   } catch (error) {
-    console.error("Error getting shoes:", error);
+    console.log(error);
 
-    res.status(500).json({
+    res.json({
       success: false,
-      message: "Error getting shoes",
-      error: error.message,
+      message: error.message,
     });
   }
 };

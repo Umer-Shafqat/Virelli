@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 
 import connectDB from "./config/db.js";
 
@@ -20,6 +21,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// ✅ Serve uploaded images
+app.use("/images", express.static(path.join(process.cwd(), "uploads")));
 
 // =====================================
 // CONNECT MONGODB
