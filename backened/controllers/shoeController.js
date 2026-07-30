@@ -11,7 +11,15 @@ console.log("req.body:", req.body);
 
     const shoe = new ShoeModel({
       name: req.body.name,
-      type: req.body.type,
+      type:
+  req.body.type.toUpperCase() === "MEN"
+    ? "MEN"
+    : req.body.type.toUpperCase() === "WOMEN"
+    ? "WOMEN"
+    : req.body.type.toUpperCase() === "KID" ||
+      req.body.type.toUpperCase() === "KIDS"
+    ? "KID"
+    : "",
       category: req.body.category,
       image: req.file.filename, // ✅ FIXED
       price: req.body.price,

@@ -59,6 +59,13 @@ const AddShoe = () => {
       formData.append("description", shoeData.description);
       formData.append("image", image);
 
+
+      console.log("Type:", shoeData.gender);
+
+for (let pair of formData.entries()) {
+  console.log(pair[0], pair[1]);
+}
+
       const response = await axios.post(
         `${backendUrl}/api/shoes/add`,
         formData,
