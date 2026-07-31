@@ -7,8 +7,9 @@ import "./AddShoe.css";
 const AddShoe = () => {
   const [shoeData, setShoeData] = useState({
     name: "",
-    category: "Loafer",
-    gender: "Men",
+    category: "Sneakers",
+    gender: "MEN",
+    popular: "false",
     price: "",
     discount: "",
     sizes: "",
@@ -53,18 +54,17 @@ const AddShoe = () => {
       formData.append("name", shoeData.name);
       formData.append("category", shoeData.category);
       formData.append("type", shoeData.gender);
+      formData.append("popular", shoeData.popular);
       formData.append("price", shoeData.price);
       formData.append("discount", shoeData.discount);
       formData.append("sizes", shoeData.sizes);
       formData.append("description", shoeData.description);
       formData.append("image", image);
 
-
-      console.log("Type:", shoeData.gender);
-
-for (let pair of formData.entries()) {
-  console.log(pair[0], pair[1]);
-}
+      console.log("========== FORM DATA ==========");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
 
       const response = await axios.post(
         `${backendUrl}/api/shoes/add`,
@@ -83,6 +83,7 @@ for (let pair of formData.entries()) {
           name: "",
           category: "Sneakers",
           gender: "MEN",
+          popular: "false",
           price: "",
           discount: "",
           sizes: "",
@@ -95,15 +96,17 @@ for (let pair of formData.entries()) {
         alert(response.data.message);
       }
     } catch (error) {
-  console.error(error);
+      console.error(error);
 
-  if (error.response) {
-    console.log(error.response.data);
-    alert(error.response.data.message);
-  } else {
-    alert(error.message);
-  }
-}
+      if (error.response) {
+        console.log(error.response.data);
+        alert(error.response.data.message);
+      } else {
+        alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -113,19 +116,17 @@ for (let pair of formData.entries()) {
 
       <div className="addshoe-content">
         <div className="addshoe-card">
-
           <h2>Add New Shoe</h2>
 
           <form onSubmit={handleSubmit}>
-
             <div className="image-upload">
-
               <label>Product Image</label>
 
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImage}
+                required
               />
 
               {preview && (
@@ -135,11 +136,9 @@ for (let pair of formData.entries()) {
                   className="image-preview"
                 />
               )}
-
             </div>
 
             <div className="form-grid">
-
               <div className="form-group">
                 <label>Shoe Name</label>
 
@@ -161,12 +160,12 @@ for (let pair of formData.entries()) {
                   value={shoeData.category}
                   onChange={handleChange}
                 >
-                  <option>Sneakers</option>
-                  <option>Sports</option>
-                  <option>Loafers</option>
-                  <option>Formal</option>
-                  <option>Boots</option>
-                  <option>Sandals</option>
+                  <option value="Sneakers">Sneakers</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Loafers">Loafers</option>
+                  <option value="Formal">Formal</option>
+                  <option value="Boots">Boots</option>
+                  <option value="Sandals">Sandals</option>
                 </select>
               </div>
 
@@ -181,6 +180,19 @@ for (let pair of formData.entries()) {
                   <option value="MEN">Men</option>
                   <option value="WOMEN">Women</option>
                   <option value="KID">Kids</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Popular Shoe</label>
+
+                <select
+                  name="popular"
+                  value={shoeData.popular}
+                  onChange={handleChange}
+                >
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
                 </select>
               </div>
 
@@ -218,9 +230,9 @@ for (let pair of formData.entries()) {
                   value={shoeData.sizes}
                   onChange={handleChange}
                   placeholder="39,40,41,42,43"
+                  required
                 />
               </div>
-
             </div>
 
             <div className="form-group">
@@ -232,6 +244,7 @@ for (let pair of formData.entries()) {
                 value={shoeData.description}
                 onChange={handleChange}
                 placeholder="Write shoe description..."
+                required
               />
             </div>
 
@@ -242,9 +255,7 @@ for (let pair of formData.entries()) {
             >
               {loading ? "Adding Shoe..." : "Add Shoe"}
             </button>
-
           </form>
-
         </div>
       </div>
     </div>

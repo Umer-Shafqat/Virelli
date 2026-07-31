@@ -115,11 +115,9 @@ const Orders = () => {
                           className="order-product"
                         >
                         <img
-  src={item.image}
+  src={`http://localhost:4000/images/${item.image}`}
   alt={item.name}
-  className="order-product-image"
 />
-
                           <div className="product-info">
 
                             <h4>{item.name}</h4>

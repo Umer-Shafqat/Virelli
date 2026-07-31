@@ -13,6 +13,11 @@ const shoeSchema = new mongoose.Schema(
       enum: ["MEN", "WOMEN", "KID"],
     },
 
+    popular: {
+      type: Boolean,
+      default: false,
+    },
+
     category: {
       type: String,
       required: true,
@@ -48,7 +53,6 @@ const shoeSchema = new mongoose.Schema(
         type: Number,
         default: 0,
       },
-
       ratingSum: {
         type: Number,
         default: 0,
@@ -60,6 +64,7 @@ const shoeSchema = new mongoose.Schema(
   }
 );
 
-const ShoeModel = mongoose.model("Shoe", shoeSchema);
+const shoeModel =
+  mongoose.models.shoe || mongoose.model("shoe", shoeSchema);
 
-export default ShoeModel;
+export default shoeModel;

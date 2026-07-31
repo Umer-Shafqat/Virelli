@@ -484,11 +484,6 @@ const PlaceOrder = () => {
 
       <div className="place-order-container">
 
-
-        {/* =================================
-            DELIVERY INFORMATION
-        ================================= */}
-
         <div className="delivery-section">
 
           <h2>
@@ -731,14 +726,10 @@ const PlaceOrder = () => {
                     key={key}
                   >
 
-                    <img
-                      src={
-                        shoe.image
-                      }
-                      alt={
-                        shoe.name
-                      }
-                    />
+                   <img
+                   src={`http://localhost:4000/images/${shoe.image}`}
+                   alt={shoe.name}
+                  />
 
 
                     <div

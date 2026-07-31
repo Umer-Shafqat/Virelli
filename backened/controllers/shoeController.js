@@ -5,27 +5,34 @@ import ShoeModel from "../models/shoeModel.js";
 // ================================
 const addShoe = async (req, res) => {
   try {
-    
-console.log("req.file:", req.file);
-console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
+    console.log("req.body:", req.body);
+
+    // Convert type safely to string
+    const shoeType = String(req.body.type || "").trim().toUpperCase();
 
     const shoe = new ShoeModel({
       name: req.body.name,
+
       type:
-  req.body.type.toUpperCase() === "MEN"
-    ? "MEN"
-    : req.body.type.toUpperCase() === "WOMEN"
-    ? "WOMEN"
-    : req.body.type.toUpperCase() === "KID" ||
-      req.body.type.toUpperCase() === "KIDS"
-    ? "KID"
-    : "",
+        shoeType === "MEN"
+          ? "MEN"
+          : shoeType === "WOMEN"
+          ? "WOMEN"
+          : shoeType === "KID" || shoeType === "KIDS"
+          ? "KID"
+          : "",
+
       category: req.body.category,
-      image: req.file.filename, // ✅ FIXED
-      price: req.body.price,
-      discount: req.body.discount,
+      image: req.file.filename,
+      price: Number(req.body.price),
+      discount: Number(req.body.discount || 0),
       description: req.body.description,
-      sizes: req.body.sizes.split(",").map((size) => Number(size.trim())),
+      sizes: req.body.sizes
+        .split(",")
+        .map((size) => Number(size.trim())),
+
+      popular: req.body.popular === "true",
     });
 
     const savedShoe = await shoe.save();
@@ -35,7 +42,6 @@ console.log("req.body:", req.body);
       message: "Shoe added successfully",
       shoe: savedShoe,
     });
-
   } catch (error) {
     console.error(error);
 
