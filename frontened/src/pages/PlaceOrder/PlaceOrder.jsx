@@ -271,8 +271,7 @@ const PlaceOrder = () => {
                 price:
                   shoe.price,
 
-                image:
-                   `${window.location.origin}${shoe.image}`,
+                 image: shoe.image,
 
                 size:
                   Number(size),

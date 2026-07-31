@@ -81,8 +81,8 @@ const Orders = () => {
                     <div className="order-details">
 
                       <h3>
-                        {order.address?.firstName}{" "}
-                        {order.address?.lastName}
+                        {order.customer?.firstName}{" "}
+                        {order.customer?.lastName}
                       </h3>
 
                       <p>
@@ -91,12 +91,16 @@ const Orders = () => {
                       </p>
 
                       <p>
-                        {order.address?.street}, {order.address?.city}
+                        {order.customer?.address}, {order.customer?.city}
                       </p>
 
                       <p>
-                        {order.address?.phone}
+                        {order.customer?.phone}
                       </p>
+
+                      <p><strong>Email:</strong> {order.customer?.email}</p>
+                     <p><strong>Country:</strong> {order.customer?.country}</p>
+                      <p><strong>Payment:</strong> {order.customer?.paymentMethod}</p>
 
                       <p>
                         <strong>Date:</strong>{" "}
@@ -110,11 +114,11 @@ const Orders = () => {
                           key={index}
                           className="order-product"
                         >
-                          <img
-                            src={`${backendUrl}/images/${item.image}`}
-                            alt={item.name}
-                            className="order-product-image"
-                          />
+                        <img
+  src={item.image}
+  alt={item.name}
+  className="order-product-image"
+/>
 
                           <div className="product-info">
 

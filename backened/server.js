@@ -1,8 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";
-
 import connectDB from "./config/db.js";
 
 import shoeRouter from "./routes/shoeRoute.js";
@@ -15,66 +13,20 @@ dotenv.config();
 
 const app = express();
 
-// =====================================
-// MIDDLEWARE
-// =====================================
-
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
-// ✅ Serve uploaded images
-app.use("/images", express.static(path.join(process.cwd(), "uploads")));
-
-// =====================================
-// CONNECT MONGODB
-// =====================================
+// 👇 Add this line
+app.use("/images", express.static("uploads"));
 
 connectDB();
 
-// =====================================
-// TEST API
-// =====================================
-
-app.get("/", (req, res) => {
-  res.send("Virelli Backend Running...");
-});
-
-// =====================================
-// USER / AUTHENTICATION
-// =====================================
-
-app.use("/api/user", userRouter);
-
-// =====================================
-// SHOES
-// =====================================
-
 app.use("/api/shoes", shoeRouter);
-
-// =====================================
-// CART
-// =====================================
-
-app.use("/api/cart", cartRouter);
-
-// =====================================
-// ORDERS
-// =====================================
-
 app.use("/api/order", orderRouter);
-
-// =====================================
-// ADMIN
-// =====================================
-
+app.use("/api/cart", cartRouter);
+app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
 
-// =====================================
-// SERVER
-// =====================================
-
-const PORT = process.env.PORT || 4000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(4000, () => {
+  console.log("Server running on port 4000");
 });
