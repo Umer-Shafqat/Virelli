@@ -8,26 +8,26 @@ const Charts = () => {
 
   const [monthlySales, setMonthlySales] = useState([]);
 
-  const getMonthlySales = async () => {
-    try {
+const getMonthlySales = async () => {
+  try {
+    const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        `${url}/api/admin/monthly-sales`,
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      );
-
-      if (response.data.success) {
-        setMonthlySales(response.data.monthlySales);
+    const response = await axios.get(
+      `${url}/api/admin/monthly-sales`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-    } catch (error) {
-      console.log(error);
+    if (response.data.success) {
+      setMonthlySales(response.data.monthlySales);
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   useEffect(() => {
     getMonthlySales();
