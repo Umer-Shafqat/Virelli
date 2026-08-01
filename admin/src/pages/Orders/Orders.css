@@ -285,3 +285,43 @@
 .order-details hr {
   margin: 15px 0;
 }
+
+/* Product Row */
+.order-product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Product Image */
+.order-product img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  flex-shrink: 0;
+}
+
+/* Product Details */
+.product-info {
+  flex: 1;
+}
+
+.product-info h4 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #171c29;
+}
+
+.product-info p {
+  margin: 4px 0;
+  color: #555;
+  font-size: 15px;
+}

@@ -115,8 +115,15 @@ const Orders = () => {
                           className="order-product"
                         >
                         <img
-  src={`http://localhost:4000/images/${item.image}`}
+  src={
+    item.image.startsWith("/static")
+      ? `http://localhost:3000${item.image}`
+      : `${backendUrl}/images/${item.image}`
+  }
   alt={item.name}
+  onError={(e) => {
+    e.target.src = "/no-image.png"; // Place a default image in public/no-image.png
+  }}
 />
                           <div className="product-info">
 
