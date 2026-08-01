@@ -133,22 +133,31 @@ const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find and delete order
-    const deletedOrder = await orderModel.findByIdAndDelete(id);
+    const order = await orderModel.findById(id);
 
-    // Check if order exists
-    if (!deletedOrder) {
+    if (!order) {
       return res.status(404).json({
         success: false,
         message: "Order not found",
       });
     }
 
-    // Success response
+    // Only allow deletion if Delivered or Cancelled
+    if (
+      order.status !== "Delivered" &&
+      order.status !== "Cancelled"
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Only Delivered or Cancelled orders can be deleted.",
+      });
+    }
+
+    await orderModel.findByIdAndDelete(id);
+
     res.status(200).json({
       success: true,
       message: "Order deleted successfully",
-      order: deletedOrder,
     });
 
   } catch (error) {
@@ -160,7 +169,6 @@ const deleteOrder = async (req, res) => {
     });
   }
 };
-
 
 // =====================================
 // GET MY ORDERS
@@ -232,4 +240,6 @@ export {
   placeOrder,
   deleteOrder,
   getMyOrders,
+  listOrders,
+  updateStatus,
 };
