@@ -32,6 +32,12 @@ orderRouter.get("/list", listOrders);
 orderRouter.post("/status", updateStatus);
 
 // Delete Order
-orderRouter.delete("/:id", deleteOrder);
+orderRouter.delete("/delete/:id", (req, res) => {
+  res.json({
+    success: true,
+    message: "Delete route is working",
+    id: req.params.id,
+  });
+});
 
 export default orderRouter;

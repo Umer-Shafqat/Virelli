@@ -131,45 +131,33 @@ export const updateStatus = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
-    const { id } = req.params;
+    console.log("Delete ID:", req.params.id);
 
-    const order = await orderModel.findById(id);
+    const deleted = await orderModel.findByIdAndDelete(req.params.id);
 
-    if (!order) {
+    console.log("Deleted:", deleted);
+
+    if (!deleted) {
       return res.status(404).json({
         success: false,
         message: "Order not found",
       });
     }
 
-    // Only allow deletion if Delivered or Cancelled
-    if (
-      order.status !== "Delivered" &&
-      order.status !== "Cancelled"
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Only Delivered or Cancelled orders can be deleted.",
-      });
-    }
-
-    await orderModel.findByIdAndDelete(id);
-
-    res.status(200).json({
+    return res.json({
       success: true,
       message: "Order deleted successfully",
     });
 
   } catch (error) {
-    console.log("Delete Order Error:", error);
+    console.log(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 // =====================================
 // GET MY ORDERS
 // =====================================

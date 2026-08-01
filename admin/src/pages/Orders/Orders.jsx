@@ -52,25 +52,25 @@ const Orders = () => {
     }
   };
 
-  const deleteOrder = async (id) => {
-    if (!window.confirm("Delete this order?")) return;
+ const deleteOrder = async (id) => {
+  if (!window.confirm("Delete this order?")) return;
 
-    try {
-      const response = await axios.delete(
-        `${backendUrl}/api/order/delete/${id}`
-      );
+  try {
+    const response = await axios.delete(
+      `${backendUrl}/api/order/delete/${id}`
+    );
 
-      if (response.data.success) {
-        alert(response.data.message);
-        fetchOrders();
-      } else {
-        alert(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Failed to delete order.");
+    if (response.data.success) {
+      alert(response.data.message);
+      fetchOrders();
+    } else {
+      alert(response.data.message);
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Failed to delete order.");
+  }
+};
 
   return (
     <div className="orders-page">
