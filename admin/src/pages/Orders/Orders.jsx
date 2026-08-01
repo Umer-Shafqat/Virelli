@@ -52,27 +52,170 @@ const Orders = () => {
     }
   };
 
-const deleteOrder = async (id) => {
-  if (!window.confirm("Delete this order?")) return;
+  const deleteOrder = async (id) => {
+    if (!window.confirm("Delete this order?")) return;
 
-  try {
-    const response = await axios.delete(
-      `${backendUrl}/api/order/delete/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    try {
+      const response = await axios.delete(
+        `${backendUrl}/api/order/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert(response.data.message);
+        fetchOrders();
       }
-    );
-
-    if (response.data.success) {
-      alert(response.data.message);
-      fetchOrders();
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
+
+  // ================================
+  // PRINT ORDER
+  // ================================
+
+  const printOrder = (order) => {
+    const printWindow = window.open("", "_blank");
+
+    printWindow.document.write(`
+      <html>
+      <head>
+        <title>Order Invoice</title>
+
+        <style>
+          body{
+            font-family:Arial,sans-serif;
+            padding:30px;
+            color:#222;
+          }
+
+          h1,h2,h3{
+            margin:5px 0;
+          }
+
+          table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+          }
+
+          table,th,td{
+            border:1px solid #ddd;
+          }
+
+          th,td{
+            padding:10px;
+            text-align:left;
+          }
+
+          .section{
+            margin-top:20px;
+          }
+
+          .total{
+            margin-top:20px;
+            font-size:18px;
+            font-weight:bold;
+          }
+        </style>
+
+      </head>
+
+      <body>
+
+        <h1>QuickBite Shoes Store</h1>
+        <h2>Customer Invoice</h2>
+
+        <div class="section">
+
+          <h3>Customer Information</h3>
+
+          <p><strong>Name:</strong> ${order.customer.firstName} ${order.customer.lastName}</p>
+
+          <p><strong>Email:</strong> ${order.customer.email}</p>
+
+          <p><strong>Phone:</strong> ${order.customer.phone}</p>
+
+          <p><strong>Address:</strong> ${order.customer.address}</p>
+
+          <p><strong>City:</strong> ${order.customer.city}</p>
+
+          <p><strong>Country:</strong> ${order.customer.country}</p>
+
+          <p><strong>Payment:</strong> ${order.customer.paymentMethod}</p>
+
+          <p><strong>Status:</strong> ${order.status}</p>
+
+          <p><strong>Date:</strong> ${new Date(
+            order.createdAt
+          ).toLocaleString()}</p>
+
+          <p><strong>Order ID:</strong> ${order._id}</p>
+
+        </div>
+
+        <div class="section">
+
+          <h3>Products</h3>
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Price</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${order.items
+                .map(
+                  (item) => `
+                    <tr>
+                      <td>${item.name}</td>
+                      <td>${item.type}</td>
+                      <td>${item.size}</td>
+                      <td>${item.quantity}</td>
+                      <td>Rs. ${item.price}</td>
+                    </tr>
+                  `
+                )
+                .join("")}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="total">
+
+          <p>Subtotal : Rs. ${order.subtotal}</p>
+
+          <p>Delivery Charges : Rs. ${order.deliveryCharges}</p>
+
+          <p>Total Amount : Rs. ${order.totalAmount}</p>
+
+        </div>
+
+      </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  };
 
   return (
     <div className="orders-page">
@@ -93,7 +236,9 @@ const deleteOrder = async (id) => {
             <h3 className="loading-text">No Orders Found</h3>
           ) : (
             <div className="orders-list">
+
               {orders.map((order) => (
+
                 <div className="order-item" key={order._id}>
 
                   <div className="order-left">
@@ -127,7 +272,8 @@ const deleteOrder = async (id) => {
                       </p>
 
                       <p>
-                        <strong>Payment:</strong> {order.customer?.paymentMethod}
+                        <strong>Payment:</strong>{" "}
+                        {order.customer?.paymentMethod}
                       </p>
 
                       <p>
@@ -153,6 +299,7 @@ const deleteOrder = async (id) => {
                           />
 
                           <div className="product-info">
+
                             <h4>{item.name}</h4>
 
                             <p><strong>Type:</strong> {item.type}</p>
@@ -162,6 +309,7 @@ const deleteOrder = async (id) => {
                             <p><strong>Quantity:</strong> {item.quantity}</p>
 
                             <p><strong>Price:</strong> Rs. {item.price}</p>
+
                           </div>
 
                         </div>
@@ -180,6 +328,7 @@ const deleteOrder = async (id) => {
                       </p>
 
                     </div>
+
                   </div>
 
                   <div className="order-right">
@@ -200,6 +349,13 @@ const deleteOrder = async (id) => {
                       <option value="Cancelled">Cancelled</option>
                     </select>
 
+                    <button
+                      className="print-order-btn"
+                      onClick={() => printOrder(order)}
+                    >
+                      Print Order
+                    </button>
+
                     {(order.status === "Delivered" ||
                       order.status === "Cancelled") && (
                       <button
@@ -213,7 +369,9 @@ const deleteOrder = async (id) => {
                   </div>
 
                 </div>
+
               ))}
+
             </div>
           )}
 
