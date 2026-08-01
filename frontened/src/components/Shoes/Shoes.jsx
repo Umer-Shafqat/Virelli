@@ -1,15 +1,6 @@
-import React, {
-  useContext,
-  useState
-} from "react";
-
-import { shoes } from "../../assets/assets";
-
+import React, {useContext,useState} from "react";
 import "./Shoes.css";
-
-import {
-  StoreContext
-} from "../../Context/StoreContext/StoreContext";
+import {StoreContext} from "../../Context/StoreContext/StoreContext";
 
 
 const Shoes = ({
