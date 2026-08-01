@@ -61,11 +61,6 @@ const AddShoe = () => {
       formData.append("description", shoeData.description);
       formData.append("image", image);
 
-      console.log("========== FORM DATA ==========");
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
       const response = await axios.post(
         `${backendUrl}/api/shoes/add`,
         formData,
@@ -99,7 +94,6 @@ const AddShoe = () => {
       console.error(error);
 
       if (error.response) {
-        console.log(error.response.data);
         alert(error.response.data.message);
       } else {
         alert(error.message);

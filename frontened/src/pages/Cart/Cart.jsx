@@ -1,379 +1,162 @@
 import React, { useContext } from "react";
-import {StoreContext} from "../../Context/StoreContext/StoreContext";
-import {shoes} from "../../assets/assets";
+import { StoreContext } from "../../Context/StoreContext/StoreContext";
 import "./Cart.css";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-
-
   const navigate = useNavigate();
 
   const {
     cartItems,
     addToCart,
     removeFromCart,
-    deleteFromCart
+    deleteFromCart,
+    shoes,
   } = useContext(StoreContext);
-
-
-  // =========================
-  // DELIVERY CHARGES
-  // =========================
 
   const deliveryCharges = 300;
 
+  const cartEntries = Object.entries(cartItems || {});
 
-  // =========================
-  // CART ENTRIES
-  // =========================
+  const subtotal = cartEntries.reduce((total, [key, quantity]) => {
+    const [shoeId] = key.split("-");
 
-  const cartEntries =
-    Object.entries(cartItems);
-
-
-  // =========================
-  // SUBTOTAL
-  // =========================
-
-  const subtotal =
-    cartEntries.reduce(
-      (total, [key, quantity]) => {
-
-        // Key format:
-        // shoeId-size
-
-        const [
-          shoeId,
-          size
-        ] = key.split("-");
-
-
-        // Find shoe from assets
-        const shoe =
-          shoes.find(
-            (item) =>
-              item.id.toString() ===
-              shoeId
-          );
-
-
-        // If shoe not found
-        if (!shoe) {
-
-          return total;
-
-        }
-
-
-        return (
-          total +
-          shoe.price *
-          quantity
-        );
-
-      },
-      0
+    const shoe = shoes.find(
+      (item) => item._id?.toString() === shoeId
     );
 
+    if (!shoe) return total;
 
-  // =========================
-  // TOTAL AMOUNT
-  // =========================
+    return total + shoe.price * quantity;
+  }, 0);
 
-  const totalAmount =
-    subtotal +
-    deliveryCharges;
-
+  const totalAmount = subtotal + deliveryCharges;
 
   return (
-
     <div className="cart-page">
-
-      <h1>
-        My Cart
-      </h1>
-
-
-      {/* =========================
-          EMPTY CART
-      ========================= */}
+      <h1>My Cart</h1>
 
       {cartEntries.length === 0 ? (
-
         <div className="empty-cart">
-
-          <h2>
-            Your cart is empty
-          </h2>
-
-          <p>
-            Add some shoes to your cart.
-          </p>
-
+          <h2>Your cart is empty</h2>
+          <p>Add some shoes to your cart.</p>
         </div>
-
       ) : (
-
-        /* =========================
-           CART ITEMS
-        ========================= */
-
         <>
-
           <div className="cart-container">
+            {cartEntries.map(([key, quantity]) => {
+              const [shoeId, size] = key.split("-");
 
-            {cartEntries.map(
-              ([key, quantity]) => {
+              const shoe = shoes.find(
+                (item) => item._id?.toString() === shoeId
+              );
 
-                // =========================
-                // GET SHOE ID AND SIZE
-                // =========================
+              if (!shoe) {
+                return null;
+              }
 
-                const [
-                  shoeId,
-                  size
-                ] = key.split("-");
+              return (
+                <div className="cart-item" key={key}>
+                  <img
+                    src={`http://localhost:4000/images/${shoe.image}`}
+                   alt={shoe.name}
+                   className="cart-shoe-image"
+                        />
 
+                  <div className="cart-item-details">
+                    <h2>{shoe.name}</h2>
 
-                // =========================
-                // FIND SHOE
-                // =========================
+                    <p>{shoe.description}</p>
 
-                const shoe =
-                  shoes.find(
-                    (item) =>
-                      item.id.toString() ===
-                      shoeId
-                  );
+                    <p>
+                      <strong>Size:</strong> {size}
+                    </p>
 
-
-                // If shoe doesn't exist
-                if (!shoe) {
-
-                  return null;
-
-                }
-
-
-                return (
-
-                  <div
-                    className="cart-item"
-                    key={key}
-                  >
-
-                    {/* =========================
-                        SHOE IMAGE
-                    ========================= */}
-
-                    <img
-                      src={shoe.image}
-                      alt={shoe.name}
-                      className="cart-shoe-image"
-                    />
-
-
-                    {/* =========================
-                        SHOE DETAILS
-                    ========================= */}
-
-                    <div className="cart-item-details">
-
-                      <h2>
-                        {shoe.name}
-                      </h2>
-
-
-                      <p>
-                        {shoe.description}
-                      </p>
-
-
-                      {/* Selected Size */}
-
-                      <p>
-                        <strong>
-                          Size:
-                        </strong>{" "}
-                        {size}
-                      </p>
-
-
-                      <h3>
-                        Rs.{" "}
-                        {shoe.price.toLocaleString(
-                          "en-PK"
-                        )}
-                      </h3>
-
-                    </div>
-
-
-                    {/* =========================
-                        QUANTITY
-                    ========================= */}
-
-                    <div className="quantity-control">
-
-                      {/* Minus */}
-
-                      <button
-                        onClick={() =>
-                          removeFromCart(
-                            shoe.id,
-                            size
-                          )
-                        }
-                      >
-                        -
-                      </button>
-
-
-                      {/* Quantity */}
-
-                      <span>
-                        {quantity}
-                      </span>
-
-
-                      {/* Plus */}
-
-                      <button
-                        onClick={() =>
-                          addToCart(
-                            shoe,
-                            size
-                          )
-                        }
-                      >
-                        +
-                      </button>
-
-                    </div>
-
-
-                    {/* =========================
-                        ITEM TOTAL
-                    ========================= */}
-
-                    <div className="item-total">
-
-                      Rs.{" "}
-
-                      {(
-                        shoe.price *
-                        quantity
-                      ).toLocaleString(
-                        "en-PK"
-                      )}
-
-                    </div>
-
-
-                    {/* =========================
-                        DELETE
-                    ========================= */}
-
-                    <button
-                      className="remove-btn"
-                      onClick={() =>
-                        deleteFromCart(
-                          shoe.id,
-                          size
-                        )
-                      }
-                    >
-                      Remove
-                    </button>
-
+                    <h3>
+                      Rs. {shoe.price.toLocaleString("en-PK")}
+                    </h3>
                   </div>
 
-                );
+                  <div className="quantity-control">
+                    <button
+                      onClick={() =>
+                        removeFromCart(shoe._id, size)
+                      }
+                    >
+                      -
+                    </button>
 
-              }
-            )}
+                    <span>{quantity}</span>
 
+                    <button
+                      onClick={() =>
+                        addToCart(shoe, size)
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <div className="item-total">
+                    Rs.{" "}
+                    {(shoe.price * quantity).toLocaleString(
+                      "en-PK"
+                    )}
+                  </div>
+
+                  <button
+                    className="remove-btn"
+                    onClick={() =>
+                      deleteFromCart(shoe._id, size)
+                    }
+                  >
+                    Remove
+                  </button>
+                </div>
+              );
+            })}
           </div>
-
-
-          {/* =========================
-              TOTAL AMOUNT
-          ========================= */}
 
           <div className="total-amount">
-
-            {/* Subtotal */}
-
             <div className="amount-row">
-
+              <span>Subtotal</span>
               <span>
-                Subtotal
+                PKR {subtotal.toLocaleString("en-PK")}
               </span>
-
-              <span>
-                PKR{" "}
-                {subtotal.toLocaleString(
-                  "en-PK"
-                )}
-              </span>
-
             </div>
 
-
-            {/* Delivery */}
-
             <div className="amount-row">
-
+              <span>Delivery Charges</span>
               <span>
-                Delivery Charges
+                PKR {deliveryCharges.toLocaleString("en-PK")}
               </span>
-
-              <span>
-                PKR{" "}
-                {deliveryCharges.toLocaleString(
-                  "en-PK"
-                )}
-              </span>
-
             </div>
-
-
-            {/* Total */}
 
             <div className="amount-row total-row">
-
+              <span>Total Amount</span>
               <span>
-                Total Amount
+                PKR {totalAmount.toLocaleString("en-PK")}
               </span>
-
-              <span>
-                PKR{" "}
-                {totalAmount.toLocaleString(
-                  "en-PK"
-                )}
-              </span>
-
             </div>
 
-
-            {/* Checkout */}
-
-            <button onClick={() => navigate("/place-order")}>
+           <button
+  onClick={() =>
+    navigate("/place-order", {
+      state: {
+        subtotal,
+        deliveryCharges,
+        totalAmount,
+      },
+    })
+  }
+>
   Proceed to Checkout
 </button>
-
           </div>
-
         </>
-
       )}
-
     </div>
-
   );
-
 };
-
 
 export default Cart;

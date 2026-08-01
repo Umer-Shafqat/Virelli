@@ -13,9 +13,22 @@ const StoreContextProvider = ({ children }) => {
 
   const [cartItems, setCartItems] = useState({});
   const [shoes, setShoes] = useState([]);
+  
   const [token, setToken] = useState(
     localStorage.getItem("token") || ""
   );
+
+  const fetchShoes = useCallback(async () => {
+    try {
+      const response = await axios.get(`${url}/api/shoes/list`);
+
+      if (response.data.success) {
+        setShoes(response.data.data || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [url]);
 
   const addToCart = async (shoe, size) => {
     if (!token) {
@@ -139,55 +152,33 @@ const StoreContextProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.post(
-        `${url}/api/cart/remove`,
-        {
-          shoeId,
-          size,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      let updatedCart = { ...cartItems };
+      const key = `${shoeId}-${size}`;
+
+      while (updatedCart[key] && updatedCart[key] > 0) {
+        const response = await axios.post(
+          `${url}/api/cart/remove`,
+          {
+            shoeId,
+            size,
           },
-        }
-      );
-
-      if (response.data.success) {
-        let updatedCart = response.data.cart || {};
-        const key = `${shoeId}-${size}`;
-
-        while (updatedCart[key] && updatedCart[key] > 0) {
-          const removeResponse = await axios.post(
-            `${url}/api/cart/remove`,
-            {
-              shoeId,
-              size,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
-          if (removeResponse.data.success) {
-            updatedCart = removeResponse.data.cart || {};
-          } else {
-            break;
           }
-        }
+        );
 
-        setCartItems(updatedCart);
+        if (response.data.success) {
+          updatedCart = response.data.cart || {};
+        } else {
+          break;
+        }
       }
+
+      setCartItems(updatedCart);
     } catch (error) {
       console.log("Delete cart item error:", error);
-
-      if (error.response?.status === 401) {
-        alert("Session expired. Please login again.");
-        localStorage.removeItem("token");
-        setToken("");
-        setCartItems({});
-      }
     }
   };
 
@@ -212,12 +203,6 @@ const StoreContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.log("Clear cart error:", error);
-
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token");
-        setToken("");
-        setCartItems({});
-      }
     }
   };
 
@@ -228,30 +213,16 @@ const StoreContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    fetchShoes();
+  }, [fetchShoes]);
+
+  useEffect(() => {
     if (token) {
       getCart();
     } else {
       setCartItems({});
     }
   }, [token, getCart]);
-
-  const fetchShoes = async () => {
-    try {
-      const response = await axios.get(
-        `${url}/api/shoes/list`
-      );
-
-      if (response.data.success) {
-        setShoes(response.data.data || []);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchShoes();
-  }, []);
 
   useEffect(() => {
     if (token) {

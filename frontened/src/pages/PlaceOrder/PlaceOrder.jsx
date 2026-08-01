@@ -5,15 +5,12 @@ import React, {
 
 import {
   useNavigate,
+  useLocation
 } from "react-router-dom";
 
 import {
   StoreContext,
 } from "../../Context/StoreContext/StoreContext";
-
-import {
-  shoes,
-} from "../../assets/assets";
 
 import axios from "axios";
 
@@ -23,7 +20,14 @@ import "./PlaceOrder.css";
 const PlaceOrder = () => {
 
   const navigate = useNavigate();
+  
+  const location = useLocation();
 
+const {
+  subtotal = 0,
+  deliveryCharges = 300,
+  totalAmount = 300,
+} = location.state || {};
 
   // =====================================
   // STORE CONTEXT
@@ -32,6 +36,7 @@ const PlaceOrder = () => {
   const {
     cartItems,
     token,
+     shoes,
     setCartItems,
   } = useContext(
     StoreContext
@@ -75,75 +80,8 @@ const PlaceOrder = () => {
     setLoading
   ] = useState(false);
 
-
-  // =====================================
-  // DELIVERY CHARGES
-  // =====================================
-
-  const deliveryCharges = 300;
-
-
-  // =====================================
-  // CART ENTRIES
-  // =====================================
-
   const cartEntries =
     Object.entries(cartItems);
-
-
-  // =====================================
-  // SUBTOTAL
-  // =====================================
-
-  const subtotal =
-    cartEntries.reduce(
-
-      (
-        total,
-        [key, quantity]
-      ) => {
-
-        const [
-          shoeId
-        ] = key.split("-");
-
-
-        const shoe =
-          shoes.find(
-
-            (item) =>
-              item.id.toString() ===
-              shoeId
-
-          );
-
-
-        if (!shoe) {
-
-          return total;
-
-        }
-
-
-        return (
-          total +
-          shoe.price * quantity
-        );
-
-      },
-
-      0
-
-    );
-
-
-  // =====================================
-  // TOTAL AMOUNT
-  // =====================================
-
-  const totalAmount =
-    subtotal +
-    deliveryCharges;
 
 
   // =====================================
@@ -239,7 +177,7 @@ const PlaceOrder = () => {
                 shoes.find(
 
                   (item) =>
-                    item.id.toString() ===
+                    item._id.toString() ===
                     shoeId
 
                 );
@@ -257,7 +195,7 @@ const PlaceOrder = () => {
               return {
 
                 id:
-                  shoe.id,
+                  shoe._id,
 
                 name:
                   shoe.name,
@@ -706,7 +644,7 @@ const PlaceOrder = () => {
                   shoes.find(
 
                     (item) =>
-                      item.id.toString() ===
+                      item._id.toString() ===
                       shoeId
 
                   );
