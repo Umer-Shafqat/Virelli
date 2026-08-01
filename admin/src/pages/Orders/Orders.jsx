@@ -52,6 +52,26 @@ const Orders = () => {
     }
   };
 
+  const deleteOrder = async (id) => {
+    if (!window.confirm("Delete this order?")) return;
+
+    try {
+      const response = await axios.delete(
+        `${backendUrl}/api/order/delete/${id}`
+      );
+
+      if (response.data.success) {
+        alert(response.data.message);
+        fetchOrders();
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete order.");
+    }
+  };
+
   return (
     <div className="orders-page">
       <Sidebar />
@@ -94,13 +114,19 @@ const Orders = () => {
                         {order.customer?.address}, {order.customer?.city}
                       </p>
 
+                      <p>{order.customer?.phone}</p>
+
                       <p>
-                        {order.customer?.phone}
+                        <strong>Email:</strong> {order.customer?.email}
                       </p>
 
-                      <p><strong>Email:</strong> {order.customer?.email}</p>
-                     <p><strong>Country:</strong> {order.customer?.country}</p>
-                      <p><strong>Payment:</strong> {order.customer?.paymentMethod}</p>
+                      <p>
+                        <strong>Country:</strong> {order.customer?.country}
+                      </p>
+
+                      <p>
+                        <strong>Payment:</strong> {order.customer?.paymentMethod}
+                      </p>
 
                       <p>
                         <strong>Date:</strong>{" "}
@@ -110,60 +136,48 @@ const Orders = () => {
                       <hr />
 
                       {order.items?.map((item, index) => (
-                        <div
-                          key={index}
-                          className="order-product"
-                        >
-                        <img
-  src={
-    item.image.startsWith("/static")
-      ? `http://localhost:3000${item.image}`
-      : `${backendUrl}/images/${item.image}`
-  }
-  alt={item.name}
-  onError={(e) => {
-    e.target.src = "/no-image.png"; // Place a default image in public/no-image.png
-  }}
-/>
-                          <div className="product-info">
+                        <div className="order-product" key={index}>
 
+                          <img
+                            src={
+                              item.image?.startsWith("/static")
+                                ? `http://localhost:3000${item.image}`
+                                : `${backendUrl}/images/${item.image}`
+                            }
+                            alt={item.name}
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                            }}
+                          />
+
+                          <div className="product-info">
                             <h4>{item.name}</h4>
 
-                            <p>
-                              <strong>Type:</strong> {item.type}
-                            </p>
+                            <p><strong>Type:</strong> {item.type}</p>
 
-                            <p>
-                              <strong>Size:</strong> {item.size}
-                            </p>
+                            <p><strong>Size:</strong> {item.size}</p>
 
-                            <p>
-                              <strong>Quantity:</strong>{" "}
-                              {item.quantity}
-                            </p>
+                            <p><strong>Quantity:</strong> {item.quantity}</p>
 
-                            <p>
-                              <strong>Price:</strong> Rs. {item.price}
-                            </p>
-
+                            <p><strong>Price:</strong> Rs. {item.price}</p>
                           </div>
+
                         </div>
                       ))}
 
                       <hr />
 
                       <p>
-                        <strong>Subtotal:</strong>{" "}
-                        Rs. {order.subtotal || order.amount}
+                        <strong>Subtotal:</strong> Rs.{" "}
+                        {order.subtotal || order.amount}
                       </p>
 
                       <p>
-                        <strong>Total Amount:</strong>{" "}
-                        Rs. {order.totalAmount || order.amount}
+                        <strong>Total Amount:</strong> Rs.{" "}
+                        {order.totalAmount || order.amount}
                       </p>
 
                     </div>
-
                   </div>
 
                   <div className="order-right">
@@ -171,36 +185,28 @@ const Orders = () => {
                     <select
                       value={order.status}
                       onChange={(e) =>
-                        updateStatus(
-                          order._id,
-                          e.target.value
-                        )
+                        updateStatus(order._id, e.target.value)
                       }
                     >
-                      <option value="Order Placed">
-                        Order Placed
-                      </option>
-
-                      <option value="Processing">
-                        Processing
-                      </option>
-
-                      <option value="Shipped">
-                        Shipped
-                      </option>
-
+                      <option value="Order Placed">Order Placed</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Shipped">Shipped</option>
                       <option value="Out for Delivery">
                         Out for Delivery
                       </option>
-
-                      <option value="Delivered">
-                        Delivered
-                      </option>
-
-                      <option value="Cancelled">
-                        Cancelled
-                      </option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
                     </select>
+
+                    {(order.status === "Delivered" ||
+                      order.status === "Cancelled") && (
+                      <button
+                        className="delete-order-btn"
+                        onClick={() => deleteOrder(order._id)}
+                      >
+                        Delete Order
+                      </button>
+                    )}
 
                   </div>
 

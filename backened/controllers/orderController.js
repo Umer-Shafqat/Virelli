@@ -240,6 +240,4 @@ export {
   placeOrder,
   deleteOrder,
   getMyOrders,
-  listOrders,
-  updateStatus,
 };
