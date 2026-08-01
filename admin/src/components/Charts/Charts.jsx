@@ -6,14 +6,14 @@ const Charts = () => {
 
   const url = "http://localhost:4000";
 
-  const [monthlySales, setMonthlySales] = useState([]);
+ const [dailySales, setDailySales] = useState([]);
 
-const getMonthlySales = async () => {
+const getDailySales = async () => {
   try {
     const token = localStorage.getItem("token");
 
     const response = await axios.get(
-      `${url}/api/admin/monthly-sales`,
+      `${url}/api/admin/daily-sales`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ const getMonthlySales = async () => {
     );
 
     if (response.data.success) {
-      setMonthlySales(response.data.monthlySales);
+      setDailySales(response.data.dailySales);
     }
   } catch (error) {
     console.log(error);
@@ -30,11 +30,11 @@ const getMonthlySales = async () => {
 };
 
   useEffect(() => {
-    getMonthlySales();
+    getDailySales();
   }, []);
 
   const maxValue = Math.max(
-    ...monthlySales.map((item) => item.value),
+    ...dailySales.map((item) => item.value),
     1
   );
 
@@ -42,15 +42,15 @@ const getMonthlySales = async () => {
     <div className="charts-container">
 
       <div className="charts-header">
-        <h2>Monthly Revenue</h2>
-        <p>Total revenue earned each month</p>
+        <h2>Daily Revenue</h2>
+        <p>Total revenue earned each day</p>
       </div>
 
       <div className="bar-chart">
 
-        {monthlySales.map((item) => (
+        {dailySales.map((item) => (
 
-          <div className="bar-item" key={item.month}>
+          <div className="bar-item" key={item.day}>
 
             <span className="bar-value">
               Rs. {item.value.toLocaleString()}
@@ -64,7 +64,7 @@ const getMonthlySales = async () => {
             ></div>
 
             <span className="bar-label">
-              {item.month}
+              {item.day}
             </span>
 
           </div>

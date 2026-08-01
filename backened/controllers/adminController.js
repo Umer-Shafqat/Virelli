@@ -243,23 +243,22 @@ const getAnalytics = async (req, res) => {
 };
 
 // =====================================
-// MONTHLY SALES
+// DAILY SALES
 // =====================================
-
-export const getMonthlySales = async (req, res) => {
+export const getDailySales = async (req, res) => {
   try {
     const sales = await orderModel.aggregate([
       {
         $match: {
-          status: {
-            $ne: "Cancelled",
-          },
+          status: { $ne: "Cancelled" },
         },
       },
       {
         $group: {
           _id: {
-            $month: "$createdAt",
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+            day: { $dayOfMonth: "$createdAt" },
           },
           revenue: {
             $sum: "$totalAmount",
@@ -268,40 +267,21 @@ export const getMonthlySales = async (req, res) => {
       },
       {
         $sort: {
-          _id: 1,
+          "_id.year": 1,
+          "_id.month": 1,
+          "_id.day": 1,
         },
       },
     ]);
 
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    const monthlySales = months.map((month, index) => {
-      const found = sales.find(
-        (item) => item._id === index + 1
-      );
-
-      return {
-        month,
-        value: found ? found.revenue : 0,
-      };
-    });
+    const dailySales = sales.map((item) => ({
+      day: `${item._id.day}/${item._id.month}`,
+      value: item.revenue,
+    }));
 
     res.json({
       success: true,
-      monthlySales,
+      dailySales,
     });
   } catch (error) {
     res.json({
@@ -372,5 +352,4 @@ export {
   getAllOrders,
   updateOrderStatus,
   getAnalytics,
-  
 };

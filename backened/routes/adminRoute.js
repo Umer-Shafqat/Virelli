@@ -10,7 +10,7 @@ import {
   getAllOrders,
   updateOrderStatus,
   adminLogin,
-  getMonthlySales,
+   getDailySales,
 } from "../controllers/adminController.js";
 
 const adminRouter = express.Router();
@@ -54,10 +54,10 @@ adminRouter.put(
 adminRouter.post("/login", adminLogin);
 
 adminRouter.get(
-  "/monthly-sales",
+  "/daily-sales",
   authMiddleware,
   adminMiddleware,
-  getMonthlySales
+  getDailySales
 );
 
 export default adminRouter;
