@@ -2,118 +2,43 @@ import userModel from "../models/userModel.js";
 import shoeModel from "../models/shoeModel.js";
 import orderModel from "../models/orderModel.js";
 import jwt from "jsonwebtoken";
-
-// =====================================
-// DASHBOARD
-// =====================================
-
 export const getDashboard = async (req, res) => {
   try {
+    const totalShoes = await shoeModel.countDocuments();
+    const totalOrders = await orderModel.countDocuments();
     const totalUsers = await userModel.countDocuments();
 
-    const totalShoes = await shoeModel.countDocuments();
-
-    const totalOrders = await orderModel.countDocuments({
-      status: { $ne: "Cancelled" },
-    });
-
-    const orders = await orderModel.find({
-      status: { $ne: "Cancelled" },
-    });
+    const orders = await orderModel.find();
 
     const revenue = orders.reduce(
-      (sum, order) => sum + order.totalAmount,
+      (total, order) => total + (order.totalAmount || 0),
       0
     );
 
-    const averageOrderValue =
-      totalOrders > 0 ? revenue / totalOrders : 0;
-
-    const categoryMap = {};
-
-    orders.forEach((order) => {
-      order.items.forEach((item) => {
-        categoryMap[item.category] =
-          (categoryMap[item.category] || 0) + item.quantity;
-      });
-    });
-
-    let topSellingCategory = "N/A";
-    let maxSold = 0;
-
-    for (const category in categoryMap) {
-      if (categoryMap[category] > maxSold) {
-        maxSold = categoryMap[category];
-        topSellingCategory = category;
-      }
-    }
-
-    const now = new Date();
-
-    const currentMonth = now.getMonth() + 1;
-    const currentYear = now.getFullYear();
-
-    const previousMonth =
-      currentMonth === 1 ? 12 : currentMonth - 1;
-
-    const previousYear =
-      currentMonth === 1
-        ? currentYear - 1
-        : currentYear;
-
-    const currentRevenue = orders
-      .filter((order) => {
-        const date = new Date(order.createdAt);
-        return (
-          date.getMonth() + 1 === currentMonth &&
-          date.getFullYear() === currentYear
-        );
-      })
-      .reduce((sum, order) => sum + order.totalAmount, 0);
-
-    const previousRevenue = orders
-      .filter((order) => {
-        const date = new Date(order.createdAt);
-        return (
-          date.getMonth() + 1 === previousMonth &&
-          date.getFullYear() === previousYear
-        );
-      })
-      .reduce((sum, order) => sum + order.totalAmount, 0);
-
-    const monthlyGrowth =
-      previousRevenue === 0
-        ? 100
-        : (
-            ((currentRevenue - previousRevenue) /
-              previousRevenue) *
-            100
-          ).toFixed(1);
+    const recentOrders = await orderModel
+      .find()
+      .sort({ createdAt: -1 })
+      .limit(5);
 
     res.json({
       success: true,
       dashboard: {
-        totalUsers,
         totalShoes,
         totalOrders,
+        totalUsers,
         revenue,
-        averageOrderValue,
-        topSellingCategory,
-        monthlyGrowth,
+        recentOrders,
       },
     });
   } catch (error) {
+    console.log(error);
+
     res.json({
       success: false,
       message: error.message,
     });
   }
 };
-
-// =====================================
-// ADMIN LOGIN
-// =====================================
-
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -124,6 +49,7 @@ const adminLogin = async (req, res) => {
     ) {
       const token = jwt.sign(
         {
+          id: "admin",
           email,
           role: "admin",
         },
@@ -140,12 +66,12 @@ const adminLogin = async (req, res) => {
       });
     }
 
-    res.json({
+    return res.json({
       success: false,
       message: "Invalid email or password",
     });
   } catch (error) {
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });

@@ -1,5 +1,4 @@
 import express from "express";
-
 import authMiddleware from "../middleware/authMiddleware.js";
 import adminMiddleware from "../middleware/adminMiddleware.js";
 
@@ -10,10 +9,12 @@ import {
   getAllOrders,
   updateOrderStatus,
   adminLogin,
-   getDailySales,
+  getDailySales,
 } from "../controllers/adminController.js";
 
 const adminRouter = express.Router();
+
+adminRouter.post("/login", adminLogin);
 
 adminRouter.get(
   "/dashboard",
@@ -49,9 +50,6 @@ adminRouter.put(
   adminMiddleware,
   updateOrderStatus
 );
-
-
-adminRouter.post("/login", adminLogin);
 
 adminRouter.get(
   "/daily-sales",
