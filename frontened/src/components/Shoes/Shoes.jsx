@@ -1,6 +1,7 @@
-import React, {useContext,useState} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Shoes.css";
-import {StoreContext} from "../../Context/StoreContext/StoreContext";
+
+import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 
 const Shoes = ({
@@ -12,21 +13,12 @@ const Shoes = ({
   // GET ADD TO CART FROM STORE CONTEXT
   // =====================================
 
-  const {
-    addToCart
-  } = useContext(StoreContext);
+const {
+  shoes,
+  addToCart,
+  url,
+} = useContext(StoreContext);
 
-
-  // =====================================
-  // SELECTED SIZE FOR EACH SHOE
-  // =====================================
-
-  // Example:
-  // {
-  //   1: 40,
-  //   2: 42,
-  //   5: 30
-  // }
 
   const [
     selectedSizes,
@@ -38,13 +30,15 @@ const Shoes = ({
   // SHOE LIST
   // =====================================
 
-  const [
-    shoeList,
-    setShoeList
-  ] = useState(
-    products || shoes
-  );
+  const [shoeList, setShoeList] = useState([]);
 
+useEffect(() => {
+  if (products) {
+    setShoeList(products);
+  } else {
+    setShoeList(shoes);
+  }
+}, [products, shoes]);
 
   // =====================================
   // DISPLAY SHOES
@@ -94,7 +88,7 @@ const Shoes = ({
           (shoe) => {
 
             if (
-              shoe.id === shoeId
+              shoe._id === shoeId
             ) {
 
               const oldTotalRatings =
@@ -151,7 +145,7 @@ const Shoes = ({
     // for THIS specific shoe
 
     const selectedSize =
-      selectedSizes[shoe.id];
+      selectedSizes[shoe._id];
 
 
     // Check if size is selected
@@ -169,7 +163,7 @@ const Shoes = ({
 
     // Check shoe ID
 
-    if (!shoe?.id) {
+    if (!shoe?._id) {
 
       alert(
         "Shoe ID is missing"
@@ -189,7 +183,7 @@ const Shoes = ({
 
     console.log(
       "Shoe ID:",
-      shoe.id
+      shoe._id
     );
 
 
@@ -251,12 +245,10 @@ const Shoes = ({
             // DISCOUNT PRICE
             // =========================
 
-            const discountedPrice =
-              shoe.price -
-              (
-                shoe.price *
-                (shoe.discount || 0)
-              ) / 100;
+         const price = Number(shoe.price || 0);
+
+const discountedPrice =
+  price - (price * (shoe.discount || 0)) / 100;
 
 
             // =========================
@@ -279,14 +271,14 @@ const Shoes = ({
             // =========================
 
             const selectedSize =
-              selectedSizes[shoe.id];
+              selectedSizes[shoe._id];
 
 
             return (
 
               <div
                 className="shoe-card"
-                key={shoe.id}
+                key={shoe._id}
               >
 
 
@@ -310,9 +302,9 @@ const Shoes = ({
 
 
                   <img
-                    src={shoe.image}
-                    alt={shoe.name}
-                  />
+  src={`${url}/images/${shoe.image}`}
+  alt={shoe.name}
+/>
 
                 </div>
 
@@ -382,7 +374,7 @@ const Shoes = ({
 
                             onClick={() =>
                               handleRating(
-                                shoe.id,
+                                shoe._id,
                                 star
                               )
                             }
@@ -454,8 +446,7 @@ const Shoes = ({
                         Rs.{" "}
 
                         {
-                          shoe.price
-                            .toLocaleString()
+                          price.toLocaleString()
                         }
 
                       </span>
@@ -486,7 +477,7 @@ const Shoes = ({
 
                           onClick={() =>
                             handleSizeSelect(
-                              shoe.id,
+                              shoe._id,
                               size
                             )
                           }
