@@ -131,13 +131,15 @@ export const updateStatus = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   try {
-    console.log("Delete ID:", req.params.id);
+    const { id } = req.params;
 
-    const deleted = await orderModel.findByIdAndDelete(req.params.id);
+    console.log("Deleting ID:", id);
 
-    console.log("Deleted:", deleted);
+    const deletedOrder = await orderModel.findOneAndDelete({ _id: id });
 
-    if (!deleted) {
+    console.log("Deleted Order:", deletedOrder);
+
+    if (!deletedOrder) {
       return res.status(404).json({
         success: false,
         message: "Order not found",
@@ -150,7 +152,7 @@ const deleteOrder = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
+    console.log("Delete Error:", error);
 
     return res.status(500).json({
       success: false,
@@ -158,6 +160,7 @@ const deleteOrder = async (req, res) => {
     });
   }
 };
+
 // =====================================
 // GET MY ORDERS
 // =====================================
