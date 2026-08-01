@@ -3,9 +3,10 @@ import mongoose from "mongoose";
 const orderItemSchema = new mongoose.Schema(
   {
     id: {
-      type: Number,
-      required: true,
-    },
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Shoe",
+  required: true,
+},
 
     name: {
       type: String,

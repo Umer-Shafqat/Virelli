@@ -203,8 +203,7 @@ const {
                 category:
                   shoe.category,
 
-                type:
-                  shoe.type,
+               type: shoe.type,
 
                 price:
                   shoe.price,
