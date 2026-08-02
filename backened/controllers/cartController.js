@@ -177,91 +177,33 @@ const getCart = async (req, res) => {
   }
 
 };
-
-
-
-// =================================
-// REMOVE ONE QUANTITY
-// =================================
-
 const removeFromCart = async (req, res) => {
-
   try {
-
     const userId = req.userId;
+    const { shoeId, size } = req.body;
 
-    const {
-      shoeId,
-      name,
-      size,
-      quantity,
-      price,
-      image,
-      category,
-      type,
-    } = req.body;
-
-
-    // =================================
-    // FIND CART
-    // =================================
-
-    const cart =
-      await cartModel.findOne({
-        userId,
-      });
-
+    const cart = await cartModel.findOne({ userId });
 
     if (!cart) {
-
       return res.status(404).json({
         success: false,
         message: "Cart not found",
       });
-
     }
 
+    // SAME KEY AS addToCart
+    const key = `${shoeId}-${size}`;
 
-    // =================================
-    // CART KEY
-    // =================================
-
-    const key =
-      `${shoeId},
-      ${size}`;
-
-
-    // =================================
-    // DECREASE QUANTITY
-    // =================================
-
-    if (cart.items?.[key]) {
-
-      cart.items[key] -= 1;
-
-
-      // If quantity reaches 0
-      // remove item completely
+    if (cart.items[key]) {
+      cart.items[key]--;
 
       if (cart.items[key] <= 0) {
-
         delete cart.items[key];
-
       }
 
+      cart.markModified("items");
+      await cart.save();
     }
-
-
-    // Important
-    cart.markModified("items");
-
-
-    // =================================
-    // SAVE
-    // =================================
-
-    await cart.save();
-
 
     return res.status(200).json({
       success: true,
@@ -269,28 +211,15 @@ const removeFromCart = async (req, res) => {
       cart: cart.items,
     });
 
-
   } catch (error) {
-
-    console.log(
-      "Remove Cart Error:",
-      error
-    );
+    console.log("Remove Cart Error:", error);
 
     return res.status(500).json({
       success: false,
       message: "Error removing item",
     });
-
   }
-
 };
-
-
-
-// =================================
-// CLEAR ENTIRE CART
-// =================================
 
 const clearCart = async (req, res) => {
 

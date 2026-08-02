@@ -97,7 +97,7 @@ const StoreContextProvider = ({ children }) => {
       );
 
       if (response.data.success) {
-        setCartItems(response.data.cartData || {});
+        setCartItems(response.data.cart || {});
       }
     } catch (error) {
       console.log("Get cart error:", error);
@@ -111,18 +111,37 @@ const StoreContextProvider = ({ children }) => {
   }, [token, url]);
 
   const removeFromCart = async (shoeId, size) => {
-    if (!token) {
-      alert("Please login first");
-      return;
-    }
+  if (!token) return;
 
-    try {
+  try {
+    const response = await axios.post(
+      `${url}/api/cart/remove`,
+      { shoeId, size },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data.success) {
+     setCartItems(response.data.cart || {});
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteFromCart = async (shoeId, size) => {
+  if (!token) return;
+
+  let quantity = cartItems[`${shoeId}-${size}`] || 0;
+
+  try {
+    while (quantity > 0) {
       const response = await axios.post(
         `${url}/api/cart/remove`,
-        {
-          shoeId,
-          size,
-        },
+        { shoeId, size },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -130,57 +149,16 @@ const StoreContextProvider = ({ children }) => {
         }
       );
 
-      if (response.data.success) {
-        setCartItems(response.data.cart || {});
-      }
-    } catch (error) {
-      console.log("Remove from cart error:", error);
+      if (!response.data.success) break;
 
-      if (error.response?.status === 401) {
-        alert("Session expired. Please login again.");
-        localStorage.removeItem("token");
-        setToken("");
-        setCartItems({});
-      }
+      quantity--;
+
+      setCartItems(response.data.cart || {});
     }
-  };
-
-  const deleteFromCart = async (shoeId, size) => {
-    if (!token) {
-      alert("Please login first");
-      return;
-    }
-
-    try {
-      let updatedCart = { ...cartItems };
-      const key = `${shoeId}-${size}`;
-
-      while (updatedCart[key] && updatedCart[key] > 0) {
-        const response = await axios.post(
-          `${url}/api/cart/remove`,
-          {
-            shoeId,
-            size,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (response.data.success) {
-          updatedCart = response.data.cart || {};
-        } else {
-          break;
-        }
-      }
-
-      setCartItems(updatedCart);
-    } catch (error) {
-      console.log("Delete cart item error:", error);
-    }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const clearCart = async () => {
     if (!token) {
