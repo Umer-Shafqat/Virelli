@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import shoeModel from "../models/shoeModel.js";
 import orderModel from "../models/orderModel.js";
 import jwt from "jsonwebtoken";
+
 export const getDashboard = async (req, res) => {
   try {
     const totalShoes = await shoeModel.countDocuments();
