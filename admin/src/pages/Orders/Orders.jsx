@@ -212,10 +212,17 @@ const Orders = () => {
       </html>
     `);
 
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
+   printWindow.document.close();
+
+printWindow.onload = () => {
+  printWindow.focus();
+  printWindow.print();
+
+  printWindow.onafterprint = () => {
+    printWindow.close();
   };
+};
+};
 
   return (
     <div className="orders-page">
