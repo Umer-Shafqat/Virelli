@@ -37,6 +37,35 @@ const Dashboard = () => {
     getDashboard();
   }, []);
 
+
+const fetchDashboard = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.get(
+      "http://localhost:4000/api/admin/dashboard",
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    console.log("API Response:", response.data);
+
+    if (response.data.success) {
+      setDashboard(response.data.dashboard);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {
+  console.log("Dashboard Mounted");
+  fetchDashboard();
+}, []);
+
   const dashboardCards = [
     {
       title: "Total Shoes",

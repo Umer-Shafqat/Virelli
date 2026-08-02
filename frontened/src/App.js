@@ -27,7 +27,7 @@ function App() {
       <Navbar />
 
       <Routes>
-
+        
         {/* Home Page */}
         <Route
           path="/"
