@@ -10,7 +10,6 @@ import Table from "../../components/Table/Table";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-
   const url = "http://localhost:4000";
 
   const [dashboard, setDashboard] = useState({
@@ -21,55 +20,44 @@ const Dashboard = () => {
     recentOrders: [],
   });
 
-  const getDashboard = async () => {
+  // =====================================
+  // FETCH DASHBOARD DATA
+  // =====================================
+
+  const fetchDashboard = async () => {
     try {
-      const response = await axios.get(`${url}/api/admin/dashboard`);
+      const token = localStorage.getItem("adminToken");
+
+      const response = await axios.get(
+        `${url}/api/admin/dashboard`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      console.log("Dashboard API:", response.data);
 
       if (response.data.success) {
         setDashboard(response.data.dashboard);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Dashboard Error:", error);
     }
   };
 
+  // =====================================
+  // LOAD DATA
+  // =====================================
+
   useEffect(() => {
-    getDashboard();
+    fetchDashboard();
   }, []);
 
-const fetchDashboard = async () => {
-  try {
-    const token = localStorage.getItem("adminToken");
-
- const response = await axios.get(
-  "http://localhost:4000/api/admin/dashboard",
-  {
-    headers: {
-      Authorization: token,
-    },
-  }
-);
-
-console.log("Dashboard Mounted");
-
-console.log(response.data);
-
-console.log(dashboard);
-
-    console.log("API Response:", response.data);
-
-    if (response.data.success) {
-      setDashboard(response.data.dashboard);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-useEffect(() => {
-  console.log("Dashboard Mounted");
-  fetchDashboard();
-}, []);
+  // =====================================
+  // DASHBOARD CARDS
+  // =====================================
 
   const dashboardCards = [
     {
@@ -92,7 +80,7 @@ useEffect(() => {
     },
     {
       title: "Revenue",
-      value: `Rs. ${dashboard.revenue.toLocaleString()}`,
+      value: `Rs. ${Number(dashboard.revenue).toLocaleString("en-PK")}`,
       icon: "💰",
       color: "#ef4444",
     },
@@ -101,9 +89,9 @@ useEffect(() => {
   return (
     <div className="dashboard-container">
       <Sidebar />
-      <Navbar />
 
-      <main className="dashboard-content">
+      <div className="dashboard-content">
+        <Navbar />
 
         <section className="dashboard-header">
           <h1>Dashboard</h1>
@@ -128,10 +116,10 @@ useEffect(() => {
 
         <section className="dashboard-table">
           <h2>Recent Orders</h2>
+
           <Table orders={dashboard.recentOrders} />
         </section>
-
-      </main>
+      </div>
     </div>
   );
 };

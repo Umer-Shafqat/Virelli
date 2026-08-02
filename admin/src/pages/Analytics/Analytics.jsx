@@ -6,26 +6,26 @@ import Charts from "../../components/Charts/Charts";
 import "./Analytics.css";
 
 const Analytics = () => {
-
   const backendUrl = "http://localhost:4000";
 
   const [analytics, setAnalytics] = useState({
-    totalRevenue: 0,
+    totalUsers: 0,
+    totalShoes: 0,
     totalOrders: 0,
-    totalCustomers: 0,
-    totalProducts: 0,
-    topSellingCategory: "-",
-    monthlyGrowth: "0%",
+    revenue: 0,
     averageOrderValue: 0,
+    topSellingCategory: "-",
   });
 
   const fetchAnalytics = async () => {
     try {
+      const token = localStorage.getItem("adminToken");
+
       const response = await axios.get(
         `${backendUrl}/api/admin/analytics`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: token,
           },
         }
       );
@@ -44,8 +44,8 @@ const Analytics = () => {
 
   const stats = [
     {
-      title: "Total Revenue",
-      value: `Rs. ${analytics.totalRevenue.toLocaleString()}`,
+      title: "Revenue",
+      value: `Rs. ${Number(analytics.revenue).toLocaleString()}`,
       icon: "💰",
       color: "#16a34a",
     },
@@ -56,14 +56,14 @@ const Analytics = () => {
       color: "#2563eb",
     },
     {
-      title: "Customers",
-      value: analytics.totalCustomers,
+      title: "Users",
+      value: analytics.totalUsers,
       icon: "👥",
       color: "#f59e0b",
     },
     {
-      title: "Products",
-      value: analytics.totalProducts,
+      title: "Shoes",
+      value: analytics.totalShoes,
       icon: "👟",
       color: "#8b5cf6",
     },
@@ -75,7 +75,6 @@ const Analytics = () => {
       <Navbar />
 
       <div className="analytics-content">
-
         <div className="analytics-header">
           <h2>Store Analytics</h2>
           <p>Monitor sales performance, revenue and overall store growth.</p>
@@ -104,24 +103,16 @@ const Analytics = () => {
         </div>
 
         <div className="analytics-summary">
-
           <div className="summary-card">
             <h3>Top Selling Category</h3>
             <p>{analytics.topSellingCategory}</p>
           </div>
 
           <div className="summary-card">
-            <h3>Monthly Growth</h3>
-            <p className="growth">{analytics.monthlyGrowth}</p>
-          </div>
-
-          <div className="summary-card">
             <h3>Average Order Value</h3>
-            <p>Rs. {analytics.averageOrderValue.toLocaleString()}</p>
+            <p>Rs. {Number(analytics.averageOrderValue).toLocaleString()}</p>
           </div>
-
         </div>
-
       </div>
     </div>
   );
