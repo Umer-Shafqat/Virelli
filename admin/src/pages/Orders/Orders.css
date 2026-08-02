@@ -356,3 +356,39 @@
 .delete-order-btn:hover {
   background: #c62828;
 }
+
+.print-order-btn {
+  width: 170px;
+  padding: 12px 18px;
+  margin-top: 12px;
+  background-color: #171c29;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.print-order-btn:hover {
+  background-color: #2b3550;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(23, 28, 41, 0.25);
+}
+
+.print-order-btn:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.print-order-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(23, 28, 41, 0.2);
+}
+
+.print-order-btn:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
+  box-shadow: none;
+}

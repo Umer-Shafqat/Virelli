@@ -127,7 +127,7 @@ const Orders = () => {
 
       <body>
 
-        <h1>QuickBite Shoes Store</h1>
+        <h1>Virelli Shoes Store</h1>
         <h2>Customer Invoice</h2>
 
         <div class="section">
