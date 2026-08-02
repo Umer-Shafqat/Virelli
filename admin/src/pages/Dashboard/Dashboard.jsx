@@ -37,19 +37,24 @@ const Dashboard = () => {
     getDashboard();
   }, []);
 
-
 const fetchDashboard = async () => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("adminToken");
 
-    const response = await axios.get(
-      "http://localhost:4000/api/admin/dashboard",
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
+ const response = await axios.get(
+  "http://localhost:4000/api/admin/dashboard",
+  {
+    headers: {
+      Authorization: token,
+    },
+  }
+);
+
+console.log("Dashboard Mounted");
+
+console.log(response.data);
+
+console.log(dashboard);
 
     console.log("API Response:", response.data);
 

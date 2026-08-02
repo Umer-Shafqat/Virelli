@@ -3,6 +3,10 @@ import shoeModel from "../models/shoeModel.js";
 import orderModel from "../models/orderModel.js";
 import jwt from "jsonwebtoken";
 
+// =====================================
+// DASHBOARD
+// =====================================
+
 export const getDashboard = async (req, res) => {
   try {
     const totalShoes = await shoeModel.countDocuments();
@@ -21,7 +25,7 @@ export const getDashboard = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
 
-    res.json({
+    return res.json({
       success: true,
       dashboard: {
         totalShoes,
@@ -32,14 +36,17 @@ export const getDashboard = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
-
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });
   }
 };
+
+// =====================================
+// ADMIN LOGIN
+// =====================================
+
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -89,12 +96,12 @@ const getAllUsers = async (req, res) => {
       .find({}, "-password")
       .sort({ createdAt: -1 });
 
-    res.json({
+    return res.json({
       success: true,
       data: users,
     });
   } catch (error) {
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });
@@ -112,12 +119,12 @@ const getAllOrders = async (req, res) => {
       .populate("userId", "name email")
       .sort({ createdAt: -1 });
 
-    res.json({
+    return res.json({
       success: true,
       data: orders,
     });
   } catch (error) {
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });
@@ -130,19 +137,16 @@ const getAllOrders = async (req, res) => {
 
 const updateOrderStatus = async (req, res) => {
   try {
-    await orderModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        status: req.body.status,
-      }
-    );
+    await orderModel.findByIdAndUpdate(req.params.id, {
+      status: req.body.status,
+    });
 
-    res.json({
+    return res.json({
       success: true,
       message: "Order status updated",
     });
   } catch (error) {
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });
@@ -157,12 +161,12 @@ const getAnalytics = async (req, res) => {
   try {
     const dashboard = await getDashboardData();
 
-    res.json({
+    return res.json({
       success: true,
       analytics: dashboard,
     });
   } catch (error) {
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });
@@ -172,7 +176,8 @@ const getAnalytics = async (req, res) => {
 // =====================================
 // DAILY SALES
 // =====================================
-export const getDailySales = async (req, res) => {
+
+const getDailySales = async (req, res) => {
   try {
     const sales = await orderModel.aggregate([
       {
@@ -206,12 +211,12 @@ export const getDailySales = async (req, res) => {
       value: item.revenue,
     }));
 
-    res.json({
+    return res.json({
       success: true,
       dailySales,
     });
   } catch (error) {
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });
@@ -224,7 +229,6 @@ export const getDailySales = async (req, res) => {
 
 const getDashboardData = async () => {
   const totalUsers = await userModel.countDocuments();
-
   const totalShoes = await shoeModel.countDocuments();
 
   const orders = await orderModel.find({
@@ -234,22 +238,19 @@ const getDashboardData = async () => {
   const totalOrders = orders.length;
 
   const revenue = orders.reduce(
-    (sum, order) => sum + order.totalAmount,
+    (sum, order) => sum + (order.totalAmount || 0),
     0
   );
 
   const averageOrderValue =
-    totalOrders > 0
-      ? revenue / totalOrders
-      : 0;
+    totalOrders > 0 ? revenue / totalOrders : 0;
 
   const categoryMap = {};
 
   orders.forEach((order) => {
     order.items.forEach((item) => {
       categoryMap[item.category] =
-        (categoryMap[item.category] || 0) +
-        item.quantity;
+        (categoryMap[item.category] || 0) + item.quantity;
     });
   });
 
@@ -279,4 +280,5 @@ export {
   getAllOrders,
   updateOrderStatus,
   getAnalytics,
+  getDailySales,
 };

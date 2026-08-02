@@ -37,7 +37,7 @@ const Login = () => {
       const response = await axios.post(API_URL, formData);
 
       if (response.data.success) {
-        localStorage.setItem("adminToken", response.data.token);
+       localStorage.setItem("adminToken", response.data.token);
         alert("Login Successful!");
         navigate("/");
       } else {
