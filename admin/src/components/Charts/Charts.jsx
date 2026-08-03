@@ -3,31 +3,46 @@ import axios from "axios";
 import "./Charts.css";
 
 const Charts = () => {
-
   const url = "http://localhost:4000";
 
- const [dailySales, setDailySales] = useState([]);
+  const [dailySales, setDailySales] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const getDailySales = async () => {
-  try {
-    const token = localStorage.getItem("token");
+  // =====================================
+  // GET DAILY SALES
+  // =====================================
 
-    const response = await axios.get(
-      `${url}/api/admin/daily-sales`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  const getDailySales = async () => {
+    try {
+      // Use admin token
+      const token = localStorage.getItem("adminToken");
+
+      const response = await axios.get(
+        `${url}/api/admin/daily-sales`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      console.log("Daily Sales API:", response.data);
+
+      if (response.data.success) {
+        setDailySales(response.data.dailySales || []);
+      } else {
+        setDailySales([]);
       }
-    );
-
-    if (response.data.success) {
-      setDailySales(response.data.dailySales);
+    } catch (error) {
+      console.log(
+        "Daily Sales Error:",
+        error.response?.data || error.message
+      );
+      setDailySales([]);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
   useEffect(() => {
     getDailySales();
@@ -38,41 +53,47 @@ const getDailySales = async () => {
     1
   );
 
+  if (loading) {
+    return (
+      <div className="charts-container">
+        <h2>Loading Revenue...</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="charts-container">
-
       <div className="charts-header">
         <h2>Daily Revenue</h2>
         <p>Total revenue earned each day</p>
       </div>
 
-      <div className="bar-chart">
+      {dailySales.length === 0 ? (
+        <div className="no-data">
+          <p>No revenue data available.</p>
+        </div>
+      ) : (
+        <div className="bar-chart">
+          {dailySales.map((item) => (
+            <div className="bar-item" key={item.day}>
+              <span className="bar-value">
+                Rs. {Number(item.value).toLocaleString("en-PK")}
+              </span>
 
-        {dailySales.map((item) => (
+              <div
+                className="bar"
+                style={{
+                  height: `${(item.value / maxValue) * 220}px`,
+                }}
+              ></div>
 
-          <div className="bar-item" key={item.day}>
-
-            <span className="bar-value">
-              Rs. {item.value.toLocaleString()}
-            </span>
-
-            <div
-              className="bar"
-              style={{
-                height: `${(item.value / maxValue) * 220}px`,
-              }}
-            ></div>
-
-            <span className="bar-label">
-              {item.day}
-            </span>
-
-          </div>
-
-        ))}
-
-      </div>
-
+              <span className="bar-label">
+                {item.day}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

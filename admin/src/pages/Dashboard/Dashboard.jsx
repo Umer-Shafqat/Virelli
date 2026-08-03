@@ -28,7 +28,7 @@ const Dashboard = () => {
 
   const fetchDashboard = async () => {
     try {
-      const token = localStorage.getItem("adminToken");
+     const token = localStorage.getItem("token");
 
       const response = await axios.get(
         `${url}/api/admin/dashboard`,
