@@ -2,32 +2,21 @@ import React, { useContext } from "react";
 import {Link,useNavigate} from "react-router-dom";
 import { useState } from "react";
 import "./Navbar.css";
-import { shoes } from "../../assets/assets";
 
 import logo1 from "../../assets/logo1.png";
 import search_icon from "../../assets/search_icon.png";
 import profile_image from "../../assets/profile_image.png";
 import basket_icon from "../../assets/basket_icon.png";
-
 import {StoreContext} from "../../Context/StoreContext/StoreContext";
-
 
 const Navbar = () => {
 
-  // =====================================
-  // STORE CONTEXT
-  // =====================================
-
-  const {
-    cartItems,
-    token,
-    logout
-  } = useContext(StoreContext);
-
+  const {shoes,cartItems,token,logout} = useContext(StoreContext);
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState("");
   const [showCartMenu, setShowCartMenu] = useState(false);
   const navigate = useNavigate();
+
   const cartCount =
     Object.values(cartItems).reduce(
       (total, quantity) =>
@@ -35,11 +24,7 @@ const Navbar = () => {
       0
     );
 
-
-  // =====================================
-  // SIGN OUT
-  // =====================================
-
+   
   const handleLogout = () => {
 
     logout();
@@ -170,7 +155,7 @@ const Navbar = () => {
         <div className="search-results">
           {filteredShoes.map((shoe) => (
             <div
-              key={shoe.id}
+              key={shoe._id}
               className="search-item"
               onClick={() => {
                 navigate("/shoes"); // Change this later if you have a shoe details page
@@ -178,7 +163,10 @@ const Navbar = () => {
                 setShowSearch(false);
               }}
             >
-              <img src={shoe.image} alt={shoe.name} />
+             <img
+  src={`http://localhost:4000/images/${shoe.image}`}
+  alt={shoe.name}
+/>
 
               <div>
                 <h4>{shoe.name}</h4>
@@ -229,31 +217,31 @@ const Navbar = () => {
             CART
         ================================= */}
 
-        <Link
-          to="/cart"
-          className="cart"
-        >
+       <div
+  className="cart-menu"
+  onMouseEnter={() => setShowCartMenu(true)}
+  onMouseLeave={() => setShowCartMenu(false)}
+>
+  <div className="cart">
+    <img
+      src={basket_icon}
+      alt="Cart"
+    />
 
-          <img
-            src={basket_icon}
-            alt="Cart"
-          />
+    {cartCount > 0 && (
+      <span className="cart-count">
+        {cartCount}
+      </span>
+    )}
+  </div>
 
-
-          {/* Cart Count */}
-
-          {cartCount > 0 && (
-
-            <span className="cart-count">
-
-              {cartCount}
-
-            </span>
-
-          )}
-
-        </Link>
-
+  {showCartMenu && (
+    <div className="cart-dropdown">
+      <Link to="/cart">🛒 View Cart</Link>
+      <Link to="/my-orders">📦 My Orders</Link>
+    </div>
+  )}
+</div>
       </div>
 
     </nav>

@@ -272,34 +272,31 @@
 .cart-menu {
   position: relative;
   display: inline-block;
-  cursor: pointer;
-}
-
-.cart-icon {
-  width: 28px;
-  height: 28px;
 }
 
 .cart-dropdown {
   position: absolute;
-  top: 40px;
+  top: 100%;
   right: 0;
-  width: 170px;
+  margin-top: 5px;
+  width: 180px;
   background: #fff;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  display: none;
   z-index: 1000;
+}
+
+.cart-menu:hover .cart-dropdown {
+  display: block;
 }
 
 .cart-dropdown a {
   display: block;
-  padding: 12px 16px;
+  padding: 12px 15px;
   color: #171c29;
   text-decoration: none;
   font-weight: 500;
-  transition: 0.3s;
 }
 
 .cart-dropdown a:hover {
