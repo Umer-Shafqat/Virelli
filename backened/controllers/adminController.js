@@ -3,10 +3,6 @@ import shoeModel from "../models/shoeModel.js";
 import orderModel from "../models/orderModel.js";
 import jwt from "jsonwebtoken";
 
-// =====================================
-// DASHBOARD
-// =====================================
-
 export const getDashboard = async (req, res) => {
   try {
     const dashboard = await getDashboardData();
@@ -22,10 +18,6 @@ export const getDashboard = async (req, res) => {
     });
   }
 };
-
-// =====================================
-// ADMIN LOGIN
-// =====================================
 
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -66,10 +58,6 @@ const adminLogin = async (req, res) => {
   }
 };
 
-// =====================================
-// GET ALL USERS
-// =====================================
-
 const getAllUsers = async (req, res) => {
   try {
     const users = await userModel
@@ -88,9 +76,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// =====================================
-// GET ALL ORDERS
-// =====================================
 
 const getAllOrders = async (req, res) => {
   try {
@@ -111,9 +96,6 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-// =====================================
-// UPDATE ORDER STATUS
-// =====================================
 
 const updateOrderStatus = async (req, res) => {
   try {
@@ -133,9 +115,6 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-// =====================================
-// ANALYTICS
-// =====================================
 
 const getAnalytics = async (req, res) => {
   try {
@@ -153,9 +132,6 @@ const getAnalytics = async (req, res) => {
   }
 };
 
-// =====================================
-// DAILY SALES
-// =====================================
 
 const getDailySales = async (req, res) => {
   try {
@@ -203,9 +179,6 @@ const getDailySales = async (req, res) => {
   }
 };
 
-// =====================================
-// HELPER
-// =====================================
 
 const getDashboardData = async () => {
   const totalUsers = await userModel.countDocuments();
@@ -243,10 +216,6 @@ const getDashboardData = async () => {
       topSellingCategory = key;
     }
   }
-
-  // =====================================
-  // RECENT ORDERS
-  // =====================================
 
   const recentOrders = await orderModel
   .find({})
