@@ -66,5 +66,11 @@ adminRouter.get(
   searchAdmin
 );
 
+adminRouter.get(
+  "/search/:keyword",
+  authMiddleware,
+  adminMiddleware,
+  searchAdmin
+);
 
 export default adminRouter;

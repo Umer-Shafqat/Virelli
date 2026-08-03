@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,7 +12,7 @@ const Navbar = () => {
     window.location.href = "/login";
   };
 
-  const searchNow = () => {
+const searchNow = () => {
   if (!search.trim()) return;
 
   navigate(`/search/${search}`);
@@ -24,8 +26,9 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-center">
-       <input
+        <input
   type="text"
+  className="search-input"
   placeholder="Search shoes, orders, users..."
   value={search}
   onChange={(e) => setSearch(e.target.value)}

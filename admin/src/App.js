@@ -8,6 +8,7 @@ import ListShoes from "./pages/ListShoes/ListShoes";
 import Orders from "./pages/Orders/Orders";
 import Users from "./pages/Users/Users";
 import Analytics from "./pages/Analytics/Analytics";
+import Search from "./pages/Search/Search";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
@@ -83,8 +84,12 @@ const App = () => {
           }
         />
 
+        <Route path="/search/:keyword" element={<Search />} />
+        
         {/* Redirect unknown routes */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" 
+        element={
+        <Navigate to="/" replace />} />
 
       </Routes>
     </BrowserRouter>
