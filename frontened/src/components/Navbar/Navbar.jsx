@@ -24,19 +24,10 @@ const Navbar = () => {
     logout
   } = useContext(StoreContext);
 
-   const [showSearch, setShowSearch] = useState(false);
-const [search, setSearch] = useState("");
-  // =====================================
-  // NAVIGATION
-  // =====================================
-
+  const [showSearch, setShowSearch] = useState(false);
+  const [search, setSearch] = useState("");
+  const [showCartMenu, setShowCartMenu] = useState(false);
   const navigate = useNavigate();
-
-
-  // =====================================
-  // CART TOTAL QUANTITY
-  // =====================================
-
   const cartCount =
     Object.values(cartItems).reduce(
       (total, quantity) =>
