@@ -287,11 +287,9 @@
   /* Hide by default */
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
-
-  /* Smooth transition */
-  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-
+ .cart-dropdown {
+  transition: opacity 5s ease, transform 5s ease;
+}
   z-index: 1000;
 }
 
