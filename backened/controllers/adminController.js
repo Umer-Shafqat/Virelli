@@ -182,9 +182,14 @@ const getAnalytics = async (req, res) => {
 
 const getDailySales = async (req, res) => {
   try {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+
     const sales = await orderModel.aggregate([
       {
         $match: {
+          createdAt: { $gte: sevenDaysAgo },
           status: { $ne: "Cancelled" },
         },
       },
@@ -200,26 +205,38 @@ const getDailySales = async (req, res) => {
           },
         },
       },
-      {
-        $sort: {
-          "_id.year": 1,
-          "_id.month": 1,
-          "_id.day": 1,
-        },
-      },
     ]);
 
-    const dailySales = sales.map((item) => ({
-      day: `${item._id.day}/${item._id.month}`,
-      value: item.revenue,
-    }));
+    const dailySales = [];
 
-    return res.json({
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+
+      const found = sales.find(
+        (item) =>
+          item._id.day === day &&
+          item._id.month === month &&
+          item._id.year === date.getFullYear()
+      );
+
+      dailySales.push({
+        day: date.toLocaleDateString("en-US", {
+          weekday: "short",
+        }),
+        value: found ? found.revenue : 0,
+      });
+    }
+
+    res.json({
       success: true,
       dailySales,
     });
   } catch (error) {
-    return res.json({
+    res.json({
       success: false,
       message: error.message,
     });
