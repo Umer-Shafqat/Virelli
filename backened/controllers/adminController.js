@@ -9,31 +9,11 @@ import jwt from "jsonwebtoken";
 
 export const getDashboard = async (req, res) => {
   try {
-    const totalShoes = await shoeModel.countDocuments();
-    const totalOrders = await orderModel.countDocuments();
-    const totalUsers = await userModel.countDocuments();
-
-    const orders = await orderModel.find();
-
-    const revenue = orders.reduce(
-      (total, order) => total + (order.totalAmount || 0),
-      0
-    );
-
-    const recentOrders = await orderModel
-      .find()
-      .sort({ createdAt: -1 })
-      .limit(5);
+    const dashboard = await getDashboardData();
 
     return res.json({
       success: true,
-      dashboard: {
-        totalShoes,
-        totalOrders,
-        totalUsers,
-        revenue,
-        recentOrders,
-      },
+      dashboard,
     });
   } catch (error) {
     return res.json({
@@ -87,7 +67,7 @@ const adminLogin = async (req, res) => {
 };
 
 // =====================================
-// USERS
+// GET ALL USERS
 // =====================================
 
 const getAllUsers = async (req, res) => {
@@ -109,7 +89,7 @@ const getAllUsers = async (req, res) => {
 };
 
 // =====================================
-// ORDERS
+// GET ALL ORDERS
 // =====================================
 
 const getAllOrders = async (req, res) => {
@@ -264,6 +244,15 @@ const getDashboardData = async () => {
     }
   }
 
+  // =====================================
+  // RECENT ORDERS
+  // =====================================
+
+  const recentOrders = await orderModel
+    .find({})
+    .sort({ createdAt: -1 })
+    .limit(5);
+
   return {
     totalUsers,
     totalShoes,
@@ -271,6 +260,7 @@ const getDashboardData = async () => {
     revenue,
     averageOrderValue,
     topSellingCategory,
+    recentOrders,
   };
 };
 

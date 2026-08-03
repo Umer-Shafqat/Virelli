@@ -20,6 +20,8 @@ const Dashboard = () => {
     recentOrders: [],
   });
 
+  const [loading, setLoading] = useState(true);
+
   // =====================================
   // FETCH DASHBOARD DATA
   // =====================================
@@ -37,27 +39,23 @@ const Dashboard = () => {
         }
       );
 
-      console.log("Dashboard API:", response.data);
+      console.log(response.data);
 
       if (response.data.success) {
         setDashboard(response.data.dashboard);
+      } else {
+        console.log(response.data.message);
       }
     } catch (error) {
-      console.log("Dashboard Error:", error);
+      console.log(error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // =====================================
-  // LOAD DATA
-  // =====================================
 
   useEffect(() => {
     fetchDashboard();
   }, []);
-
-  // =====================================
-  // DASHBOARD CARDS
-  // =====================================
 
   const dashboardCards = [
     {
@@ -85,6 +83,18 @@ const Dashboard = () => {
       color: "#ef4444",
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="dashboard-container">
+        <Sidebar />
+        <div className="dashboard-content">
+          <Navbar />
+          <h2>Loading Dashboard...</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-container">
@@ -116,7 +126,6 @@ const Dashboard = () => {
 
         <section className="dashboard-table">
           <h2>Recent Orders</h2>
-
           <Table orders={dashboard.recentOrders} />
         </section>
       </div>
