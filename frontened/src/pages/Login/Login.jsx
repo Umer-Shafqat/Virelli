@@ -1,12 +1,7 @@
-import React, {
-  useContext,
-  useState
-} from "react";
-
+import React, {useContext, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import "./Login.css";
-
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 
@@ -14,7 +9,7 @@ const Login = () => {
 
   // Get setToken from StoreContext
   const { setToken } = useContext(StoreContext);
-
+const navigate = useNavigate();
 
 const logout = () => {
   localStorage.removeItem("token");
@@ -200,18 +195,14 @@ const logout = () => {
         // Update StoreContext token state
         // This makes Add to Cart work
         setToken(token);
+// Clear form
+setSignInData({
+  email: "",
+  password: "",
+});
 
-
-        alert(
-          "Sign in successful!"
-        );
-
-
-        // Clear form
-        setSignInData({
-          email: "",
-          password: "",
-        });
+// Redirect to Home page
+navigate("/");
 
 
       } else {
