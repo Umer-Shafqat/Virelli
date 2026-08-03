@@ -3,6 +3,53 @@ import shoeModel from "../models/shoeModel.js";
 import orderModel from "../models/orderModel.js";
 import jwt from "jsonwebtoken";
 
+export const searchAdmin = async (req, res) => {
+  try {
+    const q = req.query.q;
+
+    if (!q) {
+      return res.json({
+        success: true,
+        shoes: [],
+        users: [],
+        orders: [],
+      });
+    }
+
+    const shoes = await shoeModel.find({
+      name: { $regex: q, $options: "i" },
+    });
+
+    const users = await userModel.find({
+      $or: [
+        { name: { $regex: q, $options: "i" } },
+        { email: { $regex: q, $options: "i" } },
+      ],
+    });
+
+    const orders = await orderModel.find({
+      $or: [
+        { _id: q.match(/^[0-9a-fA-F]{24}$/) ? q : null },
+        { "customer.name": { $regex: q, $options: "i" } },
+      ],
+    });
+
+    res.json({
+      success: true,
+      shoes,
+      users,
+      orders,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export const getDashboard = async (req, res) => {
   try {
     const dashboard = await getDashboardData();

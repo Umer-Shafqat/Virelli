@@ -10,6 +10,7 @@ import {
   updateOrderStatus,
   adminLogin,
   getDailySales,
+  searchAdmin
 } from "../controllers/adminController.js";
 
 const adminRouter = express.Router();
@@ -57,5 +58,13 @@ adminRouter.get(
   adminMiddleware,
   getDailySales
 );
+
+  adminRouter.get(
+  "/search",
+  authMiddleware,
+  adminMiddleware,
+  searchAdmin
+);
+
 
 export default adminRouter;

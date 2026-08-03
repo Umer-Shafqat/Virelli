@@ -3,11 +3,18 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     window.location.href = "/login";
   };
+
+  const searchNow = () => {
+  if (!search.trim()) return;
+
+  navigate(`/search/${search}`);
+};
 
   return (
     <header className="admin-navbar">
@@ -17,13 +24,17 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-center">
-        <input
-          type="text"
-          placeholder="Search shoes, orders, users..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="search-input"
-        />
+       <input
+  type="text"
+  placeholder="Search shoes, orders, users..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      searchNow();
+    }
+  }}
+/>
       </div>
 
       <div className="navbar-right">
