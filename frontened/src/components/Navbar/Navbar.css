@@ -278,28 +278,37 @@
   position: absolute;
   top: 100%;
   right: 0;
-  margin-top: 5px;
   width: 180px;
+  margin-top: 8px;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-  display: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+
+  /* Hide by default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+
+  /* Smooth transition */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+
   z-index: 1000;
 }
 
 .cart-menu:hover .cart-dropdown {
-  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .cart-dropdown a {
   display: block;
   padding: 12px 15px;
-  color: #171c29;
   text-decoration: none;
-  font-weight: 500;
+  color: #171c29;
 }
 
 .cart-dropdown a:hover {
   background: #171c29;
-  color: #fff;
+  color: white;
 }
