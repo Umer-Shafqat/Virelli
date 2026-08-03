@@ -97,7 +97,7 @@ const Users = () => {
 
                       <td>{user.email}</td>
 
-                      <td>{user.orders?.length || 0}</td>
+                      <td>{user.orderCount}</td>
 
                       <td>
                         {new Date(user.createdAt).toLocaleDateString()}

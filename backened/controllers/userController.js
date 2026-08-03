@@ -1,330 +1,161 @@
 import userModel from "../models/userModel.js";
-
+import orderModel from "../models/orderModel.js";
 import bcrypt from "bcrypt";
-
 import jwt from "jsonwebtoken";
 
-
-// =====================================
-// REGISTER USER
-// =====================================
-
-const registerUser = async (
-  req,
-  res
-) => {
-
+const registerUser = async (req, res) => {
   try {
+    const { name, email, password } = req.body;
 
-    const {
-      name,
-      email,
-      password
-    } = req.body;
-
-
-    // Check fields
-    if (
-      !name ||
-      !email ||
-      !password
-    ) {
-
+    if (!name || !email || !password) {
       return res.status(400).json({
-
         success: false,
-
-        message:
-          "Please enter all fields",
-
+        message: "Please enter all fields",
       });
-
     }
 
-
-    // Check existing user
-    const existingUser =
-      await userModel.findOne({
-        email: email.toLowerCase(),
-      });
-
+    const existingUser = await userModel.findOne({
+      email: email.toLowerCase(),
+    });
 
     if (existingUser) {
-
       return res.status(400).json({
-
         success: false,
-
-        message:
-          "User already exists",
-
+        message: "User already exists",
       });
-
     }
 
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Hash password
-    const salt =
-      await bcrypt.genSalt(10);
+    const newUser = new userModel({
+      name,
+      email: email.toLowerCase(),
+      password: hashedPassword,
+    });
 
+    const user = await newUser.save();
 
-    const hashedPassword =
-      await bcrypt.hash(
-        password,
-        salt
-      );
-
-
-    // Create user
-    const newUser =
-      new userModel({
-
-        name,
-
-        email:
-          email.toLowerCase(),
-
-        password:
-          hashedPassword,
-
-      });
-
-
-    const user =
-      await newUser.save();
-
-
-    // Create JWT
-    const token =
-      jwt.sign(
-
-        {
-          id: user._id,
-        },
-
-        process.env.JWT_SECRET,
-
-        {
-          expiresIn: "7d",
-        }
-
-      );
-
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.status(201).json({
-
       success: true,
-
-      message:
-        "Registration successful",
-
+      message: "Registration successful",
       token,
-
       user: {
-
         id: user._id,
-
         name: user.name,
-
         email: user.email,
-
       },
-
     });
-
-
   } catch (error) {
-
-    console.log(
-      "Register Error:",
-      error
-    );
-
+    console.log("Register Error:", error);
 
     res.status(500).json({
-
       success: false,
-
-      message:
-        "Registration failed",
-
+      message: "Registration failed",
     });
-
   }
-
 };
 
-
-
-// =====================================
-// LOGIN USER
-// =====================================
-
-const loginUser = async (
-  req,
-  res
-) => {
-
+const loginUser = async (req, res) => {
   try {
+    const { email, password } = req.body;
 
-    const {
-      email,
-      password
-    } = req.body;
-
-
-    // Check fields
-    if (
-      !email ||
-      !password
-    ) {
-
+    if (!email || !password) {
       return res.status(400).json({
-
         success: false,
-
-        message:
-          "Please enter email and password",
-
+        message: "Please enter email and password",
       });
-
     }
 
-
-    // Find user
-    const user =
-      await userModel.findOne({
-
-        email:
-          email.toLowerCase(),
-
-      });
-
+    const user = await userModel.findOne({
+      email: email.toLowerCase(),
+    });
 
     if (!user) {
-
       return res.status(401).json({
-
         success: false,
-
-        message:
-          "Invalid email or password",
-
+        message: "Invalid email or password",
       });
-
     }
 
-
-    // Check password
-    const passwordMatch =
-      await bcrypt.compare(
-
-        password,
-
-        user.password
-
-      );
-
-
-    if (!passwordMatch) {
-
-      return res.status(401).json({
-
-        success: false,
-
-        message:
-          "Invalid email or password",
-
-      });
-
-    }
-
-
-    // Create JWT
-    const token =
-      jwt.sign(
-
-        {
-          id: user._id,
-        },
-
-        process.env.JWT_SECRET,
-
-        {
-          expiresIn: "7d",
-        }
-
-      );
-
-
-    res.json({
-
-      success: true,
-
-      message:
-        "Login successful",
-
-      token,
-
-      user: {
-
-        id: user._id,
-
-        name: user.name,
-
-        email: user.email,
-
-      },
-
-    });
-
-
-  } catch (error) {
-
-    console.log(
-      "Login Error:",
-      error
+    const passwordMatch = await bcrypt.compare(
+      password,
+      user.password
     );
 
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
 
-    res.status(500).json({
-
-      success: false,
-
-      message:
-        "Login failed",
-
-    });
-
-  }
-
-};
-
-// =====================================
-// GET ALL USERS
-// =====================================
-
-export const listUsers = async (req, res) => {
-  try {
-    const users = await userModel.find({}, "-password");
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     res.json({
       success: true,
-      data: users,
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
-    res.json({
+    console.log("Login Error:", error);
+
+    res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Login failed",
     });
   }
 };
 
-// =====================================
-// DELETE USER
-// =====================================
+const listUsers = async (req, res) => {
+  try {
+    const users = await userModel
+      .find({}, "-password")
+      .sort({ createdAt: -1 });
 
-export const deleteUser = async (req, res) => {
+    const usersWithOrders = await Promise.all(
+      users.map(async (user) => {
+        const orderCount = await orderModel.countDocuments({
+          userId: user._id,
+        });
+
+        return {
+          ...user.toObject(),
+          orderCount,
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      data: usersWithOrders,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.json({
+      success: false,
+      message: "Error fetching users",
+    });
+  }
+};
+
+const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -351,5 +182,7 @@ export const deleteUser = async (req, res) => {
 
 export {
   registerUser,
-  loginUser
+  loginUser,
+  listUsers,
+  deleteUser,
 };
