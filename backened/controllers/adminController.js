@@ -249,9 +249,10 @@ const getDashboardData = async () => {
   // =====================================
 
   const recentOrders = await orderModel
-    .find({})
-    .sort({ createdAt: -1 })
-    .limit(5);
+  .find({})
+  .populate("userId", "name email")
+  .sort({ createdAt: -1 })
+  .limit(5);
 
   return {
     totalUsers,

@@ -9,7 +9,7 @@ const Table = ({ orders = [] }) => {
           <tr>
             <th>Order ID</th>
             <th>Customer</th>
-            <th>Product</th>
+            <th>Products</th>
             <th>Amount</th>
             <th>Status</th>
           </tr>
@@ -19,21 +19,20 @@ const Table = ({ orders = [] }) => {
           {orders.length > 0 ? (
             orders.map((item) => (
               <tr key={item._id}>
-                {/* Order ID */}
                 <td>{item._id.slice(-6).toUpperCase()}</td>
 
-                {/* Customer Name */}
                 <td>{item.userId?.name || "N/A"}</td>
 
-                {/* Product Name(s) */}
                 <td>
-                  {item.items?.map((shoe) => shoe.name).join(", ") || "N/A"}
+                  {item.items?.length
+                    ? item.items.map((shoe) => shoe.name).join(", ")
+                    : "N/A"}
                 </td>
 
-                {/* Amount */}
-                <td>Rs. {item.amount?.toLocaleString()}</td>
+                <td>
+                  Rs. {(item.totalAmount || 0).toLocaleString("en-PK")}
+                </td>
 
-                {/* Status */}
                 <td>
                   <span
                     className={`status ${item.status
