@@ -5,7 +5,7 @@ const About = () => {
   return (
     <section className="about-page">
 
-      {/* Hero Section */}
+      
       <div className="about-hero">
 
         <div className="about-hero-content">
@@ -23,13 +23,11 @@ const About = () => {
 
       </div>
 
-
-      {/* About Content */}
-      <div className="about-container">
+    <div className="about-container">
 
         <div className="about-content">
 
-          <h2>
+         <h2>
             Who We Are
           </h2>
 
@@ -64,10 +62,7 @@ const About = () => {
           </p>
 
         </div>
-
-
-        {/* Features */}
-        <div className="about-features">
+      <div className="about-features">
 
           <div className="about-feature">
 
