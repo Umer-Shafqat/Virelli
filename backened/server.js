@@ -13,14 +13,11 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json());
-app.use(cors());
-
-// 👇 Add this line
-app.use("/images", express.static("uploads"));
-
 connectDB();
 
+app.use(express.json());
+app.use(cors());
+app.use("/images", express.static("uploads"));
 app.use("/api/shoes", shoeRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/cart", cartRouter);

@@ -23,90 +23,92 @@ import MyOrder from "./pages/MyOrder/MyOrder";
 function App() {
   return (
     <>
-      {/* Navbar is outside Routes */}
+
       <Navbar />
 
       <Routes>
-        
-        {/* Home Page */}
+
         <Route
           path="/"
           element={<Home />}
         />
 
-        {/* All Shoes Page */}
-        <Route
+      <Route
           path="/shoes"
           element={<Shoes />}
         />
 
-        {/* Men's Shoes Page */}
-        <Route
+      <Route
           path="/men"
           element={<Men />}
         />
 
-        {/* Women's Shoes Page */}
-        <Route
+      <Route
           path="/women"
           element={<Women />}
         />
 
-        {/* Kids' Shoes Page */}
-        <Route
+      <Route
           path="/kids"
           element={<Kids />}
         />
-        <Route path="/about" element={<About />} />
 
-<Route path="/contact" element={<Contact />} />
+        <Route 
+        path="/about" 
+        element={<About />} />
 
-<Route path="/faq" element={<FAQ />} />
+        <Route 
+        path="/contact" 
+         element={<Contact />} />
 
-<Route
-  path="/shipping-delivery"
-  element={<ShippingDelivery />}
-/>
+        <Route 
+        path="/faq" 
+        element={<FAQ />} />
 
-<Route
-  path="/returns-exchange"
-  element={<ReturnsExchange />}
-/>
-
-<Route
-  path="/size-guide"
-  element={<SizeGuide />}
-/>
-
-<Route
-  path="/privacy-policy"
-  element={<PrivacyPolicy />}
-/>
-
-<Route
-  path="/terms-conditions"
-  element={<TermsConditions />}
-/>
-
- <Route
-          path="/cart"
-          element={<Cart />}
+        <Route
+        path="/shipping-delivery"
+        element={<ShippingDelivery />}
         />
 
-  <Route
-  path="/login"
-  element={<Login />}
-/>
+        <Route
+        path="/returns-exchange"
+        element={<ReturnsExchange />}
+        />
 
-  <Route
-  path="/place-order"
-  element={<PlaceOrder />}
-/>
+        <Route
+        path="/size-guide"
+        element={<SizeGuide />}
+         />
 
-<Route
-  path="/my-orders"
-  element={<MyOrder />}
-/>
+        <Route
+        path="/privacy-policy"
+        element={<PrivacyPolicy />}
+        />
+
+        <Route
+        path="/terms-conditions"
+        element={<TermsConditions />}
+        />
+
+        <Route
+        path="/cart"
+        element={<Cart />}
+        />
+
+        <Route
+        path="/login"
+        element={<Login />}
+        />
+
+        <Route
+        path="/place-order"
+        element={<PlaceOrder />}
+         />
+
+        <Route
+        path="/my-orders"
+        element={<MyOrder />}
+         />
 
       </Routes>
        <Footer />
