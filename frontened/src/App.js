@@ -19,6 +19,8 @@ import Cart from "./pages/Cart/Cart";
 import Login from "./pages/Login/Login";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import MyOrder from "./pages/MyOrder/MyOrder";
+import NewArrival from "./Pages/NewArrival/NewArrival";
+import Offers from "./Pages/Offers/Offers";
 
 function App() {
   return (
@@ -109,6 +111,16 @@ function App() {
         path="/my-orders"
         element={<MyOrder />}
          />
+
+         <Route 
+         path="/new" 
+         element={<NewArrival />}
+        />
+
+         <Route 
+         path="/offers" 
+         element={<Offers />}
+        /> 
 
       </Routes>
        <Footer />

@@ -1,0 +1,52 @@
+.new-arrival {
+  width: 90%;
+  margin: 40px auto;
+}
+
+.new-arrival h1 {
+  text-align: center;
+  margin-bottom: 35px;
+  color: #171c29;
+}
+
+.shoe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+}
+
+.shoe-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s;
+  box-shadow: 0 5px 15px rgba(0,0,0,.1);
+}
+
+.shoe-card:hover {
+  transform: translateY(-8px);
+}
+
+.shoe-card img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+}
+
+.shoe-card h3 {
+  margin: 15px;
+  color: #171c29;
+}
+
+.shoe-card p {
+  margin: 0 15px;
+  color: gray;
+}
+
+.shoe-card span {
+  display: block;
+  margin: 15px;
+  color: crimson;
+  font-size: 20px;
+  font-weight: bold;
+}
