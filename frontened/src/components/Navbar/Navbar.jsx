@@ -103,13 +103,13 @@ const Navbar = () => {
         </li>
 
         <li>
-          <Link to="/new">
-            NEW ARRIVALS
+          <Link to="/NewArrival">
+            NEW ARRIVAL
           </Link>
         </li>
 
         <li>
-          <Link to="/offers">
+          <Link to="/Offers">
             OFFERS
           </Link>
         </li>
@@ -119,6 +119,8 @@ const Navbar = () => {
             CONTACT US
           </Link>
         </li>
+
+
 
       </ul>
 

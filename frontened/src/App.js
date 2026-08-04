@@ -19,8 +19,8 @@ import Cart from "./pages/Cart/Cart";
 import Login from "./pages/Login/Login";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import MyOrder from "./pages/MyOrder/MyOrder";
-import NewArrival from "./Pages/NewArrival/NewArrival";
-import Offers from "./Pages/Offers/Offers";
+import NewArrival from "./pages/NewArrival/NewArrival";
+import Offers from "./pages/Offers/Offers";
 
 function App() {
   return (
