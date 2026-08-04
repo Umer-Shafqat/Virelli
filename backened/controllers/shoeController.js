@@ -63,13 +63,17 @@ const addShoe = async (req, res) => {
 
 export const getNewArrivals = async (req, res) => {
   try {
-    const shoes = await ShoeModel.find({ isNewArrival: true });
+    const shoes = await Shoe.find({
+      isNewArrival: true,
+    });
 
     res.json({
       success: true,
-      data: shoes,
+      shoes,
     });
   } catch (error) {
+    console.log(error);
+
     res.json({
       success: false,
       message: error.message,
@@ -79,13 +83,17 @@ export const getNewArrivals = async (req, res) => {
 
 export const getOffers = async (req, res) => {
   try {
-    const shoes = await ShoeModel.find({ isOffer: true });
+    const shoes = await Shoe.find({
+      isOffer: true,
+    });
 
     res.json({
       success: true,
-      data: shoes,
+      shoes,
     });
   } catch (error) {
+    console.log(error);
+
     res.json({
       success: false,
       message: error.message,
@@ -93,9 +101,6 @@ export const getOffers = async (req, res) => {
   }
 };
 
-// ================================
-// GET ALL SHOES
-// ================================
 const getShoes = async (req, res) => {
   try {
     const shoes = await ShoeModel.find().sort({ createdAt: -1 });
@@ -114,9 +119,6 @@ const getShoes = async (req, res) => {
   }
 };
 
-// ================================
-// GET SINGLE SHOE
-// ================================
 const getShoeById = async (req, res) => {
   try {
     const shoe = await ShoeModel.findById(req.params.id);
@@ -143,9 +145,6 @@ const getShoeById = async (req, res) => {
   }
 };
 
-// ================================
-// GET /api/shoes/list
-// ================================
 export const listShoes = async (req, res) => {
   try {
     const shoes = await ShoeModel.find({});
@@ -162,9 +161,6 @@ export const listShoes = async (req, res) => {
   }
 };
 
-// ================================
-// DELETE /api/shoes/:id
-// ================================
 export const deleteShoe = async (req, res) => {
   try {
     await ShoeModel.findByIdAndDelete(req.params.id);
@@ -181,9 +177,6 @@ export const deleteShoe = async (req, res) => {
   }
 };
 
-// ================================
-// EXPORT
-// ================================
 export {
   addShoe,
   getShoes,
