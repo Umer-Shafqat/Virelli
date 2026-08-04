@@ -48,6 +48,21 @@ const shoeSchema = new mongoose.Schema(
       default: [],
     },
 
+      isNewArrival: {
+    type: Boolean,
+    default: false,
+  },
+
+  isOffer: {
+    type: Boolean,
+    default: false,
+  },
+
+  offerPrice: {
+    type: Number,
+    default: 0,
+  },
+
     rating: {
       totalRatings: {
         type: Number,

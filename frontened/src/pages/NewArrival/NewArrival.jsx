@@ -11,17 +11,17 @@ const NewArrival = () => {
   const fetchNewArrivals = async () => {
     try {
       const response = await axios.get(
-        `${url}/api/shoes/new-arrivals`
+        url + "/api/shoes/new-arrivals"
       );
 
       if (response.data.success) {
-        setShoes(response.data.shoes);
+        setShoes(response.data.data);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -30,7 +30,6 @@ const NewArrival = () => {
 
   return (
     <div className="new-arrival">
-
       <h1>New Arrivals</h1>
 
       {loading ? (
@@ -41,7 +40,6 @@ const NewArrival = () => {
         <div className="shoe-grid">
           {shoes.map((shoe) => (
             <div className="shoe-card" key={shoe._id}>
-
               <img
                 src={`${url}/images/${shoe.image}`}
                 alt={shoe.name}
@@ -52,12 +50,10 @@ const NewArrival = () => {
               <p>{shoe.category}</p>
 
               <span>Rs. {shoe.price}</span>
-
             </div>
           ))}
         </div>
       )}
-
     </div>
   );
 };

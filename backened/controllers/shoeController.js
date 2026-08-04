@@ -1,14 +1,11 @@
 import ShoeModel from "../models/shoeModel.js";
 
-// ================================
-// ADD SHOE
-// ================================
 const addShoe = async (req, res) => {
   try {
     console.log("req.file:", req.file);
     console.log("req.body:", req.body);
 
-    // Convert type safely to string
+    // Convert type safely
     const shoeType = String(req.body.type || "").trim().toUpperCase();
 
     const shoe = new ShoeModel({
@@ -24,15 +21,27 @@ const addShoe = async (req, res) => {
           : "",
 
       category: req.body.category,
+
       image: req.file.filename,
+
       price: Number(req.body.price),
+
       discount: Number(req.body.discount || 0),
+
       description: req.body.description,
+
       sizes: req.body.sizes
         .split(",")
         .map((size) => Number(size.trim())),
 
       popular: req.body.popular === "true",
+
+      // NEW FIELDS
+      isNewArrival: req.body.isNewArrival === "true",
+
+      isOffer: req.body.isOffer === "true",
+
+      offerPrice: Number(req.body.offerPrice || 0),
     });
 
     const savedShoe = await shoe.save();
@@ -46,6 +55,38 @@ const addShoe = async (req, res) => {
     console.error(error);
 
     res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getNewArrivals = async (req, res) => {
+  try {
+    const shoes = await ShoeModel.find({ isNewArrival: true });
+
+    res.json({
+      success: true,
+      data: shoes,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const getOffers = async (req, res) => {
+  try {
+    const shoes = await ShoeModel.find({ isOffer: true });
+
+    res.json({
+      success: true,
+      data: shoes,
+    });
+  } catch (error) {
+    res.json({
       success: false,
       message: error.message,
     });

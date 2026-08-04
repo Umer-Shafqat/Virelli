@@ -3,29 +3,25 @@ import axios from "axios";
 import "./Offers.css";
 
 const Offers = () => {
-
   const url = "http://localhost:4000";
 
   const [offers, setOffers] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
   const fetchOffers = async () => {
     try {
-
       const response = await axios.get(
-        `${url}/api/shoes/offers`
+        url + "/api/shoes/offers"
       );
 
       if (response.data.success) {
-        setOffers(response.data.shoes);
+        setOffers(response.data.data);
       }
-
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -33,9 +29,7 @@ const Offers = () => {
   }, []);
 
   return (
-
     <div className="offers">
-
       <h1>Special Offers</h1>
 
       {loading ? (
@@ -43,16 +37,12 @@ const Offers = () => {
       ) : offers.length === 0 ? (
         <h2>No Offers Available</h2>
       ) : (
-
         <div className="offer-grid">
-
           {offers.map((shoe) => (
-
             <div
               className="offer-card"
               key={shoe._id}
             >
-
               <span className="offer-badge">
                 SALE
               </span>
@@ -67,7 +57,6 @@ const Offers = () => {
               <p>{shoe.category}</p>
 
               <div className="prices">
-
                 <del>
                   Rs. {shoe.price}
                 </del>
@@ -75,21 +64,13 @@ const Offers = () => {
                 <span>
                   Rs. {shoe.offerPrice}
                 </span>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       )}
-
     </div>
-
   );
-
 };
 
 export default Offers;

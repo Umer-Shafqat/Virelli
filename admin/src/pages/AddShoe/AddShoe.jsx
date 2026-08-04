@@ -60,6 +60,9 @@ const AddShoe = () => {
       formData.append("sizes", shoeData.sizes);
       formData.append("description", shoeData.description);
       formData.append("image", image);
+      formData.append("isNewArrival", isNewArrival);
+      formData.append("isOffer", isOffer);
+      formData.append("offerPrice", offerPrice);
 
       const response = await axios.post(
         `${backendUrl}/api/shoes/add`,
@@ -176,6 +179,27 @@ const AddShoe = () => {
                   <option value="KID">Kids</option>
                 </select>
               </div>
+
+              <label>
+  <input
+    type="checkbox"
+    name="isNewArrival"
+  />
+  New Arrival
+</label>
+
+<label>
+  <input
+    type="checkbox"
+    name="isOffer"
+  />
+  Offer
+</label>
+
+<input
+  type="number"
+  placeholder="Offer Price"
+/>
 
               <div className="form-group">
                 <label>Popular Shoe</label>
