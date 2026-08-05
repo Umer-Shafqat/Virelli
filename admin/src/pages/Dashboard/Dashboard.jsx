@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Card from "../../components/Card/Card";
 import Charts from "../../components/Charts/Charts";
 import Table from "../../components/Table/Table";
-
 import "./Dashboard.css";
-
 const Dashboard = () => {
   const url = "http://localhost:4000";
 
