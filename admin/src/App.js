@@ -21,10 +21,8 @@ const App = () => {
     <BrowserRouter>
       <Routes>
 
-        {/* Login */}
         <Route path="/login" element={<Login />} />
 
-        {/* Dashboard */}
         <Route
           path="/"
           element={
@@ -34,7 +32,6 @@ const App = () => {
           }
         />
 
-        {/* Add Shoe */}
         <Route
           path="/add-shoe"
           element={
@@ -44,7 +41,6 @@ const App = () => {
           }
         />
 
-        {/* List Shoes */}
         <Route
           path="/list-shoes"
           element={
@@ -54,7 +50,6 @@ const App = () => {
           }
         />
 
-        {/* Orders */}
         <Route
           path="/orders"
           element={
@@ -64,7 +59,6 @@ const App = () => {
           }
         />
 
-        {/* Users */}
         <Route
           path="/users"
           element={
@@ -74,7 +68,6 @@ const App = () => {
           }
         />
 
-        {/* Analytics */}
         <Route
           path="/analytics"
           element={
