@@ -73,16 +73,12 @@ const logout = () => {
           "Account created successfully!"
         );
 
-
-        // Clear signup form
         setSignUpData({
           name: "",
           email: "",
           password: "",
         });
 
-
-        // Switch to Sign In
         setIsSignUp(false);
 
       } else {
@@ -116,12 +112,6 @@ const logout = () => {
     }
 
   };
-
-
-  // =========================
-  // SIGN IN
-  // =========================
-
   const handleSignIn = async (e) => {
 
     e.preventDefault();
@@ -147,28 +137,18 @@ const logout = () => {
           response.data.token;
 
 
-        // =================================
-        // SAVE TOKEN
-        // =================================
-
-        // Save in localStorage
         localStorage.setItem(
           "token",
           token
         );
 
-
-        // IMPORTANT:
-        // Update StoreContext token state
-        // This makes Add to Cart work
         setToken(token);
-// Clear form
+
 setSignInData({
   email: "",
   password: "",
 });
 
-// Redirect to Home page
 navigate("/");
 
 
@@ -217,9 +197,6 @@ navigate("/");
         }`}
       >
 
-        {/* =========================
-            SIGN UP FORM
-        ========================= */}
 
         <div className="form-container signup-form">
 
@@ -278,11 +255,6 @@ navigate("/");
 
         </div>
 
-
-        {/* =========================
-            SIGN IN FORM
-        ========================= */}
-
         <div className="form-container signin-form">
 
           <form
@@ -339,15 +311,9 @@ navigate("/");
         </div>
 
 
-        {/* =========================
-            OVERLAY
-        ========================= */}
-
         <div className="overlay-container">
 
           <div className="overlay">
-
-            {/* Sign In Side */}
 
             <div className="overlay-panel overlay-left">
 
@@ -374,9 +340,6 @@ navigate("/");
               </button>
 
             </div>
-
-
-            {/* Sign Up Side */}
 
             <div className="overlay-panel overlay-right">
 
