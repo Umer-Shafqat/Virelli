@@ -87,7 +87,6 @@ const Men = () => {
 
               <div className="shoe-info">
                 <h3>{shoe.name}</h3>
-
                 <p className="shoe-category">{shoe.category}</p>
 
                 <p className="shoe-description">

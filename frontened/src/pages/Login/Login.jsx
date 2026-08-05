@@ -377,6 +377,4 @@ navigate("/");
   );
 
 };
-
-
 export default Login;
