@@ -7,7 +7,6 @@ import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 const Login = () => {
 
-  // Get setToken from StoreContext
   const { setToken } = useContext(StoreContext);
 const navigate = useNavigate();
 
@@ -15,19 +14,8 @@ const logout = () => {
   localStorage.removeItem("token");
   setToken("");
 };
-
-  // false = Sign In
-  // true = Sign Up
   const [isSignUp, setIsSignUp] = useState(false);
-
-
-  // Backend URL
   const url = "http://localhost:4000";
-
-
-  // =========================
-  // SIGN UP FORM
-  // =========================
 
   const [signUpData, setSignUpData] = useState({
     name: "",
@@ -35,21 +23,10 @@ const logout = () => {
     password: "",
   });
 
-
-  // =========================
-  // SIGN IN FORM
-  // =========================
-
   const [signInData, setSignInData] = useState({
     email: "",
     password: "",
   });
-
-
-  // =========================
-  // HANDLE SIGN UP INPUT
-  // =========================
-
   const handleSignUpChange = (e) => {
 
     const { name, value } = e.target;
@@ -61,11 +38,6 @@ const logout = () => {
 
   };
 
-
-  // =========================
-  // HANDLE SIGN IN INPUT
-  // =========================
-
   const handleSignInChange = (e) => {
 
     const { name, value } = e.target;
@@ -76,11 +48,6 @@ const logout = () => {
     }));
 
   };
-
-
-  // =========================
-  // SIGN UP
-  // =========================
 
   const handleSignUp = async (e) => {
 
