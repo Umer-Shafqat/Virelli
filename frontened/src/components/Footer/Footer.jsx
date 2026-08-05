@@ -9,13 +9,7 @@ const Footer = () => {
     <footer className="footer">
 
       <div className="footer-container">
-
-        {/* ========================================
-            BRAND
-        ======================================== */}
-
         <div className="footer-brand">
-
           <Link to="/">
             <img
               src={logo1}
@@ -29,7 +23,7 @@ const Footer = () => {
             comfort, confidence and style.
           </p>
 
-          {/* Social Icons */}
+          
           <div className="social-icons">
 
             <a
@@ -72,11 +66,6 @@ const Footer = () => {
 
         </div>
 
-
-        {/* ========================================
-            SHOP
-        ======================================== */}
-
         <div className="footer-column">
 
           <h3>SHOP</h3>
@@ -103,11 +92,6 @@ const Footer = () => {
 
         </div>
 
-
-        {/* ========================================
-            QUICK LINKS
-        ======================================== */}
-
         <div className="footer-column">
 
           <h3>QUICK LINKS</h3>
@@ -129,11 +113,6 @@ const Footer = () => {
           </Link>
 
         </div>
-
-
-        {/* ========================================
-            CUSTOMER CARE
-        ======================================== */}
 
         <div className="footer-column">
 
@@ -162,12 +141,7 @@ const Footer = () => {
         </div>
 
       </div>
-
-
-      {/* ========================================
-          FOOTER BOTTOM
-      ======================================== */}
-
+      
       <div className="footer-bottom">
 
         <p>

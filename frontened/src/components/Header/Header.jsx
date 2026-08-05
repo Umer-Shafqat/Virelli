@@ -14,7 +14,6 @@ const Header = () => {
 
   return (
     <>
-      {/* Hero Section */}
 
       <div className="header">
 
@@ -43,9 +42,7 @@ const Header = () => {
         </div>
 
       </div>
-
-      {/* Only 6 Shoes */}
-
+      
       <Popularshoes />
 
     </>
