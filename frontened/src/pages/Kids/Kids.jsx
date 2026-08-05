@@ -76,6 +76,7 @@ const Kids = () => {
                 shoe.rating.totalRatings
               : 5;
 
+              
           return (
             <div className="shoe-card" key={shoe._id}>
               <div className="shoe-image">
