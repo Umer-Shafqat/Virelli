@@ -61,12 +61,9 @@ const Login = () => {
           <h1>Virelli Admin</h1>
           <p>Sign in to manage your shoe store</p>
         </div>
-
         <form onSubmit={handleSubmit}>
-
           <div className="input-group">
             <label>Email Address</label>
-
             <input
               type="email"
               name="email"
@@ -95,7 +92,6 @@ const Login = () => {
           >
             {loading ? "Signing In..." : "Login"}
           </button>
-
         </form>
       </div>
     </div>
