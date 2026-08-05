@@ -78,9 +78,6 @@ const FAQ = () => {
   return (
     <section className="faq-page">
 
-
-      {/* Heading */}
-
       <div className="faq-heading">
 
         <h1>
@@ -94,10 +91,6 @@ const FAQ = () => {
 
       </div>
 
-
-
-      {/* FAQ Container */}
-
       <div className="faq-container">
 
         {faqs.map((faq, index) => (
@@ -110,10 +103,6 @@ const FAQ = () => {
             }
             key={index}
           >
-
-
-            {/* Question */}
-
             <button
               className="faq-question"
               onClick={() =>
@@ -132,10 +121,6 @@ const FAQ = () => {
               </span>
 
             </button>
-
-
-
-            {/* Answer */}
 
             {activeIndex === index && (
 
