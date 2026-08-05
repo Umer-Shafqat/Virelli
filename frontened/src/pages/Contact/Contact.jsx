@@ -35,9 +35,6 @@ setFormData({
 
 return ( <section className="contact-page">
 
-
-  {/* Light Header */}
-
   <div className="contact-header">
 
     <div className="contact-heading">
@@ -54,14 +51,9 @@ return ( <section className="contact-page">
 
   </div>
 
-
-  {/* Contact Content */}
-
   <div className="contact-content">
 
     <div className="contact-container">
-
-      {/* Contact Information */}
 
       <div className="contact-info">
 
@@ -74,9 +66,6 @@ return ( <section className="contact-page">
           orders, delivery, or returns, feel free to
           contact us.
         </p>
-
-
-        {/* Phone */}
 
         <div className="contact-item">
 
@@ -97,10 +86,7 @@ return ( <section className="contact-page">
           </div>
 
         </div>
-
-
-        {/* Email */}
-
+    
         <div className="contact-item">
 
           <span>
@@ -121,9 +107,6 @@ return ( <section className="contact-page">
 
         </div>
 
-
-        {/* WhatsApp */}
-
         <div className="contact-item">
 
           <span>
@@ -143,9 +126,6 @@ return ( <section className="contact-page">
           </div>
 
         </div>
-
-
-        {/* Business Hours */}
 
         <div className="contact-item">
 
@@ -172,9 +152,6 @@ return ( <section className="contact-page">
         </div>
 
       </div>
-
-
-      {/* Contact Form */}
 
       <div className="contact-form">
 
