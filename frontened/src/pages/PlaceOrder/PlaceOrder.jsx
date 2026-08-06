@@ -8,7 +8,7 @@ import "./PlaceOrder.css";
 const PlaceOrder = () => {
 
   const navigate = useNavigate();
-  
+
   const location = useLocation();
 
 const {
@@ -26,12 +26,7 @@ const {
     StoreContext
   );
 
-
-  // =====================================
-  // FORM DATA
-  // =====================================
-
-  const [
+const [
     formData,
     setFormData
   ] = useState({
@@ -54,12 +49,7 @@ const {
 
   });
 
-
-  // =====================================
-  // ORDER LOADING
-  // =====================================
-
-  const [
+const [
     loading,
     setLoading
   ] = useState(false);
@@ -67,12 +57,7 @@ const {
   const cartEntries =
     Object.entries(cartItems);
 
-
-  // =====================================
-  // HANDLE INPUT
-  // =====================================
-
-  const handleChange = (
+const handleChange = (
     e
   ) => {
 
@@ -88,20 +73,13 @@ const {
   };
 
 
-  // =====================================
-  // CONFIRM ORDER
-  // =====================================
 
-  const handleSubmit = async (
+const handleSubmit = async (
     e
   ) => {
 
     e.preventDefault();
 
-
-    // =================================
-    // CHECK LOGIN
-    // =================================
 
     if (!token) {
 
@@ -114,11 +92,6 @@ const {
       return;
 
     }
-
-
-    // =================================
-    // CHECK CART
-    // =================================
 
     if (
       cartEntries.length === 0
@@ -137,26 +110,16 @@ const {
 
       setLoading(true);
 
-
-      // =================================
-      // CREATE DETAILED ORDER ITEMS
-      // =================================
-
       const orderItems =
         cartEntries
           .map(
             ([key, quantity]) => {
-
-              // key example:
-              // "1-43"
 
               const [
                 shoeId,
                 size
               ] = key.split("-");
 
-
-              // Find shoe from assets
               const shoe =
                 shoes.find(
 
@@ -166,16 +129,12 @@ const {
 
                 );
 
-
-              // If shoe doesn't exist
               if (!shoe) {
 
                 return null;
 
               }
 
-
-              // Return detailed item
               return {
 
                 id:
@@ -212,11 +171,6 @@ const {
           )
           .filter(Boolean);
 
-
-      // =================================
-      // CHECK ORDER ITEMS
-      // =================================
-
       if (
         orderItems.length === 0
       ) {
@@ -228,11 +182,6 @@ const {
         return;
 
       }
-
-
-      // =================================
-      // ORDER DATA
-      // =================================
 
       const orderData = {
 
@@ -251,10 +200,6 @@ const {
       };
 
 
-      // =================================
-      // DEBUG
-      // =================================
-
       console.log(
         "Sending Order:",
         orderData
@@ -265,11 +210,6 @@ const {
         "Order Items:",
         orderItems
       );
-
-
-      // =================================
-      // SEND ORDER TO BACKEND
-      // =================================
 
       const response =
         await axios.post(
@@ -291,16 +231,10 @@ const {
 
         );
 
-
-      // =================================
-      // ORDER SUCCESS
-      // =================================
-
       if (
         response.data.success
       ) {
 
-        // Clear frontend cart
         setCartItems({});
 
 
@@ -308,8 +242,6 @@ const {
           "Your order has been placed successfully!"
         );
 
-
-        // Navigate to My Orders
         navigate(
           "/my-orders"
         );
@@ -354,11 +286,6 @@ const {
     }
 
   };
-
-
-  // =====================================
-  // EMPTY CART
-  // =====================================
 
   if (
     cartEntries.length === 0
