@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-
 const orderItemSchema = new mongoose.Schema(
+  
   {
     id: {
   type: mongoose.Schema.Types.ObjectId,
@@ -54,6 +54,7 @@ const orderItemSchema = new mongoose.Schema(
       default: "",
     },
   },
+
   {
     _id: false,
   }
@@ -62,20 +63,12 @@ const orderItemSchema = new mongoose.Schema(
 
 const orderSchema = new mongoose.Schema(
   {
-    // =====================================
-    // USER
-    // =====================================
 
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-
-
-    // =====================================
-    // CUSTOMER INFORMATION
-    // =====================================
 
     customer: {
       firstName: {
@@ -119,20 +112,10 @@ const orderSchema = new mongoose.Schema(
       },
     },
 
-
-    // =====================================
-    // ORDER ITEMS
-    // =====================================
-
     items: {
       type: [orderItemSchema],
       required: true,
     },
-
-
-    // =====================================
-    // PRICE INFORMATION
-    // =====================================
 
     subtotal: {
       type: Number,
@@ -148,11 +131,6 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-
-
-    // =====================================
-    // ORDER STATUS
-    // =====================================
 
     status: {
       type: String,
