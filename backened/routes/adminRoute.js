@@ -24,6 +24,7 @@ adminRouter.get(
   getDashboard
 );
 
+
 adminRouter.get(
   "/users",
   authMiddleware,
@@ -31,12 +32,14 @@ adminRouter.get(
   getAllUsers
 );
 
+
 adminRouter.get(
   "/analytics",
   authMiddleware,
   adminMiddleware,
   getAnalytics
 );
+
 
 adminRouter.get(
   "/orders",

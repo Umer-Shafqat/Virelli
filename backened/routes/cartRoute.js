@@ -14,7 +14,6 @@ const cartRouter =
   express.Router();
 
 
-// Add item
 cartRouter.post(
   "/add",
   authMiddleware,
@@ -22,15 +21,12 @@ cartRouter.post(
 );
 
 
-// Get cart
 cartRouter.get(
   "/get",
   authMiddleware,
   getCart
 );
 
-
-// Remove item
 cartRouter.post(
   "/remove",
   authMiddleware,
@@ -38,7 +34,6 @@ cartRouter.post(
 );
 
 
-// Clear cart
 cartRouter.delete(
   "/clear",
   authMiddleware,
