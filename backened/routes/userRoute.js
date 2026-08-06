@@ -11,28 +11,18 @@ import {
 const userRouter =
   express.Router();
 
-
-// Register
 userRouter.post(
   "/register",
   registerUser
 );
 
-
-// Login
 userRouter.post(
   "/login",
   loginUser
 );
 
-// =====================================
-// ADMIN USER ROUTES
-// =====================================
-
-// GET /api/user/list
 userRouter.get("/list", listUsers);
 
-// DELETE /api/user/:id
 userRouter.delete("/:id", deleteUser);
 
 
