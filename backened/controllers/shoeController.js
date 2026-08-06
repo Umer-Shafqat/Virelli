@@ -5,7 +5,7 @@ const addShoe = async (req, res) => {
     console.log("req.file:", req.file);
     console.log("req.body:", req.body);
 
-    // Convert type safely
+  
     const shoeType = String(req.body.type || "").trim().toUpperCase();
 
     const shoe = new ShoeModel({
@@ -36,7 +36,6 @@ const addShoe = async (req, res) => {
 
       popular: req.body.popular === "true",
 
-      // NEW FIELDS
       isNewArrival: req.body.isNewArrival === "true",
 
       isOffer: req.body.isOffer === "true",
