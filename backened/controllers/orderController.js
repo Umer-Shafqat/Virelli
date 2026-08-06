@@ -1,16 +1,12 @@
 import orderModel from "../models/orderModel.js";
 import cartModel from "../models/cartModel.js";
 
-// =====================================
-// PLACE ORDER
-// =====================================
-
 const placeOrder = async (req, res) => {
   try {
-    // Get logged-in user ID
+  
     const userId = req.userId;
 
-    // Get order data from frontend
+  
     const {
       customer,
       items,
@@ -19,9 +15,6 @@ const placeOrder = async (req, res) => {
       totalAmount,
     } = req.body;
 
-    // =================================
-    // CHECK USER
-    // =================================
 
     if (!userId) {
       return res.status(401).json({
@@ -30,20 +23,12 @@ const placeOrder = async (req, res) => {
       });
     }
 
-    // =================================
-    // CHECK ORDER ITEMS
-    // =================================
-
     if (!items || items.length === 0) {
       return res.status(400).json({
         success: false,
         message: "Your cart is empty",
       });
     }
-
-    // =================================
-    // CREATE ORDER
-    // =================================
 
     const newOrder = new orderModel({
       userId,
@@ -54,15 +39,9 @@ const placeOrder = async (req, res) => {
       totalAmount,
     });
 
-    // =================================
-    // SAVE ORDER TO MONGODB
-    // =================================
 
     const savedOrder = await newOrder.save();
 
-    // =================================
-    // CLEAR USER CART
-    // =================================
 
     await cartModel.findOneAndUpdate(
       {
@@ -73,9 +52,6 @@ const placeOrder = async (req, res) => {
       }
     );
 
-    // =================================
-    // RESPONSE
-    // =================================
 
     res.status(201).json({
       success: true,
@@ -127,9 +103,6 @@ export const updateStatus = async (req, res) => {
   }
 };
 
-// =====================================
-// DELETE ORDER
-// =====================================
 
 const deleteOrder = async (req, res) => {
   try {
@@ -163,19 +136,13 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-// =====================================
-// GET MY ORDERS
-// =====================================
 
 const getMyOrders = async (req, res) => {
 
   try {
 
-    // Logged-in user ID
     const userId = req.userId;
 
-
-    // Find orders belonging to this user
     const orders = await orderModel
       .find({ userId })
       .sort({ createdAt: -1 });
@@ -225,9 +192,6 @@ export const listOrders = async (req, res) => {
     });
   }
 };
-// =====================================
-// EXPORT CONTROLLERS
-// =====================================
 
 export {
   placeOrder,
