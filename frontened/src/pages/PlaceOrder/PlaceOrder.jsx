@@ -1,19 +1,7 @@
-import React, {
-  useContext,
-  useState,
-} from "react";
-
-import {
-  useNavigate,
-  useLocation
-} from "react-router-dom";
-
-import {
-  StoreContext,
-} from "../../Context/StoreContext/StoreContext";
-
+import React, {useContext,useState,} from "react";
+import {useNavigate,useLocation} from "react-router-dom";
+import {StoreContext,} from "../../Context/StoreContext/StoreContext";
 import axios from "axios";
-
 import "./PlaceOrder.css";
 
 
@@ -28,10 +16,6 @@ const {
   deliveryCharges = 300,
   totalAmount = 300,
 } = location.state || {};
-
-  // =====================================
-  // STORE CONTEXT
-  // =====================================
 
   const {
     cartItems,
