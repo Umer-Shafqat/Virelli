@@ -30,18 +30,15 @@
   margin: 0;
   font-size: 32px;
   font-weight: 700;
-  color: #1e293b;
+  color: #dae3f2;
 }
 
 .login-header p {
   margin-top: 10px;
-  color: #64748b;
+  color: #dde2e9;
   font-size: 15px;
 }
 
-/* ===================================
-   FORM
-=================================== */
 
 .input-group {
   margin-bottom: 22px;
@@ -50,7 +47,7 @@
 .input-group label {
   display: block;
   margin-bottom: 8px;
-  color: #334155;
+  color: #edf5ff;
   font-weight: 600;
   font-size: 14px;
 }
@@ -73,17 +70,14 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
-/* ===================================
-   BUTTON
-=================================== */
 
 .login-btn {
   width: 100%;
   padding: 15px;
   border: none;
   border-radius: 10px;
-  background: #2563eb;
-  color: #ffffff;
+  background: #d2c296;
+  color: #312d2d;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -91,7 +85,7 @@
 }
 
 .login-btn:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: #313336;
 }
 
 .login-btn:disabled {
@@ -99,9 +93,6 @@
   cursor: not-allowed;
 }
 
-/* ===================================
-   ANIMATION
-=================================== */
 
 @keyframes fadeIn {
   from {
@@ -115,9 +106,6 @@
   }
 }
 
-/* ===================================
-   RESPONSIVE
-=================================== */
 
 @media (max-width: 768px) {
   .login-card {
