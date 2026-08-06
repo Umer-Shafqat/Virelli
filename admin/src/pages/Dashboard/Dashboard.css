@@ -1,6 +1,4 @@
-/* ===================================
-   DASHBOARD LAYOUT
-=================================== */
+
 
 .dashboard-container {
   display: flex;
@@ -16,9 +14,6 @@
   box-sizing: border-box;
 }
 
-/* ===================================
-   HEADER
-=================================== */
 
 .dashboard-header {
   margin-bottom: 30px;
@@ -37,10 +32,6 @@
   color: #64748b;
 }
 
-/* ===================================
-   DASHBOARD CARDS
-=================================== */
-
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -48,9 +39,6 @@
   margin-bottom: 35px;
 }
 
-/* ===================================
-   CHART SECTION
-=================================== */
 
 .dashboard-chart {
   background: #ffffff;
@@ -60,9 +48,6 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* ===================================
-   TABLE SECTION
-=================================== */
 
 .dashboard-table {
   background: #ffffff;
@@ -78,9 +63,6 @@
   font-weight: 600;
 }
 
-/* ===================================
-   RESPONSIVE
-=================================== */
 
 @media (max-width: 992px) {
   .dashboard-content {
