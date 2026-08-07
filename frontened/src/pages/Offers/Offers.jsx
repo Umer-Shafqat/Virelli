@@ -1,46 +1,57 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Shoes from "../../components/Shoes/Shoes";
+import Footer from "../../components/Footer/Footer";
+import "./Offers.css";
 
 const Offers = () => {
+  const url = "http://localhost:4000";
 
-    const url = "http://localhost:4000";
+  const [offers, setOffers] = useState([]);
 
-    const [offers, setOffers] = useState([]);
+  useEffect(() => {
+    fetchOffers();
+  }, []);
 
-    useEffect(() => {
-        fetchOffers();
-    }, []);
+  const fetchOffers = async () => {
+    try {
+      const res = await axios.get(`${url}/api/shoes/offers`);
 
-    const fetchOffers = async () => {
+      if (res.data.success) {
+        setOffers(res.data.shoes);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-        const res = await axios.get(
-            `${url}/api/shoes/offers`
-        );
+  return (
+    <div className="offers-page">
 
-        if (res.data.success) {
-            setOffers(res.data.shoes);
-        }
-    };
+      <div className="offers-content">
 
-    return (
-        <div className="offers">
+        <h2 className="offers-title">
+          Special Offers
+        </h2>
 
-            <h2>Special Offers</h2>
-
-            <div className="shoe-grid">
-
-                {offers.map((shoe) => (
-                    <Shoes
-                        key={shoe._id}
-                        shoe={shoe}
-                    />
-                ))}
-
-            </div>
-
+        <div className="shoe-grid">
+          {offers.length > 0 ? (
+            offers.map((shoe) => (
+              <Shoes
+                key={shoe._id}
+                shoe={shoe}
+              />
+            ))
+          ) : (
+            <h3 className="empty-message">
+              No Offer Shoes Available
+            </h3>
+          )}
         </div>
-    );
+
+      </div>
+    </div>
+  );
 };
 
 export default Offers;
