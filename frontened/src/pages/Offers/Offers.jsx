@@ -1,76 +1,46 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Offers.css";
+import ShoeItem from "../../components/ShoeItem/ShoeItem";
 
 const Offers = () => {
-  const url = "http://localhost:4000";
 
-  const [offers, setOffers] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const url = "http://localhost:4000";
 
-  const fetchOffers = async () => {
-    try {
-      const response = await axios.get(
-        url + "/api/shoes/offers"
-      );
+    const [offers, setOffers] = useState([]);
 
-      if (response.data.success) {
-        setOffers(response.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    useEffect(() => {
+        fetchOffers();
+    }, []);
 
-  useEffect(() => {
-    fetchOffers();
-  }, []);
+    const fetchOffers = async () => {
 
-  return (
-    <div className="offers">
-      <h1>Special Offers</h1>
+        const res = await axios.get(
+            `${url}/api/shoes/offers`
+        );
 
-      {loading ? (
-        <h2>Loading...</h2>
-      ) : offers.length === 0 ? (
-        <h2>No Offers Available</h2>
-      ) : (
-        <div className="offer-grid">
-          {offers.map((shoe) => (
-            <div
-              className="offer-card"
-              key={shoe._id}
-            >
-              <span className="offer-badge">
-                SALE
-              </span>
+        if (res.data.success) {
+            setOffers(res.data.shoes);
+        }
+    };
 
-              <img
-                src={`${url}/images/${shoe.image}`}
-                alt={shoe.name}
-              />
+    return (
+        <div className="offers">
 
-              <h3>{shoe.name}</h3>
+            <h2>Special Offers</h2>
 
-              <p>{shoe.category}</p>
+            <div className="shoe-grid">
 
-              <div className="prices">
-                <del>
-                  Rs. {shoe.price}
-                </del>
+                {offers.map((shoe) => (
+                    <ShoeItem
+                        key={shoe._id}
+                        shoe={shoe}
+                    />
+                ))}
 
-                <span>
-                  Rs. {shoe.offerPrice}
-                </span>
-              </div>
             </div>
-          ))}
+
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Offers;

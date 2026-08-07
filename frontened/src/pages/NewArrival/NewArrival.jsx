@@ -1,61 +1,45 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./NewArrival.css";
+import ShoeItem from "../../components/ShoeItem/ShoeItem";
 
 const NewArrival = () => {
-  const url = "http://localhost:4000";
 
-  const [shoes, setShoes] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const url = "http://localhost:4000";
 
-  const fetchNewArrivals = async () => {
-    try {
-      const response = await axios.get(
-        url + "/api/shoes/new-arrivals"
-      );
+    const [shoes, setShoes] = useState([]);
 
-      if (response.data.success) {
-        setShoes(response.data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    useEffect(() => {
+        fetchNewArrivals();
+    }, []);
 
-  useEffect(() => {
-    fetchNewArrivals();
-  }, []);
+    const fetchNewArrivals = async () => {
+        const res = await axios.get(
+            `${url}/api/shoes/new-arrivals`
+        );
 
-  return (
-    <div className="new-arrival">
-      <h1>New Arrivals</h1>
+        if (res.data.success) {
+            setShoes(res.data.shoes);
+        }
+    };
 
-      {loading ? (
-        <h2>Loading...</h2>
-      ) : shoes.length === 0 ? (
-        <h2>No New Arrivals</h2>
-      ) : (
-        <div className="shoe-grid">
-          {shoes.map((shoe) => (
-            <div className="shoe-card" key={shoe._id}>
-              <img
-                src={`${url}/images/${shoe.image}`}
-                alt={shoe.name}
-              />
+    return (
+        <div className="new-arrivals">
 
-              <h3>{shoe.name}</h3>
+            <h2>New Arrivals</h2>
 
-              <p>{shoe.category}</p>
+            <div className="shoe-grid">
 
-              <span>Rs. {shoe.price}</span>
+                {shoes.map((shoe) => (
+                    <ShoeItem
+                        key={shoe._id}
+                        shoe={shoe}
+                    />
+                ))}
+
             </div>
-          ))}
+
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default NewArrival;
