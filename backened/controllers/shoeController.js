@@ -1,11 +1,13 @@
 import ShoeModel from "../models/shoeModel.js";
 
+// ===============================
+// ADD SHOE
+// ===============================
 const addShoe = async (req, res) => {
   try {
     console.log("req.file:", req.file);
     console.log("req.body:", req.body);
 
-  
     const shoeType = String(req.body.type || "").trim().toUpperCase();
 
     const shoe = new ShoeModel({
@@ -36,9 +38,11 @@ const addShoe = async (req, res) => {
 
       popular: req.body.popular === "true",
 
-       isNewArrival: isNewArrival === "true",
-       isOffer: isOffer === "true",
-        offerPrice: Number(req.body.offerPrice || 0),
+      isNewArrival: req.body.isNewArrival === "true",
+
+      isOffer: req.body.isOffer === "true",
+
+      offerPrice: Number(req.body.offerPrice || 0),
     });
 
     const savedShoe = await shoe.save();
@@ -58,58 +62,30 @@ const addShoe = async (req, res) => {
   }
 };
 
-// New Arrival Shoes
-const getNewArrivals = async (req, res) => {
-    try {
-        const shoes = await Shoe.find({ isNewArrival: true });
-
-        res.json({
-            success: true,
-            shoes,
-        });
-    } catch (error) {
-        res.json({
-            success: false,
-            message: error.message,
-        });
-    }
-};
-
-// Offer Shoes
-const getOffers = async (req, res) => {
-    try {
-        const shoes = await Shoe.find({ isOffer: true });
-
-        res.json({
-            success: true,
-            shoes,
-        });
-    } catch (error) {
-        res.json({
-            success: false,
-            message: error.message,
-        });
-    }
-};
-
+// ===============================
+// GET ALL SHOES
+// ===============================
 const getShoes = async (req, res) => {
   try {
     const shoes = await ShoeModel.find().sort({ createdAt: -1 });
 
-    res.json({
+    res.status(200).json({
       success: true,
       data: shoes,
     });
   } catch (error) {
     console.log(error);
 
-    res.json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
+// ===============================
+// GET SINGLE SHOE
+// ===============================
 const getShoeById = async (req, res) => {
   try {
     const shoe = await ShoeModel.findById(req.params.id);
@@ -130,38 +106,81 @@ const getShoeById = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "Error getting shoe",
-      error: error.message,
+      message: error.message,
     });
   }
 };
 
-export const listShoes = async (req, res) => {
+// ===============================
+// GET NEW ARRIVALS
+// ===============================
+const getNewArrivals = async (req, res) => {
   try {
-    const shoes = await ShoeModel.find({});
+    const shoes = await ShoeModel.find({
+      isNewArrival: true,
+    }).sort({ createdAt: -1 });
 
-    res.json({
+    res.status(200).json({
       success: true,
-      data: shoes,
+      shoes,
     });
   } catch (error) {
-    res.json({
+    console.error(error);
+
+    res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
-export const deleteShoe = async (req, res) => {
+// ===============================
+// GET OFFERS
+// ===============================
+const getOffers = async (req, res) => {
   try {
+    const shoes = await ShoeModel.find({
+      isOffer: true,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      shoes,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// ===============================
+// DELETE SHOE
+// ===============================
+const deleteShoe = async (req, res) => {
+  try {
+    const shoe = await ShoeModel.findById(req.params.id);
+
+    if (!shoe) {
+      return res.status(404).json({
+        success: false,
+        message: "Shoe not found",
+      });
+    }
+
     await ShoeModel.findByIdAndDelete(req.params.id);
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: "Shoe deleted successfully",
     });
   } catch (error) {
-    res.json({
+    console.error(error);
+
+    res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -174,4 +193,5 @@ export {
   getShoeById,
   getNewArrivals,
   getOffers,
+  deleteShoe,
 };
