@@ -36,11 +36,9 @@ const addShoe = async (req, res) => {
 
       popular: req.body.popular === "true",
 
-      isNewArrival: req.body.isNewArrival === "true",
-
-      isOffer: req.body.isOffer === "true",
-
-      offerPrice: Number(req.body.offerPrice || 0),
+       isNewArrival: isNewArrival === "true",
+       isOffer: isOffer === "true",
+        offerPrice: Number(req.body.offerPrice || 0),
     });
 
     const savedShoe = await shoe.save();
@@ -60,44 +58,38 @@ const addShoe = async (req, res) => {
   }
 };
 
-export const getNewArrivals = async (req, res) => {
-  try {
-    const shoes = await Shoe.find({
-      isNewArrival: true,
-    });
+// New Arrival Shoes
+const getNewArrivals = async (req, res) => {
+    try {
+        const shoes = await Shoe.find({ isNewArrival: true });
 
-    res.json({
-      success: true,
-      shoes,
-    });
-  } catch (error) {
-    console.log(error);
-
-    res.json({
-      success: false,
-      message: error.message,
-    });
-  }
+        res.json({
+            success: true,
+            shoes,
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message,
+        });
+    }
 };
 
-export const getOffers = async (req, res) => {
-  try {
-    const shoes = await Shoe.find({
-      isOffer: true,
-    });
+// Offer Shoes
+const getOffers = async (req, res) => {
+    try {
+        const shoes = await Shoe.find({ isOffer: true });
 
-    res.json({
-      success: true,
-      shoes,
-    });
-  } catch (error) {
-    console.log(error);
-
-    res.json({
-      success: false,
-      message: error.message,
-    });
-  }
+        res.json({
+            success: true,
+            shoes,
+        });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: error.message,
+        });
+    }
 };
 
 const getShoes = async (req, res) => {
@@ -180,4 +172,6 @@ export {
   addShoe,
   getShoes,
   getShoeById,
+  getNewArrivals,
+  getOffers,
 };

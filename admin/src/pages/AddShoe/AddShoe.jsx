@@ -91,6 +91,9 @@ formData.append("offerPrice", shoeData.offerPrice);
           discount: "",
           sizes: "",
           description: "",
+          isNewArrival: "false",
+          isOffer: "false",
+          offerPrice: "",
         });
 
         setImage(null);
