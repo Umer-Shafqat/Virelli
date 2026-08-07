@@ -14,8 +14,8 @@ const AddShoe = () => {
     discount: "",
     sizes: "",
     description: "",
-    isNewArrival: "false",
-    isOffer: "false",
+    isNewArrival: false,
+    isOffer: false,
     offerPrice: "",
   });
 
@@ -25,13 +25,13 @@ const AddShoe = () => {
 
   const backendUrl = "http://localhost:4000";
 
-  const handleChange = (e) => {
+const handleChange = (e) => {
   const { name, value, type, checked } = e.target;
 
-  setShoeData({
-    ...shoeData,
+  setShoeData((prev) => ({
+    ...prev,
     [name]: type === "checkbox" ? checked : value,
-  });
+  }));
 };
 
   const handleImage = (e) => {
@@ -65,8 +65,15 @@ const AddShoe = () => {
       formData.append("sizes", shoeData.sizes);
       formData.append("description", shoeData.description);
       formData.append("image", image);
-     formData.append("isNewArrival", shoeData.isNewArrival);
-formData.append("isOffer", shoeData.isOffer);
+    formData.append(
+  "isNewArrival",
+  shoeData.isNewArrival ? "true" : "false"
+);
+
+formData.append(
+  "isOffer",
+  shoeData.isOffer ? "true" : "false"
+);
 formData.append("offerPrice", shoeData.offerPrice);
 
       const response = await axios.post(
