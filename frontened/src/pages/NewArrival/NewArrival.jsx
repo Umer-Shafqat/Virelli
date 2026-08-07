@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ShoeItem from "../../components/ShoeItem/ShoeItem";
+import Shoes from "../../components/Shoes/Shoes";
 
 const NewArrival = () => {
 
@@ -30,7 +30,7 @@ const NewArrival = () => {
             <div className="shoe-grid">
 
                 {shoes.map((shoe) => (
-                    <ShoeItem
+                    <Shoes
                         key={shoe._id}
                         shoe={shoe}
                     />
