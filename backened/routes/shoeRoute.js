@@ -13,16 +13,22 @@ import upload from "../middleware/multer.js";
 
 const shoeRouter = express.Router();
 
+// Add Shoe
 shoeRouter.post("/add", upload.single("image"), addShoe);
 
+// Get All Shoes
 shoeRouter.get("/list", getShoes);
 
-shoeRouter.get("/:id", getShoeById);
-
-shoeRouter.delete("/:id", deleteShoe);
-
+// New Arrivals
 shoeRouter.get("/new-arrivals", getNewArrivals);
 
+// Offers
 shoeRouter.get("/offers", getOffers);
+
+// Get Single Shoe
+shoeRouter.get("/:id", getShoeById);
+
+// Delete Shoe
+shoeRouter.delete("/:id", deleteShoe);
 
 export default shoeRouter;
