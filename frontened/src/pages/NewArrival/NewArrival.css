@@ -1,0 +1,73 @@
+.newarrival-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.newarrival-content {
+    flex: 1;
+    width: 90%;
+    max-width: 1400px;
+    margin: 30px auto;
+}
+
+.newarrival-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #171c29;
+}
+
+.shoe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.empty-message {
+    text-align: center;
+    width: 100%;
+    margin: 50px auto;
+    font-size: 28px;
+    font-weight: 600;
+    color: #555;
+}
+
+.offers-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.offers-content {
+    flex: 1;
+}
+
+.newarrival-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.newarrival-content {
+    flex: 1;
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 110px; /* Adjust based on your navbar height */
+}
+
+.newarrival-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: #171c29;
+    margin-bottom: 35px;
+}
+
+.shoe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+}
