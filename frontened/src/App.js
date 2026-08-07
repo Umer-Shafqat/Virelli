@@ -112,15 +112,9 @@ function App() {
         element={<MyOrder />}
          />
 
-         <Route 
-         path="/new" 
-         element={<NewArrival />}
-        />
+        <Route path="/newarrival" element={<NewArrival />} />
 
-         <Route 
-         path="/offers" 
-         element={<Offers />}
-        /> 
+         <Route path="/offers" element={<Offers />} />
 
       </Routes>
        <Footer />

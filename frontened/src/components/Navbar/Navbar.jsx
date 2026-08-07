@@ -92,15 +92,11 @@ const Navbar = () => {
         </li>
 
         <li>
-          <Link to="/NewArrival">
-            NEW ARRIVAL
-          </Link>
+          <Link to="/newarrival">NEW ARRIVALS</Link>
         </li>
 
         <li>
-          <Link to="/Offers">
-            OFFERS
-          </Link>
+          <Link to="/offers">OFFERS</Link>
         </li>
 
         <li>
