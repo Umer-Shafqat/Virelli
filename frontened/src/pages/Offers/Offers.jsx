@@ -13,7 +13,7 @@ const Offers = () => {
   // =====================================
 
  const offerStartDate = new Date("2026-08-9T00:00:00");
-const offerEndDate = new Date("2026-08-30T23:59:59");
+const offerEndDate = new Date("2026-08-10T23:59:59");
 
   const [offerActive, setOfferActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
