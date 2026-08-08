@@ -26,7 +26,7 @@ const ReturnsExchange = () => {
           <h2>Exchange Policy</h2>
           <p>
             If you receive the wrong size or product, you can request an
-            exchange within 7 days of delivery.
+            exchange within 1 day of delivery.
           </p>
         </div>
 

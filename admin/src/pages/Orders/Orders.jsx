@@ -260,9 +260,9 @@ printWindow.onload = () => {
                       </h3>
 
                       <p>
-  <strong>Order ID:</strong>{" "}
-  {order._id}
-</p>
+                      <strong>Order ID:</strong>{" "}
+                      {order._id}
+                      </p>
 
                       <p>
                         {order.customer?.address}, {order.customer?.city}
