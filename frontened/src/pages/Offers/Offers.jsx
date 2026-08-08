@@ -128,7 +128,7 @@ const offerEndDate = new Date("2026-08-10T23:59:59");
             </div>
 
             <div className="sale-percent">
-              50% OFF
+              20% OFF
             </div>
 
             <div className="sale-date">
