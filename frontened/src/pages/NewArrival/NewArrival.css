@@ -1,9 +1,7 @@
 .new-arrival-page {
   width: 100%;
-  min-height: 100vh;
-  padding: 90px 60px 60px;
+  padding: 90px 6% 40px;
   box-sizing: border-box;
-  background: #fff;
 }
 
 /* HEADING */

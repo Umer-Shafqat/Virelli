@@ -1,71 +1,104 @@
+/* =====================================
+   OFFERS PAGE
+===================================== */
+
 .offers-page {
-  width: 100%;
-  padding: 90px 6% 40px;
+  padding: 120px 5% 70px;
+  background: #c6b7b7;
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
-/* TITLE */
+
+/* =====================================
+   HEADING
+===================================== */
 
 .offers-title {
   text-align: center;
+  margin-bottom: 45px;
   font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 40px;
-  color: #171c29;
+  color: #000;
 }
 
-/* GRID */
+
+/* =====================================
+   OFFERS GRID
+===================================== */
 
 .offers-container {
+  max-width: 1200px;
+  margin: auto;
+
   display: grid;
+
   grid-template-columns: repeat(3, 1fr);
+
   gap: 30px;
 }
 
-/* CARD */
+
+/* =====================================
+   OFFER CARD
+===================================== */
 
 .offer-card {
-  background: #ffffff;
-  border-radius: 14px;
+  background: #FFEED6;
+
+  border-radius: 12px;
+
   overflow: hidden;
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
-  transition: 0.3s ease;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  transition: 0.3s;
 }
 
 .offer-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
 }
 
-/* IMAGE */
+
+/* =====================================
+   OFFER IMAGE
+===================================== */
 
 .offer-image-box {
   position: relative;
+
   width: 100%;
   height: 280px;
+
   overflow: hidden;
-  background: #f5f5f5;
 }
 
 .offer-image {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
-  transition: 0.3s ease;
+
+  transition: 0.4s;
 }
 
 .offer-card:hover .offer-image {
   transform: scale(1.05);
 }
 
-/* OFFER BADGE */
+
+/* =====================================
+   OFFER BADGE
+===================================== */
 
 .offer-badge {
   position: absolute;
+
   top: 15px;
   right: 15px;
 
   background: #e63946;
+
   color: white;
 
   padding: 7px 14px;
@@ -76,68 +109,96 @@
   font-weight: 700;
 }
 
-/* INFORMATION */
+
+/* =====================================
+   OFFER INFORMATION
+===================================== */
 
 .offer-info {
-  padding: 20px;
+  padding: 22px;
 }
 
 .offer-info h2 {
-  margin: 0 0 8px;
-  font-size: 22px;
-  color: #171c29;
+  font-size: 20px;
+
+  margin-bottom: 8px;
+
+  color: #000;
 }
 
-/* CATEGORY */
+
+/* =====================================
+   CATEGORY
+===================================== */
 
 .shoe-category {
-  margin: 0 0 12px;
   color: #777;
+
   font-size: 14px;
-  font-weight: 500;
+
+  margin-bottom: 10px;
 }
 
-/* DESCRIPTION */
+
+/* =====================================
+   DESCRIPTION
+===================================== */
 
 .shoe-description {
   color: #666;
+
   font-size: 14px;
+
   line-height: 1.5;
 
   min-height: 42px;
-
-  margin-bottom: 18px;
 }
 
-/* PRICE */
+
+/* =====================================
+   PRICE
+===================================== */
 
 .price-section {
   display: flex;
+
   align-items: center;
+
   flex-wrap: wrap;
+
   gap: 10px;
+
+  margin: 15px 0;
 }
+
 
 /* OLD PRICE */
 
 .old-price {
-  color: #999;
-  text-decoration: line-through;
+  color: #777;
+
   font-size: 14px;
+
+  text-decoration: line-through;
 }
+
 
 /* NEW PRICE */
 
 .new-price {
-  color: #e63946;
+  color: #000;
+
   font-size: 20px;
-  font-weight: 700;
+
+  font-weight: 600;
 }
+
 
 /* DISCOUNT */
 
 .discount {
   background: #e63946;
+
   color: white;
 
   padding: 5px 9px;
@@ -145,50 +206,77 @@
   border-radius: 5px;
 
   font-size: 12px;
+
   font-weight: 700;
 }
 
-/* LOADING */
+
+/* =====================================
+   LOADING
+===================================== */
 
 .loading {
   text-align: center;
+
   font-size: 18px;
+
   color: #777;
+
   padding: 50px;
 }
 
-/* EMPTY */
+
+/* =====================================
+   NO OFFERS
+===================================== */
 
 .no-offers {
   text-align: center;
+
   padding: 70px 20px;
 }
 
 .no-offers h2 {
   font-size: 28px;
-  color: #171c29;
+
+  color: #000;
+
   margin-bottom: 10px;
 }
 
 .no-offers p {
   color: #777;
+
+  font-size: 16px;
 }
 
-/* RESPONSIVE */
 
-@media (max-width: 1000px) {
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 900px) {
+
   .offers-container {
     grid-template-columns: repeat(2, 1fr);
   }
+
 }
 
-@media (max-width: 650px) {
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
   .offers-page {
-    padding: 30px 5%;
+    padding: 100px 20px 50px;
   }
 
   .offers-title {
     font-size: 30px;
+    margin-bottom: 35px;
   }
 
   .offers-container {
@@ -196,6 +284,7 @@
   }
 
   .offer-image-box {
-    height: 300px;
+    height: 280px;
   }
+
 }
