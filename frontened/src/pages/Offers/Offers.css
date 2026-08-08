@@ -1,3 +1,325 @@
+/* =====================================
+   50% SALE ANIMATION PLATE
+===================================== */
+
+.offer-sale-plate {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto 45px;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+
+  background: linear-gradient(
+    135deg,
+    #171c29,
+    #e63946
+  );
+
+  border-radius: 18px;
+
+  color: white;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  position: relative;
+
+  animation: salePulse 2s infinite;
+}
+
+
+/* =====================================
+   MOVING LIGHT ANIMATION
+===================================== */
+
+.offer-sale-plate::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -100%;
+
+  width: 60%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+
+  transform: skewX(-25deg);
+
+  animation: saleLight 3s infinite;
+}
+
+
+/* =====================================
+   CONTENT
+===================================== */
+
+.sale-content {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* =====================================
+   MEGA SALE
+===================================== */
+
+.sale-title {
+  font-size: 22px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 5px;
+}
+
+
+/* =====================================
+   50% OFF
+===================================== */
+
+.sale-percent {
+  font-size: 52px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  margin: 8px 0;
+
+  animation: percentBounce 1.5s infinite;
+}
+
+
+/* =====================================
+   DATE
+===================================== */
+
+.sale-date {
+  font-size: 15px;
+
+  margin-bottom: 20px;
+
+  opacity: 0.9;
+}
+
+
+/* =====================================
+   COUNTDOWN
+===================================== */
+
+.countdown {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+/* =====================================
+   TIME BOX
+===================================== */
+
+.time-box {
+  min-width: 70px;
+
+  padding: 10px 8px;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.15
+  );
+
+  border: 1px solid rgba(
+    255,
+    255,
+    255,
+    0.3
+  );
+
+  border-radius: 8px;
+
+  backdrop-filter: blur(5px);
+}
+
+
+.time-box span {
+  display: block;
+
+  font-size: 25px;
+
+  font-weight: 800;
+}
+
+
+.time-box small {
+  display: block;
+
+  font-size: 10px;
+
+  margin-top: 3px;
+
+  opacity: 0.8;
+}
+
+
+/* =====================================
+   COLON
+===================================== */
+
+.colon {
+  font-size: 25px;
+
+  font-weight: 700;
+}
+
+
+/* =====================================
+   ANIMATION 1
+===================================== */
+
+@keyframes salePulse {
+
+  0% {
+    box-shadow:
+      0 0 0 rgba(
+        230,
+        57,
+        70,
+        0
+      );
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px rgba(
+        230,
+        57,
+        70,
+        0.5
+      );
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 rgba(
+        230,
+        57,
+        70,
+        0
+      );
+  }
+
+}
+
+
+/* =====================================
+   ANIMATION 2
+===================================== */
+
+@keyframes saleLight {
+
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 150%;
+  }
+
+}
+
+
+/* =====================================
+   ANIMATION 3
+===================================== */
+
+@keyframes percentBounce {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+  .offer-sale-plate {
+    padding: 20px 10px;
+
+    margin-bottom: 35px;
+  }
+
+
+  .sale-title {
+    font-size: 18px;
+  }
+
+
+  .sale-percent {
+    font-size: 40px;
+  }
+
+
+  .sale-date {
+    font-size: 13px;
+  }
+
+
+  .countdown {
+    gap: 5px;
+  }
+
+
+  .time-box {
+    min-width: 52px;
+
+    padding: 8px 5px;
+  }
+
+
+  .time-box span {
+    font-size: 19px;
+  }
+
+
+  .time-box small {
+    font-size: 8px;
+  }
+
+
+  .colon {
+    font-size: 18px;
+  }
+
+}
+
 .offers-page {
   padding: 120px 5% 70px;
   background: #c6b7b7;
