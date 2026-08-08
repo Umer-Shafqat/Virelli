@@ -108,16 +108,19 @@ const getShoeById = async (req, res) => {
   }
 };
 
-// ===============================
-// GET NEW ARRIVALS
-// ===============================
+import shoeModel from "../models/shoeModel.js";
+
+
+// New Arrivals
 const getNewArrivals = async (req, res) => {
   try {
     const shoes = await shoeModel.find({
       isNewArrival: true
     });
 
-    res.status(200).json({
+    console.log("New Arrivals:", shoes);
+
+    res.json({
       success: true,
       shoes: shoes
     });
@@ -133,25 +136,26 @@ const getNewArrivals = async (req, res) => {
 };
 
 
-// ===============================
-// GET OFFERS
-// ===============================
+// Offers
 const getOffers = async (req, res) => {
   try {
-    const shoes = await ShoeModel.find({
-      isOffer: true,
-    }).sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      shoes,
+    const shoes = await shoeModel.find({
+      isOffer: true
     });
+
+    console.log("Offers:", shoes);
+
+    res.json({
+      success: true,
+      shoes: shoes
+    });
+
   } catch (error) {
-    console.error(error);
+    console.log("Error getting offers:", error);
 
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: error.message
     });
   }
 };

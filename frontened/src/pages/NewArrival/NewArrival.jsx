@@ -14,11 +14,17 @@ const NewArrival = () => {
         `${url}/api/shoes/new-arrivals`
       );
 
+      console.log("New Arrival API:", response.data);
+
       if (response.data.success) {
         setNewArrivals(response.data.shoes);
       }
+
     } catch (error) {
-      console.log("Error fetching new arrivals:", error);
+      console.log(
+        "Error fetching new arrivals:",
+        error
+      );
     } finally {
       setLoading(false);
     }
@@ -37,21 +43,25 @@ const NewArrival = () => {
 
       {loading ? (
         <p className="loading">
-          Loading new arrivals...
+          Loading...
         </p>
       ) : newArrivals.length === 0 ? (
         <div className="no-arrivals">
           <h2>No New Arrivals</h2>
           <p>
-            Add a shoe and select "New Arrival" to show it here.
+            No shoes have been added as new arrivals.
           </p>
         </div>
       ) : (
+
         <div className="new-arrival-container">
 
           {newArrivals.map((shoe) => (
 
-            <div className="new-arrival-card" key={shoe._id}>
+            <div
+              className="new-arrival-card"
+              key={shoe._id}
+            >
 
               <div className="new-arrival-image-box">
 
@@ -101,7 +111,8 @@ const NewArrival = () => {
                     </>
                   ) : (
                     <span className="new-price">
-                      Rs. {Number(shoe.price).toLocaleString()}
+                      Rs.{" "}
+                      {Number(shoe.price).toLocaleString()}
                     </span>
                   )}
 
@@ -114,6 +125,7 @@ const NewArrival = () => {
           ))}
 
         </div>
+
       )}
 
     </div>
