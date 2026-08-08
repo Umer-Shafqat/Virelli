@@ -1,8 +1,5 @@
 import ShoeModel from "../models/shoeModel.js";
 
-// ===============================
-// ADD SHOE
-// ===============================
 const addShoe = async (req, res) => {
   try {
     console.log("req.file:", req.file);
@@ -116,23 +113,25 @@ const getShoeById = async (req, res) => {
 // ===============================
 const getNewArrivals = async (req, res) => {
   try {
-    const shoes = await ShoeModel.find({
-      isNewArrival: true,
-    }).sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      shoes,
+    const shoes = await shoeModel.find({
+      isNewArrival: true
     });
+
+    res.json({
+      success: true,
+      shoes
+    });
+
   } catch (error) {
-    console.error(error);
+    console.log("Error getting new arrivals:", error);
 
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Failed to get new arrivals"
     });
   }
 };
+
 
 // ===============================
 // GET OFFERS

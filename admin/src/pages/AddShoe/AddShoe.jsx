@@ -65,10 +65,7 @@ const handleChange = (e) => {
       formData.append("sizes", shoeData.sizes);
       formData.append("description", shoeData.description);
       formData.append("image", image);
-    formData.append(
-  "isNewArrival",
-  shoeData.isNewArrival ? "true" : "false"
-);
+   formData.append("isNewArrival", shoeData.isNewArrival);
 
 formData.append(
   "isOffer",
@@ -278,15 +275,20 @@ formData.append("offerPrice", shoeData.offerPrice);
               margin: "20px 0",
             }}
           >
-            <label>
-              <input
-                type="checkbox"
-                name="isNewArrival"
-                checked={shoeData.isNewArrival}
-                onChange={handleChange}
-              />{" "}
-              New Arrival
-            </label>
+<label>
+  <input
+    type="checkbox"
+    checked={shoeData.isNewArrival}
+    onChange={(e) =>
+      setShoeData({
+        ...shoeData,
+        isNewArrival: e.target.checked
+      })
+    }
+  />
+
+  New Arrival
+</label>
 
             <label>
               <input
