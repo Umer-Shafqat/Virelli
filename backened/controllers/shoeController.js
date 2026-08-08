@@ -117,9 +117,9 @@ const getNewArrivals = async (req, res) => {
       isNewArrival: true
     });
 
-    res.json({
+    res.status(200).json({
       success: true,
-      shoes
+      shoes: shoes
     });
 
   } catch (error) {
@@ -127,7 +127,7 @@ const getNewArrivals = async (req, res) => {
 
     res.status(500).json({
       success: false,
-      message: "Failed to get new arrivals"
+      message: error.message
     });
   }
 };
