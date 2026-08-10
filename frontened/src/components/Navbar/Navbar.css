@@ -288,7 +288,7 @@
   opacity: 0;
   visibility: hidden;
  .cart-dropdown {
-  transition: opacity 5s ease, transform 5s ease;
+  transition: opacity 15s ease, transform 15s ease;
 }
   z-index: 1000;
 }
