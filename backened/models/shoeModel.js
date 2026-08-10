@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
+
 const shoeSchema = new mongoose.Schema(
-  
   {
     name: {
       type: String,
@@ -48,26 +48,27 @@ const shoeSchema = new mongoose.Schema(
       default: [],
     },
 
-     isNewArrival: {
-  type: Boolean,
-  default: false,
-},
+    isNewArrival: {
+      type: Boolean,
+      default: false,
+    },
 
-isOffer: {
-  type: Boolean,
-  default: false,
-},
+    isOffer: {
+      type: Boolean,
+      default: false,
+    },
 
-offerPrice: {
-  type: Number,
-  default: 0,
-},
+    offerPrice: {
+      type: Number,
+      default: 0,
+    },
 
     rating: {
       totalRatings: {
         type: Number,
         default: 0,
       },
+
       ratingSum: {
         type: Number,
         default: 0,
@@ -80,6 +81,7 @@ offerPrice: {
 );
 
 const shoeModel =
-  mongoose.models.shoe || mongoose.model("shoe", shoeSchema);
+  mongoose.models.shoe ||
+  mongoose.model("shoe", shoeSchema);
 
 export default shoeModel;
