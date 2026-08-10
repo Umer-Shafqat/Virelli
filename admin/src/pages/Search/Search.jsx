@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./Search.css";
 
 const Search = () => {
   const { keyword } = useParams();
+  const navigate = useNavigate();
 
   const url = "http://localhost:4000";
 
@@ -15,6 +16,49 @@ const Search = () => {
   });
 
   const [loading, setLoading] = useState(true);
+
+  // =====================================
+  // CHECK SPECIAL SEARCH KEYWORDS
+  // =====================================
+
+  useEffect(() => {
+    if (!keyword) return;
+
+    const searchKeyword = keyword.trim().toLowerCase();
+
+    // Orders page
+    if (
+      searchKeyword === "order" ||
+      searchKeyword === "orders"
+    ) {
+      navigate("/orders", { replace: true });
+      return;
+    }
+
+    // Users page
+    if (
+      searchKeyword === "user" ||
+      searchKeyword === "users"
+    ) {
+      navigate("/users", { replace: true });
+      return;
+    }
+
+    // Shoes page
+    if (
+      searchKeyword === "shoe" ||
+      searchKeyword === "shoes"
+    ) {
+      navigate("/list", { replace: true });
+      return;
+    }
+
+    // Dashboard
+    if (searchKeyword === "dashboard") {
+      navigate("/", { replace: true });
+      return;
+    }
+  }, [keyword, navigate]);
 
   // =====================================
   // FETCH SEARCH RESULTS
@@ -50,13 +94,28 @@ const Search = () => {
   };
 
   // =====================================
-  // LOAD WHEN KEYWORD CHANGES
+  // LOAD SEARCH RESULTS
   // =====================================
 
   useEffect(() => {
-    if (keyword) {
-      fetchData();
+    if (!keyword) return;
+
+    const searchKeyword = keyword.trim().toLowerCase();
+
+    // Don't fetch for page keywords
+    if (
+      searchKeyword === "order" ||
+      searchKeyword === "orders" ||
+      searchKeyword === "user" ||
+      searchKeyword === "users" ||
+      searchKeyword === "shoe" ||
+      searchKeyword === "shoes" ||
+      searchKeyword === "dashboard"
+    ) {
+      return;
     }
+
+    fetchData();
   }, [keyword]);
 
   // =====================================
