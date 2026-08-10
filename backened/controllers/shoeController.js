@@ -1,11 +1,18 @@
 import ShoeModel from "../models/shoeModel.js";
+import UserModel from "../models/userModel.js";
+import OrderModel from "../models/orderModel.js";
 
+// ===============================
+// ADD SHOE
+// ===============================
 const addShoe = async (req, res) => {
   try {
     console.log("req.file:", req.file);
     console.log("req.body:", req.body);
 
-    const shoeType = String(req.body.type || "").trim().toUpperCase();
+    const shoeType = String(req.body.type || "")
+      .trim()
+      .toUpperCase();
 
     const shoe = new ShoeModel({
       name: req.body.name,
@@ -59,12 +66,15 @@ const addShoe = async (req, res) => {
   }
 };
 
+
 // ===============================
 // GET ALL SHOES
 // ===============================
 const getShoes = async (req, res) => {
   try {
-    const shoes = await ShoeModel.find().sort({ createdAt: -1 });
+    const shoes = await ShoeModel.find().sort({
+      createdAt: -1,
+    });
 
     res.status(200).json({
       success: true,
@@ -79,6 +89,7 @@ const getShoes = async (req, res) => {
     });
   }
 };
+
 
 // ===============================
 // GET SINGLE SHOE
@@ -108,57 +119,211 @@ const getShoeById = async (req, res) => {
   }
 };
 
-import shoeModel from "../models/shoeModel.js";
 
-
-// New Arrivals
+// ===============================
+// GET NEW ARRIVALS
+// ===============================
 const getNewArrivals = async (req, res) => {
   try {
-    const shoes = await shoeModel.find({
-      isNewArrival: true
+    const shoes = await ShoeModel.find({
+      isNewArrival: true,
     });
 
     console.log("New Arrivals:", shoes);
 
     res.json({
       success: true,
-      shoes: shoes
+      shoes: shoes,
     });
-
   } catch (error) {
     console.log("Error getting new arrivals:", error);
 
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
 
 
-// Offers
+// ===============================
+// GET OFFERS
+// ===============================
 const getOffers = async (req, res) => {
   try {
-    const shoes = await shoeModel.find({
-      isOffer: true
+    const shoes = await ShoeModel.find({
+      isOffer: true,
     });
 
     console.log("Offers:", shoes);
 
     res.json({
       success: true,
-      shoes: shoes
+      shoes: shoes,
     });
-
   } catch (error) {
     console.log("Error getting offers:", error);
 
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
+
+
+// ===============================
+// ADMIN SEARCH
+// ===============================
+const searchAdmin = async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q || q.trim() === "") {
+      return res.json({
+        success: true,
+        shoes: [],
+        users: [],
+        orders: [],
+      });
+    }
+
+    const keyword = q.trim();
+
+    const lowerKeyword = keyword.toLowerCase();
+
+    let shoes = [];
+    let users = [];
+    let orders = [];
+
+
+    // =====================================
+    // SEARCH SHOES
+    // =====================================
+
+    if (
+      lowerKeyword === "shoe" ||
+      lowerKeyword === "shoes"
+    ) {
+      // If user searches "shoes", show all shoes
+      shoes = await ShoeModel.find().sort({
+        createdAt: -1,
+      });
+    } else {
+      shoes = await ShoeModel.find({
+        $or: [
+          {
+            name: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            category: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            type: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            description: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+        ],
+      }).sort({
+        createdAt: -1,
+      });
+    }
+
+
+    // =====================================
+    // SEARCH USERS
+    // =====================================
+
+    if (
+      lowerKeyword === "user" ||
+      lowerKeyword === "users"
+    ) {
+      // If user searches "users", show all users
+      users = await UserModel.find().sort({
+        createdAt: -1,
+      });
+    } else {
+      users = await UserModel.find({
+        $or: [
+          {
+            name: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            email: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+        ],
+      }).sort({
+        createdAt: -1,
+      });
+    }
+
+
+    // =====================================
+    // SEARCH ORDERS
+    // =====================================
+
+    if (
+      lowerKeyword === "order" ||
+      lowerKeyword === "orders"
+    ) {
+      // If user searches "orders", show all orders
+      orders = await OrderModel.find()
+        .sort({
+          createdAt: -1,
+        });
+    } else {
+      // Search orders by status
+      orders = await OrderModel.find({
+        status: {
+          $regex: keyword,
+          $options: "i",
+        },
+      }).sort({
+        createdAt: -1,
+      });
+    }
+
+
+    // =====================================
+    // RESPONSE
+    // =====================================
+
+    res.status(200).json({
+      success: true,
+      shoes,
+      users,
+      orders,
+    });
+
+  } catch (error) {
+    console.error("Admin search error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 
 // ===============================
 // DELETE SHOE
@@ -190,11 +355,16 @@ const deleteShoe = async (req, res) => {
   }
 };
 
+
+// ===============================
+// EXPORT
+// ===============================
 export {
   addShoe,
   getShoes,
   getShoeById,
   getNewArrivals,
   getOffers,
+  searchAdmin,
   deleteShoe,
 };
