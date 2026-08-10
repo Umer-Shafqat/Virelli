@@ -4,9 +4,10 @@ import {
   addShoe,
   getShoes,
   getShoeById,
-  deleteShoe,
   getNewArrivals,
   getOffers,
+  searchAdmin,
+  deleteShoe,
 } from "../controllers/shoeController.js";
 
 import upload from "../middleware/multer.js";
