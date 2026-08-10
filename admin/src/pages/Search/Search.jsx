@@ -1,330 +1,231 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./Navbar.css";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import "./Search.css";
 
-import logo1 from "../../assets/logo1.png";
-import search_icon from "../../assets/search_icon.png";
-import profile_image from "../../assets/profile_image.png";
-import basket_icon from "../../assets/basket_icon.png";
+const Search = () => {
+  const { keyword } = useParams();
 
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
+  const url = "http://localhost:4000";
 
-const Navbar = () => {
-  const { shoes, cartItems, token, logout } = useContext(StoreContext);
+  const [data, setData] = useState({
+    shoes: [],
+    users: [],
+    orders: [],
+  });
 
-  const [showSearch, setShowSearch] = useState(false);
-  const [search, setSearch] = useState("");
-  const [showCartMenu, setShowCartMenu] = useState(false);
-
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   // =====================================
-  // CART COUNT
+  // FETCH SEARCH RESULTS
   // =====================================
 
-  const cartCount = Object.values(cartItems).reduce(
-    (total, quantity) => total + quantity,
-    0
-  );
+  const fetchData = async () => {
+    try {
+      setLoading(true);
 
-  // =====================================
-  // LOGOUT
-  // =====================================
+      const token = localStorage.getItem("adminToken");
 
-  const handleLogout = () => {
-    logout();
+      const res = await axios.get(
+        `${url}/api/admin/search?q=${encodeURIComponent(keyword)}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
-    alert("You have been signed out successfully!");
-
-    navigate("/login");
-  };
-
-  // =====================================
-  // SEARCH SHOES
-  // =====================================
-
-  const searchValue = search.trim().toLowerCase();
-
-  const filteredShoes =
-    searchValue === ""
-      ? []
-      : shoes.filter((shoe) => {
-          const name = shoe.name?.toLowerCase() || "";
-          const category = shoe.category?.toLowerCase() || "";
-          const type = shoe.type?.toLowerCase() || "";
-          const description = shoe.description?.toLowerCase() || "";
-
-          return (
-            name.includes(searchValue) ||
-            category.includes(searchValue) ||
-            type.includes(searchValue) ||
-            description.includes(searchValue)
-          );
+      if (res.data.success) {
+        setData({
+          shoes: res.data.shoes || [],
+          users: res.data.users || [],
+          orders: res.data.orders || [],
         });
-
-  // =====================================
-  // CLICK SEARCH RESULT
-  // =====================================
-
-  const handleSearchResult = (shoe) => {
-    // Change this route if you have a shoe details page
-    navigate(`/shoes/${shoe._id}`);
-
-    setSearch("");
-    setShowSearch(false);
+      }
+    } catch (error) {
+      console.log("Search Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // =====================================
-  // CART CLICK
+  // LOAD WHEN KEYWORD CHANGES
   // =====================================
 
-  const handleCartClick = () => {
-    setShowCartMenu((prev) => !prev);
-  };
+  useEffect(() => {
+    if (keyword) {
+      fetchData();
+    }
+  }, [keyword]);
+
+  // =====================================
+  // NO RESULTS
+  // =====================================
+
+  const noResults =
+    data.shoes.length === 0 &&
+    data.users.length === 0 &&
+    data.orders.length === 0;
+
+  // =====================================
+  // UI
+  // =====================================
 
   return (
-    <nav className="navbar">
+    <div className="search-page">
 
-      {/* =====================================
-          LOGO
-      ===================================== */}
+      <h1>
+        Search Results for "{keyword}"
+      </h1>
 
-      <div className="navbar-left">
-
-        <Link to="/">
-          <img
-            src={logo1}
-            alt="Virelli Logo"
-            className="logo"
-          />
-        </Link>
-
-      </div>
-
-
-      {/* =====================================
-          MENU
-      ===================================== */}
-
-      <ul className="navbar-menu">
-
-        <li>
-          <Link to="/">HOME</Link>
-        </li>
-
-        <li>
-          <Link to="/men">MEN</Link>
-        </li>
-
-        <li>
-          <Link to="/women">WOMEN</Link>
-        </li>
-
-        <li>
-          <Link to="/kids">KIDS</Link>
-        </li>
-
-        <li>
-          <Link to="/newarrival">
-            NEW ARRIVALS
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/offers">
-            OFFERS
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/contact">
-            CONTACT US
-          </Link>
-        </li>
-
-      </ul>
-
-
-      {/* =====================================
-          NAVBAR ICONS
-      ===================================== */}
-
-      <div className="navbar-icons">
-
-
-        {/* =====================================
-            SEARCH
-        ===================================== */}
-
-        <div className="search-box">
-
-          <img
-            src={search_icon}
-            alt="Search"
-            className="search-icon"
-            onClick={() => setShowSearch(!showSearch)}
-          />
-
-
-          {showSearch && (
-            <>
-
-              <input
-                type="text"
-                placeholder="Search shoes..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                autoFocus
-              />
-
-
-              {/* SEARCH RESULTS */}
-
-              {searchValue !== "" && (
-                <div className="search-results">
-
-                  {filteredShoes.length > 0 ? (
-
-                    filteredShoes.map((shoe) => (
-
-                      <div
-                        key={shoe._id}
-                        className="search-item"
-                        onClick={() =>
-                          handleSearchResult(shoe)
-                        }
-                      >
-
-                        <img
-                          src={`http://localhost:4000/images/${shoe.image}`}
-                          alt={shoe.name}
-                        />
-
-                        <div>
-
-                          <h4>
-                            {shoe.name}
-                          </h4>
-
-                          <p>
-                            {shoe.category}
-                          </p>
-
-                          <p>
-                            Rs.{" "}
-                            {shoe.price?.toLocaleString()}
-                          </p>
-
-                        </div>
-
-                      </div>
-
-                    ))
-
-                  ) : (
-
-                    <div className="no-search-results">
-                      No shoes found.
-                    </div>
-
-                  )}
-
-                </div>
-              )}
-
-            </>
-          )}
-
+      {loading ? (
+        <div className="loading">
+          Loading...
         </div>
+      ) : noResults ? (
+        <div className="no-results">
+          No matching results found.
+        </div>
+      ) : (
+        <>
 
+          {/* =====================================
+              SHOES
+          ===================================== */}
 
-        {/* =====================================
-            PROFILE / LOGOUT
-        ===================================== */}
+          {data.shoes.length > 0 && (
+            <div className="search-section">
 
-        {token ? (
+              <h2>Shoes</h2>
 
-          <button
-            className="logout-btn"
-            onClick={handleLogout}
-          >
-            SIGN OUT
-          </button>
+              <div className="search-grid">
 
-        ) : (
+                {data.shoes.map((shoe) => (
+                  <div
+                    className="search-card"
+                    key={shoe._id}
+                  >
 
-          <Link to="/login">
+                    {shoe.image && (
+                      <img
+                        src={`${url}/images/${shoe.image}`}
+                        alt={shoe.name}
+                        className="search-shoe-image"
+                      />
+                    )}
 
-            <img
-              src={profile_image}
-              alt="Profile"
-            />
+                    <h3>
+                      {shoe.name}
+                    </h3>
 
-          </Link>
+                    <p>
+                      Category: {shoe.category}
+                    </p>
 
-        )}
+                    <p>
+                      Type: {shoe.type}
+                    </p>
 
+                    <p>
+                      Price: Rs.{" "}
+                      {shoe.price?.toLocaleString()}
+                    </p>
 
-        {/* =====================================
-            CART
-        ===================================== */}
+                    {shoe.discount > 0 && (
+                      <p>
+                        Discount: {shoe.discount}%
+                      </p>
+                    )}
 
-        <div className="cart-menu">
+                  </div>
+                ))}
 
-          <button
-            className="cart-button"
-            onClick={handleCartClick}
-          >
-
-            <img
-              src={basket_icon}
-              alt="Cart"
-              className="basket-icon"
-            />
-
-            {cartCount > 0 && (
-              <span className="cart-count">
-                {cartCount}
-              </span>
-            )}
-
-          </button>
-
-
-          {/* CART DROPDOWN */}
-
-          {showCartMenu && (
-
-            <div className="cart-dropdown">
-
-              <Link
-                to="/cart"
-                onClick={() =>
-                  setShowCartMenu(false)
-                }
-              >
-                🛒 View Cart
-              </Link>
-
-              <Link
-                to="/myorders"
-                onClick={() =>
-                  setShowCartMenu(false)
-                }
-              >
-                📦 My Orders
-              </Link>
+              </div>
 
             </div>
-
           )}
 
-        </div>
 
-      </div>
+          {/* =====================================
+              USERS
+          ===================================== */}
 
-    </nav>
+          {data.users.length > 0 && (
+            <div className="search-section">
+
+              <h2>Users</h2>
+
+              <div className="search-grid">
+
+                {data.users.map((user) => (
+                  <div
+                    className="search-card"
+                    key={user._id}
+                  >
+
+                    <h3>
+                      {user.name}
+                    </h3>
+
+                    <p>
+                      {user.email}
+                    </p>
+
+                  </div>
+                ))}
+
+              </div>
+
+            </div>
+          )}
+
+
+          {/* =====================================
+              ORDERS
+          ===================================== */}
+
+          {data.orders.length > 0 && (
+            <div className="search-section">
+
+              <h2>Orders</h2>
+
+              <div className="search-grid">
+
+                {data.orders.map((order) => (
+                  <div
+                    className="search-card"
+                    key={order._id}
+                  >
+
+                    <h3>
+                      {order.customer?.name ||
+                        order.user?.name ||
+                        "Customer"}
+                    </h3>
+
+                    <p>
+                      Amount: Rs.{" "}
+                      {order.total?.toLocaleString()}
+                    </p>
+
+                    <p>
+                      Status: {order.status}
+                    </p>
+
+                  </div>
+                ))}
+
+              </div>
+
+            </div>
+          )}
+
+        </>
+      )}
+
+    </div>
   );
 };
 
-export default Navbar;
+export default Search;
