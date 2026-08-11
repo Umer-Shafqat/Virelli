@@ -4,8 +4,8 @@ import { StoreContext } from "../../Context/StoreContext/StoreContext";
 import "./MyOrder.css";
 
 const MyOrders = () => {
-  const { token } = useContext(StoreContext);
 
+  const { token } = useContext(StoreContext);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -250,5 +250,4 @@ const MyOrders = () => {
     </div>
   );
 };
-
 export default MyOrders;
