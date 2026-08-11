@@ -4,6 +4,7 @@ import React, {
   useState,
   useCallback,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const StoreContext = createContext();
@@ -11,6 +12,7 @@ export const StoreContext = createContext();
 const StoreContextProvider = ({ children }) => {
   const url = "http://localhost:4000";
 
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState({});
   const [shoes, setShoes] = useState([]);
   
@@ -32,7 +34,7 @@ const StoreContextProvider = ({ children }) => {
 
   const addToCart = async (shoe, size) => {
     if (!token) {
-      alert("Please login first");
+      navigate("/login");
       return;
     }
 
