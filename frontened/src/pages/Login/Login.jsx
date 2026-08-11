@@ -10,12 +10,9 @@ const Login = () => {
   const { setToken } = useContext(StoreContext);
 const navigate = useNavigate();
 
-const logout = () => {
-  localStorage.removeItem("token");
-  setToken("");
-};
+
   const [isSignUp, setIsSignUp] = useState(false);
-  const url = "http://localhost:4000";
+  const url = import.meta.env.VITE_API_URL;
 
   const [signUpData, setSignUpData] = useState({
     name: "",
