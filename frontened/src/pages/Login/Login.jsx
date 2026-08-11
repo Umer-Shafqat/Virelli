@@ -230,6 +230,7 @@ navigate("/");
               placeholder="Email"
               value={signUpData.email}
               onChange={handleSignUpChange}
+              autoComplete="email"
               required
             />
 
@@ -276,6 +277,7 @@ navigate("/");
               placeholder="Email"
               value={signInData.email}
               onChange={handleSignInChange}
+              autoComplete="email"
               required
             />
 
