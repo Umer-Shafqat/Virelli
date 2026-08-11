@@ -4,8 +4,8 @@ import { StoreContext } from "../../Context/StoreContext/StoreContext";
 import "./MyOrder.css";
 
 const MyOrders = () => {
-  
   const { token } = useContext(StoreContext);
+
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,8 +24,10 @@ const MyOrders = () => {
         }
       );
 
+      console.log("MY ORDERS RESPONSE:", response.data);
+
       if (response.data.success) {
-        const sortedOrders = response.data.orders.sort(
+        const sortedOrders = [...(response.data.orders || [])].sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
 
@@ -107,6 +109,8 @@ const MyOrders = () => {
         <div className="orders-list">
           {orders.map((order) => (
             <div className="order-card" key={order._id}>
+
+              {/* ORDER HEADER */}
               <div className="order-header">
                 <div>
                   <h2>Order</h2>
@@ -124,33 +128,40 @@ const MyOrders = () => {
                 </div>
               </div>
 
+              {/* CUSTOMER INFORMATION */}
               <div className="customer-info">
                 <h3>Delivery Information</h3>
 
                 <p>
-                  <strong>Name:</strong> {order.customer?.firstName}{" "}
-                  {order.customer?.lastName}
+                  <strong>Name:</strong>{" "}
+                  {order.customer?.firstName || ""}{" "}
+                  {order.customer?.lastName || ""}
                 </p>
 
                 <p>
-                  <strong>Email:</strong> {order.customer?.email}
+                  <strong>Email:</strong>{" "}
+                  {order.customer?.email || ""}
                 </p>
 
                 <p>
-                  <strong>Phone:</strong> {order.customer?.phone}
+                  <strong>Phone:</strong>{" "}
+                  {order.customer?.phone || ""}
                 </p>
 
                 <p>
-                  <strong>Address:</strong> {order.customer?.address},{" "}
-                  {order.customer?.city}, {order.customer?.country}
+                  <strong>Address:</strong>{" "}
+                  {order.customer?.address || ""},{" "}
+                  {order.customer?.city || ""},{" "}
+                  {order.customer?.country || ""}
                 </p>
 
                 <p>
                   <strong>Payment:</strong>{" "}
-                  {order.customer?.paymentMethod}
+                  {order.customer?.paymentMethod || "Cash on Delivery"}
                 </p>
               </div>
 
+              {/* ORDER ITEMS */}
               <div className="order-items">
                 <h3>Ordered Items</h3>
 
@@ -183,27 +194,29 @@ const MyOrders = () => {
 
                       <strong>
                         PKR{" "}
-                        {Number(item.price).toLocaleString("en-PK")}
+                        {Number(item.price || 0).toLocaleString("en-PK")}
                       </strong>
 
                       <p>
                         Total: PKR{" "}
-                        {(item.price * item.quantity).toLocaleString(
-                          "en-PK"
-                        )}
+                        {(
+                          Number(item.price || 0) *
+                          Number(item.quantity || 0)
+                        ).toLocaleString("en-PK")}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
 
+              {/* ORDER TOTAL */}
               <div className="order-total">
                 <div>
                   <span>Subtotal</span>
 
                   <strong>
                     PKR{" "}
-                    {Number(order.subtotal).toLocaleString("en-PK")}
+                    {Number(order.subtotal || 0).toLocaleString("en-PK")}
                   </strong>
                 </div>
 
@@ -212,9 +225,9 @@ const MyOrders = () => {
 
                   <strong>
                     PKR{" "}
-                    {Number(order.deliveryCharges).toLocaleString(
-                      "en-PK"
-                    )}
+                    {Number(
+                      order.deliveryCharges || 0
+                    ).toLocaleString("en-PK")}
                   </strong>
                 </div>
 
@@ -223,12 +236,13 @@ const MyOrders = () => {
 
                   <strong>
                     PKR{" "}
-                    {Number(order.totalAmount).toLocaleString(
-                      "en-PK"
-                    )}
+                    {Number(
+                      order.totalAmount || 0
+                    ).toLocaleString("en-PK")}
                   </strong>
                 </div>
               </div>
+
             </div>
           ))}
         </div>
@@ -236,4 +250,5 @@ const MyOrders = () => {
     </div>
   );
 };
+
 export default MyOrders;
