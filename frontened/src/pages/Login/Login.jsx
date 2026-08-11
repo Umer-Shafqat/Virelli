@@ -234,14 +234,13 @@ navigate("/");
             />
 
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={signUpData.password}
-              onChange={handleSignUpChange}
-              required
-            />
+            <input type="password" 
+            name="password" 
+            placeholder="Password" 
+            value={signUpData.password} 
+            onChange={handleSignUpChange} 
+            autoComplete="new-password" 
+            required />
 
 
             <button
