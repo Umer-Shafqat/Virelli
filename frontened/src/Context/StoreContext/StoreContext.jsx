@@ -10,7 +10,7 @@ import axios from "axios";
 export const StoreContext = createContext();
 
 const StoreContextProvider = ({ children }) => {
-  const url = "http://localhost:4000";
+  const url = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState({});
