@@ -56,8 +56,7 @@ const Shoes = ({ limit, products }) => {
       alert("Shoe ID is missing");
       return;
     }
-
-    addToCart(shoe, selectedSize);
+     addToCart(shoe._id, selectedSize);
   };
 
   return (
