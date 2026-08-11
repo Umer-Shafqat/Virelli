@@ -6,9 +6,10 @@ import Card from "../../components/Card/Card";
 import Charts from "../../components/Charts/Charts";
 import Table from "../../components/Table/Table";
 import "./Dashboard.css";
-const Dashboard = () => {
-  const url = "http://localhost:4000";
 
+const Dashboard = () => {
+
+  const url = "http://localhost:4000";
   const [dashboard, setDashboard] = useState({
     totalShoes: 0,
     totalOrders: 0,
