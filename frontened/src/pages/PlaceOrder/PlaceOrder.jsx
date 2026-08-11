@@ -82,13 +82,7 @@ const handleSubmit = async (
 
 
     if (!token) {
-
-      alert(
-        "Please login first"
-      );
-
       navigate("/login");
-
       return;
 
     }
