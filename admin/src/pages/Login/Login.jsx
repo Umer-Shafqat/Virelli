@@ -4,16 +4,14 @@ import axios from "axios";
 import "./Login.css";
 
 const Login = () => {
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
-
-  // Change this to your backend URL if deployed
   const API_URL = "http://localhost:4000/api/admin/login";
 
   const handleChange = (e) => {
