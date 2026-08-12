@@ -1,22 +1,36 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import axios from "axios";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 import "./MyOrder.css";
 
 const MyOrders = () => {
-
   const { token } = useContext(StoreContext);
+
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchOrders = async () => {
+  // Backend URL from Vercel environment variable
+  const url = process.env.REACT_APP_API_URL;
+
+  const fetchOrders = useCallback(async () => {
+    if (!token) {
+      setLoading(false);
+      setError("Please login to see your orders");
+      return;
+    }
+
     try {
       setLoading(true);
       setError("");
 
       const response = await axios.get(
-        "http://localhost:4000/api/order/myorders",
+        `${url}/api/order/myorders`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -28,33 +42,33 @@ const MyOrders = () => {
 
       if (response.data.success) {
         const sortedOrders = [...(response.data.orders || [])].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+          (a, b) =>
+            new Date(b.createdAt) - new Date(a.createdAt)
         );
 
         setOrders(sortedOrders);
       } else {
-        setError(response.data.message || "Unable to load orders");
+        setError(
+          response.data.message || "Unable to load orders"
+        );
       }
     } catch (error) {
       console.log("Get orders error:", error);
 
       setError(
-        error.response?.data?.message || "Error loading your orders"
+        error.response?.data?.message ||
+          "Error loading your orders"
       );
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, url]);
 
   useEffect(() => {
-    if (token) {
-      fetchOrders();
-    } else {
-      setLoading(false);
-      setError("Please login to see your orders");
-    }
-  }, [token]);
+    fetchOrders();
+  }, [fetchOrders]);
 
+  // Not logged in
   if (!token && !loading) {
     return (
       <div className="my-orders-page">
@@ -66,6 +80,7 @@ const MyOrders = () => {
     );
   }
 
+  // Loading
   if (loading) {
     return (
       <div className="my-orders-page">
@@ -76,6 +91,7 @@ const MyOrders = () => {
     );
   }
 
+  // Error
   if (error) {
     return (
       <div className="my-orders-page">
@@ -86,6 +102,7 @@ const MyOrders = () => {
     );
   }
 
+  // No orders
   if (orders.length === 0) {
     return (
       <div className="my-orders-page">
@@ -119,7 +136,9 @@ const MyOrders = () => {
 
                   <p>
                     Date:{" "}
-                    {new Date(order.createdAt).toLocaleDateString("en-GB")}
+                    {new Date(
+                      order.createdAt
+                    ).toLocaleDateString("en-GB")}
                   </p>
                 </div>
 
@@ -157,7 +176,8 @@ const MyOrders = () => {
 
                 <p>
                   <strong>Payment:</strong>{" "}
-                  {order.customer?.paymentMethod || "Cash on Delivery"}
+                  {order.customer?.paymentMethod ||
+                    "Cash on Delivery"}
                 </p>
               </div>
 
@@ -172,7 +192,7 @@ const MyOrders = () => {
                   >
                     <div className="order-item-image">
                       <img
-                        src={`http://localhost:4000/images/${item.image}`}
+                        src={`${url}/images/${item.image}`}
                         alt={item.name}
                       />
                     </div>
@@ -194,7 +214,9 @@ const MyOrders = () => {
 
                       <strong>
                         PKR{" "}
-                        {Number(item.price || 0).toLocaleString("en-PK")}
+                        {Number(
+                          item.price || 0
+                        ).toLocaleString("en-PK")}
                       </strong>
 
                       <p>
@@ -216,7 +238,9 @@ const MyOrders = () => {
 
                   <strong>
                     PKR{" "}
-                    {Number(order.subtotal || 0).toLocaleString("en-PK")}
+                    {Number(
+                      order.subtotal || 0
+                    ).toLocaleString("en-PK")}
                   </strong>
                 </div>
 
@@ -242,7 +266,6 @@ const MyOrders = () => {
                   </strong>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
@@ -250,4 +273,5 @@ const MyOrders = () => {
     </div>
   );
 };
+
 export default MyOrders;
