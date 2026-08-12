@@ -12,7 +12,7 @@ const navigate = useNavigate();
 
 
   const [isSignUp, setIsSignUp] = useState(false);
-  const url = import.meta.env.VITE_API_URL;
+  const url = process.env.REACT_APP_API_URL;
 
   const [signUpData, setSignUpData] = useState({
     name: "",
