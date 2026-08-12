@@ -10,7 +10,7 @@ import axios from "axios";
 export const StoreContext = createContext();
 
 const StoreContextProvider = ({ children }) => {
-  const url = import.meta.env.VITE_API_URL;
+ const url = process.env.REACT_APP_API_URL;
 
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState({});
