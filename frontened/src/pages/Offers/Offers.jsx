@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import axios from "axios";
 import "./Offers.css";
+
+// =====================================
+// OFFER DATES
+// =====================================
+
+const offerStartDate = new Date("2026-08-09T00:00:00");
+const offerEndDate = new Date("2026-08-10T23:59:59");
 
 const Offers = () => {
   const url = process.env.REACT_APP_API_URL;
 
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // =====================================
-  // 50% OFFER DATE
-  // =====================================
-
- const offerStartDate = new Date("2026-08-9T00:00:00");
-const offerEndDate = new Date("2026-08-10T23:59:59");
 
   const [offerActive, setOfferActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(null);
@@ -83,7 +87,7 @@ const offerEndDate = new Date("2026-08-10T23:59:59");
   // FETCH OFFER SHOES
   // =====================================
 
-  const fetchOffers = async () => {
+  const fetchOffers = useCallback(async () => {
     try {
       const response = await axios.get(
         `${url}/api/shoes/offers`
@@ -105,17 +109,17 @@ const offerEndDate = new Date("2026-08-10T23:59:59");
     } finally {
       setLoading(false);
     }
-  };
+  }, [url]);
 
   useEffect(() => {
     fetchOffers();
-  }, []);
+  }, [fetchOffers]);
 
   return (
     <div className="offers-page">
 
       {/* =====================================
-          ANIMATED 50% OFFER PLATE
+          ANIMATED OFFER PLATE
       ===================================== */}
 
       {offerActive && timeLeft && (
@@ -320,11 +324,11 @@ const offerEndDate = new Date("2026-08-10T23:59:59");
                         Rs.{" "}
                         {Math.round(
                           Number(shoe.price) -
-                          (
-                            Number(shoe.price) *
-                            Number(shoe.discount)
-                          ) /
-                          100
+                            (
+                              Number(shoe.price) *
+                              Number(shoe.discount)
+                            ) /
+                              100
                         ).toLocaleString()}
                       </span>
 
