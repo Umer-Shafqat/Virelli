@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Charts.css";
 
 const Charts = () => {
-  const url = "http://localhost:4000";
+  const url = process.env.REACT_APP_API_URL;
 
   const [dailySales, setDailySales] = useState([]);
   const [loading, setLoading] = useState(true);
