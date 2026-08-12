@@ -7,7 +7,7 @@ const Search = () => {
   const { keyword } = useParams();
   const navigate = useNavigate();
 
-  const url = "http://localhost:4000";
+  const url = process.env.REACT_APP_API_URL;
 
   const [data, setData] = useState({
     shoes: [],
