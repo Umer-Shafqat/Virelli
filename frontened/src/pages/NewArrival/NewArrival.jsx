@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import "./NewArrival.css";
 
 const NewArrival = () => {
-  const url =process.env.REACT_APP_API_URL;
+  const url = process.env.REACT_APP_API_URL;
 
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchNewArrivals = async () => {
+  const fetchNewArrivals = useCallback(async () => {
     try {
       const response = await axios.get(
         `${url}/api/shoes/new-arrivals`
@@ -19,20 +19,16 @@ const NewArrival = () => {
       if (response.data.success) {
         setNewArrivals(response.data.shoes);
       }
-
     } catch (error) {
-      console.log(
-        "Error fetching new arrivals:",
-        error
-      );
+      console.log("Error fetching new arrivals:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [url]);
 
   useEffect(() => {
     fetchNewArrivals();
-  }, []);
+  }, [fetchNewArrivals]);
 
   return (
     <div className="new-arrival-page">
@@ -48,16 +44,15 @@ const NewArrival = () => {
       ) : newArrivals.length === 0 ? (
         <div className="no-arrivals">
           <h2>No New Arrivals</h2>
+
           <p>
             No shoes have been added as new arrivals.
           </p>
         </div>
       ) : (
-
         <div className="new-arrival-container">
 
           {newArrivals.map((shoe) => (
-
             <div
               className="new-arrival-card"
               key={shoe._id}
@@ -94,7 +89,8 @@ const NewArrival = () => {
                   {shoe.discount > 0 ? (
                     <>
                       <span className="old-price">
-                        Rs. {Number(shoe.price).toLocaleString()}
+                        Rs.{" "}
+                        {Number(shoe.price).toLocaleString()}
                       </span>
 
                       <span className="new-price">
@@ -121,11 +117,9 @@ const NewArrival = () => {
               </div>
 
             </div>
-
           ))}
 
         </div>
-
       )}
 
     </div>
