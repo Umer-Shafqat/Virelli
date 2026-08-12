@@ -3,7 +3,7 @@ import axios from "axios";
 import "./NewArrival.css";
 
 const NewArrival = () => {
-  const url = "http://localhost:4000";
+  const url =process.env.REACT_APP_API_URL;
 
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
