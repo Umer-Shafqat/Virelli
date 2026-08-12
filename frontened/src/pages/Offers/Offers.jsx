@@ -1,26 +1,31 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Offers.css";
+
+const API_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:4000";
 
 // =====================================
 // OFFER DATES
 // =====================================
 
-const offerStartDate = new Date("2026-08-09T00:00:00");
-const offerEndDate = new Date("2026-08-10T23:59:59");
+const offerStartDate = new Date(
+  "2026-08-09T00:00:00"
+);
+
+const offerEndDate = new Date(
+  "2026-08-10T23:59:59"
+);
 
 const Offers = () => {
-  const url = process.env.REACT_APP_API_URL;
-
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [offerActive, setOfferActive] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(null);
+  const [offerActive, setOfferActive] =
+    useState(false);
+
+  const [timeLeft, setTimeLeft] =
+    useState(null);
 
   // =====================================
   // OFFER COUNTDOWN
@@ -47,18 +52,25 @@ const Offers = () => {
       // Offer is active
       setOfferActive(true);
 
-      const difference = offerEndDate - now;
+      const difference =
+        offerEndDate.getTime() -
+        now.getTime();
 
       const days = Math.floor(
-        difference / (1000 * 60 * 60 * 24)
+        difference /
+          (1000 * 60 * 60 * 24)
       );
 
       const hours = Math.floor(
-        (difference / (1000 * 60 * 60)) % 24
+        (difference /
+          (1000 * 60 * 60)) %
+          24
       );
 
       const minutes = Math.floor(
-        (difference / (1000 * 60)) % 60
+        (difference /
+          (1000 * 60)) %
+          60
       );
 
       const seconds = Math.floor(
@@ -80,46 +92,60 @@ const Offers = () => {
       1000
     );
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   // =====================================
   // FETCH OFFER SHOES
   // =====================================
 
-  const fetchOffers = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${url}/api/shoes/offers`
-      );
-
-      console.log(
-        "Offers API:",
-        response.data
-      );
-
-      if (response.data.success) {
-        setOffers(response.data.shoes);
-      }
-    } catch (error) {
-      console.log(
-        "Error fetching offers:",
-        error
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [url]);
-
   useEffect(() => {
+    const fetchOffers = async () => {
+      try {
+        setLoading(true);
+
+        const response = await axios.get(
+          `${API_URL}/api/shoes/offers`
+        );
+
+        console.log(
+          "Offers API:",
+          response.data
+        );
+
+        if (response.data.success) {
+          setOffers(
+            response.data.shoes || []
+          );
+        } else {
+          setOffers([]);
+        }
+      } catch (error) {
+        console.log(
+          "Error fetching offers:",
+          error
+        );
+
+        setOffers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchOffers();
-  }, [fetchOffers]);
+  }, []);
+
+  // =====================================
+  // PAGE
+  // =====================================
 
   return (
     <div className="offers-page">
 
       {/* =====================================
-          ANIMATED OFFER PLATE
+          MEGA SALE
       ===================================== */}
 
       {offerActive && timeLeft && (
@@ -151,6 +177,8 @@ const Offers = () => {
 
             <div className="countdown">
 
+              {/* DAYS */}
+
               <div className="time-box">
                 <span>
                   {String(
@@ -166,6 +194,8 @@ const Offers = () => {
               <div className="colon">
                 :
               </div>
+
+              {/* HOURS */}
 
               <div className="time-box">
                 <span>
@@ -183,6 +213,8 @@ const Offers = () => {
                 :
               </div>
 
+              {/* MINUTES */}
+
               <div className="time-box">
                 <span>
                   {String(
@@ -198,6 +230,8 @@ const Offers = () => {
               <div className="colon">
                 :
               </div>
+
+              {/* SECONDS */}
 
               <div className="time-box">
                 <span>
@@ -219,7 +253,7 @@ const Offers = () => {
       )}
 
       {/* =====================================
-          PAGE TITLE
+          TITLE
       ===================================== */}
 
       <h1 className="offers-title">
@@ -275,12 +309,10 @@ const Offers = () => {
               <div className="offer-image-box">
 
                 <img
-                  src={`${url}/images/${shoe.image}`}
+                  src={`${API_URL}/images/${shoe.image}`}
                   alt={shoe.name}
                   className="offer-image"
                 />
-
-                {/* OFFER BADGE */}
 
                 <span className="offer-badge">
                   OFFER
@@ -310,23 +342,22 @@ const Offers = () => {
                 <div className="price-section">
 
                   {Number(shoe.discount) > 0 ? (
-
                     <>
 
                       <span className="old-price">
                         Rs.{" "}
                         {Number(
-                          shoe.price
+                          shoe.price || 0
                         ).toLocaleString()}
                       </span>
 
                       <span className="new-price">
                         Rs.{" "}
                         {Math.round(
-                          Number(shoe.price) -
+                          Number(shoe.price || 0) -
                             (
-                              Number(shoe.price) *
-                              Number(shoe.discount)
+                              Number(shoe.price || 0) *
+                              Number(shoe.discount || 0)
                             ) /
                               100
                         ).toLocaleString()}
@@ -337,13 +368,12 @@ const Offers = () => {
                       </span>
 
                     </>
-
                   ) : (
 
                     <span className="new-price">
                       Rs.{" "}
                       {Number(
-                        shoe.price
+                        shoe.price || 0
                       ).toLocaleString()}
                     </span>
 
