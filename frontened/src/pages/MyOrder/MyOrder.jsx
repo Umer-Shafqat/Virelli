@@ -1,12 +1,11 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 import "./MyOrder.css";
+
+// Backend URL
+const API_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:4000";
 
 const MyOrders = () => {
   const { token } = useContext(StoreContext);
@@ -15,72 +14,86 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Backend URL from Vercel environment variable
-  const url = process.env.REACT_APP_API_URL;
-
-  const fetchOrders = useCallback(async () => {
-    if (!token) {
-      setLoading(false);
-      setError("Please login to see your orders");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await axios.get(
-        `${url}/api/order/myorders`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("MY ORDERS RESPONSE:", response.data);
-
-      if (response.data.success) {
-        const sortedOrders = [...(response.data.orders || [])].sort(
-          (a, b) =>
-            new Date(b.createdAt) - new Date(a.createdAt)
-        );
-
-        setOrders(sortedOrders);
-      } else {
-        setError(
-          response.data.message || "Unable to load orders"
-        );
-      }
-    } catch (error) {
-      console.log("Get orders error:", error);
-
-      setError(
-        error.response?.data?.message ||
-          "Error loading your orders"
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [token, url]);
+  // =====================================
+  // FETCH ORDERS
+  // =====================================
 
   useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+    const fetchOrders = async () => {
+      if (!token) {
+        setLoading(false);
+        setError("Please login to see your orders");
+        return;
+      }
 
-  // Not logged in
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await axios.get(
+          `${API_URL}/api/order/myorders`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("MY ORDERS RESPONSE:", response.data);
+
+        if (response.data.success) {
+          const sortedOrders = [
+            ...(response.data.orders || []),
+          ].sort(
+            (a, b) =>
+              new Date(b.createdAt) -
+              new Date(a.createdAt)
+          );
+
+          setOrders(sortedOrders);
+        } else {
+          setError(
+            response.data.message ||
+              "Unable to load orders"
+          );
+        }
+      } catch (error) {
+        console.log("Get orders error:", error);
+
+        setError(
+          error.response?.data?.message ||
+            "Error loading your orders"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [token]);
+
+  // =====================================
+  // NOT LOGGED IN
+  // =====================================
+
   if (!token && !loading) {
     return (
       <div className="my-orders-page">
         <div className="orders-message">
           <h2>Please Login First</h2>
-          <p>You need to login to view your orders.</p>
+
+          <p>
+            You need to login to view your orders.
+          </p>
         </div>
       </div>
     );
   }
 
-  // Loading
+  // =====================================
+  // LOADING
+  // =====================================
+
   if (loading) {
     return (
       <div className="my-orders-page">
@@ -91,7 +104,10 @@ const MyOrders = () => {
     );
   }
 
-  // Error
+  // =====================================
+  // ERROR
+  // =====================================
+
   if (error) {
     return (
       <div className="my-orders-page">
@@ -102,21 +118,32 @@ const MyOrders = () => {
     );
   }
 
-  // No orders
+  // =====================================
+  // NO ORDERS
+  // =====================================
+
   if (orders.length === 0) {
     return (
       <div className="my-orders-page">
         <div className="orders-message">
           <h2>No Orders Found</h2>
-          <p>You have not placed any orders yet.</p>
+
+          <p>
+            You have not placed any orders yet.
+          </p>
         </div>
       </div>
     );
   }
 
+  // =====================================
+  // ORDERS
+  // =====================================
+
   return (
     <div className="my-orders-page">
       <div className="my-orders-container">
+
         <h1>My Orders</h1>
 
         <p className="orders-subtitle">
@@ -124,32 +151,53 @@ const MyOrders = () => {
         </p>
 
         <div className="orders-list">
-          {orders.map((order) => (
-            <div className="order-card" key={order._id}>
 
-              {/* ORDER HEADER */}
+          {orders.map((order) => (
+            <div
+              className="order-card"
+              key={order._id}
+            >
+
+              {/* =====================================
+                  ORDER HEADER
+              ===================================== */}
+
               <div className="order-header">
+
                 <div>
                   <h2>Order</h2>
 
-                  <p>ID: {order._id}</p>
+                  <p>
+                    ID: {order._id}
+                  </p>
 
                   <p>
                     Date:{" "}
-                    {new Date(
-                      order.createdAt
-                    ).toLocaleDateString("en-GB")}
+                    {order.createdAt
+                      ? new Date(
+                          order.createdAt
+                        ).toLocaleDateString(
+                          "en-GB"
+                        )
+                      : "N/A"}
                   </p>
                 </div>
 
                 <div className="order-status">
                   {order.status || "Pending"}
                 </div>
+
               </div>
 
-              {/* CUSTOMER INFORMATION */}
+              {/* =====================================
+                  CUSTOMER INFORMATION
+              ===================================== */}
+
               <div className="customer-info">
-                <h3>Delivery Information</h3>
+
+                <h3>
+                  Delivery Information
+                </h3>
 
                 <p>
                   <strong>Name:</strong>{" "}
@@ -169,9 +217,13 @@ const MyOrders = () => {
 
                 <p>
                   <strong>Address:</strong>{" "}
-                  {order.customer?.address || ""},{" "}
-                  {order.customer?.city || ""},{" "}
-                  {order.customer?.country || ""}
+                  {order.customer?.address || ""}
+                  {order.customer?.city
+                    ? `, ${order.customer.city}`
+                    : ""}
+                  {order.customer?.country
+                    ? `, ${order.customer.country}`
+                    : ""}
                 </p>
 
                 <p>
@@ -179,96 +231,180 @@ const MyOrders = () => {
                   {order.customer?.paymentMethod ||
                     "Cash on Delivery"}
                 </p>
+
               </div>
 
-              {/* ORDER ITEMS */}
+              {/* =====================================
+                  ORDER ITEMS
+              ===================================== */}
+
               <div className="order-items">
-                <h3>Ordered Items</h3>
 
-                {order.items?.map((item, index) => (
-                  <div
-                    className="order-item"
-                    key={`${item.id}-${item.size}-${index}`}
-                  >
-                    <div className="order-item-image">
-                      <img
-                        src={`${url}/images/${item.image}`}
-                        alt={item.name}
-                      />
+                <h3>
+                  Ordered Items
+                </h3>
+
+                {order.items?.map(
+                  (item, index) => (
+                    <div
+                      className="order-item"
+                      key={`${item.id || item._id || "item"}-${item.size || ""}-${index}`}
+                    >
+
+                      {/* IMAGE */}
+
+                      <div className="order-item-image">
+
+                        <img
+                          src={`${API_URL}/images/${item.image}`}
+                          alt={
+                            item.name ||
+                            "Shoe"
+                          }
+                          onError={(e) => {
+                            e.currentTarget.style.display =
+                              "none";
+                          }}
+                        />
+
+                      </div>
+
+                      {/* DETAILS */}
+
+                      <div className="order-item-details">
+
+                        <h4>
+                          {item.name ||
+                            "Unknown Shoe"}
+                        </h4>
+
+                        <p>
+                          Category:{" "}
+                          {item.category ||
+                            "N/A"}
+                        </p>
+
+                        <p>
+                          Type:{" "}
+                          {item.type ||
+                            "N/A"}
+                        </p>
+
+                        <p>
+                          Size:{" "}
+                          {item.size ||
+                            "N/A"}
+                        </p>
+
+                        <p>
+                          Quantity:{" "}
+                          {Number(
+                            item.quantity || 0
+                          )}
+                        </p>
+
+                      </div>
+
+                      {/* PRICE */}
+
+                      <div className="order-item-price">
+
+                        <p>
+                          Price
+                        </p>
+
+                        <strong>
+                          PKR{" "}
+                          {Number(
+                            item.price || 0
+                          ).toLocaleString(
+                            "en-PK"
+                          )}
+                        </strong>
+
+                        <p>
+                          Total: PKR{" "}
+                          {(
+                            Number(
+                              item.price || 0
+                            ) *
+                            Number(
+                              item.quantity || 0
+                            )
+                          ).toLocaleString(
+                            "en-PK"
+                          )}
+                        </p>
+
+                      </div>
+
                     </div>
+                  )
+                )}
 
-                    <div className="order-item-details">
-                      <h4>{item.name}</h4>
-
-                      <p>Category: {item.category}</p>
-
-                      <p>Type: {item.type}</p>
-
-                      <p>Size: {item.size}</p>
-
-                      <p>Quantity: {item.quantity}</p>
-                    </div>
-
-                    <div className="order-item-price">
-                      <p>Price</p>
-
-                      <strong>
-                        PKR{" "}
-                        {Number(
-                          item.price || 0
-                        ).toLocaleString("en-PK")}
-                      </strong>
-
-                      <p>
-                        Total: PKR{" "}
-                        {(
-                          Number(item.price || 0) *
-                          Number(item.quantity || 0)
-                        ).toLocaleString("en-PK")}
-                      </p>
-                    </div>
-                  </div>
-                ))}
               </div>
 
-              {/* ORDER TOTAL */}
+              {/* =====================================
+                  ORDER TOTAL
+              ===================================== */}
+
               <div className="order-total">
+
                 <div>
-                  <span>Subtotal</span>
+                  <span>
+                    Subtotal
+                  </span>
 
                   <strong>
                     PKR{" "}
                     {Number(
                       order.subtotal || 0
-                    ).toLocaleString("en-PK")}
+                    ).toLocaleString(
+                      "en-PK"
+                    )}
                   </strong>
                 </div>
 
                 <div>
-                  <span>Delivery Charges</span>
+                  <span>
+                    Delivery Charges
+                  </span>
 
                   <strong>
                     PKR{" "}
                     {Number(
-                      order.deliveryCharges || 0
-                    ).toLocaleString("en-PK")}
+                      order.deliveryCharges ||
+                        0
+                    ).toLocaleString(
+                      "en-PK"
+                    )}
                   </strong>
                 </div>
 
                 <div className="grand-total">
-                  <span>Total Amount</span>
+
+                  <span>
+                    Total Amount
+                  </span>
 
                   <strong>
                     PKR{" "}
                     {Number(
                       order.totalAmount || 0
-                    ).toLocaleString("en-PK")}
+                    ).toLocaleString(
+                      "en-PK"
+                    )}
                   </strong>
+
                 </div>
+
               </div>
+
             </div>
           ))}
+
         </div>
+
       </div>
     </div>
   );
