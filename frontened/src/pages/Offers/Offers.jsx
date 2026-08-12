@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Offers.css";
 
 const Offers = () => {
-  const url = "http://localhost:4000";
+  const url = process.env.REACT_APP_API_URL;
 
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
