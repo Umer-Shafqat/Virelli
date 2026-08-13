@@ -77,7 +77,7 @@ const Cart = () => {
                       Rs. {shoe.price.toLocaleString("en-PK")}
                     </h3>
                   </div>
-
+                  
                   <div className="quantity-control">
                     <button
                       onClick={() =>
