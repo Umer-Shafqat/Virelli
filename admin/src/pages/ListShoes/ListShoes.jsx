@@ -10,9 +10,6 @@ const ListShoes = () => {
 
   const backendUrl = "http://localhost:4000";
 
-  // ================================
-  // Fetch Shoes
-  // ================================
   const fetchShoes = async () => {
     try {
       const response = await axios.get(
