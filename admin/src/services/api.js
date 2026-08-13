@@ -24,6 +24,7 @@ const API = {
 
   DASHBOARD_STATS: `${BACKEND_URL}/api/admin/dashboard`,
   ANALYTICS: `${BACKEND_URL}/api/admin/analytics`,
+  
 };
 
 export default API;
