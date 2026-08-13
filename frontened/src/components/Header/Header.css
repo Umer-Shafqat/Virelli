@@ -1,170 +1,320 @@
-.header{
-    width: 100%;
-    background: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ========================= */
+/* Header / Hero */
+/* ========================= */
+
+.header {
+  width: 100%;
+  position: relative;
+
+  background: #f5f5f5;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
 }
 
-.header-img{
-    width: 100%;
-    height: auto;
-    display: block;
+.header-img {
+  width: 100%;
+  height: auto;
+
+  display: block;
+
+  object-fit: cover;
 }
 
-.header-content{
-    position: absolute;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    width: 100%;
-    z-index: 10;
+.header-content {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: min(90%, 1000px);
+
+  text-align: center;
+
+  z-index: 10;
 }
 
-.header-content h1{
-    font-size: 2.5rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #111;
-    margin: 20px 0;
-    line-height: 1.1;
+.header-content h1 {
+  font-size: clamp(2rem, 4vw, 4rem);
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+
+  letter-spacing: 2px;
+
+  color: #111;
+
+  margin: 0 0 20px;
+
+  line-height: 1.1;
 }
 
-.header-content h1 span{
-    color: #d92525;
-    font-size: 1.5rem;   /* Smaller than h1 */
+.header-content h1 span {
+  color: #d92525;
+
+  font-size: 0.55em;
 }
 
-.header-content p{
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 35px;
-    font-weight: 500;
+.header-content p {
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+
+  color: #333;
+
+  margin: 0 0 30px;
+
+  font-weight: 500;
+
+  line-height: 1.5;
 }
 
-.header-content button{
-    background: #d92525;
-    color: white;
-    border: none;
-    padding: 18px 55px;
-    border-radius: 40px;
-    font-size: 1rem;
-    font-weight: 400;
-    cursor: pointer;
-    transition: .3s;
+.header-content button {
+  background: #d92525;
+
+  color: white;
+
+  border: none;
+
+  padding: 16px 45px;
+
+  border-radius: 40px;
+
+  font-size: 1rem;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
 }
 
-.header-content button:hover{
-    background: #b71c1c;
-    transform: scale(1.05);
+.header-content button:hover {
+  background: #b71c1c;
+
+  transform: scale(1.05);
 }
 
+
+/* ========================= */
 /* Laptop */
-@media(max-width:1200px){
+/* ========================= */
 
-    .header-content{
-        top:8%;
-    }
+@media (max-width: 1200px) {
 
-    .header-content h1{
-        font-size:4.5rem;
-    }
+  .header-content {
+    width: 90%;
+  }
 
-    .header-content p{
-        font-size:1.7rem;
-    }
+  .header-content h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .header-content p {
+    font-size: 1.1rem;
+
+    margin-bottom: 25px;
+  }
+
+  .header-content button {
+    padding: 14px 38px;
+  }
 }
 
+
+/* ========================= */
 /* Tablet */
+/* ========================= */
 
-@media(max-width:768px){
+@media (max-width: 768px) {
 
-    .header{
-        height:80vh;
-    }
+  .header-content {
+    width: 90%;
+  }
 
-    .header-content h1{
-        font-size:3rem;
-    }
+  .header-content h1 {
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
 
-    .header-content p{
-        font-size:1.2rem;
-    }
+    letter-spacing: 1px;
 
-    .header-content button{
-        padding:14px 40px;
-        font-size:1rem;
-    }
+    margin-bottom: 15px;
+  }
+
+  .header-content p {
+    font-size: 1rem;
+
+    margin-bottom: 22px;
+  }
+
+  .header-content button {
+    padding: 13px 32px;
+
+    font-size: 0.95rem;
+  }
 }
 
+
+/* ========================= */
 /* Mobile */
+/* ========================= */
 
-@media(max-width:480px){
+@media (max-width: 480px) {
 
-    .header{
-        height:60vh;
-    }
+  .header {
+    min-height: 60vh;
+  }
 
-    .header-content{
-        top:5%;
-    }
+  .header-img {
+    width: 100%;
+    height: 60vh;
 
-    .header-content h1{
-        font-size:2rem;
-    }
+    object-fit: cover;
+  }
 
-    .header-content p{
-        font-size:1rem;
-    }
+  .header-content {
+    width: 90%;
 
-    .header-content button{
-        padding:12px 30px;
-    }
+    top: 50%;
+  }
+
+  .header-content h1 {
+    font-size: 1.8rem;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 12px;
+  }
+
+  .header-content h1 span {
+    font-size: 0.55em;
+  }
+
+  .header-content p {
+    font-size: 0.85rem;
+
+    line-height: 1.4;
+
+    margin-bottom: 18px;
+  }
+
+  .header-content button {
+    padding: 11px 25px;
+
+    font-size: 0.85rem;
+  }
 }
+
+
+/* ========================= */
+/* Very Small Mobile */
+/* ========================= */
+
+@media (max-width: 360px) {
+
+  .header {
+    min-height: 55vh;
+  }
+
+  .header-img {
+    height: 55vh;
+  }
+
+  .header-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-content p {
+    font-size: 0.78rem;
+
+    margin-bottom: 15px;
+  }
+
+  .header-content button {
+    padding: 10px 22px;
+
+    font-size: 0.8rem;
+  }
+}
+
+
+/* ================================================= */
 /* Featured Section */
+/* ================================================= */
 
 .featured {
+  width: 100%;
+
   padding: 70px 5%;
+
+  box-sizing: border-box;
+
   text-align: center;
+
   background: #f8f8f8;
 }
 
 .featured h2 {
-  font-size: 36px;
-  margin-bottom: 10px;
+  font-size: clamp(26px, 3vw, 36px);
+
+  margin: 0 0 10px;
+
+  color: #171c29;
 }
 
 .featured > p {
   color: #777;
-  margin-bottom: 40px;
+
+  font-size: 15px;
+
+  line-height: 1.6;
+
+  margin: 0 auto 40px;
+
+  max-width: 650px;
 }
 
 
-/* Six Shoe Grid */
+/* ================================================= */
+/* Featured Grid */
+/* ================================================= */
 
 .featured-grid {
+  width: 100%;
+
   max-width: 1200px;
-  margin: auto;
+
+  margin: 0 auto;
 
   display: grid;
+
   grid-template-columns: repeat(3, 1fr);
+
   gap: 25px;
 }
 
 
+/* ================================================= */
 /* Shoe Card */
+/* ================================================= */
 
 .featured-card {
+  min-width: 0;
+
   background: white;
+
   border-radius: 12px;
+
   overflow: hidden;
+
   text-align: left;
 
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .featured-card:hover {
@@ -172,16 +322,24 @@
 }
 
 
+/* ================================================= */
 /* Shoe Image */
+/* ================================================= */
 
 .featured-card img {
   width: 100%;
+
   height: 250px;
+
+  display: block;
+
   object-fit: cover;
 }
 
 
+/* ================================================= */
 /* Shoe Info */
+/* ================================================= */
 
 .featured-info {
   padding: 20px;
@@ -189,56 +347,203 @@
 
 .featured-info h3 {
   font-size: 20px;
-  margin-bottom: 8px;
+
+  margin: 0 0 8px;
+
+  color: #171c29;
 }
 
 .category {
   color: #777;
-  margin-bottom: 10px;
+
+  font-size: 14px;
+
+  margin: 0 0 10px;
 }
 
 .price {
   font-size: 18px;
+
   font-weight: bold;
+
+  color: #171c29;
+
+  margin: 0;
 }
 
 
+/* ================================================= */
 /* View All Button */
+/* ================================================= */
 
 .view-all {
   display: inline-block;
+
   margin-top: 40px;
+
   padding: 14px 30px;
 
   background: black;
+
   color: white;
 
   text-decoration: none;
+
   border-radius: 5px;
 
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .view-all:hover {
   background: #333;
+
+  transform: translateY(-2px);
 }
 
 
-/* Responsive */
+/* ================================================= */
+/* Laptop / Small Desktop */
+/* ================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
+
+  .featured {
+    padding: 60px 4%;
+  }
+
+  .featured-grid {
+    gap: 20px;
+  }
+
+  .featured-card img {
+    height: 220px;
+  }
+
+  .featured-info {
+    padding: 18px;
+  }
+
+  .featured-info h3 {
+    font-size: 18px;
+  }
+}
+
+
+/* ================================================= */
+/* Tablet */
+/* ================================================= */
+
+@media (max-width: 768px) {
+
+  .featured {
+    padding: 55px 30px;
+  }
+
+  .featured > p {
+    margin-bottom: 30px;
+  }
 
   .featured-grid {
     grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
   }
 
+  .featured-card img {
+    height: 220px;
+  }
+
+  .featured-info {
+    padding: 16px;
+  }
 }
 
 
+/* ================================================= */
+/* Mobile */
+/* ================================================= */
+
 @media (max-width: 600px) {
+
+  .featured {
+    padding: 50px 20px;
+  }
+
+  .featured h2 {
+    font-size: 27px;
+  }
+
+  .featured > p {
+    font-size: 14px;
+
+    margin-bottom: 28px;
+  }
 
   .featured-grid {
     grid-template-columns: 1fr;
+
+    gap: 20px;
   }
 
+  .featured-card img {
+    height: 250px;
+  }
+
+  .featured-info {
+    padding: 18px;
+  }
+
+  .featured-info h3 {
+    font-size: 19px;
+  }
+
+  .price {
+    font-size: 17px;
+  }
+
+  .view-all {
+    margin-top: 30px;
+
+    padding: 13px 27px;
+  }
+}
+
+
+/* ================================================= */
+/* Very Small Mobile */
+/* ================================================= */
+
+@media (max-width: 400px) {
+
+  .featured {
+    padding: 45px 15px;
+  }
+
+  .featured h2 {
+    font-size: 24px;
+  }
+
+  .featured > p {
+    font-size: 13px;
+  }
+
+  .featured-card img {
+    height: 220px;
+  }
+
+  .featured-info {
+    padding: 15px;
+  }
+
+  .featured-info h3 {
+    font-size: 17px;
+  }
+
+  .category {
+    font-size: 13px;
+  }
+
+  .price {
+    font-size: 16px;
+  }
 }
