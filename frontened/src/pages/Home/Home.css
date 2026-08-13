@@ -1,231 +1,301 @@
-/* ============================= */
-/* Home Shoes Section */
-/* ============================= */
+/* =====================================
+   HOME SHOES SECTION
+===================================== */
 
 .home-shoes-section {
-  padding: 70px 5%;
-  background: #c6b7b7;
+  width: 100%;
+
   min-height: 100vh;
+
+  padding: 70px 5%;
+
   box-sizing: border-box;
+
+  background: #c6b7b7;
 }
 
 
-/* ============================= */
-/* Heading */
-/* ============================= */
+/* =====================================
+   HEADING
+===================================== */
 
 .home-shoes-heading {
+  width: 100%;
+
+  max-width: 800px;
+
+  margin: 0 auto 45px;
+
   text-align: center;
-  margin-bottom: 45px;
 }
 
 .home-shoes-heading h2 {
-  font-size: 36px;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
+
   color: #000;
+
+  font-size: clamp(28px, 3.5vw, 36px);
+
+  font-weight: 700;
+
+  line-height: 1.2;
 }
 
 .home-shoes-heading p {
+  margin: 0;
+
   color: #777;
+
   font-size: 16px;
+
+  line-height: 1.6;
 }
 
 
-/* ============================= */
-/* Shoes Grid */
-/* ============================= */
+/* =====================================
+   SHOES GRID
+===================================== */
 
 .home-shoes-section .shoes-grid {
+  width: 100%;
+
   max-width: 1200px;
-  margin: auto;
+
+  margin: 0 auto;
 
   display: grid;
 
   grid-template-columns: repeat(3, 1fr);
 
   gap: 30px;
+
+  box-sizing: border-box;
 }
 
 
-/* ============================= */
-/* Shoe Card */
-/* ============================= */
+/* =====================================
+   SHOE CARD
+===================================== */
 
 .home-shoes-section .shoe-card {
+  min-width: 0;
+
+  overflow: hidden;
+
   background: #FFEED6;
 
   border-radius: 12px;
 
-  overflow: hidden;
-
   box-shadow:
     0 5px 20px rgba(0, 0, 0, 0.08);
 
-  transition: 0.3s;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .home-shoes-section .shoe-card:hover {
   transform: translateY(-8px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
 
-/* ============================= */
-/* Shoe Image */
-/* ============================= */
+/* =====================================
+   SHOE IMAGE
+===================================== */
 
 .home-shoes-section .shoe-image {
   width: 100%;
+
   height: 280px;
 
-  overflow: hidden;
-
   position: relative;
+
+  overflow: hidden;
 }
 
 .home-shoes-section .shoe-image img {
   width: 100%;
+
   height: 100%;
+
+  display: block;
 
   object-fit: cover;
 
-  transition: 0.4s;
+  transition: transform 0.4s ease;
 }
 
-.home-shoes-section .shoe-card:hover .shoe-image img {
+.home-shoes-section .shoe-card:hover
+.shoe-image img {
   transform: scale(1.05);
 }
 
 
-/* ============================= */
-/* Discount Badge */
-/* ============================= */
+/* =====================================
+   DISCOUNT BADGE
+===================================== */
 
 .home-shoes-section .discount-badge {
   position: absolute;
 
   top: 15px;
+
   right: 15px;
 
-  background: red;
-  color: white;
+  z-index: 2;
 
   padding: 8px 12px;
 
-  font-size: 14px;
-  font-weight: bold;
+  background: red;
+
+  color: #fff;
 
   border-radius: 5px;
 
-  z-index: 2;
+  font-size: 14px;
+
+  font-weight: bold;
 }
 
 
-/* ============================= */
-/* Shoe Information */
-/* ============================= */
+/* =====================================
+   SHOE INFORMATION
+===================================== */
 
 .home-shoes-section .shoe-info {
   padding: 22px;
+
+  box-sizing: border-box;
 }
 
 .home-shoes-section .shoe-info h3 {
+  margin: 0 0 8px;
+
+  color: #171c29;
+
   font-size: 20px;
-  margin-bottom: 8px;
+
+  line-height: 1.3;
 }
 
 .home-shoes-section .shoe-category {
+  margin: 0 0 10px;
+
   color: #777;
+
   font-size: 14px;
-  margin-bottom: 10px;
 }
 
 .home-shoes-section .shoe-description {
+  min-height: 42px;
+
+  margin: 0;
+
   color: #666;
 
   font-size: 14px;
 
   line-height: 1.5;
-
-  min-height: 42px;
 }
 
 
-/* ============================= */
-/* Price */
-/* ============================= */
+/* =====================================
+   PRICE
+===================================== */
 
 .home-shoes-section .price-section {
   display: flex;
 
   align-items: center;
 
+  flex-wrap: wrap;
+
   gap: 12px;
 
   margin: 15px 0;
 }
 
-
-/* Discounted Price */
-
 .home-shoes-section .shoe-price {
-  font-size: 20px;
-
   margin: 0;
 
-  color: black;
+  color: #000;
+
+  font-size: 20px;
+
+  font-weight: 700;
 }
 
-
-/* Original Price */
-
 .home-shoes-section .original-price {
-  font-size: 16px;
-
   color: red;
+
+  font-size: 16px;
 
   text-decoration: line-through;
 }
 
 
-/* ============================= */
-/* Sizes */
-/* ============================= */
+/* =====================================
+   SIZES
+===================================== */
 
 .home-shoes-section .sizes {
   display: flex;
 
-  gap: 8px;
+  align-items: center;
 
   flex-wrap: wrap;
 
-  margin-bottom: 20px;
+  gap: 7px;
+
+  margin: 15px 0 20px;
 }
 
 .home-shoes-section .sizes button {
-  width: 38px;
-  height: 35px;
+  width: 36px;
 
-  background: white;
+  height: 34px;
+
+  padding: 0;
+
+  background: #fff;
 
   border: 1px solid #ddd;
 
   border-radius: 5px;
 
+  color: #222;
+
+  font-size: 12px;
+
   cursor: pointer;
 
-  transition: 0.3s;
+  transition: all 0.2s ease;
 }
 
 .home-shoes-section .sizes button:hover {
-  background: black;
+  background: #000;
 
-  color: white;
+  color: #fff;
+
+  border-color: #000;
+}
+
+.home-shoes-section
+.sizes button.selected-size {
+  background: #000;
+
+  color: #fff;
+
+  border-color: #000;
 }
 
 
-/* ============================= */
-/* Add To Cart */
-/* ============================= */
+/* =====================================
+   ADD TO CART
+===================================== */
 
 .home-shoes-section .add-cart {
   width: 100%;
@@ -234,40 +304,111 @@
 
   border: none;
 
-  background: black;
+  border-radius: 5px;
 
-  color: white;
+  background: #000;
+
+  color: #fff;
 
   font-size: 15px;
 
-  border-radius: 5px;
+  font-weight: 600;
 
   cursor: pointer;
 
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .home-shoes-section .add-cart:hover {
   background: #333;
+
+  transform: translateY(-2px);
+}
+
+.home-shoes-section .add-cart:active {
+  transform: translateY(0);
 }
 
 
-/* ============================= */
-/* Tablet */
-/* ============================= */
+/* =====================================
+   LARGE LAPTOP
+===================================== */
+
+@media (max-width: 1200px) {
+
+  .home-shoes-section {
+    padding-left: 4%;
+
+    padding-right: 4%;
+  }
+
+  .home-shoes-section .shoes-grid {
+    gap: 22px;
+  }
+
+  .home-shoes-section .shoe-image {
+    height: 250px;
+  }
+
+  .home-shoes-section .shoe-info {
+    padding: 20px;
+  }
+}
+
+
+/* =====================================
+   TABLET
+===================================== */
 
 @media (max-width: 900px) {
 
-  .home-shoes-section .shoes-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .home-shoes-section {
+    padding: 60px 30px;
   }
 
+  .home-shoes-heading {
+    margin-bottom: 35px;
+  }
+
+  .home-shoes-heading h2 {
+    font-size: 30px;
+  }
+
+  .home-shoes-heading p {
+    font-size: 15px;
+  }
+
+  .home-shoes-section .shoes-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+  }
+
+  .home-shoes-section .shoe-image {
+    height: 230px;
+  }
+
+  .home-shoes-section .shoe-info {
+    padding: 18px;
+  }
+
+  .home-shoes-section .shoe-info h3 {
+    font-size: 18px;
+  }
+
+  .home-shoes-section .shoe-description {
+    font-size: 13px;
+  }
+
+  .home-shoes-section .shoe-price {
+    font-size: 18px;
+  }
 }
 
 
-/* ============================= */
-/* Mobile */
-/* ============================= */
+/* =====================================
+   MOBILE
+===================================== */
 
 @media (max-width: 600px) {
 
@@ -275,12 +416,139 @@
     padding: 50px 20px;
   }
 
-  .home-shoes-section .shoes-grid {
-    grid-template-columns: 1fr;
+  .home-shoes-heading {
+    margin-bottom: 30px;
   }
 
   .home-shoes-heading h2 {
-    font-size: 28px;
+    font-size: 27px;
+
+    margin-bottom: 8px;
   }
 
+  .home-shoes-heading p {
+    font-size: 14px;
+  }
+
+  .home-shoes-section .shoes-grid {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .home-shoes-section .shoe-image {
+    height: 260px;
+  }
+
+  .home-shoes-section .shoe-info {
+    padding: 20px;
+  }
+
+  .home-shoes-section .shoe-info h3 {
+    font-size: 19px;
+  }
+
+  .home-shoes-section .shoe-category {
+    font-size: 13px;
+  }
+
+  .home-shoes-section .shoe-description {
+    font-size: 13px;
+  }
+
+  .home-shoes-section .price-section {
+    margin: 13px 0;
+  }
+
+  .home-shoes-section .shoe-price {
+    font-size: 18px;
+  }
+
+  .home-shoes-section .original-price {
+    font-size: 14px;
+  }
+
+  .home-shoes-section .sizes {
+    gap: 6px;
+  }
+
+  .home-shoes-section .sizes button {
+    width: 35px;
+
+    height: 33px;
+  }
+
+  .home-shoes-section .add-cart {
+    padding: 13px;
+
+    font-size: 14px;
+  }
+}
+
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+  .home-shoes-section {
+    padding: 45px 15px;
+  }
+
+  .home-shoes-heading h2 {
+    font-size: 24px;
+  }
+
+  .home-shoes-heading p {
+    font-size: 13px;
+  }
+
+  .home-shoes-section .shoes-grid {
+    gap: 16px;
+  }
+
+  .home-shoes-section .shoe-image {
+    height: 220px;
+  }
+
+  .home-shoes-section .shoe-info {
+    padding: 17px;
+  }
+
+  .home-shoes-section .shoe-info h3 {
+    font-size: 17px;
+  }
+
+  .home-shoes-section .shoe-category {
+    font-size: 12px;
+  }
+
+  .home-shoes-section .shoe-description {
+    font-size: 12px;
+
+    line-height: 1.5;
+  }
+
+  .home-shoes-section .shoe-price {
+    font-size: 17px;
+  }
+
+  .home-shoes-section .original-price {
+    font-size: 13px;
+  }
+
+  .home-shoes-section .sizes button {
+    width: 33px;
+
+    height: 31px;
+
+    font-size: 11px;
+  }
+
+  .home-shoes-section .add-cart {
+    padding: 12px;
+
+    font-size: 13px;
+  }
 }
