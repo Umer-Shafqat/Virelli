@@ -210,9 +210,9 @@ const getDailySales = async (req, res) => {
     const dailySales = [];
 
     for (let i = 6; i >= 0; i--) {
+
       const date = new Date();
       date.setDate(date.getDate() - i);
-
       const day = date.getDate();
       const month = date.getMonth() + 1;
 
