@@ -1,97 +1,123 @@
-/* ========================================
+/* =====================================
    CONTACT PAGE
-======================================== */
+===================================== */
 
 .contact-page {
+  width: 100%;
+
   min-height: 100vh;
+
   padding: 140px 5% 80px;
-  background: #f8f8f8;
+
   box-sizing: border-box;
+
+  background: #f8f8f8;
 }
 
 
-/* ========================================
+/* =====================================
    CONTACT HEADING
-======================================== */
+===================================== */
 
 .contact-heading {
+  width: 100%;
+
+  max-width: 850px;
+
+  margin: 0 auto 60px;
+
   text-align: center;
-  margin-bottom: 60px;
 }
 
 .contact-heading h1 {
-  font-size: 48px;
-  color: #222;
   margin: 0 0 15px;
+
+  color: #222;
+
+  font-size: clamp(30px, 4vw, 48px);
+
   font-weight: 700;
+
+  line-height: 1.2;
 }
 
 .contact-heading p {
-  color: #666;
-  font-size: 17px;
-  line-height: 1.7;
   margin: 0;
+
+  color: #666;
+
+  font-size: 17px;
+
+  line-height: 1.7;
 }
 
 
-/* ========================================
+/* =====================================
    MAIN CONTACT CONTAINER
-======================================== */
+===================================== */
 
 .contact-container {
+  width: 100%;
+
   max-width: 1150px;
-  margin: auto;
+
+  margin: 0 auto;
 
   display: grid;
+
   grid-template-columns: 1fr 1.2fr;
 
   gap: 40px;
 
   align-items: stretch;
+
+  box-sizing: border-box;
 }
 
 
-/* ========================================
+/* =====================================
    CONTACT INFORMATION
-======================================== */
+===================================== */
 
 .contact-info {
-  background: white;
+  background: #fff;
 
   padding: 45px;
 
   border-radius: 15px;
 
-  box-shadow:
-    0 10px 30px
-    rgba(0, 0, 0, 0.06);
-
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
 
   box-sizing: border-box;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .contact-info h2 {
-  font-size: 30px;
+  margin: 0 0 18px;
+
   color: #222;
 
-  margin: 0 0 18px;
+  font-size: 30px;
+
+  font-weight: 700;
 }
 
 .contact-info > p {
+  margin: 0 0 35px;
+
   color: #666;
 
   font-size: 15px;
 
   line-height: 1.8;
-
-  margin: 0 0 35px;
 }
 
 
-/* ========================================
+/* =====================================
    CONTACT ITEMS
-======================================== */
+===================================== */
 
 .contact-item {
   display: flex;
@@ -104,36 +130,34 @@
 
   padding-bottom: 22px;
 
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eee;
 }
 
-
-/* Remove border from last item */
-
 .contact-item:last-child {
-  border-bottom: none;
-
   margin-bottom: 0;
 
   padding-bottom: 0;
+
+  border-bottom: none;
 }
 
 
-/* ========================================
+/* =====================================
    CONTACT ICON
-======================================== */
+===================================== */
 
 .contact-item > span {
   width: 50px;
+
   height: 50px;
+
+  flex-shrink: 0;
 
   display: flex;
 
   align-items: center;
 
   justify-content: center;
-
-  flex-shrink: 0;
 
   background: #f3f3f3;
 
@@ -146,73 +170,75 @@
     transform 0.3s ease;
 }
 
-
-/* Icon hover */
-
 .contact-item:hover > span {
   background: #222;
+
+  color: #fff;
 
   transform: translateY(-3px);
 }
 
 
-/* ========================================
+/* =====================================
    CONTACT ITEM TEXT
-======================================== */
+===================================== */
 
 .contact-item h3 {
+  margin: 2px 0 7px;
+
   color: #222;
 
   font-size: 17px;
 
-  margin: 2px 0 7px;
-
   font-weight: 600;
+
+  line-height: 1.3;
 }
 
 .contact-item p {
+  margin: 0;
+
   color: #666;
 
   font-size: 14px;
 
   line-height: 1.6;
-
-  margin: 0;
 }
 
 
-/* ========================================
+/* =====================================
    CONTACT FORM
-======================================== */
+===================================== */
 
 .contact-form {
-  background: white;
+  background: #fff;
 
   padding: 45px;
 
   border-radius: 15px;
 
-  box-shadow:
-    0 10px 30px
-    rgba(0, 0, 0, 0.06);
-
-  border: 1px solid #eeeeee;
+  border: 1px solid #eee;
 
   box-sizing: border-box;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .contact-form h2 {
-  font-size: 30px;
+  margin: 0 0 25px;
 
   color: #222;
 
-  margin: 0 0 25px;
+  font-size: 30px;
+
+  font-weight: 700;
 }
 
 
-/* ========================================
+/* =====================================
    FORM
-======================================== */
+===================================== */
 
 .contact-form form {
   display: flex;
@@ -223,9 +249,9 @@
 }
 
 
-/* ========================================
-   INPUTS AND TEXTAREA
-======================================== */
+/* =====================================
+   INPUTS
+===================================== */
 
 .contact-form input,
 .contact-form textarea {
@@ -233,21 +259,21 @@
 
   padding: 15px 17px;
 
+  box-sizing: border-box;
+
   background: #fafafa;
 
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 
   border-radius: 7px;
+
+  outline: none;
 
   font-family: inherit;
 
   font-size: 15px;
 
   color: #222;
-
-  outline: none;
-
-  box-sizing: border-box;
 
   transition:
     border-color 0.3s ease,
@@ -268,28 +294,29 @@
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  background: white;
+  background: #fff;
 
   border-color: #222;
 
   box-shadow:
-    0 0 0 3px
-    rgba(0, 0, 0, 0.06);
+    0 0 0 3px rgba(0, 0, 0, 0.06);
 }
 
 
-/* Textarea */
+/* =====================================
+   TEXTAREA
+===================================== */
 
 .contact-form textarea {
-  resize: vertical;
-
   min-height: 140px;
+
+  resize: vertical;
 }
 
 
-/* ========================================
+/* =====================================
    SUBMIT BUTTON
-======================================== */
+===================================== */
 
 .contact-form button {
   width: 100%;
@@ -304,7 +331,7 @@
 
   background: #222;
 
-  color: white;
+  color: #fff;
 
   font-size: 16px;
 
@@ -318,100 +345,128 @@
     box-shadow 0.3s ease;
 }
 
-
 .contact-form button:hover {
   background: #444;
 
   transform: translateY(-2px);
 
   box-shadow:
-    0 8px 18px
-    rgba(0, 0, 0, 0.15);
+    0 8px 18px rgba(0, 0, 0, 0.15);
 }
-
 
 .contact-form button:active {
   transform: translateY(0);
 }
 
 
-/* ========================================
-   TABLET RESPONSIVE
-======================================== */
+/* =====================================
+   LARGE LAPTOP
+===================================== */
+
+@media (max-width: 1200px) {
+
+  .contact-page {
+    padding-left: 4%;
+
+    padding-right: 4%;
+  }
+
+  .contact-container {
+    gap: 30px;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 35px;
+  }
+}
+
+
+/* =====================================
+   TABLET
+===================================== */
 
 @media (max-width: 900px) {
 
   .contact-page {
-    padding:
-      120px
-      4%
-      60px;
+    padding: 120px 30px 60px;
   }
-
-
-  .contact-container {
-    grid-template-columns: 1fr;
-
-    max-width: 700px;
-
-    gap: 30px;
-  }
-
 
   .contact-heading {
     margin-bottom: 45px;
   }
 
-
   .contact-heading h1 {
     font-size: 42px;
   }
-
-}
-
-
-/* ========================================
-   MOBILE RESPONSIVE
-======================================== */
-
-@media (max-width: 600px) {
-
-  .contact-page {
-    padding:
-      110px
-      20px
-      50px;
-  }
-
-
-  .contact-heading {
-    margin-bottom: 40px;
-  }
-
-
-  .contact-heading h1 {
-    font-size: 34px;
-  }
-
 
   .contact-heading p {
     font-size: 15px;
   }
 
+  .contact-container {
+    max-width: 700px;
+
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+  }
 
   .contact-info,
   .contact-form {
-    padding: 28px 22px;
+    padding: 30px;
+  }
+
+  .contact-info h2,
+  .contact-form h2 {
+    font-size: 27px;
+  }
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+  .contact-page {
+    padding: 100px 20px 50px;
+  }
+
+  .contact-heading {
+    margin-bottom: 35px;
+  }
+
+  .contact-heading h1 {
+    font-size: 32px;
+
+    margin-bottom: 12px;
+  }
+
+  .contact-heading p {
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 25px 20px;
 
     border-radius: 10px;
   }
 
-
   .contact-info h2,
   .contact-form h2 {
-    font-size: 25px;
+    font-size: 24px;
   }
 
+  .contact-info > p {
+    font-size: 14px;
+
+    margin-bottom: 28px;
+  }
 
   .contact-item {
     gap: 12px;
@@ -421,25 +476,25 @@
     padding-bottom: 18px;
   }
 
-
   .contact-item > span {
     width: 43px;
 
     height: 43px;
 
-    font-size: 20px;
+    font-size: 19px;
   }
-
 
   .contact-item h3 {
     font-size: 16px;
   }
 
-
   .contact-item p {
     font-size: 13px;
   }
 
+  .contact-form form {
+    gap: 15px;
+  }
 
   .contact-form input,
   .contact-form textarea {
@@ -448,11 +503,80 @@
     font-size: 14px;
   }
 
+  .contact-form textarea {
+    min-height: 120px;
+  }
 
   .contact-form button {
     padding: 14px;
 
     font-size: 15px;
   }
+}
 
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+  .contact-page {
+    padding: 95px 15px 40px;
+  }
+
+  .contact-heading h1 {
+    font-size: 27px;
+  }
+
+  .contact-heading p {
+    font-size: 13px;
+  }
+
+  .contact-info,
+  .contact-form {
+    padding: 22px 16px;
+  }
+
+  .contact-info h2,
+  .contact-form h2 {
+    font-size: 21px;
+  }
+
+  .contact-info > p {
+    font-size: 13px;
+  }
+
+  .contact-item {
+    gap: 10px;
+  }
+
+  .contact-item > span {
+    width: 39px;
+
+    height: 39px;
+
+    font-size: 17px;
+  }
+
+  .contact-item h3 {
+    font-size: 15px;
+  }
+
+  .contact-item p {
+    font-size: 12px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 12px;
+
+    font-size: 13px;
+  }
+
+  .contact-form button {
+    padding: 12px;
+
+    font-size: 14px;
+  }
 }
