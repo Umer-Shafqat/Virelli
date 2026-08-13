@@ -2,6 +2,7 @@ import React from "react";
 import "./TermsConditions.css";
 
 const TermsConditions = () => {
+  
   return (
     <section className="terms-page">
 
