@@ -2,6 +2,7 @@ import React from "react";
 import "./Card.css";
 
 const Card = ({ title, value, icon, color }) => {
+  
   return (
     <div className="dashboard-card">
       <div
