@@ -8,10 +8,6 @@ const Charts = () => {
   const [dailySales, setDailySales] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // =====================================
-  // GET DAILY SALES
-  // =====================================
-
   const getDailySales = async () => {
     try {
       // Use admin token
