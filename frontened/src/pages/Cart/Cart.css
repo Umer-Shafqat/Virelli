@@ -1,40 +1,98 @@
+/* =====================================
+   CART PAGE
+===================================== */
+
 .cart-page {
-  padding: 120px 5% 50px;
+  width: 100%;
+
   min-height: 70vh;
+
+  padding: 120px 5% 50px;
+
+  box-sizing: border-box;
+
+  background: #fff;
 }
+
+
+/* =====================================
+   CART HEADING
+===================================== */
 
 .cart-page h1 {
+  margin: 0 0 40px;
+
   text-align: center;
-  margin-bottom: 40px;
-  font-size: 36px;
+
+  font-size: clamp(28px, 4vw, 36px);
+
+  line-height: 1.2;
+
+  color: #171c29;
 }
 
+
+/* =====================================
+   CART CONTAINER
+===================================== */
 
 .cart-container {
+  width: 100%;
+
   max-width: 1100px;
-  margin: auto;
+
+  margin: 0 auto;
+
+  box-sizing: border-box;
 }
 
 
+/* =====================================
+   CART ITEM
+===================================== */
+
 .cart-item {
+  width: 100%;
+
   display: flex;
+
   align-items: center;
+
   gap: 25px;
 
   padding: 20px;
 
   margin-bottom: 20px;
 
+  box-sizing: border-box;
+
   border: 1px solid #ddd;
+
   border-radius: 10px;
 
   background: #fff;
+
+  transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.07);
 }
 
 
+/* =====================================
+   CART SHOE IMAGE
+===================================== */
+
 .cart-shoe-image {
   width: 120px;
+
   height: 120px;
+
+  flex-shrink: 0;
+
+  display: block;
 
   object-fit: cover;
 
@@ -42,112 +100,190 @@
 }
 
 
+/* =====================================
+   CART ITEM DETAILS
+===================================== */
+
 .cart-item-details {
   flex: 1;
-}
 
+  min-width: 0;
+}
 
 .cart-item-details h2 {
   margin: 0 0 10px;
-}
 
+  font-size: 21px;
+
+  color: #171c29;
+}
 
 .cart-item-details p {
-  color: #666;
-}
+  margin: 0 0 8px;
 
+  color: #666;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
 
 .cart-item-details h3 {
-  margin-top: 10px;
+  margin: 10px 0 0;
+
+  font-size: 18px;
+
+  color: #171c29;
 }
 
+
+/* =====================================
+   QUANTITY CONTROL
+===================================== */
 
 .quantity-control {
   display: flex;
-  align-items: center;
-  gap: 12px;
-}
 
+  align-items: center;
+
+  gap: 12px;
+
+  flex-shrink: 0;
+}
 
 .quantity-control button {
   width: 35px;
+
   height: 35px;
 
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
   border: none;
+
   background: #222;
+
   color: white;
 
   cursor: pointer;
 
   border-radius: 5px;
+
+  font-size: 16px;
+
+  transition: all 0.2s ease;
 }
 
+.quantity-control button:hover {
+  background: #444;
+
+  transform: scale(1.05);
+}
 
 .quantity-control span {
+  min-width: 20px;
+
+  text-align: center;
+
   font-size: 18px;
+
   font-weight: bold;
+
+  color: #222;
 }
 
+
+/* =====================================
+   ITEM TOTAL
+===================================== */
 
 .item-total {
-  font-weight: bold;
   min-width: 120px;
+
+  color: #171c29;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  text-align: center;
 }
 
+
+/* =====================================
+   REMOVE BUTTON
+===================================== */
 
 .remove-btn {
   padding: 10px 15px;
 
+  flex-shrink: 0;
+
   border: none;
 
   background: #d32f2f;
+
   color: white;
 
   cursor: pointer;
 
   border-radius: 5px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  transition: all 0.3s ease;
 }
 
+.remove-btn:hover {
+  background: #b71c1c;
+
+  transform: translateY(-2px);
+}
+
+
+/* =====================================
+   EMPTY CART
+===================================== */
 
 .empty-cart {
   text-align: center;
+
   padding: 80px 20px;
+
+  color: #666;
 }
 
 
-@media (max-width: 768px) {
-
-  .cart-item {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .cart-shoe-image {
-    width: 180px;
-    height: 180px;
-  }
-
-}
-
-/* =========================
+/* =====================================
    TOTAL AMOUNT
-========================= */
+===================================== */
 
 .total-amount {
   width: 100%;
+
   max-width: 450px;
-  margin: 30px 0 40px 0;
+
+  margin: 30px 0 40px auto;
+
   padding: 25px;
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
-  border-radius: 15px;
+
   box-sizing: border-box;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: 0.3s ease;
+
+  background: #fff;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 15px;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.3s ease;
 }
-
-
-/* Hover Effect */
 
 .total-amount:hover {
   transform: translateY(-3px);
@@ -157,15 +293,18 @@
 }
 
 
-/* =========================
+/* =====================================
    AMOUNT ROW
-========================= */
+===================================== */
 
 .amount-row {
   display: flex;
 
   justify-content: space-between;
+
   align-items: center;
+
+  gap: 15px;
 
   padding: 12px 0;
 
@@ -174,51 +313,50 @@
   color: #555;
 }
 
-
-/* Amount Values */
-
 .amount-row span:last-child {
   font-weight: 600;
+
   color: #222;
+
+  text-align: right;
 }
 
 
-/* =========================
+/* =====================================
    SUBTOTAL
-========================= */
+===================================== */
 
 .amount-row:first-child {
   padding-top: 0;
 }
 
 
-/* =========================
+/* =====================================
    DELIVERY CHARGES
-========================= */
+===================================== */
 
 .amount-row:nth-child(2) span:last-child {
   color: #555;
 }
 
 
-/* =========================
+/* =====================================
    TOTAL ROW
-========================= */
+===================================== */
 
 .total-row {
   margin-top: 15px;
+
   padding-top: 18px;
 
-  border-top: 2px solid #eeeeee;
+  border-top: 2px solid #eee;
 
   font-size: 20px;
+
   font-weight: 700;
 
   color: #111;
 }
-
-
-/* Total Amount Value */
 
 .total-row span:last-child {
   font-size: 22px;
@@ -229,18 +367,228 @@
 }
 
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* =====================================
+   CHECKOUT BUTTON
+===================================== */
+
+.checkout-btn,
+.total-amount button {
+  width: 100%;
+
+  margin-top: 20px;
+
+  padding: 14px 20px;
+
+  box-sizing: border-box;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #111;
+
+  color: #fff;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.checkout-btn:hover,
+.total-amount button:hover {
+  background: #333;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.checkout-btn:active,
+.total-amount button:active {
+  transform: translateY(0);
+}
+
+
+/* =====================================
+   LARGE LAPTOP
+===================================== */
+
+@media (max-width: 1200px) {
+
+  .cart-page {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .cart-item {
+    gap: 20px;
+  }
+
+  .cart-shoe-image {
+    width: 110px;
+
+    height: 110px;
+  }
+
+  .item-total {
+    min-width: 100px;
+  }
+}
+
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 900px) {
+
+  .cart-page {
+    padding: 110px 30px 45px;
+  }
+
+  .cart-page h1 {
+    margin-bottom: 30px;
+  }
+
+  .cart-item {
+    gap: 18px;
+
+    padding: 18px;
+  }
+
+  .cart-shoe-image {
+    width: 100px;
+
+    height: 100px;
+  }
+
+  .cart-item-details h2 {
+    font-size: 19px;
+  }
+
+  .cart-item-details h3 {
+    font-size: 16px;
+  }
+
+  .quantity-control {
+    gap: 8px;
+  }
+
+  .quantity-control button {
+    width: 32px;
+
+    height: 32px;
+  }
+
+  .item-total {
+    min-width: 90px;
+
+    font-size: 14px;
+  }
+
+  .remove-btn {
+    padding: 9px 12px;
+
+    font-size: 12px;
+  }
+
+  .total-amount {
+    max-width: 420px;
+  }
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
 
 @media (max-width: 600px) {
+
+  .cart-page {
+    padding: 100px 20px 40px;
+  }
+
+  .cart-page h1 {
+    font-size: 27px;
+
+    margin-bottom: 25px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+
+    text-align: center;
+
+    gap: 15px;
+
+    padding: 18px;
+  }
+
+  .cart-shoe-image {
+    width: 180px;
+
+    height: 180px;
+  }
+
+  .cart-item-details {
+    width: 100%;
+  }
+
+  .cart-item-details h2 {
+    font-size: 19px;
+
+    margin-bottom: 8px;
+  }
+
+  .cart-item-details p {
+    font-size: 13px;
+  }
+
+  .cart-item-details h3 {
+    font-size: 17px;
+  }
+
+  .quantity-control {
+    justify-content: center;
+
+    width: 100%;
+  }
+
+  .quantity-control button {
+    width: 35px;
+
+    height: 35px;
+  }
+
+  .item-total {
+    min-width: auto;
+
+    font-size: 15px;
+  }
+
+  .remove-btn {
+    width: 100%;
+
+    max-width: 180px;
+
+    padding: 10px 15px;
+  }
 
   .total-amount {
     max-width: 100%;
 
-    margin: 25px 0;
+    margin: 25px 0 30px;
 
     padding: 20px;
+
+    border-radius: 12px;
   }
 
   .amount-row {
@@ -255,85 +603,93 @@
     font-size: 20px;
   }
 
-}
-
-/* =========================
-   CHECKOUT BUTTON
-========================= */
-
-.checkout-btn {
-  width: 100%;
-
-  margin-top: 20px;
-  padding: 14px 20px;
-
-  border: none;
-  border-radius: 8px;
-
-  background: #111;
-  color: #fff;
-
-  font-size: 15px;
-  font-weight: 700;
-
-  letter-spacing: 1px;
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-}
-
-
-.checkout-btn:hover {
-  background: #333;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* =========================================
-   PROCEED TO CHECKOUT BUTTON
-========================================= */
-
-.total-amount button {
-  width: 100%;
-  margin-top: 20px;
-  padding: 14px 20px;
-
-  border: none;
-  border-radius: 6px;
-
-  background: #222;
-  color: #fff;
-
-  font-size: 16px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-}
-
-.total-amount button:hover {
-  background: #444;
-  transform: translateY(-2px);
-}
-
-.total-amount button:active {
-  transform: translateY(0);
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 600px) {
+  .checkout-btn,
   .total-amount button {
     padding: 13px 15px;
-    font-size: 15px;
+
+    font-size: 14px;
   }
 }
 
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+  .cart-page {
+    padding: 95px 15px 35px;
+  }
+
+  .cart-page h1 {
+    font-size: 24px;
+  }
+
+  .cart-item {
+    padding: 15px;
+
+    gap: 13px;
+  }
+
+  .cart-shoe-image {
+    width: 150px;
+
+    height: 150px;
+  }
+
+  .cart-item-details h2 {
+    font-size: 17px;
+  }
+
+  .cart-item-details p {
+    font-size: 12px;
+  }
+
+  .cart-item-details h3 {
+    font-size: 15px;
+  }
+
+  .quantity-control button {
+    width: 32px;
+
+    height: 32px;
+  }
+
+  .quantity-control span {
+    font-size: 16px;
+  }
+
+  .item-total {
+    font-size: 14px;
+  }
+
+  .remove-btn {
+    max-width: 160px;
+
+    font-size: 12px;
+  }
+
+  .total-amount {
+    padding: 18px;
+  }
+
+  .amount-row {
+    font-size: 14px;
+  }
+
+  .total-row {
+    font-size: 17px;
+  }
+
+  .total-row span:last-child {
+    font-size: 19px;
+  }
+
+  .checkout-btn,
+  .total-amount button {
+    padding: 12px;
+
+    font-size: 13px;
+  }
+}
