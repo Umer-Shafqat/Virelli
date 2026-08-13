@@ -1,17 +1,27 @@
+/* =====================================
+   ABOUT PAGE
+===================================== */
+
 .about-page {
   width: 100%;
   min-height: 100vh;
+
   background: #ffffff;
+
+  box-sizing: border-box;
 }
 
 
-/* Hero */
+/* =====================================
+   ABOUT HERO
+===================================== */
 
 .about-hero {
   width: 100%;
   min-height: 380px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -25,87 +35,146 @@
     url("../../assets/hero1.png");
 
   background-size: cover;
+
   background-position: center;
+
+  background-repeat: no-repeat;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
 }
 
 
+/* =====================================
+   HERO CONTENT
+===================================== */
+
 .about-hero-content {
-  max-width: 700px;
+  width: min(90%, 750px);
+
   padding: 30px;
+
+  box-sizing: border-box;
+
   color: white;
 }
 
-
 .about-hero-content h1 {
-  font-size: 50px;
-  margin-bottom: 15px;
-}
+  margin: 0 0 15px;
 
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+
+  font-weight: 900;
+
+  line-height: 1.1;
+
+  letter-spacing: 1px;
+}
 
 .about-hero-content p {
-  font-size: 18px;
+  margin: 0;
+
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+
   line-height: 1.7;
+
+  color: #ffffff;
 }
 
 
-/* Container */
+/* =====================================
+   ABOUT CONTAINER
+===================================== */
 
 .about-container {
+  width: 100%;
+
   max-width: 1200px;
-  margin: auto;
+
+  margin: 0 auto;
+
   padding: 70px 5%;
+
+  box-sizing: border-box;
 }
 
 
-/* Content */
+/* =====================================
+   ABOUT CONTENT
+===================================== */
 
 .about-content {
-  text-align: center;
+  width: 100%;
+
   max-width: 850px;
+
   margin: 0 auto 50px;
+
+  text-align: center;
 }
 
-
 .about-content h2 {
-  font-size: 32px;
-  margin-bottom: 20px;
+  margin: 0 0 20px;
+
+  font-size: clamp(26px, 3vw, 36px);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
   color: #222;
 }
 
-
 .about-content p {
+  margin: 0 0 15px;
+
   color: #666;
-  font-size: 16px;
+
+  font-size: 15px;
+
   line-height: 1.8;
-  margin-bottom: 15px;
 }
 
 
-/* Features */
+/* =====================================
+   FEATURES
+===================================== */
 
 .about-features {
+  width: 100%;
+
   display: grid;
-  grid-template-columns:
-    repeat(4, 1fr);
+
+  grid-template-columns: repeat(4, 1fr);
 
   gap: 25px;
+
   margin-top: 50px;
 }
 
 
+/* =====================================
+   FEATURE CARD
+===================================== */
+
 .about-feature {
+  min-width: 0;
+
   padding: 30px 20px;
+
   text-align: center;
 
   border-radius: 12px;
 
   background: #f8f8f8;
 
+  box-sizing: border-box;
+
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
-
 
 .about-feature:hover {
   transform: translateY(-8px);
@@ -116,36 +185,125 @@
 }
 
 
+/* =====================================
+   FEATURE ICON
+===================================== */
+
 .feature-icon {
   font-size: 40px;
+
+  line-height: 1;
+
   margin-bottom: 15px;
 }
 
 
+/* =====================================
+   FEATURE TITLE
+===================================== */
+
 .about-feature h3 {
+  margin: 0 0 10px;
+
   font-size: 20px;
-  margin-bottom: 10px;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  color: #222;
 }
 
 
+/* =====================================
+   FEATURE DESCRIPTION
+===================================== */
+
 .about-feature p {
+  margin: 0;
+
   color: #666;
+
   font-size: 14px;
+
   line-height: 1.6;
 }
 
 
-/* Responsive */
+/* =====================================
+   LARGE LAPTOP
+===================================== */
+
+@media (max-width: 1200px) {
+
+  .about-container {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .about-features {
+    gap: 20px;
+  }
+
+  .about-feature {
+    padding: 27px 18px;
+  }
+}
+
+
+/* =====================================
+   TABLET
+===================================== */
 
 @media (max-width: 900px) {
 
-  .about-features {
-    grid-template-columns:
-      repeat(2, 1fr);
+  .about-hero {
+    min-height: 340px;
   }
 
+  .about-hero-content {
+    width: 90%;
+
+    padding: 25px;
+  }
+
+  .about-hero-content h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .about-hero-content p {
+    font-size: 1rem;
+  }
+
+  .about-container {
+    padding: 60px 30px;
+  }
+
+  .about-content {
+    margin-bottom: 40px;
+  }
+
+  .about-content p {
+    font-size: 15px;
+  }
+
+  .about-features {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+    margin-top: 40px;
+  }
+
+  .about-feature {
+    padding: 25px 18px;
+  }
 }
 
+
+/* =====================================
+   MOBILE
+===================================== */
 
 @media (max-width: 600px) {
 
@@ -153,20 +311,125 @@
     min-height: 300px;
   }
 
+  .about-hero-content {
+    width: 90%;
+
+    padding: 20px;
+  }
+
   .about-hero-content h1 {
-    font-size: 36px;
+    font-size: 2rem;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 12px;
   }
 
   .about-hero-content p {
-    font-size: 15px;
+    font-size: 0.9rem;
+
+    line-height: 1.6;
   }
 
   .about-container {
     padding: 50px 20px;
   }
 
-  .about-features {
-    grid-template-columns: 1fr;
+  .about-content {
+    margin-bottom: 35px;
   }
 
+  .about-content h2 {
+    font-size: 27px;
+
+    margin-bottom: 15px;
+  }
+
+  .about-content p {
+    font-size: 14px;
+
+    line-height: 1.7;
+  }
+
+  .about-features {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+
+    margin-top: 35px;
+  }
+
+  .about-feature {
+    padding: 25px 20px;
+  }
+
+  .feature-icon {
+    font-size: 36px;
+
+    margin-bottom: 13px;
+  }
+
+  .about-feature h3 {
+    font-size: 18px;
+  }
+
+  .about-feature p {
+    font-size: 13px;
+  }
+}
+
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+  .about-hero {
+    min-height: 280px;
+  }
+
+  .about-hero-content {
+    width: 92%;
+
+    padding: 15px;
+  }
+
+  .about-hero-content h1 {
+    font-size: 1.7rem;
+  }
+
+  .about-hero-content p {
+    font-size: 0.82rem;
+
+    line-height: 1.5;
+  }
+
+  .about-container {
+    padding: 45px 15px;
+  }
+
+  .about-content h2 {
+    font-size: 24px;
+  }
+
+  .about-content p {
+    font-size: 13px;
+  }
+
+  .about-feature {
+    padding: 22px 16px;
+  }
+
+  .feature-icon {
+    font-size: 32px;
+  }
+
+  .about-feature h3 {
+    font-size: 17px;
+  }
+
+  .about-feature p {
+    font-size: 12.5px;
+  }
 }
