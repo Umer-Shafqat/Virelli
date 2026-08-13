@@ -6,9 +6,7 @@ import "./Search.css";
 const Search = () => {
   const { keyword } = useParams();
   const navigate = useNavigate();
-
   const url = process.env.REACT_APP_API_URL;
-
   const [data, setData] = useState({
     shoes: [],
     users: [],
