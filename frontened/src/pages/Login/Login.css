@@ -1,101 +1,103 @@
-/* ================================
-   LOGIN PAGE
-================================ */
+/* =========================================================
+   LOGIN PAGE - RESPONSIVE FOR ALL DEVICES
+========================================================= */
 
 .login-page {
   min-height: 100vh;
-
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-
   box-sizing: border-box;
 
-  /* Navbar height + extra gap */
+  /* Navbar + spacing */
   padding: 120px 20px 40px;
 
   background: #f6f8f8;
 }
 
 
-/* ================================
+/* =========================================================
    MAIN CONTAINER
-================================ */
+========================================================= */
 
 .login-container {
   position: relative;
 
-  width: 900px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 900px;
 
   min-height: 560px;
 
-  background: white;
+  background: #fff;
 
   border-radius: 12px;
 
   overflow: hidden;
 
   box-shadow:
-    0 10px 35px
-    rgba(0, 0, 0, 0.12);
+    0 10px 35px rgba(0, 0, 0, 0.12);
 }
 
 
-/* ================================
+/* =========================================================
    FORM CONTAINER
-================================ */
+========================================================= */
 
 .form-container {
   position: absolute;
 
   top: 0;
+  left: 0;
 
   width: 50%;
-
   height: 100%;
 
   display: flex;
-
   justify-content: center;
-
   align-items: center;
 
-  background: white;
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: #fff;
 
   transition:
-    transform 0.6s
-    ease-in-out;
+    transform 0.6s ease-in-out,
+    opacity 0.4s ease-in-out;
 
   z-index: 2;
 }
 
 
+/* =========================================================
+   FORM
+========================================================= */
+
 .form-container form {
-  width: 70%;
+  width: 100%;
+  max-width: 300px;
 
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
 }
 
 
-/* ================================
-   SIGN IN FORM
-================================ */
+/* =========================================================
+   SIGN IN
+========================================================= */
 
 .signin-form {
   left: 0;
-
   z-index: 2;
 }
 
 
-/* ================================
-   SIGN UP FORM
-================================ */
+/* =========================================================
+   SIGN UP
+========================================================= */
 
 .signup-form {
   left: 0;
@@ -106,12 +108,11 @@
 }
 
 
-/* ================================
-   WHEN SIGN UP IS ACTIVE
-================================ */
+/* =========================================================
+   SIGN UP ACTIVE
+========================================================= */
 
-.login-container.show-signup
-.signin-form {
+.login-container.show-signup .signin-form {
   transform: translateX(100%);
 
   opacity: 0;
@@ -120,8 +121,7 @@
 }
 
 
-.login-container.show-signup
-.signup-form {
+.login-container.show-signup .signup-form {
   transform: translateX(100%);
 
   opacity: 1;
@@ -130,24 +130,24 @@
 }
 
 
-/* ================================
+/* =========================================================
    HEADINGS
-================================ */
+========================================================= */
 
 .form-container h1 {
   color: #cf5e18;
 
-  font-size: 30px;
+  font-size: clamp(24px, 3vw, 30px);
 
-  margin-bottom: 20px;
+  margin: 0 0 20px;
 
   text-align: center;
 }
 
 
-/* ================================
+/* =========================================================
    FORM TEXT
-================================ */
+========================================================= */
 
 .form-container span {
   font-size: 12px;
@@ -157,12 +157,14 @@
   margin-bottom: 15px;
 
   text-align: center;
+
+  line-height: 1.5;
 }
 
 
-/* ================================
+/* =========================================================
    INPUTS
-================================ */
+========================================================= */
 
 .form-container input {
   width: 100%;
@@ -175,23 +177,32 @@
 
   border: none;
 
+  border-bottom: 2px solid transparent;
+
   outline: none;
 
   background: #f2f6f6;
 
   font-size: 13px;
+
+  border-radius: 4px;
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
 }
 
 
 .form-container input:focus {
-  border-bottom:
-    2px solid #cf5e18;
+  border-bottom: 2px solid #cf5e18;
+
+  background: #f7f9f9;
 }
 
 
-/* ================================
+/* =========================================================
    FORGOT PASSWORD
-================================ */
+========================================================= */
 
 .forgot-password {
   color: #555;
@@ -201,6 +212,8 @@
   text-decoration: none;
 
   margin: 10px 0 20px;
+
+  transition: color 0.3s ease;
 }
 
 
@@ -209,16 +222,16 @@
 }
 
 
-/* ================================
+/* =========================================================
    MAIN BUTTON
-================================ */
+========================================================= */
 
 .main-button {
   margin-top: 15px;
 
-  width: 150px;
+  width: min(150px, 100%);
 
-  padding: 12px;
+  padding: 12px 20px;
 
   border: none;
 
@@ -236,7 +249,10 @@
 
   cursor: pointer;
 
-  transition: 0.3s;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
 
@@ -249,44 +265,40 @@
 }
 
 
-/* ================================
+/* =========================================================
    OVERLAY CONTAINER
-================================ */
+========================================================= */
 
 .overlay-container {
   position: absolute;
 
   top: 0;
-
   left: 50%;
 
   width: 50%;
-
   height: 100%;
 
   overflow: hidden;
 
   transition:
-    transform 0.6s
-    ease-in-out;
+    transform 0.6s ease-in-out;
 
   z-index: 5;
 }
 
 
-/* ================================
+/* =========================================================
    MOVE OVERLAY
-================================ */
+========================================================= */
 
-.login-container.show-signup
-.overlay-container {
+.login-container.show-signup .overlay-container {
   transform: translateX(-100%);
 }
 
 
-/* ================================
+/* =========================================================
    OVERLAY
-================================ */
+========================================================= */
 
 .overlay {
   position: relative;
@@ -294,32 +306,27 @@
   left: -100%;
 
   width: 200%;
-
   height: 100%;
 
   background: #e8ded8;
 
   color: #333;
 
-  transform:
-    translateX(0);
+  transform: translateX(0);
 
   transition:
-    transform 0.6s
-    ease-in-out;
+    transform 0.6s ease-in-out;
 }
 
 
-.login-container.show-signup
-.overlay {
-  transform:
-    translateX(50%);
+.login-container.show-signup .overlay {
+  transform: translateX(50%);
 }
 
 
-/* ================================
+/* =========================================================
    OVERLAY PANEL
-================================ */
+========================================================= */
 
 .overlay-panel {
   position: absolute;
@@ -327,7 +334,6 @@
   top: 0;
 
   width: 50%;
-
   height: 100%;
 
   display: flex;
@@ -340,68 +346,69 @@
 
   text-align: center;
 
-  padding: 40px;
+  padding: clamp(20px, 5vw, 40px);
 
   box-sizing: border-box;
 }
 
 
-/* ================================
+/* =========================================================
    OVERLAY HEADING
-================================ */
+========================================================= */
 
 .overlay-panel h1 {
-  font-size: 32px;
+  font-size: clamp(24px, 3vw, 32px);
 
-  margin-bottom: 15px;
+  margin: 0 0 15px;
 
   color: #333;
 }
 
 
-/* ================================
+/* =========================================================
    OVERLAY PARAGRAPH
-================================ */
+========================================================= */
 
 .overlay-panel p {
-  font-size: 13px;
+  font-size: clamp(12px, 1.5vw, 13px);
 
   line-height: 1.7;
 
+  width: 100%;
   max-width: 280px;
 
-  margin-bottom: 25px;
+  margin: 0 0 25px;
 
   color: #555;
 }
 
 
-/* ================================
+/* =========================================================
    LEFT PANEL
-================================ */
+========================================================= */
 
 .overlay-left {
   left: 0;
 }
 
 
-/* ================================
+/* =========================================================
    RIGHT PANEL
-================================ */
+========================================================= */
 
 .overlay-right {
   right: 0;
 }
 
 
-/* ================================
+/* =========================================================
    GHOST BUTTON
-================================ */
+========================================================= */
 
 .ghost-button {
-  width: 150px;
+  width: min(150px, 100%);
 
-  padding: 12px;
+  padding: 12px 20px;
 
   border-radius: 25px;
 
@@ -419,7 +426,10 @@
 
   cursor: pointer;
 
-  transition: 0.3s;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
 
@@ -427,68 +437,418 @@
   background: #333;
 
   color: #e8ded8;
+
+  transform: scale(1.03);
 }
 
 
-/* ================================
+/* =========================================================
+   LARGE DESKTOP
+   1200px+
+========================================================= */
+
+@media (min-width: 1200px) {
+
+  .login-container {
+    max-width: 950px;
+
+    min-height: 580px;
+  }
+
+}
+
+
+/* =========================================================
+   LAPTOP
+   901px - 1199px
+========================================================= */
+
+@media (max-width: 1199px) {
+
+  .login-page {
+    padding: 110px 30px 40px;
+  }
+
+  .login-container {
+    max-width: 850px;
+
+    min-height: 540px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   701px - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .login-page {
+    padding: 100px 25px 35px;
+  }
+
+  .login-container {
+    max-width: 720px;
+
+    min-height: 520px;
+  }
+
+  .form-container {
+    padding: 25px;
+  }
+
+  .form-container form {
+    max-width: 280px;
+  }
+
+  .overlay-panel {
+    padding: 25px;
+  }
+
+  .overlay-panel h1 {
+    font-size: 26px;
+  }
+
+  .overlay-panel p {
+    max-width: 230px;
+  }
+
+}
+
+
+/* =========================================================
    MOBILE
-================================ */
+   700px AND BELOW
+========================================================= */
 
 @media (max-width: 700px) {
 
   .login-page {
-    padding: 100px 20px 20px;
+    min-height: 100vh;
+
+    padding:
+      90px
+      15px
+      25px;
   }
 
 
   .login-container {
-    min-height: 650px;
-  }
-
-
-  .form-container {
     width: 100%;
+
+    min-height: 600px;
+
+    border-radius: 10px;
   }
 
 
-  /* Hide sliding overlay on mobile */
+  /* Hide desktop overlay */
 
   .overlay-container {
     display: none;
   }
 
 
-  /* Hide Sign Up initially */
+  /* Forms become full width */
+
+  .form-container {
+    width: 100%;
+
+    height: 100%;
+
+    padding:
+      30px
+      20px;
+  }
+
+
+  .form-container form {
+    width: 100%;
+
+    max-width: 330px;
+  }
+
+
+  /* Sign up hidden initially */
 
   .signup-form {
     display: none;
+
+    opacity: 0;
   }
 
 
-  /* Show Sign In */
+  /* Sign in visible */
 
   .signin-form {
-    transform: translateX(0);
-  }
-
-
-  /* When Sign Up is active */
-
-  .login-container.show-signup
-  .signin-form {
-    display: none;
-
-    transform: translateX(0);
-  }
-
-
-  .login-container.show-signup
-  .signup-form {
     display: flex;
 
     transform: translateX(0);
 
     opacity: 1;
+  }
+
+
+  /* Sign up active */
+
+  .login-container.show-signup .signin-form {
+    display: none;
+
+    transform: none;
+
+    opacity: 0;
+  }
+
+
+  .login-container.show-signup .signup-form {
+    display: flex;
+
+    transform: none;
+
+    opacity: 1;
+
+    z-index: 3;
+  }
+
+
+  .form-container h1 {
+    font-size: 27px;
+  }
+
+
+  .form-container input {
+    padding: 13px 15px;
+
+    font-size: 14px;
+  }
+
+
+  .main-button {
+    width: 160px;
+
+    padding: 13px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .login-page {
+    padding:
+      85px
+      12px
+      20px;
+  }
+
+
+  .login-container {
+    min-height: 570px;
+
+    border-radius: 8px;
+  }
+
+
+  .form-container {
+    padding:
+      25px
+      18px;
+  }
+
+
+  .form-container form {
+    max-width: 100%;
+  }
+
+
+  .form-container h1 {
+    font-size: 24px;
+
+    margin-bottom: 15px;
+  }
+
+
+  .form-container span {
+    font-size: 11px;
+
+    margin-bottom: 13px;
+  }
+
+
+  .form-container input {
+    padding: 12px;
+
+    font-size: 13px;
+
+    margin-bottom: 9px;
+  }
+
+
+  .forgot-password {
+    font-size: 11px;
+
+    margin:
+      8px
+      0
+      17px;
+  }
+
+
+  .main-button {
+    width: 145px;
+
+    padding: 11px;
+
+    font-size: 11px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   360px AND BELOW
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .login-page {
+    padding:
+      80px
+      8px
+      15px;
+  }
+
+
+  .login-container {
+    min-height: 550px;
+
+    border-radius: 6px;
+  }
+
+
+  .form-container {
+    padding:
+      20px
+      14px;
+  }
+
+
+  .form-container h1 {
+    font-size: 22px;
+
+    margin-bottom: 12px;
+  }
+
+
+  .form-container span {
+    font-size: 10px;
+
+    margin-bottom: 12px;
+  }
+
+
+  .form-container input {
+    padding: 11px;
+
+    font-size: 12px;
+  }
+
+
+  .main-button {
+    width: 135px;
+
+    padding: 10px;
+
+    font-size: 10px;
+  }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+  .login-page {
+    align-items: flex-start;
+
+    padding:
+      80px
+      15px
+      20px;
+  }
+
+
+  .login-container {
+    min-height: 500px;
+  }
+
+
+  .form-container {
+    padding: 15px;
+  }
+
+
+  .form-container h1 {
+    font-size: 22px;
+
+    margin-bottom: 10px;
+  }
+
+
+  .form-container input {
+    padding: 9px;
+
+    margin-bottom: 7px;
+  }
+
+
+  .forgot-password {
+    margin:
+      5px
+      0
+      10px;
+  }
+
+
+  .main-button {
+    margin-top: 8px;
+
+    padding: 9px;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .main-button:hover,
+  .ghost-button:hover {
+    transform: none;
+  }
+
+
+  .main-button:active {
+    transform: scale(0.98);
+  }
+
+
+  .ghost-button:active {
+    transform: scale(0.98);
   }
 
 }
