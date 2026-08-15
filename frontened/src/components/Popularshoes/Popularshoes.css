@@ -7,7 +7,6 @@
 
   display: flex;
   align-items: center;
-
   flex-wrap: wrap;
 
   gap: 8px;
@@ -41,33 +40,33 @@
 
 .size-btn {
   min-width: 42px;
-
   height: 40px;
 
   padding: 0 10px;
 
-  background-color: #fff;
-
-  border: 1px solid #d8d8d8;
-
-  border-radius: 6px;
-
-  font-size: 14px;
-
-  font-weight: 500;
-
-  color: #222;
-
-  cursor: pointer;
-
   display: flex;
-
   align-items: center;
   justify-content: center;
 
-  transition: all 0.2s ease;
-
   box-sizing: border-box;
+
+  background: #fff;
+
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+
+  color: #222;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 
@@ -79,6 +78,8 @@
   border-color: #111;
 
   background-color: #f5f5f5;
+
+  transform: translateY(-1px);
 }
 
 
@@ -111,8 +112,9 @@
 
   margin-top: 8px;
 
-  border: none;
+  box-sizing: border-box;
 
+  border: none;
   border-radius: 6px;
 
   background-color: #111;
@@ -120,14 +122,13 @@
   color: #fff;
 
   font-size: 15px;
-
   font-weight: 600;
 
   cursor: pointer;
 
-  transition: all 0.3s ease;
-
-  box-sizing: border-box;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
 }
 
 
@@ -152,11 +153,22 @@
 
 
 /* =====================================
-   LAPTOP
+   ADD TO CART FOCUS
+===================================== */
+
+.add-cart:focus-visible,
+.size-btn:focus-visible {
+  outline: 2px solid #111;
+
+  outline-offset: 2px;
+}
+
+
+/* =====================================
+   LARGE LAPTOP
 ===================================== */
 
 @media (max-width: 1200px) {
-
   .sizes {
     gap: 7px;
   }
@@ -180,7 +192,6 @@
 ===================================== */
 
 @media (max-width: 768px) {
-
   .sizes {
     gap: 7px;
 
@@ -191,7 +202,6 @@
     width: 100%;
 
     margin-right: 0;
-
     margin-bottom: 3px;
 
     font-size: 15px;
@@ -201,6 +211,8 @@
     min-width: 42px;
 
     height: 40px;
+
+    padding: 0 9px;
 
     font-size: 14px;
   }
@@ -220,7 +232,6 @@
 ===================================== */
 
 @media (max-width: 600px) {
-
   .sizes {
     gap: 6px;
 
@@ -266,9 +277,10 @@
 ===================================== */
 
 @media (max-width: 400px) {
-
   .sizes {
-    gap: 5px;
+    gap: 6px;
+
+    margin: 11px 0;
   }
 
   .size-label {
@@ -284,6 +296,8 @@
 
     padding: 0;
 
+    border-radius: 5px;
+
     font-size: 12px;
   }
 
@@ -293,5 +307,40 @@
     padding: 10px 14px;
 
     font-size: 13px;
+  }
+}
+
+
+/* =====================================
+   EXTRA SMALL MOBILE
+===================================== */
+
+@media (max-width: 350px) {
+  .sizes {
+    gap: 5px;
+
+    margin: 10px 0;
+  }
+
+  .size-label {
+    font-size: 13px;
+  }
+
+  .size-btn {
+    min-width: 36px;
+
+    width: 36px;
+
+    height: 36px;
+
+    font-size: 11px;
+  }
+
+  .add-cart {
+    min-height: 41px;
+
+    padding: 9px 12px;
+
+    font-size: 12px;
   }
 }
