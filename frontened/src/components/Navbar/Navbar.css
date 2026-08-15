@@ -762,3 +762,13 @@
     width: 220px;
   }
 }
+
+/* =====================================
+   HIDE NAVBAR ON MOBILE
+===================================== */
+
+@media (max-width: 768px) {
+  .navbar {
+    display: none !important;
+  }
+}
