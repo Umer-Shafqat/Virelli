@@ -1,65 +1,479 @@
+/* =========================================================
+   RETURNS PAGE
+========================================================= */
+
 .returns-page {
+  width: 100%;
   min-height: 100vh;
-  padding: 140px 5% 80px;
+
+  padding:
+    140px
+    clamp(15px, 5vw, 70px)
+    80px;
+
   background: #f8f8f8;
+
   box-sizing: border-box;
 }
 
+
+/* =========================================================
+   RETURNS HEADER
+========================================================= */
+
 .returns-header {
+  width: 100%;
+
+  max-width: 1000px;
+
+  margin:
+    0
+    auto
+    clamp(35px, 5vw, 55px);
+
   text-align: center;
-  margin-bottom: 55px;
 }
 
+
 .returns-header h1 {
-  margin: 0 0 15px;
-  font-size: 45px;
+  margin:
+    0
+    0
+    15px;
+
+  font-size:
+    clamp(30px, 4.5vw, 45px);
+
+  line-height: 1.2;
+
   color: #222;
+
+  word-break: break-word;
 }
+
 
 .returns-header p {
   margin: 0;
+
   color: #666;
-  font-size: 17px;
+
+  font-size:
+    clamp(14px, 1.8vw, 17px);
+
+  line-height: 1.6;
 }
+
+
+/* =========================================================
+   RETURNS CONTAINER
+========================================================= */
 
 .returns-container {
+  width: 100%;
+
   max-width: 900px;
-  margin: auto;
+
+  margin: 0 auto;
+
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap:
+    clamp(18px, 3vw, 25px);
+
+  box-sizing: border-box;
 }
+
+
+/* =========================================================
+   RETURNS CARD
+========================================================= */
 
 .returns-card {
-  background: white;
-  padding: 30px;
+  width: 100%;
+
+  background: #fff;
+
+  padding:
+    clamp(22px, 3vw, 30px);
+
   border-radius: 12px;
-  border: 1px solid #eee;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+
+  border:
+    1px solid #eee;
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.05);
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.returns-card h2 {
-  margin: 0 0 15px;
-  color: #222;
-  font-size: 23px;
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+.returns-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, 0.08);
 }
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.returns-card h2 {
+  margin:
+    0
+    0
+    15px;
+
+  color: #222;
+
+  font-size:
+    clamp(19px, 2.5vw, 23px);
+
+  line-height: 1.35;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
 
 .returns-card p {
   margin: 0;
+
   color: #666;
+
+  font-size:
+    clamp(14px, 1.6vw, 16px);
+
   line-height: 1.7;
+
+  overflow-wrap: break-word;
+
+  word-wrap: break-word;
 }
 
-@media (max-width: 700px) {
+
+/* =========================================================
+   LARGE DESKTOP
+   1200px+
+========================================================= */
+
+@media (min-width: 1200px) {
+
   .returns-page {
-    padding: 120px 20px 60px;
+    padding-top: 150px;
   }
 
-  .returns-header h1 {
-    font-size: 34px;
+
+  .returns-container {
+    max-width: 900px;
   }
+
+}
+
+
+/* =========================================================
+   LAPTOP
+   901px - 1199px
+========================================================= */
+
+@media (max-width: 1199px) {
+
+  .returns-page {
+    padding:
+      125px
+      30px
+      70px;
+  }
+
+
+  .returns-header {
+    margin-bottom: 45px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   701px - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .returns-page {
+    padding:
+      115px
+      25px
+      60px;
+  }
+
+
+  .returns-header {
+    max-width: 750px;
+
+    margin-bottom: 40px;
+  }
+
+
+  .returns-container {
+    max-width: 750px;
+
+    gap: 20px;
+  }
+
+
+  .returns-card {
+    padding: 25px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   600px AND BELOW
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .returns-page {
+    padding:
+      100px
+      15px
+      50px;
+  }
+
+
+  .returns-header {
+    margin-bottom: 32px;
+  }
+
+
+  .returns-header h1 {
+    font-size: 32px;
+
+    margin-bottom: 10px;
+  }
+
+
+  .returns-header p {
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
 
   .returns-container {
     grid-template-columns: 1fr;
+
+    gap: 18px;
   }
+
+
+  .returns-card {
+    padding:
+      24px
+      20px;
+
+    border-radius: 10px;
+  }
+
+
+  .returns-card h2 {
+    font-size: 19px;
+
+    margin-bottom: 10px;
+  }
+
+
+  .returns-card p {
+    font-size: 14px;
+
+    line-height: 1.75;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .returns-page {
+    padding:
+      90px
+      10px
+      40px;
+  }
+
+
+  .returns-header {
+    margin-bottom: 28px;
+  }
+
+
+  .returns-header h1 {
+    font-size: 27px;
+
+    line-height: 1.25;
+  }
+
+
+  .returns-header p {
+    font-size: 13px;
+  }
+
+
+  .returns-container {
+    gap: 15px;
+  }
+
+
+  .returns-card {
+    padding:
+      21px
+      16px;
+
+    border-radius: 8px;
+
+    box-shadow:
+      0 5px 18px
+      rgba(0, 0, 0, 0.05);
+  }
+
+
+  .returns-card h2 {
+    font-size: 18px;
+
+    line-height: 1.4;
+  }
+
+
+  .returns-card p {
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+
+  /* Disable hover movement on small screens */
+
+  .returns-card:hover {
+    transform: none;
+
+    box-shadow:
+      0 5px 18px
+      rgba(0, 0, 0, 0.05);
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   360px AND BELOW
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .returns-page {
+    padding:
+      80px
+      8px
+      35px;
+  }
+
+
+  .returns-header {
+    margin-bottom: 24px;
+  }
+
+
+  .returns-header h1 {
+    font-size: 24px;
+  }
+
+
+  .returns-header p {
+    font-size: 12px;
+  }
+
+
+  .returns-container {
+    gap: 12px;
+  }
+
+
+  .returns-card {
+    padding:
+      18px
+      13px;
+  }
+
+
+  .returns-card h2 {
+    font-size: 17px;
+
+    margin-bottom: 9px;
+  }
+
+
+  .returns-card p {
+    font-size: 12.5px;
+
+    line-height: 1.65;
+  }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+  .returns-page {
+    padding-top: 90px;
+  }
+
+
+  .returns-header {
+    margin-bottom: 30px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .returns-card {
+    transition: none;
+  }
+
 }
