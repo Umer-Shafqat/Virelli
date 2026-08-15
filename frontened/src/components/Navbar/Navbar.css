@@ -630,7 +630,7 @@
   .navbar {
     padding: 6px 8px;
 
-    gap: 4px;
+    gap: 8px;
   }
 
   .logo {
@@ -722,7 +722,7 @@
   .navbar {
     padding: 5px 6px;
 
-    gap: 3px;
+    gap: 6px;
   }
 
   .logo {
@@ -797,7 +797,7 @@
   }
 
   .navbar-menu {
-    gap: 2px;
+    gap: 6px;
   }
 
   .navbar-menu li a {
