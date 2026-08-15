@@ -14,7 +14,7 @@ const offerStartDate = new Date(
 );
 
 const offerEndDate = new Date(
-  "2026-08-16T23:59:59"
+  "2026-10-10T23:59:59"
 );
 
 const Offers = () => {
