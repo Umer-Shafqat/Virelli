@@ -1,28 +1,51 @@
-/* ========================= */
-/* Header / Hero */
-/* ========================= */
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+.header,
+.featured {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER / HERO
+========================================================= */
 
 .header {
-  width: 100%;
   position: relative;
-
-  background: #f5f5f5;
+  width: 100%;
+  min-height: 500px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   overflow: hidden;
+  background: #f5f5f5;
 }
+
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
 
 .header-img {
   width: 100%;
   height: auto;
 
+  min-height: 500px;
+
   display: block;
 
   object-fit: cover;
 }
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
 
 .header-content {
   position: absolute;
@@ -32,82 +55,107 @@
 
   transform: translate(-50%, -50%);
 
-  width: min(90%, 1000px);
+  width: 90%;
+  max-width: 1000px;
 
   text-align: center;
 
   z-index: 10;
 }
 
+
+/* =========================================================
+   HERO HEADING
+========================================================= */
+
 .header-content h1 {
+  margin: 0 0 20px;
+
+  color: #111;
+
   font-size: clamp(2rem, 4vw, 4rem);
 
   font-weight: 900;
 
-  text-transform: uppercase;
+  line-height: 1.1;
 
   letter-spacing: 2px;
 
-  color: #111;
-
-  margin: 0 0 20px;
-
-  line-height: 1.1;
+  text-transform: uppercase;
 }
+
 
 .header-content h1 span {
   color: #d92525;
-
   font-size: 0.55em;
 }
 
+
+/* =========================================================
+   HERO PARAGRAPH
+========================================================= */
+
 .header-content p {
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  max-width: 700px;
+
+  margin: 0 auto 30px;
 
   color: #333;
 
-  margin: 0 0 30px;
+  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
 
   font-weight: 500;
 
   line-height: 1.5;
 }
 
-.header-content button {
-  background: #d92525;
 
-  color: white;
+/* =========================================================
+   HERO BUTTON
+========================================================= */
+
+.header-content button {
+  padding: 15px 42px;
 
   border: none;
-
-  padding: 16px 45px;
-
   border-radius: 40px;
 
-  font-size: 1rem;
+  background: #d92525;
+  color: #fff;
 
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
 
   cursor: pointer;
 
-  transition: all 0.3s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
 }
+
 
 .header-content button:hover {
   background: #b71c1c;
-
   transform: scale(1.05);
 }
 
 
-/* ========================= */
-/* Laptop */
-/* ========================= */
+/* =========================================================
+   LAPTOP
+========================================================= */
 
 @media (max-width: 1200px) {
 
+  .header {
+    min-height: 450px;
+  }
+
+  .header-img {
+    min-height: 450px;
+  }
+
   .header-content {
-    width: 90%;
+    width: 88%;
   }
 
   .header-content h1 {
@@ -115,8 +163,7 @@
   }
 
   .header-content p {
-    font-size: 1.1rem;
-
+    font-size: 1.05rem;
     margin-bottom: 25px;
   }
 
@@ -126,14 +173,25 @@
 }
 
 
-/* ========================= */
-/* Tablet */
-/* ========================= */
+/* =========================================================
+   TABLET
+========================================================= */
 
 @media (max-width: 768px) {
 
+  .header {
+    min-height: 420px;
+  }
+
+  .header-img {
+    min-height: 420px;
+    height: 420px;
+
+    object-fit: cover;
+  }
+
   .header-content {
-    width: 90%;
+    width: 88%;
   }
 
   .header-content h1 {
@@ -141,11 +199,15 @@
 
     letter-spacing: 1px;
 
-    margin-bottom: 15px;
+    margin-bottom: 14px;
   }
 
   .header-content p {
-    font-size: 1rem;
+    max-width: 600px;
+
+    font-size: 0.95rem;
+
+    line-height: 1.5;
 
     margin-bottom: 22px;
   }
@@ -153,38 +215,42 @@
   .header-content button {
     padding: 13px 32px;
 
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 }
 
 
-/* ========================= */
-/* Mobile */
-/* ========================= */
+/* =========================================================
+   MOBILE
+========================================================= */
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
 
   .header {
-    min-height: 60vh;
+    min-height: 430px;
   }
 
   .header-img {
     width: 100%;
-    height: 60vh;
+    height: 430px;
+
+    min-height: 430px;
 
     object-fit: cover;
   }
 
   .header-content {
-    width: 90%;
+    width: calc(100% - 40px);
 
-    top: 50%;
+    max-width: 420px;
   }
 
   .header-content h1 {
-    font-size: 1.8rem;
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
 
     letter-spacing: 1px;
+
+    line-height: 1.15;
 
     margin-bottom: 12px;
   }
@@ -196,39 +262,48 @@
   .header-content p {
     font-size: 0.85rem;
 
-    line-height: 1.4;
+    line-height: 1.45;
 
     margin-bottom: 18px;
   }
 
   .header-content button {
-    padding: 11px 25px;
+    padding: 11px 26px;
 
     font-size: 0.85rem;
   }
 }
 
 
-/* ========================= */
-/* Very Small Mobile */
-/* ========================= */
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
 
-@media (max-width: 360px) {
+@media (max-width: 400px) {
 
   .header {
-    min-height: 55vh;
+    min-height: 390px;
   }
 
   .header-img {
-    height: 55vh;
+    height: 390px;
+    min-height: 390px;
+  }
+
+  .header-content {
+    width: calc(100% - 30px);
   }
 
   .header-content h1 {
     font-size: 1.5rem;
+
+    margin-bottom: 10px;
   }
 
   .header-content p {
     font-size: 0.78rem;
+
+    line-height: 1.4;
 
     margin-bottom: 15px;
   }
@@ -236,95 +311,107 @@
   .header-content button {
     padding: 10px 22px;
 
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 }
 
 
-/* ================================================= */
-/* Featured Section */
-/* ================================================= */
+/* =========================================================
+   FEATURED SECTION
+========================================================= */
 
 .featured {
   width: 100%;
 
   padding: 70px 5%;
 
-  box-sizing: border-box;
-
   text-align: center;
 
   background: #f8f8f8;
 }
 
-.featured h2 {
-  font-size: clamp(26px, 3vw, 36px);
 
+/* =========================================================
+   FEATURED HEADING
+========================================================= */
+
+.featured h2 {
   margin: 0 0 10px;
 
   color: #171c29;
+
+  font-size: clamp(26px, 3vw, 36px);
+
+  line-height: 1.2;
 }
 
+
 .featured > p {
+  max-width: 650px;
+
+  margin: 0 auto 40px;
+
   color: #777;
 
   font-size: 15px;
 
   line-height: 1.6;
-
-  margin: 0 auto 40px;
-
-  max-width: 650px;
 }
 
 
-/* ================================================= */
-/* Featured Grid */
-/* ================================================= */
+/* =========================================================
+   FEATURED GRID
+========================================================= */
 
 .featured-grid {
   width: 100%;
-
   max-width: 1200px;
 
   margin: 0 auto;
 
   display: grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
   gap: 25px;
 }
 
 
-/* ================================================= */
-/* Shoe Card */
-/* ================================================= */
+/* =========================================================
+   FEATURED CARD
+========================================================= */
 
 .featured-card {
   min-width: 0;
 
-  background: white;
+  overflow: hidden;
+
+  background: #fff;
 
   border-radius: 12px;
 
-  overflow: hidden;
-
   text-align: left;
 
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.1);
 
-  transition: all 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
+
 
 .featured-card:hover {
   transform: translateY(-8px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.14);
 }
 
 
-/* ================================================= */
-/* Shoe Image */
-/* ================================================= */
+/* =========================================================
+   FEATURED IMAGE
+========================================================= */
 
 .featured-card img {
   width: 100%;
@@ -337,44 +424,49 @@
 }
 
 
-/* ================================================= */
-/* Shoe Info */
-/* ================================================= */
+/* =========================================================
+   FEATURED INFORMATION
+========================================================= */
 
 .featured-info {
   padding: 20px;
 }
 
-.featured-info h3 {
-  font-size: 20px;
 
+.featured-info h3 {
   margin: 0 0 8px;
 
   color: #171c29;
+
+  font-size: 20px;
+
+  line-height: 1.3;
 }
 
+
 .category {
+  margin: 0 0 10px;
+
   color: #777;
 
   font-size: 14px;
-
-  margin: 0 0 10px;
 }
 
-.price {
-  font-size: 18px;
 
-  font-weight: bold;
+.price {
+  margin: 0;
 
   color: #171c29;
 
-  margin: 0;
+  font-size: 18px;
+
+  font-weight: 700;
 }
 
 
-/* ================================================= */
-/* View All Button */
-/* ================================================= */
+/* =========================================================
+   VIEW ALL BUTTON
+========================================================= */
 
 .view-all {
   display: inline-block;
@@ -383,16 +475,18 @@
 
   padding: 14px 30px;
 
-  background: black;
-
-  color: white;
-
-  text-decoration: none;
+  background: #000;
+  color: #fff;
 
   border-radius: 5px;
 
-  transition: all 0.3s ease;
+  text-decoration: none;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
 }
+
 
 .view-all:hover {
   background: #333;
@@ -401,9 +495,9 @@
 }
 
 
-/* ================================================= */
-/* Laptop / Small Desktop */
-/* ================================================= */
+/* =========================================================
+   SMALL DESKTOP / LAPTOP
+========================================================= */
 
 @media (max-width: 1000px) {
 
@@ -426,12 +520,16 @@
   .featured-info h3 {
     font-size: 18px;
   }
+
+  .price {
+    font-size: 17px;
+  }
 }
 
 
-/* ================================================= */
-/* Tablet */
-/* ================================================= */
+/* =========================================================
+   TABLET
+========================================================= */
 
 @media (max-width: 768px) {
 
@@ -439,29 +537,53 @@
     padding: 55px 30px;
   }
 
+  .featured h2 {
+    font-size: 30px;
+  }
+
   .featured > p {
+    font-size: 14px;
+
     margin-bottom: 30px;
   }
 
   .featured-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     gap: 20px;
   }
 
   .featured-card img {
-    height: 220px;
+    height: 210px;
   }
 
   .featured-info {
     padding: 16px;
   }
+
+  .featured-info h3 {
+    font-size: 17px;
+  }
+
+  .category {
+    font-size: 13px;
+  }
+
+  .price {
+    font-size: 16px;
+  }
+
+  .view-all {
+    margin-top: 30px;
+
+    padding: 13px 27px;
+  }
 }
 
 
-/* ================================================= */
-/* Mobile */
-/* ================================================= */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 600px) {
 
@@ -475,6 +597,8 @@
 
   .featured > p {
     font-size: 14px;
+
+    line-height: 1.5;
 
     margin-bottom: 28px;
   }
@@ -497,6 +621,10 @@
     font-size: 19px;
   }
 
+  .category {
+    font-size: 14px;
+  }
+
   .price {
     font-size: 17px;
   }
@@ -509,9 +637,9 @@
 }
 
 
-/* ================================================= */
-/* Very Small Mobile */
-/* ================================================= */
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
 
 @media (max-width: 400px) {
 
@@ -525,6 +653,10 @@
 
   .featured > p {
     font-size: 13px;
+  }
+
+  .featured-grid {
+    gap: 18px;
   }
 
   .featured-card img {
@@ -545,5 +677,57 @@
 
   .price {
     font-size: 16px;
+  }
+
+  .view-all {
+    padding: 12px 24px;
+
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   EXTRA SMALL DEVICES
+========================================================= */
+
+@media (max-width: 320px) {
+
+  .header {
+    min-height: 360px;
+  }
+
+  .header-img {
+    height: 360px;
+    min-height: 360px;
+  }
+
+  .header-content h1 {
+    font-size: 1.35rem;
+  }
+
+  .header-content p {
+    font-size: 0.72rem;
+  }
+
+  .header-content button {
+    padding: 9px 19px;
+    font-size: 0.75rem;
+  }
+
+  .featured {
+    padding: 40px 12px;
+  }
+
+  .featured h2 {
+    font-size: 22px;
+  }
+
+  .featured-card img {
+    height: 200px;
+  }
+
+  .featured-info {
+    padding: 14px;
   }
 }
