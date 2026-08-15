@@ -1,26 +1,73 @@
-/* =====================================
+/* =========================================================
+   OFFERS PAGE
+========================================================= */
+
+.offers-page {
+  width: 100%;
+  min-height: 100vh;
+
+  padding:
+    120px
+    clamp(15px, 5vw, 70px)
+    70px;
+
+  background: #c6b7b7;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   OFFERS TITLE
+========================================================= */
+
+.offers-title {
+  width: 100%;
+  max-width: 1200px;
+
+  margin:
+    0
+    auto
+    45px;
+
+  text-align: center;
+
+  font-size: clamp(26px, 4vw, 36px);
+
+  color: #000;
+
+  line-height: 1.2;
+}
+
+
+/* =========================================================
    50% SALE ANIMATION PLATE
-===================================== */
+========================================================= */
 
 .offer-sale-plate {
   width: 100%;
   max-width: 1200px;
 
-  margin: 0 auto 45px;
+  margin:
+    0
+    auto
+    45px;
 
-  padding: 25px;
+  padding:
+    clamp(18px, 3vw, 25px);
 
   box-sizing: border-box;
 
-  background: linear-gradient(
-    135deg,
-    #171c29,
-    #e63946
-  );
+  background:
+    linear-gradient(
+      135deg,
+      #171c29,
+      #e63946
+    );
 
   border-radius: 18px;
 
-  color: white;
+  color: #fff;
 
   text-align: center;
 
@@ -28,13 +75,14 @@
 
   position: relative;
 
-  animation: salePulse 2s infinite;
+  animation:
+    salePulse 2s infinite;
 }
 
 
-/* =====================================
+/* =========================================================
    MOVING LIGHT ANIMATION
-===================================== */
+========================================================= */
 
 .offer-sale-plate::before {
   content: "";
@@ -47,77 +95,97 @@
   width: 60%;
   height: 100%;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.25),
+      transparent
+    );
 
   transform: skewX(-25deg);
 
-  animation: saleLight 3s infinite;
+  animation:
+    saleLight 3s infinite;
+
+  pointer-events: none;
 }
 
 
-/* =====================================
-   CONTENT
-===================================== */
+/* =========================================================
+   SALE CONTENT
+========================================================= */
 
 .sale-content {
   position: relative;
+
   z-index: 2;
+
+  width: 100%;
 }
 
 
-/* =====================================
+/* =========================================================
    MEGA SALE
-===================================== */
+========================================================= */
 
 .sale-title {
-  font-size: 22px;
+  margin:
+    0
+    0
+    5px;
+
+  font-size: clamp(17px, 2.5vw, 22px);
 
   font-weight: 700;
 
   letter-spacing: 2px;
 
-  margin-bottom: 5px;
+  line-height: 1.3;
 }
 
 
-/* =====================================
+/* =========================================================
    50% OFF
-===================================== */
+========================================================= */
 
 .sale-percent {
-  font-size: 52px;
+  margin:
+    8px
+    0;
+
+  font-size: clamp(38px, 6vw, 52px);
 
   font-weight: 900;
 
   line-height: 1;
 
-  margin: 8px 0;
-
-  animation: percentBounce 1.5s infinite;
+  animation:
+    percentBounce 1.5s infinite;
 }
 
 
-/* =====================================
-   DATE
-===================================== */
+/* =========================================================
+   SALE DATE
+========================================================= */
 
 .sale-date {
-  font-size: 15px;
+  margin:
+    0
+    0
+    20px;
 
-  margin-bottom: 20px;
+  font-size: clamp(12px, 2vw, 15px);
 
   opacity: 0.9;
+
+  line-height: 1.5;
 }
 
 
-/* =====================================
+/* =========================================================
    COUNTDOWN
-===================================== */
+========================================================= */
 
 .countdown {
   display: flex;
@@ -126,52 +194,55 @@
 
   align-items: center;
 
-  gap: 10px;
+  gap: clamp(5px, 1.5vw, 10px);
+
+  width: 100%;
+
+  box-sizing: border-box;
 }
 
 
-/* =====================================
+/* =========================================================
    TIME BOX
-===================================== */
+========================================================= */
 
 .time-box {
-  min-width: 70px;
+  min-width: clamp(50px, 8vw, 70px);
 
-  padding: 10px 8px;
+  padding:
+    10px
+    8px;
 
-  background: rgba(
-    255,
-    255,
-    255,
-    0.15
-  );
+  background:
+    rgba(255, 255, 255, 0.15);
 
-  border: 1px solid rgba(
-    255,
-    255,
-    255,
-    0.3
-  );
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.3);
 
   border-radius: 8px;
 
   backdrop-filter: blur(5px);
+
+  box-sizing: border-box;
 }
 
 
 .time-box span {
   display: block;
 
-  font-size: 25px;
+  font-size: clamp(18px, 3vw, 25px);
 
   font-weight: 800;
+
+  line-height: 1.2;
 }
 
 
 .time-box small {
   display: block;
 
-  font-size: 10px;
+  font-size: clamp(8px, 1.3vw, 10px);
 
   margin-top: 3px;
 
@@ -179,106 +250,459 @@
 }
 
 
-/* =====================================
-   COLON
-===================================== */
+/* =========================================================
+   COUNTDOWN COLON
+========================================================= */
 
 .colon {
-  font-size: 25px;
+  font-size: clamp(18px, 3vw, 25px);
 
   font-weight: 700;
 }
 
 
-/* =====================================
-   ANIMATION 1
-===================================== */
+/* =========================================================
+   OFFERS GRID
+========================================================= */
 
-@keyframes salePulse {
+.offers-container {
+  width: 100%;
 
-  0% {
-    box-shadow:
-      0 0 0 rgba(
-        230,
-        57,
-        70,
-        0
-      );
-  }
+  max-width: 1200px;
 
-  50% {
-    box-shadow:
-      0 0 30px rgba(
-        230,
-        57,
-        70,
-        0.5
-      );
-  }
+  margin: 0 auto;
 
-  100% {
-    box-shadow:
-      0 0 0 rgba(
-        230,
-        57,
-        70,
-        0
-      );
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap:
+    clamp(18px, 2.5vw, 30px);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   OFFER CARD
+========================================================= */
+
+.offer-card {
+  width: 100%;
+
+  background: #FFEED6;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  box-sizing: border-box;
+}
+
+
+.offer-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.13);
+}
+
+
+/* =========================================================
+   OFFER IMAGE
+========================================================= */
+
+.offer-image-box {
+  position: relative;
+
+  width: 100%;
+
+  height: clamp(220px, 25vw, 280px);
+
+  overflow: hidden;
+
+  background: #fff;
+}
+
+
+.offer-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.4s ease;
+}
+
+
+.offer-card:hover .offer-image {
+  transform: scale(1.05);
+}
+
+
+/* =========================================================
+   OFFER BADGE
+========================================================= */
+
+.offer-badge {
+  position: absolute;
+
+  top: clamp(10px, 2vw, 15px);
+
+  right: clamp(10px, 2vw, 15px);
+
+  background: #e63946;
+
+  color: #fff;
+
+  padding:
+    7px
+    14px;
+
+  border-radius: 20px;
+
+  font-size: clamp(11px, 1.5vw, 13px);
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   OFFER INFORMATION
+========================================================= */
+
+.offer-info {
+  padding: clamp(16px, 2vw, 22px);
+
+  box-sizing: border-box;
+}
+
+
+.offer-info h2 {
+  margin:
+    0
+    0
+    8px;
+
+  font-size: clamp(17px, 2vw, 20px);
+
+  color: #000;
+
+  line-height: 1.3;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+.offer-info .shoe-category {
+  color: #777;
+
+  font-size: clamp(12px, 1.5vw, 14px);
+
+  margin:
+    0
+    0
+    10px;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.offer-info .shoe-description {
+  color: #666;
+
+  font-size: clamp(12px, 1.5vw, 14px);
+
+  line-height: 1.5;
+
+  min-height: 42px;
+
+  margin: 0;
+}
+
+
+/* =========================================================
+   PRICE SECTION
+========================================================= */
+
+.offer-info .price-section {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin:
+    15px
+    0;
+}
+
+
+/* =========================================================
+   OLD PRICE
+========================================================= */
+
+.offer-info .old-price {
+  color: #777;
+
+  font-size: clamp(13px, 1.6vw, 14px);
+
+  text-decoration: line-through;
+}
+
+
+/* =========================================================
+   NEW PRICE
+========================================================= */
+
+.offer-info .new-price {
+  color: #000;
+
+  font-size: clamp(18px, 2vw, 20px);
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DISCOUNT
+========================================================= */
+
+.offer-info .discount {
+  background: #e63946;
+
+  color: #fff;
+
+  padding:
+    5px
+    9px;
+
+  border-radius: 5px;
+
+  font-size: clamp(10px, 1.4vw, 12px);
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading {
+  width: 100%;
+
+  text-align: center;
+
+  font-size: clamp(15px, 2vw, 18px);
+
+  color: #777;
+
+  padding:
+    50px
+    20px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   NO OFFERS
+========================================================= */
+
+.no-offers {
+  width: 100%;
+
+  max-width: 700px;
+
+  margin: 0 auto;
+
+  text-align: center;
+
+  padding:
+    70px
+    20px;
+
+  box-sizing: border-box;
+}
+
+
+.no-offers h2 {
+  margin:
+    0
+    0
+    10px;
+
+  font-size: clamp(22px, 4vw, 28px);
+
+  color: #000;
+
+  line-height: 1.3;
+}
+
+
+.no-offers p {
+  margin: 0;
+
+  color: #777;
+
+  font-size: clamp(13px, 2vw, 16px);
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1200px+
+========================================================= */
+
+@media (min-width: 1200px) {
+
+  .offers-container {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
   }
 
 }
 
 
-/* =====================================
-   ANIMATION 2
-===================================== */
+/* =========================================================
+   LAPTOP
+   901px - 1199px
+========================================================= */
 
-@keyframes saleLight {
+@media (max-width: 1199px) {
 
-  0% {
-    left: -100%;
+  .offers-page {
+    padding:
+      110px
+      4%
+      60px;
   }
 
-  100% {
-    left: 150%;
-  }
 
-}
+  .offers-container {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
 
-
-/* =====================================
-   ANIMATION 3
-===================================== */
-
-@keyframes percentBounce {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.08);
+    gap: 22px;
   }
 
 }
 
 
-/* =====================================
+/* =========================================================
+   TABLET
+   701px - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .offers-page {
+    padding:
+      100px
+      25px
+      55px;
+  }
+
+
+  .offers-title {
+    margin-bottom: 35px;
+  }
+
+
+  .offer-sale-plate {
+    margin-bottom: 35px;
+  }
+
+
+  .offers-container {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+  }
+
+
+  .offer-image-box {
+    height: 250px;
+  }
+
+
+  .offer-info {
+    padding: 18px;
+  }
+
+}
+
+
+/* =========================================================
    MOBILE
-===================================== */
+   600px AND BELOW
+========================================================= */
 
 @media (max-width: 600px) {
 
+  .offers-page {
+    padding:
+      95px
+      15px
+      45px;
+  }
+
+
+  .offers-title {
+    font-size: 28px;
+
+    margin-bottom: 30px;
+  }
+
+
+  /* Sale plate */
+
   .offer-sale-plate {
-    padding: 20px 10px;
+    padding:
+      20px
+      10px;
 
     margin-bottom: 35px;
+
+    border-radius: 14px;
   }
 
 
   .sale-title {
     font-size: 18px;
+
+    letter-spacing: 1.5px;
   }
 
 
@@ -289,6 +713,8 @@
 
   .sale-date {
     font-size: 13px;
+
+    margin-bottom: 17px;
   }
 
 
@@ -300,7 +726,9 @@
   .time-box {
     min-width: 52px;
 
-    padding: 8px 5px;
+    padding:
+      8px
+      5px;
   }
 
 
@@ -318,291 +746,481 @@
     font-size: 18px;
   }
 
-}
 
-.offers-page {
-  padding: 120px 5% 70px;
-  background: #c6b7b7;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-
-/* =====================================
-   HEADING
-===================================== */
-
-.offers-title {
-  text-align: center;
-  margin-bottom: 45px;
-  font-size: 36px;
-  color: #000;
-}
-
-
-/* =====================================
-   OFFERS GRID
-===================================== */
-
-.offers-container {
-  max-width: 1200px;
-  margin: auto;
-
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 30px;
-}
-
-
-/* =====================================
-   OFFER CARD
-===================================== */
-
-.offer-card {
-  background: #FFEED6;
-
-  border-radius: 12px;
-
-  overflow: hidden;
-
-  box-shadow:
-    0 5px 20px rgba(0, 0, 0, 0.08);
-
-  transition: 0.3s;
-}
-
-.offer-card:hover {
-  transform: translateY(-8px);
-}
-
-
-/* =====================================
-   OFFER IMAGE
-===================================== */
-
-.offer-image-box {
-  position: relative;
-
-  width: 100%;
-  height: 280px;
-
-  overflow: hidden;
-}
-
-.offer-image {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  transition: 0.4s;
-}
-
-.offer-card:hover .offer-image {
-  transform: scale(1.05);
-}
-
-
-/* =====================================
-   OFFER BADGE
-===================================== */
-
-.offer-badge {
-  position: absolute;
-
-  top: 15px;
-  right: 15px;
-
-  background: #e63946;
-
-  color: white;
-
-  padding: 7px 14px;
-
-  border-radius: 20px;
-
-  font-size: 13px;
-  font-weight: 700;
-}
-
-
-/* =====================================
-   OFFER INFORMATION
-===================================== */
-
-.offer-info {
-  padding: 22px;
-}
-
-.offer-info h2 {
-  font-size: 20px;
-
-  margin-bottom: 8px;
-
-  color: #000;
-}
-
-
-/* =====================================
-   CATEGORY
-===================================== */
-
-.shoe-category {
-  color: #777;
-
-  font-size: 14px;
-
-  margin-bottom: 10px;
-}
-
-
-/* =====================================
-   DESCRIPTION
-===================================== */
-
-.shoe-description {
-  color: #666;
-
-  font-size: 14px;
-
-  line-height: 1.5;
-
-  min-height: 42px;
-}
-
-
-/* =====================================
-   PRICE
-===================================== */
-
-.price-section {
-  display: flex;
-
-  align-items: center;
-
-  flex-wrap: wrap;
-
-  gap: 10px;
-
-  margin: 15px 0;
-}
-
-
-/* OLD PRICE */
-
-.old-price {
-  color: #777;
-
-  font-size: 14px;
-
-  text-decoration: line-through;
-}
-
-
-/* NEW PRICE */
-
-.new-price {
-  color: #000;
-
-  font-size: 20px;
-
-  font-weight: 600;
-}
-
-
-/* DISCOUNT */
-
-.discount {
-  background: #e63946;
-
-  color: white;
-
-  padding: 5px 9px;
-
-  border-radius: 5px;
-
-  font-size: 12px;
-
-  font-weight: 700;
-}
-
-
-/* =====================================
-   LOADING
-===================================== */
-
-.loading {
-  text-align: center;
-
-  font-size: 18px;
-
-  color: #777;
-
-  padding: 50px;
-}
-
-
-/* =====================================
-   NO OFFERS
-===================================== */
-
-.no-offers {
-  text-align: center;
-
-  padding: 70px 20px;
-}
-
-.no-offers h2 {
-  font-size: 28px;
-
-  color: #000;
-
-  margin-bottom: 10px;
-}
-
-.no-offers p {
-  color: #777;
-
-  font-size: 16px;
-}
-
-
-/* =====================================
-   TABLET
-===================================== */
-
-@media (max-width: 900px) {
-
-  .offers-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-}
-
-
-/* =====================================
-   MOBILE
-===================================== */
-
-@media (max-width: 600px) {
-
-  .offers-page {
-    padding: 100px 20px 50px;
-  }
-
-  .offers-title {
-    font-size: 30px;
-    margin-bottom: 35px;
-  }
+  /* Offers */
 
   .offers-container {
     grid-template-columns: 1fr;
+
+    gap: 22px;
+
+    max-width: 500px;
   }
+
 
   .offer-image-box {
     height: 280px;
+  }
+
+
+  .offer-info {
+    padding: 20px;
+  }
+
+
+  .offer-info h2 {
+    font-size: 20px;
+  }
+
+
+  .offer-info .shoe-category {
+    font-size: 14px;
+  }
+
+
+  .offer-info .shoe-description {
+    font-size: 13px;
+
+    min-height: auto;
+  }
+
+
+  .offer-info .price-section {
+    margin:
+      13px
+      0;
+  }
+
+
+  .offer-info .old-price {
+    font-size: 14px;
+  }
+
+
+  .offer-info .new-price {
+    font-size: 20px;
+  }
+
+
+  .offer-info .discount {
+    font-size: 11px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .offers-page {
+    padding:
+      90px
+      12px
+      40px;
+  }
+
+
+  .offers-title {
+    font-size: 25px;
+
+    margin-bottom: 25px;
+  }
+
+
+  /* Sale */
+
+  .offer-sale-plate {
+    padding:
+      18px
+      8px;
+
+    border-radius: 12px;
+  }
+
+
+  .sale-title {
+    font-size: 16px;
+
+    letter-spacing: 1px;
+  }
+
+
+  .sale-percent {
+    font-size: 36px;
+  }
+
+
+  .sale-date {
+    font-size: 11px;
+
+    margin-bottom: 15px;
+  }
+
+
+  .countdown {
+    gap: 4px;
+  }
+
+
+  .time-box {
+    min-width: 46px;
+
+    padding:
+      7px
+      4px;
+
+    border-radius: 6px;
+  }
+
+
+  .time-box span {
+    font-size: 17px;
+  }
+
+
+  .time-box small {
+    font-size: 7px;
+  }
+
+
+  .colon {
+    font-size: 16px;
+  }
+
+
+  /* Cards */
+
+  .offers-container {
+    gap: 18px;
+  }
+
+
+  .offer-card {
+    border-radius: 10px;
+  }
+
+
+  .offer-image-box {
+    height: 250px;
+  }
+
+
+  .offer-info {
+    padding: 17px;
+  }
+
+
+  .offer-info h2 {
+    font-size: 18px;
+  }
+
+
+  .offer-info .shoe-category {
+    font-size: 13px;
+  }
+
+
+  .offer-info .shoe-description {
+    font-size: 12px;
+  }
+
+
+  .offer-info .price-section {
+    gap: 8px;
+  }
+
+
+  .offer-info .old-price {
+    font-size: 13px;
+  }
+
+
+  .offer-info .new-price {
+    font-size: 18px;
+  }
+
+
+  .offer-info .discount {
+    padding:
+      4px
+      8px;
+
+    font-size: 10px;
+  }
+
+
+  .offer-badge {
+    top: 10px;
+
+    right: 10px;
+
+    padding:
+      6px
+      11px;
+
+    font-size: 11px;
+  }
+
+
+  .no-offers {
+    padding:
+      50px
+      15px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   360px AND BELOW
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .offers-page {
+    padding:
+      82px
+      8px
+      35px;
+  }
+
+
+  .offers-title {
+    font-size: 23px;
+  }
+
+
+  /* Sale plate */
+
+  .offer-sale-plate {
+    padding:
+      16px
+      5px;
+  }
+
+
+  .sale-title {
+    font-size: 14px;
+
+    letter-spacing: 0.8px;
+  }
+
+
+  .sale-percent {
+    font-size: 32px;
+  }
+
+
+  .sale-date {
+    font-size: 10px;
+  }
+
+
+  .time-box {
+    min-width: 42px;
+
+    padding:
+      6px
+      3px;
+  }
+
+
+  .time-box span {
+    font-size: 15px;
+  }
+
+
+  .time-box small {
+    font-size: 6px;
+  }
+
+
+  .colon {
+    font-size: 14px;
+  }
+
+
+  /* Cards */
+
+  .offer-image-box {
+    height: 220px;
+  }
+
+
+  .offer-info {
+    padding: 14px;
+  }
+
+
+  .offer-info h2 {
+    font-size: 17px;
+  }
+
+
+  .offer-info .shoe-category {
+    font-size: 12px;
+  }
+
+
+  .offer-info .shoe-description {
+    font-size: 11px;
+  }
+
+
+  .offer-info .old-price {
+    font-size: 12px;
+  }
+
+
+  .offer-info .new-price {
+    font-size: 17px;
+  }
+
+
+  .offer-info .discount {
+    font-size: 9px;
+
+    padding:
+      4px
+      7px;
+  }
+
+
+  .offer-badge {
+    top: 8px;
+
+    right: 8px;
+
+    padding:
+      5px
+      9px;
+
+    font-size: 10px;
+  }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+  .offers-page {
+    padding:
+      85px
+      20px
+      35px;
+  }
+
+
+  .offers-container {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .offer-image-box {
+    height: 220px;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .offer-card:hover {
+    transform: none;
+
+    box-shadow:
+      0 5px 20px rgba(0, 0, 0, 0.08);
+  }
+
+
+  .offer-card:hover .offer-image {
+    transform: none;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE ANIMATION FOR USERS WHO PREFER LESS MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .offer-sale-plate,
+  .sale-percent,
+  .offer-sale-plate::before {
+    animation: none;
+  }
+
+
+  .offer-card,
+  .offer-image {
+    transition: none;
+  }
+
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes salePulse {
+
+  0% {
+    box-shadow:
+      0 0 0 rgba(230, 57, 70, 0);
+  }
+
+  50% {
+    box-shadow:
+      0 0 30px rgba(230, 57, 70, 0.5);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 rgba(230, 57, 70, 0);
+  }
+
+}
+
+
+@keyframes saleLight {
+
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 150%;
+  }
+
+}
+
+
+@keyframes percentBounce {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
   }
 
 }
