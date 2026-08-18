@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+//store context
 export const StoreContext = createContext();
 
 const StoreContextProvider = ({ children }) => {
