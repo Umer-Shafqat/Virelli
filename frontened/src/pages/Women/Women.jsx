@@ -75,6 +75,7 @@ const Women = () => {
               ? shoe.rating.ratingSum /
                 shoe.rating.totalRatings
               : 5;
+              //women section
 
           return (
             <div className="shoe-card" key={shoe._id}>
