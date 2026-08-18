@@ -45,7 +45,7 @@ const ReturnsExchange = () => {
             to start a return or exchange request.
           </p>
         </div>
-
+//exchange section
       </div>
 
     </section>
