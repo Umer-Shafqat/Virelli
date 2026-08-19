@@ -105,7 +105,6 @@ const About = () => {
             <div className="feature-icon">
               🚚
             </div>
-//fast delivery
             <h3>
               Fast Delivery
             </h3>
