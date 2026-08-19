@@ -1,0 +1,576 @@
+/* =========================================================
+   SIZE GUIDE PAGE
+========================================================= */
+
+.size-page {
+  width: 100%;
+  min-height: 100vh;
+
+  padding:
+    140px
+    clamp(15px, 5vw, 70px)
+    80px;
+
+  background: #f8f8f8;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SIZE HEADER
+========================================================= */
+
+.size-header {
+  width: 100%;
+
+  max-width: 1000px;
+
+  margin:
+    0
+    auto
+    clamp(35px, 5vw, 55px);
+
+  text-align: center;
+}
+
+
+.size-header h1 {
+  margin:
+    0
+    0
+    15px;
+
+  font-size:
+    clamp(30px, 4.5vw, 45px);
+
+  line-height: 1.2;
+
+  color: #222;
+
+  word-break: break-word;
+}
+
+
+.size-header p {
+  margin: 0;
+
+  color: #666;
+
+  font-size:
+    clamp(14px, 1.8vw, 17px);
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   SIZE CONTAINER
+========================================================= */
+
+.size-container {
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap:
+    clamp(18px, 3vw, 30px);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SIZE CARD
+========================================================= */
+
+.size-card {
+  width: 100%;
+
+  background: #fff;
+
+  padding:
+    clamp(22px, 3vw, 30px);
+
+  border-radius: 12px;
+
+  border:
+    1px solid #eee;
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.05);
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* =========================================================
+   CARD HOVER
+========================================================= */
+
+.size-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.size-card h2 {
+  margin:
+    0
+    0
+    25px;
+
+  color: #222;
+
+  font-size:
+    clamp(19px, 2.5vw, 24px);
+
+  line-height: 1.35;
+
+  text-align: center;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
+========================================================= */
+
+.size-table-wrapper {
+  width: 100%;
+
+  overflow-x: auto;
+
+  -webkit-overflow-scrolling: touch;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SIZE TABLE
+========================================================= */
+
+.size-card table {
+  width: 100%;
+
+  min-width: 320px;
+
+  border-collapse: collapse;
+
+  border-spacing: 0;
+}
+
+
+/* =========================================================
+   TABLE CELLS
+========================================================= */
+
+.size-card th,
+.size-card td {
+  padding:
+    13px
+    10px;
+
+  text-align: center;
+
+  border-bottom:
+    1px solid #eee;
+
+  font-size:
+    clamp(12px, 1.5vw, 14px);
+
+  line-height: 1.4;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.size-card th {
+  background: #222;
+
+  color: #fff;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   TABLE DATA
+========================================================= */
+
+.size-card td {
+  color: #666;
+
+  background: #fff;
+}
+
+
+/* =========================================================
+   TABLE ROW HOVER
+========================================================= */
+
+.size-card tbody tr:hover td {
+  background: #f8f8f8;
+}
+
+
+/* =========================================================
+   LAST ROW
+========================================================= */
+
+.size-card tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   1200px+
+========================================================= */
+
+@media (min-width: 1200px) {
+
+  .size-page {
+    padding-top: 150px;
+  }
+
+
+  .size-container {
+    max-width: 900px;
+  }
+
+}
+
+
+/* =========================================================
+   LAPTOP
+   901px - 1199px
+========================================================= */
+
+@media (max-width: 1199px) {
+
+  .size-page {
+    padding:
+      125px
+      30px
+      70px;
+  }
+
+
+  .size-header {
+    margin-bottom: 45px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   701px - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .size-page {
+    padding:
+      115px
+      25px
+      60px;
+  }
+
+
+  .size-header {
+    max-width: 750px;
+
+    margin-bottom: 40px;
+  }
+
+
+  .size-container {
+    max-width: 750px;
+
+    gap: 20px;
+  }
+
+
+  .size-card {
+    padding: 25px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   600px AND BELOW
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .size-page {
+    padding:
+      100px
+      15px
+      50px;
+  }
+
+
+  .size-header {
+    margin-bottom: 32px;
+  }
+
+
+  .size-header h1 {
+    font-size: 32px;
+
+    margin-bottom: 10px;
+  }
+
+
+  .size-header p {
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
+
+  .size-container {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+  }
+
+
+  .size-card {
+    padding:
+      24px
+      18px;
+
+    border-radius: 10px;
+  }
+
+
+  .size-card h2 {
+    font-size: 19px;
+
+    margin-bottom: 20px;
+  }
+
+
+  .size-card th,
+  .size-card td {
+    padding:
+      11px
+      9px;
+
+    font-size: 13px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .size-page {
+    padding:
+      90px
+      10px
+      40px;
+  }
+
+
+  .size-header {
+    margin-bottom: 28px;
+  }
+
+
+  .size-header h1 {
+    font-size: 27px;
+
+    line-height: 1.25;
+  }
+
+
+  .size-header p {
+    font-size: 13px;
+  }
+
+
+  .size-container {
+    gap: 15px;
+  }
+
+
+  .size-card {
+    padding:
+      20px
+      14px;
+
+    border-radius: 8px;
+
+    box-shadow:
+      0 5px 18px
+      rgba(0, 0, 0, 0.05);
+  }
+
+
+  .size-card h2 {
+    font-size: 18px;
+
+    margin-bottom: 18px;
+  }
+
+
+  .size-card th,
+  .size-card td {
+    padding:
+      10px
+      8px;
+
+    font-size: 12px;
+  }
+
+
+  /* Keep table scrollable instead of
+     breaking the whole page */
+
+  .size-table-wrapper {
+    overflow-x: auto;
+  }
+
+
+  .size-card table {
+    min-width: 300px;
+  }
+
+
+  /* Disable hover movement on mobile */
+
+  .size-card:hover {
+    transform: none;
+
+    box-shadow:
+      0 5px 18px
+      rgba(0, 0, 0, 0.05);
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   360px AND BELOW
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .size-page {
+    padding:
+      80px
+      8px
+      35px;
+  }
+
+
+  .size-header {
+    margin-bottom: 24px;
+  }
+
+
+  .size-header h1 {
+    font-size: 24px;
+  }
+
+
+  .size-header p {
+    font-size: 12px;
+  }
+
+
+  .size-container {
+    gap: 12px;
+  }
+
+
+  .size-card {
+    padding:
+      17px
+      10px;
+  }
+
+
+  .size-card h2 {
+    font-size: 17px;
+
+    margin-bottom: 16px;
+  }
+
+
+  .size-card th,
+  .size-card td {
+    padding:
+      9px
+      7px;
+
+    font-size: 11px;
+  }
+
+
+  .size-card table {
+    min-width: 285px;
+  }
+
+}
+
+
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+  .size-page {
+    padding-top: 90px;
+  }
+
+
+  .size-header {
+    margin-bottom: 30px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .size-card {
+    transition: none;
+  }
+
+}

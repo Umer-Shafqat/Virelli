@@ -1,0 +1,420 @@
+/* =========================================================
+   TERMS & CONDITIONS PAGE
+========================================================= */
+
+.terms-page {
+  width: 100%;
+  min-height: 100vh;
+
+  padding:
+    140px
+    clamp(15px, 5vw, 70px)
+    80px;
+
+  background: #f8f8f8;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TERMS HEADER
+========================================================= */
+
+.terms-header {
+  width: 100%;
+  max-width: 1000px;
+
+  margin:
+    0 auto
+    clamp(35px, 5vw, 55px);
+
+  text-align: center;
+}
+
+
+.terms-header h1 {
+  margin:
+    0
+    0
+    15px;
+
+  font-size:
+    clamp(30px, 4.5vw, 45px);
+
+  line-height: 1.2;
+
+  color: #222;
+
+  word-break: break-word;
+}
+
+
+.terms-header p {
+  margin: 0;
+
+  color: #666;
+
+  font-size:
+    clamp(14px, 1.8vw, 17px);
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   TERMS CONTAINER
+========================================================= */
+
+.terms-container {
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  background: #fff;
+
+  padding:
+    clamp(25px, 4vw, 45px);
+
+  border-radius: 12px;
+
+  border:
+    1px solid #eee;
+
+  box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.05);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TERMS SECTION
+========================================================= */
+
+.terms-section {
+  margin-bottom:
+    clamp(25px, 3.5vw, 35px);
+}
+
+
+.terms-section:last-child {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.terms-section h2 {
+  margin:
+    0
+    0
+    12px;
+
+  font-size:
+    clamp(19px, 2.5vw, 24px);
+
+  line-height: 1.35;
+
+  color: #222;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   SECTION TEXT
+========================================================= */
+
+.terms-section p {
+  margin: 0;
+
+  color: #666;
+
+  font-size:
+    clamp(14px, 1.7vw, 16px);
+
+  line-height: 1.8;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   LAPTOP
+   901px - 1199px
+========================================================= */
+
+@media (max-width: 1199px) {
+
+  .terms-page {
+    padding:
+      125px
+      30px
+      70px;
+  }
+
+
+  .terms-header {
+    margin-bottom: 45px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   701px - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .terms-page {
+    padding:
+      115px
+      25px
+      60px;
+  }
+
+
+  .terms-header {
+    max-width: 750px;
+
+    margin-bottom: 40px;
+  }
+
+
+  .terms-container {
+    max-width: 750px;
+
+    padding: 35px;
+  }
+
+
+  .terms-section {
+    margin-bottom: 30px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   600px AND BELOW
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .terms-page {
+    padding:
+      100px
+      15px
+      50px;
+  }
+
+
+  .terms-header {
+    margin-bottom: 32px;
+  }
+
+
+  .terms-header h1 {
+    font-size: 32px;
+
+    margin-bottom: 10px;
+  }
+
+
+  .terms-header p {
+    font-size: 14px;
+
+    line-height: 1.6;
+  }
+
+
+  .terms-container {
+    padding:
+      25px
+      20px;
+
+    border-radius: 10px;
+  }
+
+
+  .terms-section {
+    margin-bottom: 28px;
+  }
+
+
+  .terms-section h2 {
+    font-size: 19px;
+
+    margin-bottom: 10px;
+  }
+
+
+  .terms-section p {
+    font-size: 14px;
+
+    line-height: 1.75;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   480px AND BELOW
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .terms-page {
+    padding:
+      90px
+      10px
+      40px;
+  }
+
+
+  .terms-header {
+    margin-bottom: 28px;
+  }
+
+
+  .terms-header h1 {
+    font-size: 27px;
+
+    line-height: 1.25;
+  }
+
+
+  .terms-header p {
+    font-size: 13px;
+  }
+
+
+  .terms-container {
+    padding:
+      22px
+      16px;
+
+    border-radius: 8px;
+
+    box-shadow:
+      0 5px 18px
+      rgba(0, 0, 0, 0.05);
+  }
+
+
+  .terms-section {
+    margin-bottom: 25px;
+  }
+
+
+  .terms-section h2 {
+    font-size: 18px;
+
+    line-height: 1.4;
+  }
+
+
+  .terms-section p {
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   360px AND BELOW
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .terms-page {
+    padding:
+      80px
+      8px
+      35px;
+  }
+
+
+  .terms-header {
+    margin-bottom: 24px;
+  }
+
+
+  .terms-header h1 {
+    font-size: 24px;
+  }
+
+
+  .terms-header p {
+    font-size: 12px;
+  }
+
+
+  .terms-container {
+    padding:
+      18px
+      13px;
+  }
+
+
+  .terms-section {
+    margin-bottom: 22px;
+  }
+
+
+  .terms-section h2 {
+    font-size: 17px;
+  }
+
+
+  .terms-section p {
+    font-size: 12px;
+
+    line-height: 1.65;
+  }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+  .terms-page {
+    padding-top: 90px;
+  }
+
+
+  .terms-header {
+    margin-bottom: 30px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .terms-container {
+    transition: none;
+  }
+
+}

@@ -1,0 +1,547 @@
+
+.kid-page {
+  width: 100%;
+
+  min-height: 100vh;
+
+  padding: 120px 5% 70px;
+
+  box-sizing: border-box;
+
+  background: #c6b7b7;
+}
+
+.kid-heading {
+  width: 100%;
+
+  max-width: 800px;
+
+  margin: 0 auto 45px;
+
+  text-align: center;
+}
+
+.kid-heading h2 {
+  margin: 0 0 10px;
+
+  color: #000;
+
+  font-size: clamp(28px, 3.5vw, 36px);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+}
+
+.kid-heading p {
+  margin: 0;
+
+  color: #777;
+
+  font-size: 16px;
+
+  line-height: 1.6;
+}
+
+
+/* =====================================
+   SHOES GRID
+===================================== */
+
+.kid-page .shoes-grid {
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 30px;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================
+   SHOE CARD
+===================================== */
+
+.kid-page .shoe-card {
+  min-width: 0;
+
+  overflow: hidden;
+
+  background: #FFEED6;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.kid-page .shoe-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =====================================
+   SHOE IMAGE
+===================================== */
+
+.kid-page .shoe-image {
+  width: 100%;
+
+  height: 280px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.kid-page .shoe-image img {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 0.4s ease;
+}
+
+.kid-page .shoe-card:hover
+.shoe-image img {
+  transform: scale(1.05);
+}
+
+
+/* =====================================
+   DISCOUNT BADGE
+===================================== */
+
+.kid-page .discount-badge {
+  position: absolute;
+
+  top: 15px;
+
+  right: 15px;
+
+  z-index: 2;
+
+  padding: 8px 12px;
+
+  background: red;
+
+  color: #fff;
+
+  border-radius: 5px;
+
+  font-size: 14px;
+
+  font-weight: bold;
+}
+
+
+/* =====================================
+   SHOE INFORMATION
+===================================== */
+
+.kid-page .shoe-info {
+  padding: 22px;
+
+  box-sizing: border-box;
+}
+
+.kid-page .shoe-info h3 {
+  margin: 0 0 8px;
+
+  color: #171c29;
+
+  font-size: 20px;
+
+  line-height: 1.3;
+}
+
+.kid-page .shoe-category {
+  margin: 0 0 10px;
+
+  color: #777;
+
+  font-size: 14px;
+}
+
+.kid-page .shoe-description {
+  min-height: 42px;
+
+  margin: 0;
+
+  color: #666;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================
+   PRICE
+===================================== */
+
+.kid-page .price-section {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin: 15px 0;
+}
+
+.kid-page .shoe-price {
+  margin: 0;
+
+  color: #000;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.kid-page .original-price {
+  color: red;
+
+  font-size: 16px;
+
+  text-decoration: line-through;
+}
+
+
+/* =====================================
+   SIZES
+===================================== */
+
+.kid-page .sizes {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin: 15px 0 20px;
+}
+
+.kid-page .sizes button {
+  width: 36px;
+
+  height: 34px;
+
+  padding: 0;
+
+  background: #fff;
+
+  border: 1px solid #ddd;
+
+  border-radius: 5px;
+
+  color: #222;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.kid-page .sizes button:hover {
+  background: #000;
+
+  color: #fff;
+
+  border-color: #000;
+}
+
+
+/* Selected Size */
+
+.kid-page
+.sizes button.selected-size {
+  background: #000;
+
+  color: #fff;
+
+  border-color: #000;
+
+  transform: translateY(-1px);
+}
+
+
+/* =====================================
+   ADD TO CART
+===================================== */
+
+.kid-page .add-cart {
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background: #000;
+
+  color: #fff;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.kid-page .add-cart:hover {
+  background: #333;
+
+  transform: translateY(-2px);
+}
+
+.kid-page .add-cart:active {
+  transform: translateY(0);
+}
+
+
+/* =====================================
+   LARGE LAPTOP
+===================================== */
+
+@media (max-width: 1200px) {
+
+  .kid-page {
+    padding-left: 4%;
+
+    padding-right: 4%;
+  }
+
+  .kid-page .shoes-grid {
+    gap: 22px;
+  }
+
+  .kid-page .shoe-image {
+    height: 250px;
+  }
+
+  .kid-page .shoe-info {
+    padding: 20px;
+  }
+}
+
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 900px) {
+
+  .kid-page {
+    padding: 110px 30px 60px;
+  }
+
+  .kid-heading {
+    margin-bottom: 35px;
+  }
+
+  .kid-heading h2 {
+    font-size: 30px;
+  }
+
+  .kid-heading p {
+    font-size: 15px;
+  }
+
+  .kid-page .shoes-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+  }
+
+  .kid-page .shoe-image {
+    height: 230px;
+  }
+
+  .kid-page .shoe-info {
+    padding: 18px;
+  }
+
+  .kid-page .shoe-info h3 {
+    font-size: 18px;
+  }
+
+  .kid-page .shoe-description {
+    font-size: 13px;
+  }
+
+  .kid-page .shoe-price {
+    font-size: 18px;
+  }
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+  .kid-page {
+    padding: 100px 20px 50px;
+  }
+
+  .kid-heading {
+    margin-bottom: 30px;
+  }
+
+  .kid-heading h2 {
+    font-size: 27px;
+
+    margin-bottom: 8px;
+  }
+
+  .kid-heading p {
+    font-size: 14px;
+  }
+
+  .kid-page .shoes-grid {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .kid-page .shoe-image {
+    height: 260px;
+  }
+
+  .kid-page .shoe-info {
+    padding: 20px;
+  }
+
+  .kid-page .shoe-info h3 {
+    font-size: 19px;
+  }
+
+  .kid-page .shoe-category {
+    font-size: 13px;
+  }
+
+  .kid-page .shoe-description {
+    font-size: 13px;
+  }
+
+  .kid-page .shoe-price {
+    font-size: 18px;
+  }
+
+  .kid-page .original-price {
+    font-size: 14px;
+  }
+
+  .kid-page .sizes {
+    gap: 6px;
+  }
+
+  .kid-page .sizes button {
+    width: 35px;
+
+    height: 33px;
+  }
+
+  .kid-page .add-cart {
+    padding: 13px;
+
+    font-size: 14px;
+  }
+}
+
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+  .kid-page {
+    padding: 95px 15px 45px;
+  }
+
+  .kid-heading h2 {
+    font-size: 24px;
+  }
+
+  .kid-heading p {
+    font-size: 13px;
+  }
+
+  .kid-page .shoes-grid {
+    gap: 16px;
+  }
+
+  .kid-page .shoe-image {
+    height: 220px;
+  }
+
+  .kid-page .shoe-info {
+    padding: 17px;
+  }
+
+  .kid-page .shoe-info h3 {
+    font-size: 17px;
+  }
+
+  .kid-page .shoe-category {
+    font-size: 12px;
+  }
+
+  .kid-page .shoe-description {
+    font-size: 12px;
+
+    line-height: 1.5;
+  }
+
+  .kid-page .shoe-price {
+    font-size: 17px;
+  }
+
+  .kid-page .original-price {
+    font-size: 13px;
+  }
+
+  .kid-page .sizes button {
+    width: 33px;
+
+    height: 31px;
+
+    font-size: 11px;
+  }
+
+  .kid-page .add-cart {
+    padding: 12px;
+
+    font-size: 13px;
+  }
+}

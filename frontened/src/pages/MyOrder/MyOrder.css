@@ -1,0 +1,1094 @@
+.my-orders-page {
+  width: 100%;
+  min-height: 100vh;
+
+  padding:
+    120px
+    clamp(12px, 4vw, 30px)
+    60px;
+
+  background: #f6f8f8;
+
+  box-sizing: border-box;
+}
+
+.my-orders-container {
+  width: 100%;
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================
+   PAGE TITLE
+===================================== */
+
+.my-orders-container h1 {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: clamp(25px, 4vw, 32px);
+
+  color: #222;
+
+  line-height: 1.2;
+}
+
+
+.orders-subtitle {
+  margin:
+    8px
+    0
+    35px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: clamp(12px, 2vw, 15px);
+
+  line-height: 1.5;
+}
+
+
+/* =====================================
+   ORDERS LIST
+===================================== */
+
+.orders-list {
+  width: 100%;
+
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  padding: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: clamp(18px, 3vw, 30px);
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================
+   ORDER CARD
+===================================== */
+
+.order-card {
+  width: 100%;
+
+  padding: clamp(16px, 3vw, 25px);
+
+  background: #fff;
+
+  border:
+    1px solid #eeeeee;
+
+  border-radius: 12px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.08);
+
+  overflow: hidden;
+}
+
+
+/* =====================================
+   ORDER HEADER
+===================================== */
+
+.order-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 20px;
+
+  padding-bottom: 20px;
+
+  border-bottom:
+    1px solid #eeeeee;
+}
+
+
+.order-header > div {
+  min-width: 0;
+}
+
+
+.order-header h2 {
+  margin:
+    0
+    0
+    8px;
+
+  font-size: clamp(17px, 2vw, 20px);
+
+  color: #222;
+
+  line-height: 1.3;
+
+  word-break: break-word;
+}
+
+
+.order-header p {
+  margin: 4px 0;
+
+  font-size: 13px;
+
+  color: #777;
+
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+
+/* =====================================
+   ORDER STATUS
+===================================== */
+
+.order-status {
+  flex-shrink: 0;
+
+  padding:
+    8px
+    16px;
+
+  border-radius: 20px;
+
+  background: #fff3cd;
+
+  color: #856404;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================
+   CUSTOMER INFORMATION
+===================================== */
+
+.customer-info {
+  padding:
+    20px
+    0;
+
+  border-bottom:
+    1px solid #eeeeee;
+}
+
+
+.customer-info h3,
+.order-items h3 {
+  margin:
+    0
+    0
+    15px;
+
+  font-size: clamp(16px, 2vw, 18px);
+
+  color: #222;
+}
+
+
+.customer-info p {
+  margin: 7px 0;
+
+  font-size: clamp(12px, 1.7vw, 14px);
+
+  color: #555;
+
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+
+/* =====================================
+   ORDER ITEMS
+===================================== */
+
+.order-items {
+  padding:
+    20px
+    0;
+}
+
+
+/* =====================================
+   ORDER ITEM
+===================================== */
+
+.order-item {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: clamp(12px, 2vw, 20px);
+
+  padding:
+    18px
+    0;
+
+  border-bottom:
+    1px solid #eeeeee;
+
+  box-sizing: border-box;
+}
+
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+
+/* =====================================
+   ITEM IMAGE
+===================================== */
+
+.order-item-image {
+  width: 110px;
+
+  height: 110px;
+
+  flex: 0 0 110px;
+
+  background: #f6f6f6;
+
+  border-radius: 8px;
+
+  overflow: hidden;
+}
+
+
+.order-item-image img {
+  width: 100%;
+
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+}
+
+
+/* =====================================
+   ITEM DETAILS
+===================================== */
+
+.order-item-details {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.order-item-details h4 {
+  margin:
+    0
+    0
+    10px;
+
+  font-size: clamp(15px, 2vw, 17px);
+
+  color: #222;
+
+  line-height: 1.3;
+
+  word-break: break-word;
+}
+
+
+.order-item-details p {
+  margin: 5px 0;
+
+  font-size: clamp(12px, 1.6vw, 13px);
+
+  color: #777;
+
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+
+/* =====================================
+   ITEM PRICE
+===================================== */
+
+.order-item-price {
+  min-width: 150px;
+
+  flex-shrink: 0;
+
+  text-align: right;
+}
+
+
+.order-item-price p {
+  margin: 5px 0;
+
+  font-size: 13px;
+
+  color: #777;
+}
+
+
+.order-item-price strong {
+  font-size: clamp(14px, 2vw, 16px);
+
+  color: #222;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================
+   ORDER TOTAL
+===================================== */
+
+.order-total {
+  width: 100%;
+
+  max-width: 400px;
+
+  margin-left: auto;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid #eeeeee;
+
+  box-sizing: border-box;
+}
+
+
+.order-total > div {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 8px 0;
+
+  font-size: 14px;
+
+  color: #555;
+}
+
+
+.order-total strong {
+  color: #222;
+
+  white-space: nowrap;
+}
+
+
+.grand-total {
+  margin-top: 10px;
+
+  padding-top: 15px !important;
+
+  border-top:
+    2px solid #222;
+
+  font-size: 18px !important;
+
+  color: #222 !important;
+}
+
+
+.grand-total strong {
+  font-size: 20px;
+}
+
+
+/* =====================================
+   PRINT RECEIPT BUTTON
+===================================== */
+
+.print-receipt-btn {
+  display: block;
+
+  width: min(220px, 100%);
+
+  margin:
+    25px
+    auto
+    0;
+
+  padding:
+    12px
+    20px;
+
+  background: #111;
+
+  color: #fff;
+
+  border: none;
+
+  border-radius: 6px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  box-sizing: border-box;
+}
+
+
+.print-receipt-btn:hover {
+  background: #333;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.print-receipt-btn:active {
+  transform: translateY(0);
+}
+
+
+/* =====================================
+   EMPTY / ERROR / LOGIN MESSAGE
+===================================== */
+
+.orders-message {
+  width: 100%;
+
+  max-width: 600px;
+
+  margin:
+    80px
+    auto;
+
+  padding:
+    50px
+    30px;
+
+  text-align: center;
+
+  background: #fff;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+}
+
+
+.orders-message h2 {
+  margin:
+    0
+    0
+    10px;
+
+  color: #222;
+
+  font-size: clamp(20px, 3vw, 26px);
+}
+
+
+.orders-message p {
+  margin: 0;
+
+  color: #777;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================
+   LARGE DESKTOP
+   1200px+
+===================================== */
+
+@media (min-width: 1200px) {
+
+  .my-orders-page {
+    padding-top: 120px;
+  }
+
+}
+
+
+/* =====================================
+   LAPTOP
+   901px - 1199px
+===================================== */
+
+@media (max-width: 1199px) {
+
+  .my-orders-page {
+    padding:
+      110px
+      25px
+      55px;
+  }
+
+}
+
+
+/* =====================================
+   TABLET
+   701px - 900px
+===================================== */
+
+@media (max-width: 900px) {
+
+  .my-orders-page {
+    padding:
+      100px
+      20px
+      50px;
+  }
+
+
+  .orders-subtitle {
+    margin-bottom: 28px;
+  }
+
+
+  .order-card {
+    padding: 20px;
+  }
+
+
+  .order-item-image {
+    width: 95px;
+
+    height: 95px;
+
+    flex-basis: 95px;
+  }
+
+
+  .order-item-price {
+    min-width: 120px;
+  }
+
+}
+
+
+/* =====================================
+   MOBILE
+   600px AND BELOW
+===================================== */
+
+@media (max-width: 600px) {
+
+  .my-orders-page {
+    padding:
+      90px
+      12px
+      40px;
+  }
+
+
+  .my-orders-container h1 {
+    font-size: 26px;
+  }
+
+
+  .orders-subtitle {
+    font-size: 12px;
+
+    margin-bottom: 25px;
+  }
+
+
+  .orders-list {
+    gap: 18px;
+  }
+
+
+  .order-card {
+    padding: 16px;
+
+    border-radius: 10px;
+  }
+
+
+  /* Header */
+
+  .order-header {
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+
+  .order-status {
+    align-self: flex-start;
+
+    padding:
+      7px
+      13px;
+
+    font-size: 12px;
+  }
+
+
+  /* Customer */
+
+  .customer-info {
+    padding:
+      16px
+      0;
+  }
+
+
+  .order-items {
+    padding:
+      16px
+      0;
+  }
+
+
+  /* Item */
+
+  .order-item {
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+  }
+
+
+  .order-item-image {
+    width: 80px;
+
+    height: 80px;
+
+    flex: 0 0 80px;
+  }
+
+
+  .order-item-details {
+    flex: 1;
+
+    min-width: 0;
+  }
+
+
+  .order-item-details h4 {
+    font-size: 15px;
+
+    margin-bottom: 7px;
+  }
+
+
+  .order-item-details p {
+    font-size: 12px;
+  }
+
+
+  /* Price moves below */
+
+  .order-item-price {
+    width: 100%;
+
+    min-width: 0;
+
+    padding-left: 92px;
+
+    text-align: left;
+
+    box-sizing: border-box;
+  }
+
+
+  .order-item-price p {
+    font-size: 12px;
+  }
+
+
+  .order-item-price strong {
+    font-size: 15px;
+  }
+
+
+  /* Total */
+
+  .order-total {
+    max-width: 100%;
+
+    padding-top: 16px;
+  }
+
+
+  .order-total > div {
+    font-size: 13px;
+  }
+
+
+  .grand-total {
+    font-size: 17px !important;
+  }
+
+
+  .grand-total strong {
+    font-size: 18px;
+  }
+
+
+  /* Receipt */
+
+  .print-receipt-btn {
+    width: 100%;
+
+    margin-top: 20px;
+
+    font-size: 14px;
+
+    padding: 12px;
+  }
+
+
+  /* Message */
+
+  .orders-message {
+    margin:
+      50px
+      auto;
+
+    padding:
+      40px
+      20px;
+  }
+
+}
+
+
+/* =====================================
+   SMALL MOBILE
+   480px AND BELOW
+===================================== */
+
+@media (max-width: 480px) {
+
+  .my-orders-page {
+    padding:
+      85px
+      9px
+      30px;
+  }
+
+
+  .my-orders-container h1 {
+    font-size: 24px;
+  }
+
+
+  .orders-subtitle {
+    font-size: 11px;
+
+    margin-top: 6px;
+
+    margin-bottom: 22px;
+  }
+
+
+  .order-card {
+    padding: 13px;
+
+    border-radius: 9px;
+  }
+
+
+  .order-header h2 {
+    font-size: 16px;
+  }
+
+
+  .order-header p {
+    font-size: 11px;
+  }
+
+
+  .order-status {
+    font-size: 11px;
+
+    padding:
+      6px
+      11px;
+  }
+
+
+  .customer-info h3,
+  .order-items h3 {
+    font-size: 16px;
+  }
+
+
+  .customer-info p {
+    font-size: 12px;
+  }
+
+
+  .order-item {
+    gap: 10px;
+
+    padding: 14px 0;
+  }
+
+
+  .order-item-image {
+    width: 70px;
+
+    height: 70px;
+
+    flex-basis: 70px;
+  }
+
+
+  .order-item-details h4 {
+    font-size: 14px;
+  }
+
+
+  .order-item-details p {
+    font-size: 11px;
+
+    margin: 4px 0;
+  }
+
+
+  .order-item-price {
+    padding-left: 80px;
+  }
+
+
+  .order-item-price p {
+    font-size: 11px;
+  }
+
+
+  .order-item-price strong {
+    font-size: 14px;
+  }
+
+
+  .order-total > div {
+    font-size: 12px;
+
+    gap: 10px;
+  }
+
+
+  .grand-total {
+    font-size: 16px !important;
+  }
+
+
+  .grand-total strong {
+    font-size: 17px;
+  }
+
+
+  .print-receipt-btn {
+    font-size: 13px;
+
+    padding: 11px;
+  }
+
+
+  .orders-message {
+    margin:
+      40px
+      auto;
+
+    padding:
+      35px
+      15px;
+  }
+
+
+  .orders-message h2 {
+    font-size: 20px;
+  }
+
+
+  .orders-message p {
+    font-size: 12px;
+  }
+
+}
+
+
+/* =====================================
+   VERY SMALL PHONES
+   360px AND BELOW
+===================================== */
+
+@media (max-width: 360px) {
+
+  .my-orders-page {
+    padding:
+      80px
+      7px
+      25px;
+  }
+
+
+  .my-orders-container h1 {
+    font-size: 22px;
+  }
+
+
+  .orders-subtitle {
+    font-size: 10px;
+  }
+
+
+  .order-card {
+    padding: 11px;
+  }
+
+
+  .order-header h2 {
+    font-size: 15px;
+  }
+
+
+  .order-header p {
+    font-size: 10px;
+  }
+
+
+  .order-item-image {
+    width: 60px;
+
+    height: 60px;
+
+    flex-basis: 60px;
+  }
+
+
+  .order-item-details h4 {
+    font-size: 13px;
+  }
+
+
+  .order-item-details p {
+    font-size: 10px;
+  }
+
+
+  .order-item-price {
+    padding-left: 70px;
+  }
+
+
+  .order-item-price p {
+    font-size: 10px;
+  }
+
+
+  .order-item-price strong {
+    font-size: 13px;
+  }
+
+
+  .order-total > div {
+    font-size: 11px;
+  }
+
+
+  .grand-total {
+    font-size: 15px !important;
+  }
+
+
+  .grand-total strong {
+    font-size: 16px;
+  }
+
+
+  .print-receipt-btn {
+    font-size: 12px;
+
+    padding: 10px;
+  }
+
+}
+
+
+/* =====================================
+   LANDSCAPE MOBILE
+===================================== */
+
+@media (max-height: 600px) and (orientation: landscape) {
+
+  .my-orders-page {
+    padding:
+      85px
+      20px
+      30px;
+  }
+
+
+  .order-item-image {
+    width: 80px;
+
+    height: 80px;
+
+    flex-basis: 80px;
+  }
+
+}
+
+
+/* =====================================
+   TOUCH DEVICES
+===================================== */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .print-receipt-btn:hover {
+    transform: none;
+
+    background: #111;
+
+    box-shadow: none;
+  }
+
+}
