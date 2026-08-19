@@ -359,6 +359,7 @@
 
 /* =====================================
    TABLET
+   2 ITEMS PER ROW
 ===================================== */
 
 @media (max-width: 900px) {
@@ -425,13 +426,16 @@
 
 /* =====================================
    MOBILE
-   2 ITEMS PER ROW
+   ONLY 2 ITEMS
+   ONE ITEM PER ROW
 ===================================== */
 
 @media (max-width: 600px) {
 
   .cart-page {
+    width: 100%;
     padding: 100px 10px 40px;
+    box-sizing: border-box;
   }
 
   .cart-page h1 {
@@ -443,44 +447,57 @@
     width: 100%;
   }
 
-  /* TWO ITEMS PER ROW */
+  /* ONE COLUMN */
   .cart-items {
     width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* ONLY SHOW FIRST 2 CART ITEMS */
+  .cart-item:nth-child(n + 3) {
+    display: none;
   }
 
   .cart-item {
     width: 100%;
     min-width: 0;
-    padding: 12px 7px;
-    gap: 9px;
+    padding: 12px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    gap: 12px;
     border-radius: 8px;
   }
 
   .cart-shoe-image {
-    width: 100%;
-    max-width: 105px;
-    height: auto;
-    aspect-ratio: 1 / 1;
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    flex-shrink: 0;
     object-fit: cover;
     border-radius: 6px;
   }
 
   .cart-item-details {
-    width: 100%;
+    flex: 1;
     min-width: 0;
+    text-align: left;
   }
 
   .cart-item-details h2 {
     font-size: 15px;
-    margin-bottom: 5px;
+    margin: 0 0 5px;
     line-height: 1.25;
   }
 
   .cart-item-details p {
     font-size: 11px;
-    margin-bottom: 4px;
+    margin: 0 0 4px;
     line-height: 1.35;
   }
 
@@ -490,8 +507,9 @@
   }
 
   .quantity-control {
-    width: 100%;
-    gap: 5px;
+    width: auto;
+    gap: 4px;
+    flex-shrink: 0;
   }
 
   .quantity-control button {
@@ -506,14 +524,13 @@
   }
 
   .item-total {
-    width: 100%;
-    font-size: 12px;
+    display: none;
   }
 
   .remove-btn {
-    width: 100%;
-    max-width: 105px;
-    padding: 7px 4px;
+    width: auto;
+    max-width: none;
+    padding: 6px 8px;
     font-size: 10px;
   }
 
@@ -527,7 +544,7 @@
     max-width: 100%;
     margin: 25px auto 30px;
     padding: 18px;
-    border-radius: 12px;
+    box-sizing: border-box;
   }
 
   .amount-row {
@@ -544,6 +561,7 @@
 
   .checkout-btn,
   .total-amount button {
+    width: 100%;
     padding: 13px 15px;
     font-size: 14px;
   }
@@ -552,8 +570,8 @@
 
 /* =====================================
    SMALL MOBILE
-   iPhone SE / SMALL PHONES
-   2 ITEMS PER ROW
+   ONLY 2 ITEMS
+   ONE ITEM PER ROW
 ===================================== */
 
 @media (max-width: 400px) {
@@ -567,20 +585,26 @@
     margin-bottom: 20px;
   }
 
-  /* KEEP 2 ITEMS PER ROW */
   .cart-items {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    grid-template-columns: 1fr;
     gap: 8px;
   }
 
+  /* STILL ONLY SHOW FIRST 2 */
+  .cart-item:nth-child(n + 3) {
+    display: none;
+  }
+
   .cart-item {
-    padding: 9px 4px;
-    gap: 7px;
-    border-radius: 7px;
+    padding: 9px 6px;
+    gap: 8px;
   }
 
   .cart-shoe-image {
-    max-width: 88px;
+    width: 85px;
+    height: 85px;
+    max-width: 85px;
   }
 
   .cart-item-details h2 {
@@ -610,13 +634,9 @@
     font-size: 13px;
   }
 
-  .item-total {
-    font-size: 11px;
-  }
-
   .remove-btn {
-    max-width: 92px;
-    padding: 6px 3px;
+    max-width: none;
+    padding: 5px 6px;
     font-size: 9px;
   }
 
