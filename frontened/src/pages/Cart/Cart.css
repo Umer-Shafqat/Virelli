@@ -1,37 +1,36 @@
 .cart-page {
   width: 100%;
-
   min-height: 70vh;
-
   padding: 120px 5% 50px;
-
   box-sizing: border-box;
-
   background: #fff;
 }
 
-
 .cart-page h1 {
   margin: 0 0 40px;
-
   text-align: center;
-
   font-size: clamp(28px, 4vw, 36px);
-
   line-height: 1.2;
-
   color: #171c29;
 }
 
-
 .cart-container {
   width: 100%;
-
   max-width: 1100px;
-
   margin: 0 auto;
-
   box-sizing: border-box;
+}
+
+
+/* =====================================
+   CART ITEMS GRID
+===================================== */
+
+.cart-items {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 
@@ -41,31 +40,22 @@
 
 .cart-item {
   width: 100%;
-
   display: flex;
-
+  flex-direction: column;
   align-items: center;
-
-  gap: 25px;
-
+  gap: 15px;
   padding: 20px;
-
-  margin-bottom: 20px;
-
+  margin: 0;
   box-sizing: border-box;
-
   border: 1px solid #ddd;
-
   border-radius: 10px;
-
   background: #fff;
-
   transition: all 0.3s ease;
 }
 
 .cart-item:hover {
-  box-shadow:
-    0 5px 18px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
 }
 
 
@@ -74,16 +64,11 @@
 ===================================== */
 
 .cart-shoe-image {
-  width: 120px;
-
-  height: 120px;
-
+  width: 150px;
+  height: 150px;
   flex-shrink: 0;
-
   display: block;
-
   object-fit: cover;
-
   border-radius: 8px;
 }
 
@@ -93,34 +78,27 @@
 ===================================== */
 
 .cart-item-details {
-  flex: 1;
-
+  width: 100%;
   min-width: 0;
+  text-align: center;
 }
 
 .cart-item-details h2 {
   margin: 0 0 10px;
-
-  font-size: 21px;
-
+  font-size: 19px;
   color: #171c29;
 }
 
 .cart-item-details p {
   margin: 0 0 8px;
-
   color: #666;
-
   font-size: 14px;
-
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .cart-item-details h3 {
   margin: 10px 0 0;
-
-  font-size: 18px;
-
+  font-size: 17px;
   color: #171c29;
 }
 
@@ -131,54 +109,37 @@
 
 .quantity-control {
   display: flex;
-
   align-items: center;
-
-  gap: 12px;
-
+  justify-content: center;
+  gap: 10px;
   flex-shrink: 0;
 }
 
 .quantity-control button {
-  width: 35px;
-
-  height: 35px;
-
+  width: 34px;
+  height: 34px;
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   border: none;
-
   background: #222;
-
   color: white;
-
   cursor: pointer;
-
   border-radius: 5px;
-
   font-size: 16px;
-
   transition: all 0.2s ease;
 }
 
 .quantity-control button:hover {
   background: #444;
-
   transform: scale(1.05);
 }
 
 .quantity-control span {
   min-width: 20px;
-
   text-align: center;
-
-  font-size: 18px;
-
+  font-size: 17px;
   font-weight: bold;
-
   color: #222;
 }
 
@@ -188,14 +149,10 @@
 ===================================== */
 
 .item-total {
-  min-width: 120px;
-
+  min-width: auto;
   color: #171c29;
-
-  font-size: 16px;
-
+  font-size: 15px;
   font-weight: bold;
-
   text-align: center;
 }
 
@@ -205,30 +162,22 @@
 ===================================== */
 
 .remove-btn {
-  padding: 10px 15px;
-
+  width: 100%;
+  max-width: 160px;
+  padding: 9px 12px;
   flex-shrink: 0;
-
   border: none;
-
   background: #d32f2f;
-
   color: white;
-
   cursor: pointer;
-
   border-radius: 5px;
-
-  font-size: 13px;
-
+  font-size: 12px;
   font-weight: 600;
-
   transition: all 0.3s ease;
 }
 
 .remove-btn:hover {
   background: #b71c1c;
-
   transform: translateY(-2px);
 }
 
@@ -239,9 +188,7 @@
 
 .empty-cart {
   text-align: center;
-
   padding: 80px 20px;
-
   color: #666;
 }
 
@@ -252,32 +199,20 @@
 
 .total-amount {
   width: 100%;
-
   max-width: 450px;
-
   margin: 30px 0 40px auto;
-
   padding: 25px;
-
   box-sizing: border-box;
-
   background: #fff;
-
   border: 1px solid #e5e5e5;
-
   border-radius: 15px;
-
-  box-shadow:
-    0 8px 25px rgba(0, 0, 0, 0.08);
-
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
 .total-amount:hover {
   transform: translateY(-3px);
-
-  box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 
@@ -287,25 +222,17 @@
 
 .amount-row {
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   gap: 15px;
-
   padding: 12px 0;
-
   font-size: 16px;
-
   color: #555;
 }
 
 .amount-row span:last-child {
   font-weight: 600;
-
   color: #222;
-
   text-align: right;
 }
 
@@ -334,23 +261,16 @@
 
 .total-row {
   margin-top: 15px;
-
   padding-top: 18px;
-
   border-top: 2px solid #eee;
-
   font-size: 20px;
-
   font-weight: 700;
-
   color: #111;
 }
 
 .total-row span:last-child {
   font-size: 22px;
-
   color: #000;
-
   font-weight: 800;
 }
 
@@ -362,40 +282,25 @@
 .checkout-btn,
 .total-amount button {
   width: 100%;
-
   margin-top: 20px;
-
   padding: 14px 20px;
-
   box-sizing: border-box;
-
   border: none;
-
   border-radius: 7px;
-
   background: #111;
-
   color: #fff;
-
   font-size: 15px;
-
   font-weight: 700;
-
   letter-spacing: 0.5px;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
 }
 
 .checkout-btn:hover,
 .total-amount button:hover {
   background: #333;
-
   transform: translateY(-2px);
-
-  box-shadow:
-    0 6px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .checkout-btn:active,
@@ -409,24 +314,22 @@
 ===================================== */
 
 @media (max-width: 1200px) {
-
   .cart-page {
     padding-left: 4%;
     padding-right: 4%;
   }
 
-  .cart-item {
-    gap: 20px;
+  .cart-items {
+    gap: 18px;
   }
 
   .cart-shoe-image {
-    width: 110px;
-
-    height: 110px;
+    width: 135px;
+    height: 135px;
   }
 
-  .item-total {
-    min-width: 100px;
+  .cart-item {
+    padding: 17px;
   }
 }
 
@@ -436,7 +339,6 @@
 ===================================== */
 
 @media (max-width: 900px) {
-
   .cart-page {
     padding: 110px 30px 45px;
   }
@@ -445,20 +347,27 @@
     margin-bottom: 30px;
   }
 
-  .cart-item {
-    gap: 18px;
+  .cart-items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
 
-    padding: 18px;
+  .cart-item {
+    padding: 16px;
+    gap: 12px;
   }
 
   .cart-shoe-image {
-    width: 100px;
-
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
 
   .cart-item-details h2 {
-    font-size: 19px;
+    font-size: 18px;
+  }
+
+  .cart-item-details p {
+    font-size: 13px;
   }
 
   .cart-item-details h3 {
@@ -471,20 +380,17 @@
 
   .quantity-control button {
     width: 32px;
-
     height: 32px;
   }
 
   .item-total {
-    min-width: 90px;
-
     font-size: 14px;
   }
 
   .remove-btn {
-    padding: 9px 12px;
-
-    font-size: 12px;
+    max-width: 140px;
+    padding: 8px 10px;
+    font-size: 11px;
   }
 
   .total-amount {
@@ -498,31 +404,38 @@
 ===================================== */
 
 @media (max-width: 600px) {
-
   .cart-page {
-    padding: 100px 20px 40px;
+    padding: 100px 12px 40px;
   }
 
   .cart-page h1 {
     font-size: 27px;
+    margin-bottom: 22px;
+  }
 
-    margin-bottom: 25px;
+  .cart-container {
+    width: 100%;
+  }
+
+  .cart-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .cart-item {
-    flex-direction: column;
-
-    text-align: center;
-
-    gap: 15px;
-
-    padding: 18px;
+    width: 100%;
+    padding: 12px 8px;
+    gap: 9px;
+    border-radius: 8px;
   }
 
   .cart-shoe-image {
-    width: 180px;
-
-    height: 180px;
+    width: 100%;
+    max-width: 110px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px;
   }
 
   .cart-item-details {
@@ -530,57 +443,58 @@
   }
 
   .cart-item-details h2 {
-    font-size: 19px;
-
-    margin-bottom: 8px;
+    font-size: 15px;
+    margin-bottom: 5px;
+    line-height: 1.25;
   }
 
   .cart-item-details p {
-    font-size: 13px;
+    font-size: 11px;
+    margin-bottom: 4px;
+    line-height: 1.35;
   }
 
   .cart-item-details h3 {
-    font-size: 17px;
+    font-size: 14px;
+    margin-top: 5px;
   }
 
   .quantity-control {
-    justify-content: center;
-
     width: 100%;
+    gap: 6px;
   }
 
   .quantity-control button {
-    width: 35px;
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
 
-    height: 35px;
+  .quantity-control span {
+    min-width: 16px;
+    font-size: 14px;
   }
 
   .item-total {
-    min-width: auto;
-
-    font-size: 15px;
+    font-size: 12px;
   }
 
   .remove-btn {
     width: 100%;
-
-    max-width: 180px;
-
-    padding: 10px 15px;
+    max-width: 110px;
+    padding: 7px 5px;
+    font-size: 10px;
   }
 
   .total-amount {
     max-width: 100%;
-
     margin: 25px 0 30px;
-
-    padding: 20px;
-
+    padding: 18px;
     border-radius: 12px;
   }
 
   .amount-row {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .total-row {
@@ -594,7 +508,6 @@
   .checkout-btn,
   .total-amount button {
     padding: 13px 15px;
-
     font-size: 14px;
   }
 }
@@ -605,79 +518,81 @@
 ===================================== */
 
 @media (max-width: 400px) {
-
   .cart-page {
-    padding: 95px 15px 35px;
+    padding: 95px 8px 35px;
   }
 
   .cart-page h1 {
     font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .cart-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .cart-item {
-    padding: 15px;
-
-    gap: 13px;
+    padding: 9px 5px;
+    gap: 7px;
+    border-radius: 7px;
   }
 
   .cart-shoe-image {
-    width: 150px;
-
-    height: 150px;
+    max-width: 90px;
   }
 
   .cart-item-details h2 {
-    font-size: 17px;
+    font-size: 13px;
   }
 
   .cart-item-details p {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .cart-item-details h3 {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .quantity-control button {
-    width: 32px;
-
-    height: 32px;
-  }
-
-  .quantity-control span {
-    font-size: 16px;
-  }
-
-  .item-total {
-    font-size: 14px;
-  }
-
-  .remove-btn {
-    max-width: 160px;
-
+    width: 25px;
+    height: 25px;
     font-size: 12px;
   }
 
+  .quantity-control span {
+    font-size: 13px;
+  }
+
+  .item-total {
+    font-size: 11px;
+  }
+
+  .remove-btn {
+    max-width: 95px;
+    padding: 6px 4px;
+    font-size: 9px;
+  }
+
   .total-amount {
-    padding: 18px;
+    padding: 16px;
   }
 
   .amount-row {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .total-row {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .total-row span:last-child {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .checkout-btn,
   .total-amount button {
-    padding: 12px;
-
-    font-size: 13px;
+    padding: 11px;
+    font-size: 12px;
   }
 }
