@@ -3,7 +3,6 @@ import { StoreContext } from "../../Context/StoreContext/StoreContext";
 import "./Cart.css";
 import { useNavigate } from "react-router-dom";
 
-
 const Cart = () => {
   const navigate = useNavigate();
 
@@ -45,82 +44,100 @@ const Cart = () => {
       ) : (
         <>
           <div className="cart-container">
-            {cartEntries.map(([key, quantity]) => {
-              const [shoeId, size] = key.split("-");
 
-              const shoe = shoes.find(
-                (item) => item._id?.toString() === shoeId
-              );
+            {/* CART ITEMS GRID */}
+            <div className="cart-items">
+              {cartEntries.map(([key, quantity]) => {
+                const [shoeId, size] = key.split("-");
 
-              if (!shoe) {
-                return null;
-              }
+                const shoe = shoes.find(
+                  (item) => item._id?.toString() === shoeId
+                );
 
-              return (
-                <div className="cart-item" key={key}>
-                  <img
-                    src={`http://localhost:4000/images/${shoe.image}`}
-                   alt={shoe.name}
-                   className="cart-shoe-image"
-                        />
+                if (!shoe) {
+                  return null;
+                }
 
-                  <div className="cart-item-details">
-                    <h2>{shoe.name}</h2>
+                return (
+                  <div className="cart-item" key={key}>
 
-                    <p>{shoe.description}</p>
+                    {/* SHOE IMAGE */}
+                    <img
+                      src={`http://localhost:4000/images/${shoe.image}`}
+                      alt={shoe.name}
+                      className="cart-shoe-image"
+                    />
 
-                    <p>
-                      <strong>Size:</strong> {size}
-                    </p>
+                    {/* SHOE DETAILS */}
+                    <div className="cart-item-details">
+                      <h2>{shoe.name}</h2>
 
-                    <h3>
-                      Rs. {shoe.price.toLocaleString("en-PK")}
-                    </h3>
-                  </div>
-                  
-                  <div className="quantity-control">
+                      <p>{shoe.description}</p>
+
+                      <p>
+                        <strong>Size:</strong> {size}
+                      </p>
+
+                      <h3>
+                        Rs. {shoe.price.toLocaleString("en-PK")}
+                      </h3>
+                    </div>
+
+                    {/* QUANTITY CONTROL */}
+                    <div className="quantity-control">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          removeFromCart(shoe._id, size)
+                        }
+                      >
+                        -
+                      </button>
+
+                      <span>{quantity}</span>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addToCart(shoe, size)
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {/* ITEM TOTAL */}
+                    <div className="item-total">
+                      Rs.{" "}
+                      {(shoe.price * quantity).toLocaleString(
+                        "en-PK"
+                      )}
+                    </div>
+
+                    {/* REMOVE ITEM */}
                     <button
+                      type="button"
+                      className="remove-btn"
                       onClick={() =>
-                        removeFromCart(shoe._id, size)
+                        deleteFromCart(shoe._id, size)
                       }
                     >
-                      -
+                      Remove
                     </button>
 
-                    <span>{quantity}</span>
-
-                    <button
-                      onClick={() =>
-                        addToCart(shoe, size)
-                      }
-                    >
-                      +
-                    </button>
                   </div>
+                );
+              })}
+            </div>
 
-                  <div className="item-total">
-                    Rs.{" "}
-                    {(shoe.price * quantity).toLocaleString(
-                      "en-PK"
-                    )}
-                  </div>
-
-                  <button
-                    className="remove-btn"
-                    onClick={() =>
-                      deleteFromCart(shoe._id, size)
-                    }
-                  >
-                    Remove
-                  </button>
-                </div>
-              );
-            })}
           </div>
 
+          {/* TOTAL AMOUNT */}
           <div className="total-amount">
+
             <div className="amount-row">
               <span>Subtotal</span>
+
               <span>
                 PKR {subtotal.toLocaleString("en-PK")}
               </span>
@@ -128,6 +145,7 @@ const Cart = () => {
 
             <div className="amount-row">
               <span>Delivery Charges</span>
+
               <span>
                 PKR {deliveryCharges.toLocaleString("en-PK")}
               </span>
@@ -135,24 +153,27 @@ const Cart = () => {
 
             <div className="amount-row total-row">
               <span>Total Amount</span>
+
               <span>
                 PKR {totalAmount.toLocaleString("en-PK")}
               </span>
             </div>
 
-           <button
-  onClick={() =>
-    navigate("/place-order", {
-      state: {
-        subtotal,
-        deliveryCharges,
-        totalAmount,
-      },
-    })
-  }
->
-  Proceed to Checkout
-</button>
+            <button
+              type="button"
+              onClick={() =>
+                navigate("/place-order", {
+                  state: {
+                    subtotal,
+                    deliveryCharges,
+                    totalAmount,
+                  },
+                })
+              }
+            >
+              Proceed to Checkout
+            </button>
+
           </div>
         </>
       )}
