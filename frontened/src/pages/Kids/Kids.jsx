@@ -118,7 +118,6 @@ const Kids = () => {
                           handleRating(shoe._id, star)
                         }
                       >
-                        //kids section
                         ★
                       </button>
                     ))}
