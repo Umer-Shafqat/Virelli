@@ -65,17 +65,11 @@
 
 .header-content h1 {
   margin: 0 0 20px;
-
   color: #111;
-
   font-size: clamp(2rem, 4vw, 4rem);
-
   font-weight: 900;
-
   line-height: 1.1;
-
   letter-spacing: 2px;
-
   text-transform: uppercase;
 }
 
