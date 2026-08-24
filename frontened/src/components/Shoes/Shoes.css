@@ -696,7 +696,7 @@
   /* LARGE SHOE IMAGE */
   .shoe-image {
     width: 100%;
-    height: 200px;
+    height: 110px;
     overflow: hidden;
     position: relative;
     background: #fff;
@@ -813,7 +813,7 @@
   }
 
   .shoe-image {
-    height: 190px;
+    height: 110px;
   }
 
   .shoe-info {
@@ -860,7 +860,7 @@
   }
 
   .shoe-image {
-    height: 175px;
+    height: 110px;
   }
 
   .shoe-info {
