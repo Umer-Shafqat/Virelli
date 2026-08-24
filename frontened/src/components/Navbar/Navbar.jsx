@@ -78,10 +78,6 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* =====================================
-          NAVIGATION MENU
-      ===================================== */}
-
       <ul className="navbar-menu">
 
         <li>
