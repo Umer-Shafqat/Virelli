@@ -5,17 +5,9 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-
-  /* Navbar + spacing */
   padding: 120px 20px 40px;
-
   background: #f6f8f8;
 }
-
-
-/* =========================================================
-   MAIN CONTAINER
-========================================================= */
 
 .login-container {
   position: relative;
