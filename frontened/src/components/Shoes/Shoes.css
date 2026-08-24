@@ -663,7 +663,6 @@
     font-size: 12px;
   }
 }
-
 /* =====================================
    MOBILE
 ===================================== */
@@ -671,146 +670,232 @@
 @media (max-width: 600px) {
 
   .shoes-section {
-    padding: 100px 8px 50px;
     width: 100%;
+    padding: 90px 18px 50px;
     box-sizing: border-box;
   }
 
+  /* ONE SHOE PER ROW */
   .shoes-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 0 auto;
   }
 
+  /* SHOE CARD */
   .shoe-card {
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    border-radius: 8px;
+    border-radius: 9px;
+    overflow: hidden;
   }
 
+  /* LARGE SHOE IMAGE */
   .shoe-image {
     width: 100%;
-    height: 110px;
-    object-fit: contain;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
   }
 
+  .shoe-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    /* IMPORTANT */
+    object-fit: contain;
+
+    object-position: center;
+  }
+
+  /* SHOE INFORMATION */
   .shoe-info {
-    padding: 7px;
+    padding: 16px;
   }
 
   .shoe-info h3 {
-    font-size: 12px;
+    font-size: 17px;
+    margin-bottom: 8px;
   }
 
   .shoe-category {
-    font-size: 9px;
+    font-size: 13px;
+    margin-bottom: 8px;
   }
 
   .shoe-description {
-    font-size: 9px;
-    line-height: 1.3;
+    font-size: 13px;
+    line-height: 1.4;
+    min-height: auto;
+  }
+
+  /* PRICE */
+  .price-section {
+    gap: 8px;
+    margin: 12px 0;
   }
 
   .shoe-price {
-    font-size: 12px;
+    font-size: 17px;
   }
 
   .original-price {
-    font-size: 9px;
-  }
-
-  .sizes {
-    gap: 2px;
-  }
-
-  .sizes button {
-    min-width: 25px;
-    width: 25px;
-    height: 27px;
-    font-size: 9px;
-  }
-
-  .star {
     font-size: 13px;
   }
 
+  /* SIZES */
+  .sizes {
+    gap: 6px;
+    margin: 12px 0 18px;
+  }
+
+  .sizes button {
+    min-width: 36px;
+    width: 36px;
+    height: 34px;
+    font-size: 12px;
+  }
+
+  /* RATING */
+  .rating {
+    gap: 6px;
+    margin: 8px 0;
+  }
+
+  .star {
+    font-size: 17px;
+  }
+
   .rating-number {
-    font-size: 9px;
+    font-size: 12px;
   }
 
   .rating-count {
-    font-size: 8px;
+    font-size: 11px;
   }
 
+  /* ADD TO CART */
   .add-cart {
-    min-height: 32px;
-    padding: 6px 4px;
-    font-size: 9px;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* DISCOUNT */
+  .discount-badge {
+    top: 10px;
+    right: 10px;
+    padding: 6px 9px;
+    font-size: 11px;
   }
 }
 
 
-/* VERY SMALL MOBILE */
+/* =====================================
+   VERY SMALL MOBILE
+===================================== */
 
 @media (max-width: 400px) {
 
   .shoes-section {
-    padding: 95px 6px 45px;
+    padding: 90px 12px 45px;
   }
 
   .shoes-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 5px;
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .shoe-image {
-    height: 100px;
+    height: 190px;
   }
 
   .shoe-info {
-    padding: 6px;
+    padding: 14px;
   }
 
+  .shoe-info h3 {
+    font-size: 16px;
+  }
+
+  .shoe-category {
+    font-size: 12px;
+  }
+
+  .shoe-description {
+    font-size: 12px;
+  }
+
+  .shoe-price {
+    font-size: 16px;
+  }
+
+  .sizes button {
+    min-width: 35px;
+    width: 35px;
+    height: 33px;
+  }
 }
 
 
-/* EXTRA SMALL MOBILE */
+/* =====================================
+   EXTRA SMALL MOBILE
+===================================== */
 
 @media (max-width: 350px) {
 
   .shoes-section {
-    padding: 90px 5px 40px;
+    padding: 85px 10px 40px;
   }
 
   .shoes-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 4px;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .shoe-image {
-    height: 90px;
+    height: 175px;
   }
 
   .shoe-info {
-    padding: 5px;
+    padding: 12px;
   }
 
   .shoe-info h3 {
-    font-size: 11px;
+    font-size: 15px;
   }
 
   .shoe-category {
-    font-size: 8px;
-  }
-
-  .shoe-description {
-    font-size: 8px;
-  }
-
-  .shoe-price {
     font-size: 11px;
   }
 
+  .shoe-description {
+    font-size: 11px;
+  }
+
+  .shoe-price {
+    font-size: 15px;
+  }
+
+  .sizes {
+    gap: 5px;
+  }
+
+  .sizes button {
+    min-width: 33px;
+    width: 33px;
+    height: 31px;
+    font-size: 11px;
+  }
+
+  .add-cart {
+    min-height: 40px;
+    font-size: 12px;
+  }
 }
