@@ -820,3 +820,64 @@
     font-size: 5.5px;
   }
 }
+
+/* =====================================
+   NAVBAR MENU GAP - MOBILE FIX
+===================================== */
+
+@media screen and (max-width: 700px) {
+
+  .navbar-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    flex: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .navbar-menu li {
+    flex-shrink: 0 !important;
+  }
+
+  .navbar-menu li a {
+    white-space: nowrap !important;
+  }
+}
+
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media screen and (max-width: 480px) {
+
+  .navbar-menu {
+    gap: 9px !important;
+  }
+
+  .navbar-menu li {
+    flex-shrink: 0 !important;
+  }
+
+  .navbar-menu li a {
+    font-size: 7px !important;
+  }
+}
+
+
+/* =====================================
+   VERY SMALL MOBILE
+===================================== */
+
+@media screen and (max-width: 380px) {
+
+  .navbar-menu {
+    gap: 8px !important;
+  }
+
+  .navbar-menu li a {
+    font-size: 6px !important;
+  }
+}
