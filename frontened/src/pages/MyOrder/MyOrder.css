@@ -1,14 +1,11 @@
 .my-orders-page {
   width: 100%;
   min-height: 100vh;
-
   padding:
     120px
     clamp(12px, 4vw, 30px)
     60px;
-
   background: #f6f8f8;
-
   box-sizing: border-box;
 }
 
