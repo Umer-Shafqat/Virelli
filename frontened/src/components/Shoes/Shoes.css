@@ -815,10 +815,6 @@
 
 }
 
-/* =====================================
-   FORCE MOBILE - 2 SHOES PER ROW
-===================================== */
-
 @media screen and (max-width: 600px) {
 
   .shoes-grid {
