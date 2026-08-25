@@ -23,27 +23,19 @@
 
 .form-container {
   position: absolute;
-
   top: 0;
   left: 0;
-
   width: 50%;
   height: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 20px;
-
   box-sizing: border-box;
-
   background: #fff;
-
   transition:
     transform 0.6s ease-in-out,
     opacity 0.4s ease-in-out;
-
   z-index: 2;
 }
 
