@@ -528,7 +528,6 @@
 
 }
 
-
 /* =========================================================
    MOBILE
    700px AND BELOW
@@ -537,21 +536,39 @@
 @media (max-width: 700px) {
 
   .login-page {
+    width: 100%;
     min-height: 100vh;
 
-    padding:
-      90px
-      15px
-      25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 90px 15px 30px;
+
+    box-sizing: border-box;
   }
 
 
+  /* =====================================
+     LOGIN CONTAINER
+  ===================================== */
+
   .login-container {
+    position: relative;
+
     width: 100%;
+    max-width: 430px;
 
-    min-height: 600px;
+    min-height: 590px;
 
-    border-radius: 10px;
+    background: #fff;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+      0 8px 30px rgba(0, 0, 0, 0.10);
   }
 
 
@@ -565,59 +582,78 @@
 
 
   /* =====================================
-     FORMS FULL WIDTH
+     FORM CONTAINER
   ===================================== */
 
   .form-container {
-    width: 100%;
+    position: absolute;
 
+    top: 0;
+    left: 0;
+
+    width: 100%;
     height: 100%;
 
-    padding:
-      30px
-      20px;
+    padding: 35px 25px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    background: #fff;
+
+    transform: none !important;
+
+    transition: opacity 0.3s ease;
   }
 
 
   .form-container form {
     width: 100%;
+    max-width: 340px;
 
-    max-width: 330px;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
   }
 
 
   /* =====================================
-     SIGN UP HIDDEN INITIALLY
+     SIGN IN
+  ===================================== */
+
+  .signin-form {
+    display: flex;
+
+    opacity: 1;
+
+    z-index: 2;
+  }
+
+
+  /* =====================================
+     SIGN UP
   ===================================== */
 
   .signup-form {
     display: none;
 
     opacity: 0;
+
+    z-index: 1;
   }
 
 
   /* =====================================
-     SIGN IN VISIBLE INITIALLY
-  ===================================== */
-
-  .signin-form {
-    display: flex;
-
-    transform: translateX(0);
-
-    opacity: 1;
-  }
-
-
-  /* =====================================
-     SIGN UP ACTIVE
+     SHOW SIGN UP
   ===================================== */
 
   .login-container.show-signup .signin-form {
     display: none;
-
-    transform: none;
 
     opacity: 0;
   }
@@ -626,11 +662,156 @@
   .login-container.show-signup .signup-form {
     display: flex;
 
-    transform: none;
-
     opacity: 1;
 
     z-index: 3;
+  }
+
+
+  /* =====================================
+     HEADING
+  ===================================== */
+
+  .form-container h1 {
+    width: 100%;
+
+    margin: 0 0 18px;
+
+    color: #cf5e18;
+
+    font-size: 27px;
+
+    line-height: 1.2;
+
+    text-align: center;
+  }
+
+
+  /* =====================================
+     DESCRIPTION
+  ===================================== */
+
+  .form-container span {
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    text-align: center;
+
+    color: #999;
+  }
+
+
+  /* =====================================
+     INPUTS
+  ===================================== */
+
+  .form-container input {
+    width: 100%;
+
+    height: 46px;
+
+    padding: 12px 15px;
+
+    margin-bottom: 12px;
+
+    box-sizing: border-box;
+
+    background: #f2f6f6;
+
+    border: none;
+
+    border-bottom: 2px solid transparent;
+
+    border-radius: 4px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    color: #333;
+
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+
+  .form-container input:focus {
+    background: #f7f9f9;
+
+    border-bottom: 2px solid #cf5e18;
+  }
+
+
+  /* =====================================
+     FORGOT PASSWORD
+  ===================================== */
+
+  .forgot-password {
+    align-self: center;
+
+    margin: 7px 0 18px;
+
+    color: #555;
+
+    font-size: 12px;
+
+    text-decoration: none;
+  }
+
+
+  .forgot-password:hover {
+    color: #cf5e18;
+  }
+
+
+  /* =====================================
+     MAIN BUTTON
+  ===================================== */
+
+  .main-button {
+    width: 150px;
+
+    height: 42px;
+
+    margin-top: 10px;
+
+    padding: 10px 20px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background: #e8ded8;
+
+    color: #333;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+      background 0.3s ease,
+      color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+
+  .main-button:hover {
+    background: #333;
+
+    color: #e8ded8;
+
+    transform: scale(1.03);
   }
 
 
@@ -639,6 +820,8 @@
   ===================================== */
 
   .mobile-switch {
+    width: 100%;
+
     display: flex;
 
     flex-direction: column;
@@ -647,20 +830,20 @@
 
     justify-content: center;
 
-    width: 100%;
+    margin-top: 22px;
 
-    margin-top: 25px;
-
-    gap: 6px;
+    gap: 4px;
   }
 
 
   .mobile-switch p {
     margin: 0;
 
+    color: #999;
+
     font-size: 12px;
 
-    color: #777;
+    line-height: 1.4;
 
     text-align: center;
   }
@@ -673,6 +856,8 @@
 
     color: #cf5e18;
 
+    padding: 4px 10px;
+
     font-size: 12px;
 
     font-weight: 700;
@@ -680,8 +865,6 @@
     letter-spacing: 1px;
 
     cursor: pointer;
-
-    padding: 5px 10px;
 
     transition:
       color 0.3s ease,
@@ -694,38 +877,6 @@
 
     transform: scale(1.03);
   }
-
-
-  /* =====================================
-     FORM HEADING
-  ===================================== */
-
-  .form-container h1 {
-    font-size: 27px;
-  }
-
-
-  /* =====================================
-     INPUTS
-  ===================================== */
-
-  .form-container input {
-    padding: 13px 15px;
-
-    font-size: 14px;
-  }
-
-
-  /* =====================================
-     MAIN BUTTON
-  ===================================== */
-
-  .main-button {
-    width: 160px;
-
-    padding: 13px;
-  }
-
 }
 
 
@@ -737,29 +888,28 @@
 @media (max-width: 480px) {
 
   .login-page {
-    padding:
-      85px
-      12px
-      20px;
+    padding: 80px 12px 25px;
   }
 
 
   .login-container {
+    width: 100%;
+
+    max-width: 390px;
+
     min-height: 570px;
 
-    border-radius: 8px;
+    border-radius: 10px;
   }
 
 
   .form-container {
-    padding:
-      25px
-      18px;
+    padding: 30px 22px;
   }
 
 
   .form-container form {
-    max-width: 100%;
+    max-width: 320px;
   }
 
 
@@ -773,16 +923,18 @@
   .form-container span {
     font-size: 11px;
 
-    margin-bottom: 13px;
+    margin-bottom: 17px;
   }
 
 
   .form-container input {
-    padding: 12px;
+    height: 44px;
 
-    font-size: 13px;
+    padding: 11px 13px;
 
-    margin-bottom: 9px;
+    margin-bottom: 10px;
+
+    font-size: 12px;
   }
 
 
@@ -790,29 +942,27 @@
     font-size: 11px;
 
     margin:
-      8px
+      6px
       0
-      17px;
+      16px;
   }
 
 
   .main-button {
     width: 145px;
 
-    padding: 11px;
+    height: 40px;
+
+    padding: 9px;
 
     font-size: 11px;
   }
 
 
-  /* =====================================
-     SMALL MOBILE SWITCH
-  ===================================== */
-
   .mobile-switch {
     margin-top: 20px;
 
-    gap: 5px;
+    gap: 3px;
   }
 
 
@@ -826,12 +976,11 @@
 
     padding: 4px 8px;
   }
-
 }
 
 
 /* =========================================================
-   VERY SMALL PHONES
+   VERY SMALL MOBILE
    360px AND BELOW
 ========================================================= */
 
@@ -839,64 +988,76 @@
 
   .login-page {
     padding:
-      80px
+      75px
       8px
-      15px;
+      20px;
   }
 
 
   .login-container {
     min-height: 550px;
 
-    border-radius: 6px;
+    border-radius: 8px;
   }
 
 
   .form-container {
     padding:
-      20px
-      14px;
+      25px
+      16px;
   }
 
 
   .form-container h1 {
     font-size: 22px;
 
-    margin-bottom: 12px;
+    margin-bottom: 13px;
   }
 
 
   .form-container span {
     font-size: 10px;
 
-    margin-bottom: 12px;
+    margin-bottom: 15px;
   }
 
 
   .form-container input {
-    padding: 11px;
+    height: 42px;
+
+    padding: 10px 12px;
 
     font-size: 12px;
+
+    margin-bottom: 9px;
+  }
+
+
+  .forgot-password {
+    font-size: 10px;
+
+    margin:
+      5px
+      0
+      14px;
   }
 
 
   .main-button {
     width: 135px;
 
-    padding: 10px;
+    height: 38px;
+
+    padding: 8px;
 
     font-size: 10px;
   }
 
 
-  /* =====================================
-     VERY SMALL MOBILE SWITCH
-  ===================================== */
-
   .mobile-switch {
-    margin-top: 16px;
+    margin-top: 17px;
 
-    gap: 4px;
+    gap: 2px;
   }
 
 
@@ -910,7 +1071,6 @@
 
     padding: 4px 7px;
   }
-
 }
 
 
@@ -936,7 +1096,7 @@
 
 
   .form-container {
-    padding: 15px;
+    padding: 20px;
   }
 
 
@@ -947,62 +1107,40 @@
   }
 
 
-  .form-container input {
-    padding: 9px;
+  .form-container span {
+    margin-bottom: 10px;
+  }
 
-    margin-bottom: 7px;
+
+  .form-container input {
+    height: 38px;
+
+    padding: 8px 12px;
+
+    margin-bottom: 6px;
   }
 
 
   .forgot-password {
     margin:
-      5px
+      4px
       0
-      10px;
+      8px;
   }
 
 
   .main-button {
-    margin-top: 8px;
+    height: 36px;
 
-    padding: 9px;
+    margin-top: 5px;
+
+    padding: 8px;
   }
 
 
   .mobile-switch {
-    margin-top: 12px;
+    margin-top: 10px;
 
-    gap: 3px;
+    gap: 2px;
   }
-
-}
-
-
-/* =========================================================
-   TOUCH DEVICES
-========================================================= */
-
-@media (hover: none) and (pointer: coarse) {
-
-  .main-button:hover,
-  .ghost-button:hover,
-  .mobile-switch button:hover {
-    transform: none;
-  }
-
-
-  .main-button:active {
-    transform: scale(0.98);
-  }
-
-
-  .ghost-button:active {
-    transform: scale(0.98);
-  }
-
-
-  .mobile-switch button:active {
-    transform: scale(0.98);
-  }
-
 }
