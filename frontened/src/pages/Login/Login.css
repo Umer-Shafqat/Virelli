@@ -1,41 +1,73 @@
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
 .login-page {
   min-height: 100vh;
   width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   box-sizing: border-box;
+
   padding: 120px 20px 40px;
+
   background: #f6f8f8;
 }
 
+
+/* =========================================================
+   LOGIN CONTAINER
+========================================================= */
+
 .login-container {
   position: relative;
+
   width: 100%;
   max-width: 900px;
   min-height: 560px;
+
   background: #fff;
+
   border-radius: 12px;
+
   overflow: hidden;
+
   box-shadow:
     0 10px 35px rgba(0, 0, 0, 0.12);
 }
 
+
+/* =========================================================
+   FORM CONTAINER
+========================================================= */
+
 .form-container {
   position: absolute;
+
   top: 0;
   left: 0;
+
   width: 50%;
   height: 100%;
+
   display: flex;
+
   justify-content: center;
   align-items: center;
+
   padding: 20px;
+
   box-sizing: border-box;
+
   background: #fff;
+
   transition:
     transform 0.6s ease-in-out,
     opacity 0.4s ease-in-out;
+
   z-index: 2;
 }
 
@@ -50,6 +82,7 @@
 
   display: flex;
   flex-direction: column;
+
   align-items: center;
 }
 
@@ -88,7 +121,6 @@
 
   z-index: 1;
 }
-
 
 .login-container.show-signup .signup-form {
   transform: translateX(100%);
@@ -235,6 +267,16 @@
 
 
 /* =========================================================
+   MOBILE SWITCH
+   Hidden on desktop
+========================================================= */
+
+.mobile-switch {
+  display: none;
+}
+
+
+/* =========================================================
    OVERLAY CONTAINER
 ========================================================= */
 
@@ -310,7 +352,6 @@
   flex-direction: column;
 
   justify-content: center;
-
   align-items: center;
 
   text-align: center;
@@ -344,6 +385,7 @@
   line-height: 1.7;
 
   width: 100%;
+
   max-width: 280px;
 
   margin: 0 0 25px;
@@ -513,14 +555,18 @@
   }
 
 
-  /* Hide desktop overlay */
+  /* =====================================
+     HIDE DESKTOP OVERLAY
+  ===================================== */
 
   .overlay-container {
     display: none;
   }
 
 
-  /* Forms become full width */
+  /* =====================================
+     FORMS FULL WIDTH
+  ===================================== */
 
   .form-container {
     width: 100%;
@@ -540,7 +586,9 @@
   }
 
 
-  /* Sign up hidden initially */
+  /* =====================================
+     SIGN UP HIDDEN INITIALLY
+  ===================================== */
 
   .signup-form {
     display: none;
@@ -549,7 +597,9 @@
   }
 
 
-  /* Sign in visible */
+  /* =====================================
+     SIGN IN VISIBLE INITIALLY
+  ===================================== */
 
   .signin-form {
     display: flex;
@@ -560,7 +610,9 @@
   }
 
 
-  /* Sign up active */
+  /* =====================================
+     SIGN UP ACTIVE
+  ===================================== */
 
   .login-container.show-signup .signin-form {
     display: none;
@@ -582,10 +634,80 @@
   }
 
 
+  /* =====================================
+     MOBILE SWITCH
+  ===================================== */
+
+  .mobile-switch {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    margin-top: 25px;
+
+    gap: 6px;
+  }
+
+
+  .mobile-switch p {
+    margin: 0;
+
+    font-size: 12px;
+
+    color: #777;
+
+    text-align: center;
+  }
+
+
+  .mobile-switch button {
+    border: none;
+
+    background: transparent;
+
+    color: #cf5e18;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    padding: 5px 10px;
+
+    transition:
+      color 0.3s ease,
+      transform 0.3s ease;
+  }
+
+
+  .mobile-switch button:hover {
+    color: #333;
+
+    transform: scale(1.03);
+  }
+
+
+  /* =====================================
+     FORM HEADING
+  ===================================== */
+
   .form-container h1 {
     font-size: 27px;
   }
 
+
+  /* =====================================
+     INPUTS
+  ===================================== */
 
   .form-container input {
     padding: 13px 15px;
@@ -593,6 +715,10 @@
     font-size: 14px;
   }
 
+
+  /* =====================================
+     MAIN BUTTON
+  ===================================== */
 
   .main-button {
     width: 160px;
@@ -678,6 +804,29 @@
     font-size: 11px;
   }
 
+
+  /* =====================================
+     SMALL MOBILE SWITCH
+  ===================================== */
+
+  .mobile-switch {
+    margin-top: 20px;
+
+    gap: 5px;
+  }
+
+
+  .mobile-switch p {
+    font-size: 11px;
+  }
+
+
+  .mobile-switch button {
+    font-size: 11px;
+
+    padding: 4px 8px;
+  }
+
 }
 
 
@@ -739,6 +888,29 @@
     font-size: 10px;
   }
 
+
+  /* =====================================
+     VERY SMALL MOBILE SWITCH
+  ===================================== */
+
+  .mobile-switch {
+    margin-top: 16px;
+
+    gap: 4px;
+  }
+
+
+  .mobile-switch p {
+    font-size: 10px;
+  }
+
+
+  .mobile-switch button {
+    font-size: 10px;
+
+    padding: 4px 7px;
+  }
+
 }
 
 
@@ -796,6 +968,13 @@
     padding: 9px;
   }
 
+
+  .mobile-switch {
+    margin-top: 12px;
+
+    gap: 3px;
+  }
+
 }
 
 
@@ -806,7 +985,8 @@
 @media (hover: none) and (pointer: coarse) {
 
   .main-button:hover,
-  .ghost-button:hover {
+  .ghost-button:hover,
+  .mobile-switch button:hover {
     transform: none;
   }
 
@@ -817,6 +997,11 @@
 
 
   .ghost-button:active {
+    transform: scale(0.98);
+  }
+
+
+  .mobile-switch button:active {
     transform: scale(0.98);
   }
 
