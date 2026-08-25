@@ -1,50 +1,32 @@
 .faq-page {
   width: 100%;
-
   min-height: 100vh;
-
   padding: 140px 5% 80px;
-
   box-sizing: border-box;
-
   background: #f8f8f8;
 }
+
 .faq-heading {
   width: 100%;
-
   max-width: 850px;
-
   margin: 0 auto 60px;
-
   text-align: center;
 }
 
 .faq-heading h1 {
   margin: 0 0 15px;
-
   color: #222;
-
   font-size: clamp(30px, 4vw, 42px);
-
   font-weight: 700;
-
   line-height: 1.2;
 }
 
 .faq-heading p {
   margin: 0;
-
   color: #666;
-
   font-size: 17px;
-
   line-height: 1.7;
 }
-
-
-/* =====================================
-   FAQ CONTAINER
-===================================== */
 
 .faq-container {
   width: 100%;
