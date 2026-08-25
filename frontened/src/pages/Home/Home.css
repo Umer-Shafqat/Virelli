@@ -58,15 +58,9 @@
 
 .home-shoes-section .shoe-card:hover {
   transform: translateY(-8px);
-
   box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.12);
 }
-
-
-/* =====================================
-   SHOE IMAGE
-===================================== */
 
 .home-shoes-section .shoe-image {
   width: 100%;
