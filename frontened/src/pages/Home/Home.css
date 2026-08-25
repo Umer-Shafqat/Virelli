@@ -1,60 +1,40 @@
 .home-shoes-section {
   width: 100%;
-
   min-height: 100vh;
-
   padding: 70px 5%;
-
   box-sizing: border-box;
-
   background: #c6b7b7;
 }
 
 .home-shoes-heading {
   width: 100%;
-
   max-width: 800px;
-
   margin: 0 auto 45px;
-
   text-align: center;
 }
 
 .home-shoes-heading h2 {
   margin: 0 0 10px;
-
   color: #000;
-
   font-size: clamp(28px, 3.5vw, 36px);
-
   font-weight: 700;
-
   line-height: 1.2;
 }
 
 .home-shoes-heading p {
   margin: 0;
-
   color: #777;
-
   font-size: 16px;
-
   line-height: 1.6;
 }
 
 .home-shoes-section .shoes-grid {
   width: 100%;
-
   max-width: 1200px;
-
   margin: 0 auto;
-
   display: grid;
-
   grid-template-columns: repeat(3, 1fr);
-
   gap: 30px;
-
   box-sizing: border-box;
 }
 
@@ -65,13 +45,9 @@
 
 .home-shoes-section .shoe-card {
   min-width: 0;
-
   overflow: hidden;
-
   background: #FFEED6;
-
   border-radius: 12px;
-
   box-shadow:
     0 5px 20px rgba(0, 0, 0, 0.08);
 
