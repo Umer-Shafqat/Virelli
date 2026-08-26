@@ -5,8 +5,8 @@ import axios from "axios";
 import "./PlaceOrder.css";
 
 
-const PlaceOrder = () => {
-
+const PlaceOrder = async () => {
+  await clearCart();
   const navigate = useNavigate();
 
   const location = useLocation();
