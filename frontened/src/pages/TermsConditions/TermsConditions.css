@@ -1,17 +1,13 @@
 .terms-page {
   width: 100%;
   min-height: 100vh;
-
   padding:
     140px
     clamp(15px, 5vw, 70px)
     80px;
-
   background: #f8f8f8;
-
   box-sizing: border-box;
 }
-
 
 .terms-header {
   width: 100%;
