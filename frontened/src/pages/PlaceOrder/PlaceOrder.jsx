@@ -1,32 +1,57 @@
-import React, {useContext,useState,} from "react";
-import {useNavigate,useLocation} from "react-router-dom";
-import {StoreContext,} from "../../Context/StoreContext/StoreContext";
+import React, {
+  useContext,
+  useState,
+} from "react";
+
+import {
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
+import {
+  StoreContext,
+} from "../../Context/StoreContext/StoreContext";
+
 import axios from "axios";
+
 import "./PlaceOrder.css";
 
 
-const PlaceOrder = async () => {
-  await clearCart();
+const PlaceOrder = () => {
+
   const navigate = useNavigate();
 
   const location = useLocation();
 
-const {
-  subtotal = 0,
-  deliveryCharges = 300,
-  totalAmount = 300,
-} = location.state || {};
+
+  /* =====================================
+     ORDER TOTALS
+  ===================================== */
+
+  const {
+    subtotal = 0,
+    deliveryCharges = 300,
+    totalAmount = 300,
+  } = location.state || {};
+
+
+  /* =====================================
+     STORE CONTEXT
+  ===================================== */
 
   const {
     cartItems,
     token,
-     shoes,
-    setCartItems,
-  } = useContext(
-    StoreContext
-  );
+    shoes,
+    clearCart,
+  } = useContext(StoreContext);
 
-const [
+
+  /* =====================================
+     FORM DATA
+  ===================================== */
+
+  const [
     formData,
     setFormData
   ] = useState({
@@ -49,17 +74,30 @@ const [
 
   });
 
-const [
+
+  /* =====================================
+     LOADING
+  ===================================== */
+
+  const [
     loading,
     setLoading
   ] = useState(false);
 
-  const cartEntries =
-    Object.entries(cartItems);
 
-const handleChange = (
-    e
-  ) => {
+  /* =====================================
+     CART ENTRIES
+  ===================================== */
+
+  const cartEntries =
+    Object.entries(cartItems || {});
+
+
+  /* =====================================
+     FORM CHANGE
+  ===================================== */
+
+  const handleChange = (e) => {
 
     setFormData({
 
@@ -73,23 +111,33 @@ const handleChange = (
   };
 
 
+  /* =====================================
+     PLACE ORDER
+  ===================================== */
 
-const handleSubmit = async (
-    e
-  ) => {
+  const handleSubmit = async (e) => {
 
     e.preventDefault();
 
 
+    /* =====================================
+       CHECK LOGIN
+    ===================================== */
+
     if (!token) {
+
       navigate("/login");
+
       return;
 
     }
 
-    if (
-      cartEntries.length === 0
-    ) {
+
+    /* =====================================
+       CHECK CART
+    ===================================== */
+
+    if (cartEntries.length === 0) {
 
       alert(
         "Your cart is empty"
@@ -104,8 +152,14 @@ const handleSubmit = async (
 
       setLoading(true);
 
+
+      /* =====================================
+         CREATE ORDER ITEMS
+      ===================================== */
+
       const orderItems =
         cartEntries
+
           .map(
             ([key, quantity]) => {
 
@@ -114,20 +168,23 @@ const handleSubmit = async (
                 size
               ] = key.split("-");
 
+
+              /* Find shoe */
+
               const shoe =
                 shoes.find(
-
                   (item) =>
                     item._id.toString() ===
                     shoeId
-
                 );
+
 
               if (!shoe) {
 
                 return null;
 
               }
+
 
               return {
 
@@ -140,12 +197,14 @@ const handleSubmit = async (
                 category:
                   shoe.category,
 
-               type: shoe.type,
+                type:
+                  shoe.type,
 
                 price:
                   shoe.price,
 
-                 image: shoe.image,
+                image:
+                  shoe.image,
 
                 size:
                   Number(size),
@@ -163,7 +222,13 @@ const handleSubmit = async (
 
             }
           )
+
           .filter(Boolean);
+
+
+      /* =====================================
+         VALID ORDER ITEMS
+      ===================================== */
 
       if (
         orderItems.length === 0
@@ -176,6 +241,11 @@ const handleSubmit = async (
         return;
 
       }
+
+
+      /* =====================================
+         ORDER DATA
+      ===================================== */
 
       const orderData = {
 
@@ -205,6 +275,11 @@ const handleSubmit = async (
         orderItems
       );
 
+
+      /* =====================================
+         SEND ORDER TO BACKEND
+      ===================================== */
+
       const response =
         await axios.post(
 
@@ -225,16 +300,34 @@ const handleSubmit = async (
 
         );
 
+
+      /* =====================================
+         ORDER SUCCESS
+         
+         IMPORTANT:
+         Cart is cleared ONLY after
+         successful order processing.
+      ===================================== */
+
       if (
         response.data.success
       ) {
 
-        setCartItems({});
+        /*
+          Clear cart from:
+
+          1. MongoDB
+          2. React state
+          3. Local storage
+        */
+
+        await clearCart();
 
 
         alert(
           "Your order has been placed successfully!"
         );
+
 
         navigate(
           "/my-orders"
@@ -250,6 +343,10 @@ const handleSubmit = async (
         error
       );
 
+
+      /* =====================================
+         AUTH ERROR
+      ===================================== */
 
       if (
         error.response?.status === 401
@@ -280,6 +377,11 @@ const handleSubmit = async (
     }
 
   };
+
+
+  /* =====================================
+     EMPTY CART
+  ===================================== */
 
   if (
     cartEntries.length === 0
@@ -315,6 +417,10 @@ const handleSubmit = async (
   }
 
 
+  /* =====================================
+     PAGE
+  ===================================== */
+
   return (
 
     <div className="place-order-page">
@@ -325,6 +431,11 @@ const handleSubmit = async (
 
 
       <div className="place-order-container">
+
+
+        {/* =================================
+            DELIVERY SECTION
+        ================================= */}
 
         <div className="delivery-section">
 
@@ -339,6 +450,8 @@ const handleSubmit = async (
             }
           >
 
+
+            {/* NAME */}
 
             <div className="name-fields">
 
@@ -372,6 +485,8 @@ const handleSubmit = async (
             </div>
 
 
+            {/* EMAIL */}
+
             <input
               type="email"
               name="email"
@@ -385,6 +500,8 @@ const handleSubmit = async (
               required
             />
 
+
+            {/* PHONE */}
 
             <input
               type="tel"
@@ -400,6 +517,8 @@ const handleSubmit = async (
             />
 
 
+            {/* ADDRESS */}
+
             <input
               type="text"
               name="address"
@@ -414,6 +533,8 @@ const handleSubmit = async (
             />
 
 
+            {/* CITY */}
+
             <input
               type="text"
               name="city"
@@ -427,6 +548,8 @@ const handleSubmit = async (
               required
             />
 
+
+            {/* COUNTRY */}
 
             <input
               type="text"
@@ -503,6 +626,10 @@ const handleSubmit = async (
             </div>
 
 
+            {/* =================================
+                CONFIRM ORDER
+            ================================= */}
+
             <button
               type="submit"
               className="confirm-order-btn"
@@ -535,7 +662,6 @@ const handleSubmit = async (
           <div className="summary-items">
 
             {cartEntries.map(
-
               ([key, quantity]) => {
 
                 const [
@@ -546,11 +672,9 @@ const handleSubmit = async (
 
                 const shoe =
                   shoes.find(
-
                     (item) =>
                       item._id.toString() ===
                       shoeId
-
                   );
 
 
@@ -568,10 +692,10 @@ const handleSubmit = async (
                     key={key}
                   >
 
-                   <img
-                   src={`http://localhost:4000/images/${shoe.image}`}
-                   alt={shoe.name}
-                  />
+                    <img
+                      src={`http://localhost:4000/images/${shoe.image}`}
+                      alt={shoe.name}
+                    />
 
 
                     <div
