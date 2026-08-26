@@ -23,11 +23,6 @@ const StoreContextProvider = ({ children }) => {
     localStorage.getItem("token") || ""
   );
 
-
-  /* =====================================
-     FETCH SHOES
-  ===================================== */
-
   const fetchShoes = useCallback(async () => {
 
     try {
