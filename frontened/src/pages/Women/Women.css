@@ -302,64 +302,44 @@
 
 .sizes button:hover {
   background: #000;
-
   color: #fff;
-
   border-color: #000;
-
   transform: translateY(-1px);
 }
 
 .sizes button.selected-size {
   background: #000;
-
   color: #fff;
-
   border-color: #000;
-
   transform: translateY(-1px);
 }
 
 .add-cart {
   width: 100%;
-
   min-height: 46px;
-
   padding:
     12px
     15px;
-
   margin-top: 5px;
-
   border: none;
-
   background: #000;
-
   color: #fff;
-
   font-size:
     clamp(14px, 1.6vw, 15px);
-
   font-weight: 600;
-
   border-radius: 5px;
-
   cursor: pointer;
-
   transition:
     background 0.3s ease,
     transform 0.2s ease,
     box-shadow 0.3s ease;
-
   box-sizing: border-box;
 }
 
 
 .add-cart:hover {
   background: #333;
-
   transform: translateY(-2px);
-
   box-shadow:
     0 5px 12px
     rgba(0, 0, 0, 0.15);
