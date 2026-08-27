@@ -116,10 +116,6 @@ const StoreContextProvider = ({ children }) => {
         );
 
 
-        /*
-          Save cart locally so it
-          remains after refresh.
-        */
 
         localStorage.setItem(
           `cartItems_${token}`,
