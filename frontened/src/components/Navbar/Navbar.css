@@ -23,11 +23,6 @@
   cursor: pointer;
 }
 
-
-/* =====================================
-   MENU
-===================================== */
-
 .navbar-menu {
   display: flex;
   align-items: center;
