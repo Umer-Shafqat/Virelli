@@ -51,10 +51,6 @@ const StoreContextProvider = ({ children }) => {
   }, [url]);
 
 
-  /* =====================================
-     ADD TO CART
-  ===================================== */
-
   const addToCart = async (shoe, size) => {
 
     if (!token) {
