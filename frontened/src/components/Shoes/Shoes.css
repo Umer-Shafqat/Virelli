@@ -664,10 +664,6 @@
   }
 }
 
-/* =====================================
-   MOBILE
-===================================== */
-
 @media (max-width: 600px) {
 
   .shoes-section {
@@ -774,9 +770,6 @@
   }
 
 }
-
-
-/* EXTRA SMALL MOBILE */
 
 @media (max-width: 350px) {
 
