@@ -15,10 +15,6 @@ const StoreContextProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  /* =====================================
-     TOKEN
-  ===================================== */
-
   const [token, setToken] = useState(
     localStorage.getItem("token") || ""
   );
