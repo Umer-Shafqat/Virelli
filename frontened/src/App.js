@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+
 import Home from "./pages/Home/Home";
 import Shoes from "./components/Shoes/Shoes";
 import Men from "./pages/Men/Men";
@@ -15,110 +17,197 @@ import ReturnsExchange from "./pages/ReturnsExchange/ReturnsExchange";
 import SizeGuide from "./pages/SizeGuide/SizeGuide";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions/TermsConditions";
+
 import Cart from "./pages/Cart/Cart";
 import Login from "./pages/Login/Login";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import MyOrder from "./pages/MyOrder/MyOrder";
+
 import NewArrival from "./pages/NewArrival/NewArrival";
 import Offers from "./pages/Offers/Offers";
 
 function App() {
   return (
-    <>
+    <div className="app">
+
+      {/* =========================
+          NAVBAR
+      ========================== */}
 
       <Navbar />
 
-      <Routes>
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
+      {/* =========================
+          MAIN CONTENT
+      ========================== */}
 
-      <Route
-          path="/shoes"
-          element={<Shoes />}
-        />
+      <main className="main-content">
 
-      <Route
-          path="/men"
-          element={<Men />}
-        />
+        <Routes>
 
-      <Route
-          path="/women"
-          element={<Women />}
-        />
+          {/* HOME */}
 
-      <Route
-          path="/kids"
-          element={<Kids />}
-        />
+          <Route
+            path="/"
+            element={<Home />}
+          />
 
-        <Route 
-        path="/about" 
-        element={<About />} />
 
-        <Route 
-        path="/contact" 
-         element={<Contact />} />
+          {/* SHOES */}
 
-        <Route 
-        path="/faq" 
-        element={<FAQ />} />
+          <Route
+            path="/shoes"
+            element={<Shoes />}
+          />
 
-        <Route
-        path="/shipping-delivery"
-        element={<ShippingDelivery />}
-        />
 
-        <Route
-        path="/returns-exchange"
-        element={<ReturnsExchange />}
-        />
+          {/* MEN */}
 
-        <Route
-        path="/size-guide"
-        element={<SizeGuide />}
-         />
+          <Route
+            path="/men"
+            element={<Men />}
+          />
 
-        <Route
-        path="/privacy-policy"
-        element={<PrivacyPolicy />}
-        />
 
-        <Route
-        path="/terms-conditions"
-        element={<TermsConditions />}
-        />
+          {/* WOMEN */}
 
-        <Route
-        path="/cart"
-        element={<Cart />}
-        />
+          <Route
+            path="/women"
+            element={<Women />}
+          />
 
-        <Route
-        path="/login"
-        element={<Login />}
-        />
 
-        <Route
-        path="/place-order"
-        element={<PlaceOrder />}
-         />
+          {/* KIDS */}
 
-        <Route
-        path="/my-orders"
-        element={<MyOrder />}
-         />
+          <Route
+            path="/kids"
+            element={<Kids />}
+          />
 
-        <Route path="/newarrival" element={<NewArrival />} />
 
-         <Route path="/offers" element={<Offers />} />
+          {/* ABOUT */}
 
-      </Routes>
-       <Footer />
-    </>
+          <Route
+            path="/about"
+            element={<About />}
+          />
+
+
+          {/* CONTACT */}
+
+          <Route
+            path="/contact"
+            element={<Contact />}
+          />
+
+
+          {/* FAQ */}
+
+          <Route
+            path="/faq"
+            element={<FAQ />}
+          />
+
+
+          {/* SHIPPING */}
+
+          <Route
+            path="/shipping-delivery"
+            element={<ShippingDelivery />}
+          />
+
+
+          {/* RETURNS */}
+
+          <Route
+            path="/returns-exchange"
+            element={<ReturnsExchange />}
+          />
+
+
+          {/* SIZE GUIDE */}
+
+          <Route
+            path="/size-guide"
+            element={<SizeGuide />}
+          />
+
+
+          {/* PRIVACY */}
+
+          <Route
+            path="/privacy-policy"
+            element={<PrivacyPolicy />}
+          />
+
+
+          {/* TERMS */}
+
+          <Route
+            path="/terms-conditions"
+            element={<TermsConditions />}
+          />
+
+
+          {/* CART */}
+
+          <Route
+            path="/cart"
+            element={<Cart />}
+          />
+
+
+          {/* LOGIN */}
+
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+
+
+          {/* PLACE ORDER */}
+
+          <Route
+            path="/place-order"
+            element={<PlaceOrder />}
+          />
+
+
+          {/* MY ORDERS */}
+
+          <Route
+            path="/my-orders"
+            element={<MyOrder />}
+          />
+
+
+          {/* NEW ARRIVALS */}
+
+          <Route
+            path="/newarrival"
+            element={<NewArrival />}
+          />
+
+
+          {/* OFFERS */}
+
+          <Route
+            path="/offers"
+            element={<Offers />}
+          />
+
+        </Routes>
+
+      </main>
+
+
+      {/* =========================
+          FOOTER
+      ========================== */}
+
+      <Footer />
+
+    </div>
   );
 }
 
