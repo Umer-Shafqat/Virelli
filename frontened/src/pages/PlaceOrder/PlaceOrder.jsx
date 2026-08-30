@@ -275,11 +275,6 @@ const PlaceOrder = () => {
         orderItems
       );
 
-
-      /* =====================================
-         SEND ORDER TO BACKEND
-      ===================================== */
-
       const response =
         await axios.post(
 
@@ -300,26 +295,9 @@ const PlaceOrder = () => {
 
         );
 
-
-      /* =====================================
-         ORDER SUCCESS
-         
-         IMPORTANT:
-         Cart is cleared ONLY after
-         successful order processing.
-      ===================================== */
-
       if (
         response.data.success
       ) {
-
-        /*
-          Clear cart from:
-
-          1. MongoDB
-          2. React state
-          3. Local storage
-        */
 
         await clearCart();
 
