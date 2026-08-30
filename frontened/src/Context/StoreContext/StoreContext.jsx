@@ -25,11 +25,13 @@ const StoreContextProvider = ({ children }) => {
 
   const [cartItems, setCartItems] = useState({});
 
+
   /* =====================================
      SHOES
   ===================================== */
 
   const [shoes, setShoes] = useState([]);
+
 
   /* =====================================
      FETCH SHOES
@@ -45,128 +47,158 @@ const StoreContextProvider = ({ children }) => {
         setShoes(response.data.data || []);
       }
     } catch (error) {
-      console.log("Fetch shoes error:", error);
+      console.log(
+        "Fetch shoes error:",
+        error
+      );
     }
   }, [url]);
+
 
   /* =====================================
      ADD TO CART
   ===================================== */
 
-  const addToCart = async (shoe, size) => {
+  const addToCart = async (
+    shoeOrId,
+    size
+  ) => {
+
+    /* ================================
+       CHECK LOGIN
+    ================================= */
+
     if (!token) {
       navigate("/login");
       return;
     }
 
-    if (!shoe?._id) {
+
+    /* ================================
+       GET SHOE ID
+
+       Supports both:
+
+       addToCart(shoe._id, size)
+
+       OR
+
+       addToCart(shoe, size)
+    ================================= */
+
+    let shoeId = "";
+
+    if (
+      typeof shoeOrId === "string" ||
+      typeof shoeOrId === "number"
+    ) {
+      shoeId = shoeOrId;
+    } else if (shoeOrId?._id) {
+      shoeId = shoeOrId._id;
+    } else if (shoeOrId?.id) {
+      shoeId = shoeOrId.id;
+    }
+
+
+    /* ================================
+       CHECK SHOE ID
+    ================================= */
+
+    if (!shoeId) {
       alert("Shoe ID is missing");
+
+      console.log(
+        "Invalid shoe passed to addToCart:",
+        shoeOrId
+      );
+
       return;
     }
+
+
+    /* ================================
+       CHECK SIZE
+    ================================= */
 
     if (!size) {
       alert("Please select a size");
       return;
     }
 
+
+    /* ================================
+       SEND REQUEST
+    ================================= */
+
     try {
+
       const response = await axios.post(
         `${url}/api/cart/add`,
         {
-          shoeId: shoe._id,
-          size,
+          shoeId: shoeId,
+          size: size,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization:
+              `Bearer ${token}`,
           },
         }
       );
 
+
+      /* ================================
+         SUCCESS
+      ================================= */
+
       if (response.data.success) {
+
         const updatedCart =
           response.data.cart || {};
 
-        setCartItems(updatedCart);
+
+        /* Update React state */
+
+        setCartItems(
+          updatedCart
+        );
+
+
+        /* Save cart locally */
 
         localStorage.setItem(
           `cartItems_${token}`,
-          JSON.stringify(updatedCart)
+          JSON.stringify(
+            updatedCart
+          )
         );
       }
-    } catch (error) {
-      console.log("Add to cart error:", error);
 
-      if (error.response?.status === 401) {
+    } catch (error) {
+
+      console.log(
+        "Add to cart error:",
+        error
+      );
+
+
+      /* ================================
+         SESSION EXPIRED
+      ================================= */
+
+      if (
+        error.response?.status === 401
+      ) {
+
         alert(
           "Session expired. Please login again."
         );
 
-        localStorage.removeItem("token");
 
-        setToken("");
-        setCartItems({});
-      } else {
-        alert(
-          error.response?.data?.message ||
-            "Error adding item to cart"
+        localStorage.removeItem(
+          "token"
         );
-      }
-    }
-  };
 
-  /* =====================================
-     GET CART FROM MONGODB
-  ===================================== */
-
-  const getCart = useCallback(async () => {
-    if (!token) {
-      return;
-    }
-
-    try {
-      const response = await axios.get(
-        `${url}/api/cart/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.data.success) {
-        const serverCart =
-          response.data.cart || {};
-
-        /*
-          MongoDB is the main source of truth.
-        */
-
-        setCartItems(serverCart);
-
-        /*
-          Keep localStorage synchronized.
-        */
-
-        localStorage.setItem(
-          `cartItems_${token}`,
-          JSON.stringify(serverCart)
-        );
-      }
-    } catch (error) {
-      console.log("Get cart error:", error);
-
-      /*
-        IMPORTANT:
-
-        Do NOT clear the cart when the server
-        temporarily fails.
-
-        Restore the previous local cart instead.
-      */
-
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token");
 
         setToken("");
         setCartItems({});
@@ -174,26 +206,139 @@ const StoreContextProvider = ({ children }) => {
         return;
       }
 
+
+      /* ================================
+         OTHER ERROR
+      ================================= */
+
+      alert(
+        error.response?.data?.message ||
+        "Error adding item to cart"
+      );
+    }
+  };
+
+
+  /* =====================================
+     GET CART FROM MONGODB
+  ===================================== */
+
+  const getCart = useCallback(
+    async () => {
+
+      if (!token) {
+        return;
+      }
+
       try {
-        const savedCart =
-          localStorage.getItem(
-            `cartItems_${token}`
+
+        const response =
+          await axios.get(
+            `${url}/api/cart/get`,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
           );
 
-        if (savedCart) {
-          const parsedCart =
-            JSON.parse(savedCart);
 
-          setCartItems(parsedCart);
+        if (
+          response.data.success
+        ) {
+
+          const serverCart =
+            response.data.cart || {};
+
+
+          /*
+            MongoDB is the main
+            source of truth.
+          */
+
+          setCartItems(
+            serverCart
+          );
+
+
+          /*
+            Keep localStorage
+            synchronized.
+          */
+
+          localStorage.setItem(
+            `cartItems_${token}`,
+            JSON.stringify(
+              serverCart
+            )
+          );
         }
-      } catch (localError) {
+
+      } catch (error) {
+
         console.log(
-          "Local cart error:",
-          localError
+          "Get cart error:",
+          error
         );
+
+
+        /* ================================
+           UNAUTHORIZED
+        ================================= */
+
+        if (
+          error.response?.status === 401
+        ) {
+
+          localStorage.removeItem(
+            "token"
+          );
+
+          setToken("");
+          setCartItems({});
+
+          return;
+        }
+
+
+        /* ================================
+           RESTORE LOCAL CART
+        ================================= */
+
+        try {
+
+          const savedCart =
+            localStorage.getItem(
+              `cartItems_${token}`
+            );
+
+
+          if (savedCart) {
+
+            const parsedCart =
+              JSON.parse(
+                savedCart
+              );
+
+            setCartItems(
+              parsedCart
+            );
+          }
+
+        } catch (localError) {
+
+          console.log(
+            "Local cart error:",
+            localError
+          );
+        }
       }
-    }
-  }, [token, url]);
+
+    },
+    [token, url]
+  );
+
 
   /* =====================================
      REMOVE ONE QUANTITY
@@ -203,40 +348,59 @@ const StoreContextProvider = ({ children }) => {
     shoeId,
     size
   ) => {
-    if (!token) return;
+
+    if (!token) {
+      return;
+    }
 
     try {
-      const response = await axios.post(
-        `${url}/api/cart/remove`,
-        {
-          shoeId,
-          size,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
 
-      if (response.data.success) {
+      const response =
+        await axios.post(
+          `${url}/api/cart/remove`,
+          {
+            shoeId,
+            size,
+          },
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+
+      if (
+        response.data.success
+      ) {
+
         const updatedCart =
           response.data.cart || {};
 
-        setCartItems(updatedCart);
+
+        setCartItems(
+          updatedCart
+        );
+
 
         localStorage.setItem(
           `cartItems_${token}`,
-          JSON.stringify(updatedCart)
+          JSON.stringify(
+            updatedCart
+          )
         );
       }
+
     } catch (error) {
+
       console.log(
         "Remove from cart error:",
         error
       );
     }
   };
+
 
   /* =====================================
      DELETE ITEM COMPLETELY
@@ -246,43 +410,69 @@ const StoreContextProvider = ({ children }) => {
     shoeId,
     size
   ) => {
-    if (!token) return;
+
+    if (!token) {
+      return;
+    }
+
 
     let quantity =
-      cartItems[`${shoeId}-${size}`] || 0;
+      cartItems[
+        `${shoeId}-${size}`
+      ] || 0;
+
 
     try {
-      while (quantity > 0) {
-        const response = await axios.post(
-          `${url}/api/cart/remove`,
-          {
-            shoeId,
-            size,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
 
-        if (!response.data.success) {
+      while (
+        quantity > 0
+      ) {
+
+        const response =
+          await axios.post(
+            `${url}/api/cart/remove`,
+            {
+              shoeId,
+              size,
+            },
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
+          );
+
+
+        if (
+          !response.data.success
+        ) {
           break;
         }
 
+
         quantity--;
+
 
         const updatedCart =
           response.data.cart || {};
 
-        setCartItems(updatedCart);
+
+        setCartItems(
+          updatedCart
+        );
+
 
         localStorage.setItem(
           `cartItems_${token}`,
-          JSON.stringify(updatedCart)
+          JSON.stringify(
+            updatedCart
+          )
         );
       }
+
     } catch (error) {
+
       console.log(
         "Delete from cart error:",
         error
@@ -290,19 +480,25 @@ const StoreContextProvider = ({ children }) => {
     }
   };
 
+
   /* =====================================
      CLEAR CART
-     
+
      ONLY AFTER SUCCESSFUL ORDER
   ===================================== */
 
   const clearCart = async () => {
+
     if (!token) {
+
       setCartItems({});
+
       return;
     }
 
+
     try {
+
       const response =
         await axios.delete(
           `${url}/api/cart/clear`,
@@ -314,12 +510,17 @@ const StoreContextProvider = ({ children }) => {
           }
         );
 
-      if (response.data.success) {
+
+      if (
+        response.data.success
+      ) {
+
         /*
           Clear React state
         */
 
         setCartItems({});
+
 
         /*
           Clear localStorage
@@ -329,7 +530,9 @@ const StoreContextProvider = ({ children }) => {
           `cartItems_${token}`
         );
       }
+
     } catch (error) {
+
       console.log(
         "Clear cart error:",
         error
@@ -337,118 +540,179 @@ const StoreContextProvider = ({ children }) => {
     }
   };
 
+
   /* =====================================
      LOGOUT
   ===================================== */
 
   const logout = () => {
+
     if (token) {
+
       localStorage.removeItem(
         `cartItems_${token}`
       );
     }
 
-    localStorage.removeItem("token");
+
+    localStorage.removeItem(
+      "token"
+    );
+
 
     setToken("");
     setCartItems({});
   };
+
 
   /* =====================================
      INITIAL FETCH SHOES
   ===================================== */
 
   useEffect(() => {
+
     fetchShoes();
+
   }, [fetchShoes]);
 
+
   /* =====================================
-     LOAD CART WHEN USER LOGS IN / REFRESHES
+     LOAD CART WHEN USER LOGS IN /
+     REFRESHES
   ===================================== */
 
   useEffect(() => {
+
     if (!token) {
+
       setCartItems({});
+
       return;
     }
 
+
     /*
       STEP 1:
-      Immediately restore the previous cart
-      from localStorage.
 
-      This makes the cart survive refresh.
+      Immediately restore previous
+      cart from localStorage.
     */
 
     try {
+
       const savedCart =
         localStorage.getItem(
           `cartItems_${token}`
         );
 
-      if (savedCart) {
-        const parsedCart =
-          JSON.parse(savedCart);
 
-        setCartItems(parsedCart);
+      if (savedCart) {
+
+        const parsedCart =
+          JSON.parse(
+            savedCart
+          );
+
+
+        setCartItems(
+          parsedCart
+        );
       }
+
     } catch (error) {
+
       console.log(
         "Load saved cart error:",
         error
       );
     }
 
+
     /*
       STEP 2:
-      Get the latest cart from MongoDB.
+
+      Get latest cart from MongoDB.
     */
 
     getCart();
+
   }, [token, getCart]);
+
 
   /* =====================================
      SAVE TOKEN
   ===================================== */
 
   useEffect(() => {
+
     if (token) {
+
       localStorage.setItem(
         "token",
         token
       );
+
     } else {
+
       localStorage.removeItem(
         "token"
       );
     }
+
   }, [token]);
+
 
   /* =====================================
      CONTEXT VALUE
   ===================================== */
 
   const contextValue = {
+
+    /* API URL */
+
     url,
+
+
+    /* Shoes */
 
     shoes,
     fetchShoes,
 
+
+    /* Cart */
+
     cartItems,
     setCartItems,
+
+
+    /* Cart functions */
 
     addToCart,
     removeFromCart,
     deleteFromCart,
 
+
+    /* Clear cart */
+
     clearCart,
+
+
+    /* Get cart */
+
     getCart,
+
+
+    /* Authentication */
 
     token,
     setToken,
 
+
+    /* Logout */
+
     logout,
   };
+
 
   return (
     <StoreContext.Provider
@@ -458,5 +722,6 @@ const StoreContextProvider = ({ children }) => {
     </StoreContext.Provider>
   );
 };
+
 
 export default StoreContextProvider;
