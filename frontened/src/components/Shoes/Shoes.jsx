@@ -15,7 +15,24 @@ const Shoes = ({ limit, products }) => {
   ===================================== */
 
   useEffect(() => {
-    setShoeList(products || shoes || []);
+    const list = products || shoes || [];
+
+    /*
+      Make sure every shoe has an _id.
+
+      Some products may come with:
+      _id  -> MongoDB ID
+      id   -> normal/frontend ID
+
+      We convert id -> _id when necessary.
+    */
+
+    const normalizedList = list.map((shoe) => ({
+      ...shoe,
+      _id: shoe._id || shoe.id || shoe.shoeId,
+    }));
+
+    setShoeList(normalizedList);
   }, [products, shoes]);
 
 
@@ -33,6 +50,11 @@ const Shoes = ({ limit, products }) => {
   ===================================== */
 
   const handleSizeSelect = (shoeId, size) => {
+    if (!shoeId) {
+      alert("Shoe ID is missing");
+      return;
+    }
+
     setSelectedSizes((prev) => ({
       ...prev,
       [shoeId]: size,
@@ -45,6 +67,10 @@ const Shoes = ({ limit, products }) => {
   ===================================== */
 
   const handleRating = (shoeId, selectedRating) => {
+    if (!shoeId) {
+      return;
+    }
+
     setShoeList((prevShoes) =>
       prevShoes.map((shoe) => {
         if (shoe._id === shoeId) {
@@ -77,19 +103,37 @@ const Shoes = ({ limit, products }) => {
   ===================================== */
 
   const handleAddToCart = (shoe) => {
-    const selectedSize = selectedSizes[shoe._id];
+    /*
+      Get MongoDB ID or fallback ID.
+    */
+    const shoeId =
+      shoe?._id ||
+      shoe?.id ||
+      shoe?.shoeId;
 
+    const selectedSize =
+      selectedSizes[shoeId];
+
+    /* Check ID first */
+    if (!shoeId) {
+      alert("Shoe ID is missing");
+      console.error(
+        "Shoe object does not contain an ID:",
+        shoe
+      );
+      return;
+    }
+
+    /* Check size */
     if (!selectedSize) {
       alert("Please select a size first");
       return;
     }
 
-    if (!shoe?._id) {
-      alert("Shoe ID is missing");
-      return;
-    }
-
-    addToCart(shoe._id, selectedSize);
+    /*
+      Send the correct ID to StoreContext.
+    */
+    addToCart(shoeId, selectedSize);
   };
 
 
@@ -106,7 +150,9 @@ const Shoes = ({ limit, products }) => {
 
       <div className="shoes-heading">
 
-        <h2>Our Shoes Collection</h2>
+        <h2>
+          Our Shoes Collection
+        </h2>
 
         <p>
           Explore all of our latest shoe designs
@@ -123,19 +169,31 @@ const Shoes = ({ limit, products }) => {
 
         {displayedShoes.length > 0 ? (
 
-          displayedShoes.map((shoe) => {
+          displayedShoes.map((shoe, index) => {
+
+            /* ============================
+               GET SHOE ID
+            ============================ */
+
+            const shoeId =
+              shoe?._id ||
+              shoe?.id ||
+              shoe?.shoeId;
+
 
             /* ============================
                PRICE
             ============================ */
 
-            const price = Number(shoe.price || 0);
+            const price =
+              Number(shoe.price || 0);
 
             const discount =
               Number(shoe.discount || 0);
 
             const discountedPrice =
-              price - (price * discount) / 100;
+              price -
+              (price * discount) / 100;
 
 
             /* ============================
@@ -159,13 +217,13 @@ const Shoes = ({ limit, products }) => {
             ============================ */
 
             const selectedSize =
-              selectedSizes[shoe._id];
+              selectedSizes[shoeId];
 
 
             return (
               <div
                 className="shoe-card"
-                key={shoe._id}
+                key={shoeId || index}
               >
 
                 {/* ==========================
@@ -182,7 +240,7 @@ const Shoes = ({ limit, products }) => {
 
                   <img
                     src={`${url}/images/${shoe.image}`}
-                    alt={shoe.name}
+                    alt={shoe.name || "Shoe"}
                   />
 
                 </div>
@@ -221,6 +279,7 @@ const Shoes = ({ limit, products }) => {
 
                       {[1, 2, 3, 4, 5].map(
                         (star) => (
+
                           <button
                             key={star}
                             type="button"
@@ -234,7 +293,7 @@ const Shoes = ({ limit, products }) => {
                             }
                             onClick={() =>
                               handleRating(
-                                shoe._id,
+                                shoeId,
                                 star
                               )
                             }
@@ -242,6 +301,7 @@ const Shoes = ({ limit, products }) => {
                           >
                             ★
                           </button>
+
                         )
                       )}
 
@@ -306,7 +366,7 @@ const Shoes = ({ limit, products }) => {
                           }
                           onClick={() =>
                             handleSizeSelect(
-                              shoe._id,
+                              shoeId,
                               size
                             )
                           }
@@ -322,7 +382,7 @@ const Shoes = ({ limit, products }) => {
 
                   {/* ========================
                       ADD TO CART
-                  ========================= */}
+                  ======================== */}
 
                   <button
                     className="add-cart"
