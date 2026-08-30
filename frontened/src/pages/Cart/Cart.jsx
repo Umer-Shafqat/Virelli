@@ -75,7 +75,7 @@ const Cart = () => {
                     console.log("Image not found:", e.target.src);
                     e.target.style.display = "none";
                     }}
-/>
+                    />
 
 
                     {/* SHOE DETAILS */}
