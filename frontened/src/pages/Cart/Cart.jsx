@@ -47,11 +47,6 @@ const Cart = () => {
       ) : (
         <>
           <div className="cart-container">
-
-            {/* =====================================
-                CART ITEMS
-            ===================================== */}
-
             <div className="cart-items">
 
               {cartEntries.map(([key, quantity]) => {
@@ -72,13 +67,15 @@ const Cart = () => {
                     key={key}
                   >
 
-                    {/* SHOE IMAGE */}
-
-                    <img
-                      src={`http://localhost:4000/images/${shoe.image}`}
-                      alt={shoe.name}
-                      className="cart-shoe-image"
-                    />
+                   <img
+                    src={`http://localhost:4000/images/${shoe.image}`}
+                    alt={shoe.name || "Shoe"}
+                    className="cart-shoe-image"
+                    onError={(e) => {
+                    console.log("Image not found:", e.target.src);
+                    e.target.style.display = "none";
+                    }}
+/>
 
 
                     {/* SHOE DETAILS */}
