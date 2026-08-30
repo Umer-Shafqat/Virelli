@@ -1,12 +1,11 @@
 .my-orders-page {
   width: 100%;
   min-height: 100vh;
-  padding:
-    120px
-    clamp(12px, 4vw, 30px)
-    60px;
+  padding: 120px clamp(12px, 4vw, 30px) 60px;
   background: #f6f8f8;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .my-orders-container {
@@ -56,9 +55,6 @@
 
   box-sizing: border-box;
 }
-
-
-
 
 .order-card {
   width: 100%;
@@ -1068,5 +1064,41 @@
 
     box-shadow: none;
   }
+}
 
+/* =====================================
+   FOOTER POSITION FIX
+===================================== */
+
+.my-orders-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+  Main orders content takes available space.
+  This pushes the footer to the bottom when
+  there are only a few orders.
+*/
+
+.my-orders-container {
+  flex: 1;
+}
+
+
+/* =====================================
+   FOOTER
+===================================== */
+
+footer {
+  width: 100%;
+  margin-top: auto;
+}
+
+
+/* If your footer uses a class */
+.footer {
+  width: 100%;
+  margin-top: auto;
 }
