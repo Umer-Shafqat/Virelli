@@ -4,13 +4,18 @@
 
 .my-orders-page {
   width: 100%;
-  min-height: 100vh;
-  padding: 120px clamp(20px, 4vw, 40px) 60px;
-  background: #f6f8f8;
-  box-sizing: border-box;
+  min-height: calc(100vh - 80px);
+
+  padding: 105px 40px 60px;
+
+  background: #ffffff;
 
   display: flex;
   flex-direction: column;
+
+  flex: 1;
+
+  box-sizing: border-box;
 }
 
 
@@ -21,32 +26,46 @@
 .my-orders-container {
   width: 100%;
   max-width: 1050px;
+
   margin: 0 auto;
-  box-sizing: border-box;
 
   flex: 1;
+
+  box-sizing: border-box;
 }
 
 
 /* =====================================
-   PAGE HEADING
+   PAGE TITLE
 ===================================== */
 
 .my-orders-container h1 {
   margin: 0;
+
   text-align: center;
 
-  font-size: clamp(26px, 3vw, 34px);
-  color: #222;
+  font-size: 52px;
+  font-weight: 700;
+
+  color: #171b2a;
+
   line-height: 1.2;
 }
 
+
+/* =====================================
+   SUBTITLE
+===================================== */
+
 .orders-subtitle {
-  margin: 8px 0 35px;
+  margin: 10px 0 40px;
+
   text-align: center;
 
-  color: #777;
-  font-size: clamp(12px, 1.5vw, 15px);
+  color: #5f6b76;
+
+  font-size: 18px;
+
   line-height: 1.5;
 }
 
@@ -58,11 +77,14 @@
 .orders-list {
   width: 100%;
   max-width: 1050px;
+
   margin: 0 auto;
+
   padding: 0;
 
   display: flex;
   flex-direction: column;
+
   gap: 28px;
 
   box-sizing: border-box;
@@ -75,10 +97,13 @@
 
 .order-card {
   width: 100%;
+
   padding: 25px;
 
-  background: #fff;
+  background: #ffffff;
+
   border: 1px solid #eeeeee;
+
   border-radius: 12px;
 
   box-sizing: border-box;
@@ -97,7 +122,9 @@
   width: 100%;
 
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
 
   gap: 25px;
@@ -111,6 +138,7 @@
 
 .order-header > div:first-child {
   flex: 1;
+
   min-width: 0;
 }
 
@@ -118,7 +146,8 @@
   margin: 0 0 8px;
 
   font-size: 20px;
-  color: #222;
+
+  color: #222222;
 
   line-height: 1.3;
 
@@ -129,7 +158,8 @@
   margin: 4px 0;
 
   font-size: 13px;
-  color: #777;
+
+  color: #777777;
 
   line-height: 1.5;
 
@@ -149,9 +179,11 @@
   border-radius: 20px;
 
   background: #fff3cd;
+
   color: #856404;
 
   font-size: 13px;
+
   font-weight: 600;
 
   white-space: nowrap;
@@ -173,14 +205,16 @@
   margin: 0 0 15px;
 
   font-size: 18px;
-  color: #222;
+
+  color: #222222;
 }
 
 .customer-info p {
   margin: 7px 0;
 
   font-size: 14px;
-  color: #555;
+
+  color: #555555;
 
   line-height: 1.5;
 
@@ -202,17 +236,13 @@
 
 
 /* =====================================
-   ORDER ITEM - DESKTOP
+   ORDER ITEM
 ===================================== */
 
 .order-item {
   width: 100%;
 
   display: grid;
-
-  /*
-    Image | Details | Price
-  */
 
   grid-template-columns: 110px minmax(0, 1fr) 170px;
 
@@ -233,7 +263,7 @@
 
 
 /* =====================================
-   ITEM IMAGE
+   ORDER ITEM IMAGE
 ===================================== */
 
 .order-item-image {
@@ -273,7 +303,8 @@
   margin: 0 0 10px;
 
   font-size: 17px;
-  color: #222;
+
+  color: #222222;
 
   line-height: 1.35;
 
@@ -284,7 +315,8 @@
   margin: 5px 0;
 
   font-size: 13px;
-  color: #777;
+
+  color: #777777;
 
   line-height: 1.5;
 
@@ -298,6 +330,7 @@
 
 .order-item-price {
   width: 170px;
+
   min-width: 170px;
 
   text-align: right;
@@ -309,13 +342,14 @@
   margin: 5px 0;
 
   font-size: 13px;
-  color: #777;
+
+  color: #777777;
 }
 
 .order-item-price strong {
   font-size: 16px;
 
-  color: #222;
+  color: #222222;
 
   white-space: nowrap;
 }
@@ -327,6 +361,7 @@
 
 .order-total {
   width: 100%;
+
   max-width: 400px;
 
   margin-left: auto;
@@ -342,6 +377,7 @@
   display: flex;
 
   justify-content: space-between;
+
   align-items: center;
 
   gap: 20px;
@@ -349,11 +385,12 @@
   padding: 8px 0;
 
   font-size: 14px;
-  color: #555;
+
+  color: #555555;
 }
 
 .order-total strong {
-  color: #222;
+  color: #222222;
 
   white-space: nowrap;
 }
@@ -368,11 +405,11 @@
 
   padding-top: 15px !important;
 
-  border-top: 2px solid #222;
+  border-top: 2px solid #222222;
 
   font-size: 18px !important;
 
-  color: #222 !important;
+  color: #222222 !important;
 }
 
 .grand-total strong {
@@ -381,7 +418,7 @@
 
 
 /* =====================================
-   PRINT RECEIPT
+   PRINT RECEIPT BUTTON
 ===================================== */
 
 .print-receipt-btn {
@@ -393,13 +430,16 @@
 
   padding: 12px 20px;
 
-  background: #111;
-  color: #fff;
+  background: #111111;
+
+  color: #ffffff;
 
   border: none;
+
   border-radius: 6px;
 
   font-size: 15px;
+
   font-weight: 600;
 
   cursor: pointer;
@@ -413,7 +453,7 @@
 }
 
 .print-receipt-btn:hover {
-  background: #333;
+  background: #333333;
 
   transform: translateY(-2px);
 
@@ -431,6 +471,7 @@
 
 .orders-message {
   width: 100%;
+
   max-width: 600px;
 
   margin: 80px auto;
@@ -439,7 +480,7 @@
 
   text-align: center;
 
-  background: #fff;
+  background: #ffffff;
 
   border-radius: 12px;
 
@@ -451,31 +492,29 @@
 .orders-message h2 {
   margin: 0 0 10px;
 
-  color: #222;
+  color: #5f6b76;
 
-  font-size: clamp(20px, 3vw, 26px);
+  font-size: 30px;
 }
 
 .orders-message p {
   margin: 0;
 
-  color: #777;
+  color: #5f6b76;
 
-  font-size: 14px;
+  font-size: 18px;
 
   line-height: 1.5;
 }
 
 
 /* =====================================
-   LARGE DESKTOP
-   1200px+
+   DESKTOP
 ===================================== */
 
 @media (min-width: 1200px) {
   .my-orders-page {
-    padding-top: 120px;
-    padding-bottom: 60px;
+    padding-top: 105px;
   }
 
   .my-orders-container,
@@ -500,6 +539,7 @@
 
   .order-item-price {
     width: 180px;
+
     min-width: 180px;
   }
 }
@@ -507,12 +547,11 @@
 
 /* =====================================
    LAPTOP
-   901px - 1199px
 ===================================== */
 
 @media (min-width: 901px) and (max-width: 1199px) {
   .my-orders-page {
-    padding: 110px 25px 55px;
+    padding: 100px 25px 55px;
   }
 
   .my-orders-container,
@@ -545,6 +584,7 @@
 
   .order-item-price {
     width: 145px;
+
     min-width: 145px;
   }
 
@@ -568,16 +608,21 @@
 
 /* =====================================
    TABLET
-   701px - 900px
 ===================================== */
 
 @media (max-width: 900px) {
   .my-orders-page {
-    padding: 100px 20px 50px;
+    padding: 95px 20px 50px;
+  }
+
+  .my-orders-container h1 {
+    font-size: 42px;
   }
 
   .orders-subtitle {
-    margin-bottom: 28px;
+    font-size: 16px;
+
+    margin-bottom: 30px;
   }
 
   .order-card {
@@ -597,6 +642,7 @@
 
   .order-item-price {
     width: 120px;
+
     min-width: 120px;
   }
 }
@@ -604,22 +650,23 @@
 
 /* =====================================
    MOBILE
-   600px AND BELOW
 ===================================== */
 
 @media (max-width: 600px) {
   .my-orders-page {
-    padding: 90px 12px 40px;
+    min-height: calc(100vh - 70px);
 
-    min-height: 100vh;
+    padding: 85px 12px 40px;
   }
 
   .my-orders-container h1 {
-    font-size: 26px;
+    font-size: 32px;
   }
 
   .orders-subtitle {
-    font-size: 12px;
+    font-size: 13px;
+
+    margin-top: 7px;
 
     margin-bottom: 25px;
   }
@@ -645,6 +692,14 @@
     gap: 12px;
   }
 
+  .order-header h2 {
+    font-size: 17px;
+  }
+
+  .order-header p {
+    font-size: 11px;
+  }
+
   .order-status {
     align-self: flex-start;
 
@@ -660,12 +715,21 @@
     padding: 16px 0;
   }
 
-  .order-items {
-    padding: 16px 0;
+  .customer-info h3,
+  .order-items h3 {
+    font-size: 16px;
+  }
+
+  .customer-info p {
+    font-size: 12px;
   }
 
 
-  /* Item */
+  /* Items */
+
+  .order-items {
+    padding: 16px 0;
+  }
 
   .order-item {
     display: flex;
@@ -703,7 +767,7 @@
   }
 
 
-  /* Price below */
+  /* Price */
 
   .order-item-price {
     width: 100%;
@@ -760,34 +824,39 @@
   }
 
 
-  /* Message */
+  /* Empty message */
 
   .orders-message {
     margin: 50px auto;
 
     padding: 40px 20px;
   }
+
+  .orders-message h2 {
+    font-size: 24px;
+  }
+
+  .orders-message p {
+    font-size: 14px;
+  }
 }
 
 
 /* =====================================
    SMALL MOBILE
-   480px AND BELOW
 ===================================== */
 
 @media (max-width: 480px) {
   .my-orders-page {
-    padding: 85px 9px 30px;
+    padding: 82px 9px 30px;
   }
 
   .my-orders-container h1 {
-    font-size: 24px;
+    font-size: 27px;
   }
 
   .orders-subtitle {
     font-size: 11px;
-
-    margin-top: 6px;
 
     margin-bottom: 22px;
   }
@@ -894,16 +963,15 @@
 
 /* =====================================
    VERY SMALL PHONES
-   360px AND BELOW
 ===================================== */
 
 @media (max-width: 360px) {
   .my-orders-page {
-    padding: 80px 7px 25px;
+    padding: 78px 7px 25px;
   }
 
   .my-orders-container h1 {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .orders-subtitle {
@@ -995,81 +1063,8 @@
   .print-receipt-btn:hover {
     transform: none;
 
-    background: #111;
+    background: #111111;
 
     box-shadow: none;
   }
-}
-
-
-/* =====================================
-   FOOTER / PAGE LAYOUT FIX
-===================================== */
-
-/*
-   IMPORTANT:
-   The Footer should be outside .my-orders-page.
-   This page takes at least the full viewport height,
-   while the Footer appears after the page content.
-*/
-
-.my-orders-page {
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-
-  box-sizing: border-box;
-}
-
-.my-orders-container {
-  flex: 1;
-
-  width: 100%;
-  max-width: 1050px;
-
-  margin: 0 auto;
-
-  box-sizing: border-box;
-}
-
-
-/* =====================================
-   PREVENT HORIZONTAL OVERFLOW
-===================================== */
-
-html,
-body {
-  width: 100%;
-  max-width: 100%;
-
-  margin: 0;
-  padding: 0;
-
-  overflow-x: hidden;
-}
-
-#root {
-  width: 100%;
-  min-height: 100vh;
-
-  overflow-x: hidden;
-}
-
-
-/* =====================================
-   FOOTER SAFETY
-===================================== */
-
-footer,
-.footer {
-  position: relative;
-
-  width: 100%;
-
-  margin-top: 0;
-
-  z-index: 1;
-
-  box-sizing: border-box;
 }
