@@ -274,26 +274,18 @@ const PlaceOrder = () => {
         "Order Items:",
         orderItems
       );
+   
+      const url = process.env.REACT_APP_API_URL;
 
-      const response =
-        await axios.post(
-
-          "http://localhost:4000/api/order/place",
-
-          orderData,
-
-          {
-
-            headers: {
-
-              Authorization:
-                `Bearer ${token}`,
-
-            },
-
-          }
-
-        );
+const response = await axios.post(
+  `${url}/api/order/place`,
+  orderData,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       if (
         response.data.success
