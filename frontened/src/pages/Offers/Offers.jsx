@@ -3,7 +3,7 @@ import axios from "axios";
 import "./Offers.css";
 
 const API_URL =
-  process.env.REACT_APP_API_URL || "${process.env.REACT_APP_API_URL}";
+  process.env.REACT_APP_API_URL || "http://localhost:4000";
 
 // =====================================
 // OFFER DATES

@@ -68,7 +68,7 @@ const Cart = () => {
                   >
 
                    <img
-                    src={`${process.env.REACT_APP_API_URL}/images/${shoe.image}`}
+                    src={`http://localhost:4000/images/${shoe.image}`}
                     alt={shoe.name || "Shoe"}
                     className="cart-shoe-image"
                     onError={(e) => {
