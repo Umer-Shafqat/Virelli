@@ -154,7 +154,7 @@ const Navbar = () => {
                     >
 
                       <img
-                        src={`http://localhost:4000/images/${shoe.image}`}
+                        src={`${process.env.REACT_APP_API_URL}/images/${shoe.image}`}
                         alt={shoe.name}
                       />
 
