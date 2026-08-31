@@ -1,26 +1,12 @@
-/* =========================================================
-   FOOTER
-========================================================= */
-
 .footer {
   width: 100%;
-  position: fixed;
   background: #e8ded8;
   color: #171c29;
-
   padding: 70px 5% 0;
-
   border-top: 1px solid rgba(0, 0, 0, 0.08);
-
   box-sizing: border-box;
-
   overflow: hidden;
 }
-
-
-/* =========================================================
-   FOOTER CONTAINER
-========================================================= */
 
 .footer-container {
   width: 100%;
