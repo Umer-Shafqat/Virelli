@@ -103,7 +103,6 @@ const Cart = () => {
                     </div>
 
 
-                    {/* QUANTITY CONTROL */}
 
                     <div className="quantity-control">
 

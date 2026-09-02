@@ -720,10 +720,7 @@ const response = await axios.post(
           </div>
 
 
-          {/* =================================
-              PRICE
-          ================================= */}
-
+         
           <div
             className="summary-prices"
           >

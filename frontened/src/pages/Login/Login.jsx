@@ -299,7 +299,7 @@ const Login = () => {
             </div>
 
 
-            {/* RIGHT PANEL */}
+          
 
             <div className="overlay-panel overlay-right">
 

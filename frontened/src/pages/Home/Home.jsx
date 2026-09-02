@@ -11,5 +11,5 @@ const Home = () => {
     </>
   );
 };
-//home section
+
 export default Home;

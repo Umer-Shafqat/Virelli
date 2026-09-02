@@ -9,9 +9,7 @@ const NewArrival = () => {
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // =====================================
-  // FETCH NEW ARRIVALS
-  // =====================================
+
 
   useEffect(() => {
     const fetchNewArrivals = async () => {

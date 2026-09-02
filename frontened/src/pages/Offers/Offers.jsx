@@ -5,9 +5,7 @@ import "./Offers.css";
 const API_URL =
   process.env.REACT_APP_API_URL || "http://localhost:4000";
 
-// =====================================
-// OFFER DATES
-// =====================================
+
 
 const offerStartDate = new Date(
   "2026-08-09T00:00:00"

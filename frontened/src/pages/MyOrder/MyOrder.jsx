@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 import "./MyOrder.css";
-//order section
-// Backend URL
+
 const API_URL =
   process.env.REACT_APP_API_URL || "http://localhost:4000";
 
