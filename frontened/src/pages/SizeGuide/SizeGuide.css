@@ -473,9 +473,6 @@
     min-width: 300px;
   }
 
-
-  /* Disable hover movement on mobile */
-
   .size-card:hover {
     transform: none;
 
