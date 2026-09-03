@@ -137,11 +137,6 @@ const getCart = async (req, res) => {
         userId,
       });
 
-
-    // =================================
-    // NO CART
-    // =================================
-
     if (!cart) {
 
       return res.status(200).json({
