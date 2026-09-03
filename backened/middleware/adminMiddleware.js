@@ -1,3 +1,4 @@
+
 const adminMiddleware = (req, res, next) => {
   try {
     if (!req.user) {
@@ -16,6 +17,8 @@ const adminMiddleware = (req, res, next) => {
 
     next();
   } catch (error) {
+    console.log("Admin Middleware Error:", error.message);
+
     return res.status(500).json({
       success: false,
       message: error.message,
