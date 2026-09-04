@@ -460,10 +460,6 @@
     font-size: 12px;
   }
 
-
-  /* Keep table scrollable instead of
-     breaking the whole page */
-
   .size-table-wrapper {
     overflow-x: auto;
   }
