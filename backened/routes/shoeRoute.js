@@ -14,7 +14,6 @@ import upload from "../middleware/multer.js";
 
 const shoeRouter = express.Router();
 
-// Add Shoe
 shoeRouter.post("/add", upload.single("image"), addShoe);
 
 // Get All Shoes
