@@ -7,6 +7,8 @@ import { HashRouter } from 'react-router-dom';
 import StoreContextProvider from "./Context/StoreContext/StoreContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+//ROOT RENDER
 root.render(
   <HashRouter>
       <StoreContextProvider>
