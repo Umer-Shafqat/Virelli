@@ -661,11 +661,6 @@ const StoreContextProvider = ({ children }) => {
 
   }, [token]);
 
-
-  /* =====================================
-     CONTEXT VALUE
-  ===================================== */
-
   const contextValue = {
 
     /* API URL */
