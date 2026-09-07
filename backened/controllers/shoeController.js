@@ -302,11 +302,6 @@ const searchAdmin = async (req, res) => {
       });
     }
 
-
-    // =====================================
-    // RESPONSE
-    // =====================================
-
     res.status(200).json({
       success: true,
       shoes,
