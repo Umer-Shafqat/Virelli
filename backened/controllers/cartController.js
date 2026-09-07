@@ -119,12 +119,6 @@ const addToCart = async (req, res) => {
   }
 };
 
-
-
-// =================================
-// GET CART
-// =================================
-
 const getCart = async (req, res) => {
 
   try {
