@@ -16,7 +16,7 @@ const shoeRouter = express.Router();
 
 shoeRouter.post("/add", upload.single("image"), addShoe);
 
-// Get All Shoes
+
 shoeRouter.get("/list", getShoes);
 
 // New Arrivals
