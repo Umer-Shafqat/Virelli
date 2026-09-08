@@ -663,8 +663,6 @@ const StoreContextProvider = ({ children }) => {
 
   const contextValue = {
 
-    /* API URL */
-
     url,
 
 
