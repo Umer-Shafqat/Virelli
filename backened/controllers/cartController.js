@@ -46,11 +46,6 @@ const addToCart = async (req, res) => {
       userId,
     });
 
-
-    // =================================
-    // CREATE NEW CART
-    // =================================
-
     if (!cart) {
 
       cart = new cartModel({
