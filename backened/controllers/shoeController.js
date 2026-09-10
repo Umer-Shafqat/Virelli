@@ -319,10 +319,6 @@ const searchAdmin = async (req, res) => {
   }
 };
 
-
-// ===============================
-// DELETE SHOE
-// ===============================
 const deleteShoe = async (req, res) => {
   try {
     const shoe = await ShoeModel.findById(req.params.id);
