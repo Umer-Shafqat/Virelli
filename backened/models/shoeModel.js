@@ -79,7 +79,6 @@ const shoeSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 const shoeModel =
   mongoose.models.shoe ||
   mongoose.model("shoe", shoeSchema);
