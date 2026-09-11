@@ -8,18 +8,23 @@
   position: relative;
   width: 100%;
   min-height: 500px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   overflow: hidden;
   background: #f5f5f5;
 }
 
 .header-img {
-  width: 70%;
+  width: 100%;
   height: auto;
-  min-height: 400px;
+
+  min-height: 500px;
+
   display: block;
+
   object-fit: cover;
 }
 
