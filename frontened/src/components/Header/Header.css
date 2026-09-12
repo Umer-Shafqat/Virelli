@@ -79,7 +79,6 @@ transform: scale(1.05);
 height: clamp(480px, 50vw, 620px);
 }
 
-```
 .header-content {
     width: 100%;
 }
@@ -96,7 +95,6 @@ height: clamp(480px, 50vw, 620px);
 .header-content button {
     padding: 14px 38px;
 }
-```
 
 }
 
@@ -105,7 +103,6 @@ height: clamp(480px, 50vw, 620px);
 width: 100%;
 }
 
-```
 .header-content h1 {
     font-size: clamp(1.8rem, 6vw, 2.8rem);
     letter-spacing: 1px;
@@ -123,7 +120,6 @@ width: 100%;
     padding: 13px 32px;
     font-size: 0.9rem;
 }
-```
 
 }
 
@@ -133,7 +129,6 @@ width: calc(100% - 40px);
 max-width: 420px;
 }
 
-```
 .header-content h1 {
     font-size: clamp(1.6rem, 8vw, 2.2rem);
     letter-spacing: 1px;
@@ -155,7 +150,6 @@ max-width: 420px;
     padding: 11px 26px;
     font-size: 0.85rem;
 }
-```
 
 }
 
@@ -164,7 +158,6 @@ max-width: 420px;
 width: calc(100% - 30px);
 }
 
-```
 .header-content h1 {
     font-size: 1.5rem;
     margin-bottom: 10px;
@@ -180,7 +173,6 @@ width: calc(100% - 30px);
     padding: 10px 22px;
     font-size: 0.78rem;
 }
-```
 
 }
 
@@ -281,7 +273,6 @@ transform: translateY(-2px);
 padding: 60px 4%;
 }
 
-```
 .featured-grid {
     gap: 20px;
 }
@@ -301,8 +292,6 @@ padding: 60px 4%;
 .price {
     font-size: 17px;
 }
-```
-
 }
 
 @media (max-width: 768px) {
@@ -310,7 +299,6 @@ padding: 60px 4%;
 padding: 55px 30px;
 }
 
-```
 .featured h2 {
     font-size: 30px;
 }
@@ -349,7 +337,6 @@ padding: 55px 30px;
     margin-top: 30px;
     padding: 13px 27px;
 }
-```
 
 }
 
@@ -358,7 +345,6 @@ padding: 55px 30px;
 padding: 50px 20px;
 }
 
-```
 .featured h2 {
     font-size: 27px;
 }
@@ -398,7 +384,6 @@ padding: 50px 20px;
     margin-top: 30px;
     padding: 13px 27px;
 }
-```
 
 }
 
@@ -407,7 +392,6 @@ padding: 50px 20px;
 padding: 45px 15px;
 }
 
-```
 .featured h2 {
     font-size: 24px;
 }
@@ -444,8 +428,6 @@ padding: 45px 15px;
     padding: 12px 24px;
     font-size: 14px;
 }
-```
-
 }
 
 @media (max-width: 320px) {
@@ -453,7 +435,6 @@ padding: 45px 15px;
 padding: 40px 12px;
 }
 
-```
 .featured h2 {
     font-size: 22px;
 }
@@ -465,6 +446,4 @@ padding: 40px 12px;
 .featured-info {
     padding: 14px;
 }
-```
-
 }
