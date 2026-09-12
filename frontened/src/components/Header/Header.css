@@ -6,7 +6,6 @@ box-sizing: border-box;
 
 .header {
 position: relative;
-width: 100%;
 height: clamp(500px, 48vw, 700px);
 display: flex;
 justify-content: center;
@@ -20,7 +19,7 @@ width: 100%;
 height: 100%;
 display: block;
 object-fit: cover;
-object-position: center;
+object-position: center center;
 }
 
 .header-content {
@@ -67,9 +66,7 @@ color: #fff;
 font-size: 1rem;
 font-weight: 600;
 cursor: pointer;
-transition:
-background 0.3s ease,
-transform 0.3s ease;
+transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .header-content button:hover {
@@ -77,146 +74,121 @@ background: #b71c1c;
 transform: scale(1.05);
 }
 
-/* =========================================================
-LAPTOP
-========================================================= */
-
 @media (max-width: 1200px) {
 .header {
 height: clamp(480px, 50vw, 620px);
 }
 
+```
 .header-content {
-width: 88%;
+    width: 100%;
 }
 
 .header-content h1 {
-font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 5vw, 3.5rem);
 }
 
 .header-content p {
-font-size: 1.05rem;
-margin-bottom: 25px;
+    font-size: 1.05rem;
+    margin-bottom: 25px;
 }
 
 .header-content button {
-padding: 14px 38px;
+    padding: 14px 38px;
 }
-}
+```
 
-/* =========================================================
-TABLET
-========================================================= */
+}
 
 @media (max-width: 768px) {
-.header {
-height: 500px;
-}
-
 .header-content {
-width: 88%;
+width: 100%;
 }
 
+```
 .header-content h1 {
-font-size: clamp(1.8rem, 6vw, 2.8rem);
-letter-spacing: 1px;
-margin-bottom: 14px;
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
 }
 
 .header-content p {
-max-width: 600px;
-font-size: 0.95rem;
-line-height: 1.5;
-margin-bottom: 22px;
+    max-width: 600px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 22px;
 }
 
 .header-content button {
-padding: 13px 32px;
-font-size: 0.9rem;
+    padding: 13px 32px;
+    font-size: 0.9rem;
 }
-}
+```
 
-/* =========================================================
-MOBILE
-========================================================= */
+}
 
 @media (max-width: 600px) {
-.header {
-height: 480px;
-}
-
 .header-content {
 width: calc(100% - 40px);
 max-width: 420px;
 }
 
+```
 .header-content h1 {
-font-size: clamp(1.6rem, 8vw, 2.2rem);
-letter-spacing: 1px;
-line-height: 1.15;
-margin-bottom: 12px;
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
+    letter-spacing: 1px;
+    line-height: 1.15;
+    margin-bottom: 12px;
 }
 
 .header-content h1 span {
-font-size: 0.55em;
+    font-size: 0.55em;
 }
 
 .header-content p {
-font-size: 0.85rem;
-line-height: 1.45;
-margin-bottom: 18px;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin-bottom: 18px;
 }
 
 .header-content button {
-padding: 11px 26px;
-font-size: 0.85rem;
+    padding: 11px 26px;
+    font-size: 0.85rem;
 }
-}
+```
 
-/* =========================================================
-VERY SMALL MOBILE
-========================================================= */
+}
 
 @media (max-width: 400px) {
-.header {
-height: 450px;
-}
-
 .header-content {
 width: calc(100% - 30px);
 }
 
+```
 .header-content h1 {
-font-size: 1.5rem;
-margin-bottom: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
 }
 
 .header-content p {
-font-size: 0.78rem;
-line-height: 1.4;
-margin-bottom: 15px;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
 }
 
 .header-content button {
-padding: 10px 22px;
-font-size: 0.78rem;
+    padding: 10px 22px;
+    font-size: 0.78rem;
 }
-}
+```
 
-/* =========================================================
-FEATURED SECTION
-========================================================= */
+}
 
 .featured {
-width: 100%;
 padding: 70px 5%;
 text-align: center;
 background: #f8f8f8;
 }
-
-/* =========================================================
-FEATURED HEADING
-========================================================= */
 
 .featured h2 {
 margin: 0 0 10px;
@@ -233,10 +205,6 @@ font-size: 15px;
 line-height: 1.6;
 }
 
-/* =========================================================
-FEATURED GRID
-========================================================= */
-
 .featured-grid {
 width: 100%;
 max-width: 1200px;
@@ -246,32 +214,20 @@ grid-template-columns: repeat(3, minmax(0, 1fr));
 gap: 25px;
 }
 
-/* =========================================================
-FEATURED CARD
-========================================================= */
-
 .featured-card {
 min-width: 0;
 overflow: hidden;
 background: #fff;
 border-radius: 12px;
 text-align: left;
-box-shadow:
-0 5px 20px rgba(0, 0, 0, 0.1);
-transition:
-transform 0.3s ease,
-box-shadow 0.3s ease;
+box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .featured-card:hover {
 transform: translateY(-8px);
-box-shadow:
-0 10px 25px rgba(0, 0, 0, 0.14);
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
 }
-
-/* =========================================================
-FEATURED IMAGE
-========================================================= */
 
 .featured-card img {
 width: 100%;
@@ -279,10 +235,6 @@ height: 250px;
 display: block;
 object-fit: cover;
 }
-
-/* =========================================================
-FEATURED INFORMATION
-========================================================= */
 
 .featured-info {
 padding: 20px;
@@ -308,10 +260,6 @@ font-size: 18px;
 font-weight: 700;
 }
 
-/* =========================================================
-VIEW ALL BUTTON
-========================================================= */
-
 .view-all {
 display: inline-block;
 margin-top: 40px;
@@ -320,9 +268,7 @@ background: #000;
 color: #fff;
 border-radius: 5px;
 text-decoration: none;
-transition:
-background 0.3s ease,
-transform 0.3s ease;
+transition: background 0.3s ease, transform 0.3s ease;
 }
 
 .view-all:hover {
@@ -330,217 +276,195 @@ background: #333;
 transform: translateY(-2px);
 }
 
-/* =========================================================
-SMALL DESKTOP / LAPTOP
-========================================================= */
-
 @media (max-width: 1000px) {
 .featured {
 padding: 60px 4%;
 }
 
+```
 .featured-grid {
-gap: 20px;
+    gap: 20px;
 }
 
 .featured-card img {
-height: 220px;
+    height: 220px;
 }
 
 .featured-info {
-padding: 18px;
+    padding: 18px;
 }
 
 .featured-info h3 {
-font-size: 18px;
+    font-size: 18px;
 }
 
 .price {
-font-size: 17px;
+    font-size: 17px;
 }
-}
+```
 
-/* =========================================================
-TABLET
-========================================================= */
+}
 
 @media (max-width: 768px) {
 .featured {
 padding: 55px 30px;
 }
 
+```
 .featured h2 {
-font-size: 30px;
+    font-size: 30px;
 }
 
 .featured > p {
-font-size: 14px;
-margin-bottom: 30px;
+    font-size: 14px;
+    margin-bottom: 30px;
 }
 
 .featured-grid {
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 20px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
 }
 
 .featured-card img {
-height: 210px;
+    height: 210px;
 }
 
 .featured-info {
-padding: 16px;
+    padding: 16px;
 }
 
 .featured-info h3 {
-font-size: 17px;
+    font-size: 17px;
 }
 
 .category {
-font-size: 13px;
+    font-size: 13px;
 }
 
 .price {
-font-size: 16px;
+    font-size: 16px;
 }
 
 .view-all {
-margin-top: 30px;
-padding: 13px 27px;
+    margin-top: 30px;
+    padding: 13px 27px;
 }
-}
+```
 
-/* =========================================================
-MOBILE
-========================================================= */
+}
 
 @media (max-width: 600px) {
 .featured {
 padding: 50px 20px;
 }
 
+```
 .featured h2 {
-font-size: 27px;
+    font-size: 27px;
 }
 
 .featured > p {
-font-size: 14px;
-line-height: 1.5;
-margin-bottom: 28px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 28px;
 }
 
 .featured-grid {
-grid-template-columns: 1fr;
-gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 20px;
 }
 
 .featured-card img {
-height: 250px;
+    height: 250px;
 }
 
 .featured-info {
-padding: 18px;
+    padding: 18px;
 }
 
 .featured-info h3 {
-font-size: 19px;
+    font-size: 19px;
 }
 
 .category {
-font-size: 14px;
+    font-size: 14px;
 }
 
 .price {
-font-size: 17px;
+    font-size: 17px;
 }
 
 .view-all {
-margin-top: 30px;
-padding: 13px 27px;
+    margin-top: 30px;
+    padding: 13px 27px;
 }
-}
+```
 
-/* =========================================================
-VERY SMALL MOBILE
-========================================================= */
+}
 
 @media (max-width: 400px) {
 .featured {
 padding: 45px 15px;
 }
 
+```
 .featured h2 {
-font-size: 24px;
+    font-size: 24px;
 }
 
 .featured > p {
-font-size: 13px;
+    font-size: 13px;
 }
 
 .featured-grid {
-gap: 18px;
+    gap: 18px;
 }
 
 .featured-card img {
-height: 220px;
+    height: 220px;
 }
 
 .featured-info {
-padding: 15px;
+    padding: 15px;
 }
 
 .featured-info h3 {
-font-size: 17px;
+    font-size: 17px;
 }
 
 .category {
-font-size: 13px;
+    font-size: 13px;
 }
 
 .price {
-font-size: 16px;
+    font-size: 16px;
 }
 
 .view-all {
-padding: 12px 24px;
-font-size: 14px;
+    padding: 12px 24px;
+    font-size: 14px;
 }
-}
+```
 
-/* =========================================================
-EXTRA SMALL DEVICES
-========================================================= */
+}
 
 @media (max-width: 320px) {
-.header {
-height: 420px;
-}
-
-.header-content h1 {
-font-size: 1.35rem;
-}
-
-.header-content p {
-font-size: 0.72rem;
-}
-
-.header-content button {
-padding: 9px 19px;
-font-size: 0.75rem;
-}
-
 .featured {
 padding: 40px 12px;
 }
 
+```
 .featured h2 {
-font-size: 22px;
+    font-size: 22px;
 }
 
 .featured-card img {
-height: 200px;
+    height: 200px;
 }
 
 .featured-info {
-padding: 14px;
+    padding: 14px;
 }
+```
+
 }
