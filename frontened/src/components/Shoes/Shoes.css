@@ -177,10 +177,10 @@
   transform: translateY(-1px);
 }
 
-.sizes button.selected-size {
-  background-color: #000;
-  color: #fff;
-  border-color: #000;
+.sizes button.size-btn.selected { 
+  background: #000;
+   color: #fff; 
+   border-color: #000; 
 }
 
 .rating {
