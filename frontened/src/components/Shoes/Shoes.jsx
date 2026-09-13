@@ -8,11 +8,18 @@ const Shoes = ({ limit, products }) => {
   const [shoeList, setShoeList] = useState([]);
 
   useEffect(() => {
-    const list = products || shoes || [];
+    const list =
+      Array.isArray(products) && products.length > 0
+        ? products
+        : Array.isArray(shoes)
+        ? shoes
+        : [];
+
     const normalizedList = list.map((shoe) => ({
       ...shoe,
       _id: shoe._id || shoe.id || shoe.shoeId,
     }));
+
     setShoeList(normalizedList);
   }, [products, shoes]);
 
