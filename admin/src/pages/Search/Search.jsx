@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./Search.css";
@@ -7,6 +7,7 @@ const Search = () => {
   const { keyword } = useParams();
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URL;
+
   const [data, setData] = useState({
     shoes: [],
     users: [],
@@ -15,16 +16,11 @@ const Search = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // =====================================
-  // CHECK SPECIAL SEARCH KEYWORDS
-  // =====================================
-
   useEffect(() => {
     if (!keyword) return;
 
     const searchKeyword = keyword.trim().toLowerCase();
 
-    // Orders page
     if (
       searchKeyword === "order" ||
       searchKeyword === "orders"
@@ -33,7 +29,6 @@ const Search = () => {
       return;
     }
 
-    // Users page
     if (
       searchKeyword === "user" ||
       searchKeyword === "users"
@@ -42,7 +37,6 @@ const Search = () => {
       return;
     }
 
-    // Shoes page
     if (
       searchKeyword === "shoe" ||
       searchKeyword === "shoes"
@@ -51,18 +45,13 @@ const Search = () => {
       return;
     }
 
-    // Dashboard
     if (searchKeyword === "dashboard") {
       navigate("/", { replace: true });
       return;
     }
   }, [keyword, navigate]);
 
-  // =====================================
-  // FETCH SEARCH RESULTS
-  // =====================================
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -89,18 +78,13 @@ const Search = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  // =====================================
-  // LOAD SEARCH RESULTS
-  // =====================================
+  }, [url, keyword]);
 
   useEffect(() => {
     if (!keyword) return;
 
     const searchKeyword = keyword.trim().toLowerCase();
 
-    // Don't fetch for page keywords
     if (
       searchKeyword === "order" ||
       searchKeyword === "orders" ||
@@ -114,20 +98,12 @@ const Search = () => {
     }
 
     fetchData();
-  }, [keyword]);
-
-  // =====================================
-  // NO RESULTS
-  // =====================================
+  }, [keyword, fetchData]);
 
   const noResults =
     data.shoes.length === 0 &&
     data.users.length === 0 &&
     data.orders.length === 0;
-
-  // =====================================
-  // UI
-  // =====================================
 
   return (
     <div className="search-page">
@@ -146,10 +122,6 @@ const Search = () => {
         </div>
       ) : (
         <>
-
-          {/* =====================================
-              SHOES
-          ===================================== */}
 
           {data.shoes.length > 0 && (
             <div className="search-section">
@@ -203,11 +175,6 @@ const Search = () => {
             </div>
           )}
 
-
-          {/* =====================================
-              USERS
-          ===================================== */}
-
           {data.users.length > 0 && (
             <div className="search-section">
 
@@ -236,11 +203,6 @@ const Search = () => {
 
             </div>
           )}
-
-
-          {/* =====================================
-              ORDERS
-          ===================================== */}
 
           {data.orders.length > 0 && (
             <div className="search-section">
