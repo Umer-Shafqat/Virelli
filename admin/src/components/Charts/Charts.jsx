@@ -40,9 +40,9 @@ const Charts = () => {
     }
   };
 
-  useEffect(() => {
-    getDailySales();
-  }, []);
+ useEffect(() => {
+  getDailySales();
+}, [getDailySales]);;
 
   const maxValue = Math.max(
     ...dailySales.map((item) => item.value),
