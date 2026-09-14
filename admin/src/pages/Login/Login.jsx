@@ -4,7 +4,6 @@ import axios from "axios";
 import "./Login.css";
 
 const Login = () => {
-
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -12,7 +11,8 @@ const Login = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const API_URL = "http://localhost:4000/api/admin/login";
+
+  const API_URL = `${process.env.REACT_APP_API_URL}/api/admin/login`;
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -35,7 +35,7 @@ const Login = () => {
       const response = await axios.post(API_URL, formData);
 
       if (response.data.success) {
-       localStorage.setItem("adminToken", response.data.token);
+        localStorage.setItem("adminToken", response.data.token);
         alert("Login Successful!");
         navigate("/");
       } else {
@@ -54,11 +54,11 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-card">
-
         <div className="login-header">
           <h1>Virelli Admin</h1>
           <p>Sign in to manage your shoe store</p>
         </div>
+
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label>Email Address</label>
