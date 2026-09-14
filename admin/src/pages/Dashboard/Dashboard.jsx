@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -8,8 +8,8 @@ import Table from "../../components/Table/Table";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-
   const url = process.env.REACT_APP_API_URL;
+
   const [dashboard, setDashboard] = useState({
     totalShoes: 0,
     totalOrders: 0,
@@ -20,13 +20,9 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // =====================================
-  // FETCH DASHBOARD DATA
-  // =====================================
-
-  const fetchDashboard = async () => {
+  const fetchDashboard = useCallback(async () => {
     try {
-     const token = localStorage.getItem("adminToken");
+      const token = localStorage.getItem("adminToken");
 
       const response = await axios.get(
         `${url}/api/admin/dashboard`,
@@ -49,11 +45,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [url]);
 
   useEffect(() => {
     fetchDashboard();
-  }, []);
+  }, [fetchDashboard]);
 
   const dashboardCards = [
     {
@@ -130,5 +126,3 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
