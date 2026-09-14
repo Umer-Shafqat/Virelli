@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useCallback } from "react";
 import axios from "axios";
 import "./Charts.css";
 
@@ -40,9 +40,11 @@ const Charts = () => {
     }
   };
 
- useEffect(() => {
-  getDailySales();
-}, [getDailySales]);;
+  const getDailySalesCallback = useCallback(getDailySales, [url]);
+
+  useEffect(() => {
+    getDailySalesCallback();
+  }, [getDailySalesCallback]);
 
   const maxValue = Math.max(
     ...dailySales.map((item) => item.value),
