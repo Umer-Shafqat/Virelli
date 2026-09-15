@@ -22,10 +22,6 @@ const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const [shoes, setShoes] = useState([]);
 
-  /* =====================================
-     FETCH SHOES
-  ===================================== */
-
   const fetchShoes = useCallback(async () => {
     try {
       const response = await axios.get(
