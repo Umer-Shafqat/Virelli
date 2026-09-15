@@ -25,10 +25,6 @@ const Offers = () => {
   const [timeLeft, setTimeLeft] =
     useState(null);
 
-  // =====================================
-  // OFFER COUNTDOWN
-  // =====================================
-
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
