@@ -265,11 +265,6 @@ const Login = () => {
 
         </div>
 
-
-        {/* ==============================
-            DESKTOP OVERLAY
-        ============================== */}
-
         <div className="overlay-container">
 
           <div className="overlay">
@@ -297,9 +292,6 @@ const Login = () => {
               </button>
 
             </div>
-
-
-          
 
             <div className="overlay-panel overlay-right">
 
