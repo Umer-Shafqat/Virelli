@@ -170,11 +170,6 @@ const Cart = () => {
 
           </div>
 
-
-          {/* =====================================
-              TOTAL AMOUNT
-          ===================================== */}
-
           <div className="total-amount">
 
             <div className="amount-row">
