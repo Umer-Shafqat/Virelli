@@ -8,7 +8,7 @@ const ListShoes = () => {
   const [shoes, setShoes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const backendUrl = "http://localhost:4000";
+  const backendUrl = "https://virelli.onrender.com"; // Replace with your backend URL
 
   const fetchShoes = async () => {
     try {
