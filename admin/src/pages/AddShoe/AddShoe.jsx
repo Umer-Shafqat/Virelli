@@ -23,7 +23,7 @@ const AddShoe = () => {
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const backendUrl = "http://localhost:4000";
+  const backendUrl = "https://virelli.onrender.com"; // Replace with your backend URL
 
 const handleChange = (e) => {
   const { name, value, type, checked } = e.target;

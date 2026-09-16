@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import "./Users.css";
 
 const Users = () => {
-  const backendUrl = "http://localhost:4000";
+  const backendUrl = "https://virelli.onrender.com"; // Replace with your backend URL
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);

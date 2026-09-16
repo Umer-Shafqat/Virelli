@@ -6,7 +6,7 @@ import Charts from "../../components/Charts/Charts";
 import "./Analytics.css";
 
 const Analytics = () => {
-  const backendUrl = "http://localhost:4000";
+  const backendUrl = "https://virelli.onrender.com";
 
   const [analytics, setAnalytics] = useState({
     totalUsers: 0,
