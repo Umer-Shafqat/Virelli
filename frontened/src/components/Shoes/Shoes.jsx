@@ -53,7 +53,8 @@ const Shoes = ({ limit, products }) => {
             ...shoe,
             rating: {
               totalRatings: oldTotalRatings + 1,
-              ratingSum: oldRatingSum + selectedRating,
+              ratingSum:
+                oldRatingSum + selectedRating,
             },
           };
         }
@@ -69,7 +70,8 @@ const Shoes = ({ limit, products }) => {
       shoe?.id ||
       shoe?.shoeId;
 
-    const selectedSize = selectedSizes[shoeId];
+    const selectedSize =
+      selectedSizes[shoeId];
 
     if (!shoeId) {
       alert("Shoe ID is missing");
@@ -90,7 +92,9 @@ const Shoes = ({ limit, products }) => {
 
   return (
     <section className="shoes-section">
+
       <div className="shoes-heading">
+
         <h2>
           Our Shoes Collection
         </h2>
@@ -98,22 +102,29 @@ const Shoes = ({ limit, products }) => {
         <p>
           Explore all of our latest shoe designs
         </p>
+
       </div>
 
       <div className="shoes-grid">
+
         {displayedShoes.length > 0 ? (
+
           displayedShoes.map((shoe, index) => {
+
             const shoeId =
               shoe?._id ||
               shoe?.id ||
               shoe?.shoeId;
 
-            const price = Number(shoe.price || 0);
+            const price =
+              Number(shoe.price || 0);
 
-            const discount = Number(shoe.discount || 0);
+            const discount =
+              Number(shoe.discount || 0);
 
             const discountedPrice =
-              price - (price * discount) / 100;
+              price -
+              (price * discount) / 100;
 
             const totalRatings =
               shoe.rating?.totalRatings || 0;
@@ -134,7 +145,9 @@ const Shoes = ({ limit, products }) => {
                 className="shoe-card"
                 key={shoeId || index}
               >
+
                 <div className="shoe-image">
+
                   {discount > 0 && (
                     <span className="discount-badge">
                       {discount}% OFF
@@ -145,9 +158,11 @@ const Shoes = ({ limit, products }) => {
                     src={`${url}/images/${shoe.image}`}
                     alt={shoe.name || "Shoe"}
                   />
+
                 </div>
 
                 <div className="shoe-info">
+
                   <h3>
                     {shoe.name}
                   </h3>
@@ -163,9 +178,12 @@ const Shoes = ({ limit, products }) => {
                   )}
 
                   <div className="rating">
+
                     <div className="stars">
+
                       {[1, 2, 3, 4, 5].map(
                         (star) => (
+
                           <button
                             key={star}
                             type="button"
@@ -187,8 +205,10 @@ const Shoes = ({ limit, products }) => {
                           >
                             ★
                           </button>
+
                         )
                       )}
+
                     </div>
 
                     <span className="rating-number">
@@ -198,9 +218,11 @@ const Shoes = ({ limit, products }) => {
                     <span className="rating-count">
                       ({totalRatings})
                     </span>
+
                   </div>
 
                   <div className="price-section">
+
                     <h4 className="shoe-price">
                       Rs.{" "}
                       {discountedPrice.toLocaleString()}
@@ -212,15 +234,18 @@ const Shoes = ({ limit, products }) => {
                         {price.toLocaleString()}
                       </span>
                     )}
+
                   </div>
 
                   <div className="sizes">
+
                     <span className="size-label">
                       Size:
                     </span>
 
                     {(shoe.sizes || []).map(
                       (size) => (
+
                         <button
                           key={size}
                           type="button"
@@ -238,8 +263,10 @@ const Shoes = ({ limit, products }) => {
                         >
                           {size}
                         </button>
+
                       )
                     )}
+
                   </div>
 
                   <button
@@ -251,16 +278,23 @@ const Shoes = ({ limit, products }) => {
                   >
                     Add to Cart
                   </button>
+
                 </div>
+
               </div>
             );
           })
+
         ) : (
+
           <p className="no-shoes">
             No shoes available.
           </p>
+
         )}
+
       </div>
+
     </section>
   );
 };
