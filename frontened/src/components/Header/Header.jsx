@@ -1,6 +1,7 @@
 import React from "react";
 import "./Header.css";
 import hero1 from "../../assets/hero1.png";
+import hero2 from "../../assets/hero2.png";
 import { useNavigate } from "react-router-dom";
 import Popularshoes from "../Popularshoes/Popularshoes";
 
@@ -14,14 +15,22 @@ const Header = () => {
 
   return (
     <>
-
       <div className="header">
 
-        <img
-          src={hero1}
-          alt="Hero Banner"
-          className="header-img"
-        />
+        <picture>
+          {/* Mobile Hero */}
+          <source
+            media="(max-width: 600px)"
+            srcSet={hero2}
+          />
+
+          {/* Desktop Hero */}
+          <img
+            src={hero1}
+            alt="Hero Banner"
+            className="header-img"
+          />
+        </picture>
 
         <div className="header-content">
 
@@ -42,7 +51,7 @@ const Header = () => {
         </div>
 
       </div>
-      
+
       <Popularshoes />
 
     </>
