@@ -1,19 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-/* =====================================
-   RESET
-===================================== */
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-
-/* =====================================
-   HTML / BODY / ROOT
-===================================== */
 
 html,
 body,
@@ -37,22 +28,12 @@ body {
   background: #ffffff;
 }
 
-
-/* =====================================
-   ROOT APP
-===================================== */
-
 #root {
   min-height: 100vh;
 
   display: flex;
   flex-direction: column;
 }
-
-
-/* =====================================
-   MAIN CONTENT
-===================================== */
 
 .app-main {
   width: 100%;
@@ -65,48 +46,25 @@ body {
   min-height: 0;
 }
 
-
-/* =====================================
-   LINKS
-===================================== */
-
 a {
   text-decoration: none;
   color: darkred;
 }
-
-
-/* =====================================
-   APP CONTAINER
-===================================== */
 
 .app {
   width: 80%;
   margin: auto;
 }
 
-
-/* =====================================
-   IMAGES
-===================================== */
-
 img {
   max-width: 100%;
+  height: auto;
+  display: block;
 }
-
-
-/* =====================================
-   BUTTONS
-===================================== */
 
 button {
   font-family: inherit;
 }
-
-
-/* =====================================
-   FADE ANIMATION
-===================================== */
 
 @keyframes fadein {
   0% {
@@ -118,17 +76,11 @@ button {
   }
 }
 
-
-/* =====================================
-   RESPONSIVE APP CONTAINER
-===================================== */
-
 @media (max-width: 900px) {
   .app {
     width: 90%;
   }
 }
-
 
 @media (max-width: 600px) {
   .app {
@@ -136,12 +88,44 @@ button {
   }
 }
 
-
-/* =====================================
-   PREVENT HORIZONTAL OVERFLOW
-===================================== */
-
 body,
 #root {
   max-width: 100%;
+}
+
+
+/* =========================================================
+   RESPONSIVE HERO / BANNER IMAGE
+   Shows the FULL image on mobile without cropping
+========================================================= */
+
+.hero img,
+.hero-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .hero {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero img,
+  .hero-image {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
 }
