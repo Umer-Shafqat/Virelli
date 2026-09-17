@@ -464,7 +464,7 @@
 
   /* SHORT IMAGE */
   .shoe-image {
-    height: 85px !important;
+    height: 110px !important;
     overflow: hidden;
     background: #fff;
   }
@@ -477,12 +477,12 @@
 
   /* SMALL CONTENT AREA */
   .shoe-info {
-    padding: 7px !important;
+    padding: 5px !important;
   }
 
   .shoe-info h3 {
     margin: 0 0 3px;
-    font-size: 12px;
+    font-size: 8px;
     line-height: 1.15;
 
     white-space: nowrap;
