@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import "./Shoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
@@ -7,6 +7,8 @@ const Shoes = ({ limit, products }) => {
 
   const [selectedSizes, setSelectedSizes] = useState({});
   const [shoeList, setShoeList] = useState([]);
+  const [currentImages, setCurrentImages] = useState({});
+  const touchStartX = useRef({});
 
   useEffect(() => {
     const list = products || shoes || [];
@@ -90,6 +92,56 @@ const Shoes = ({ limit, products }) => {
     addToCart(shoeId, selectedSize);
   };
 
+  const handleTouchStart = (shoeId, e) => {
+    touchStartX.current[shoeId] =
+      e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (shoeId, images, e) => {
+    if (touchStartX.current[shoeId] === undefined) {
+      return;
+    }
+
+    const touchEndX =
+      e.changedTouches[0].clientX;
+
+    const difference =
+      touchStartX.current[shoeId] - touchEndX;
+
+    if (Math.abs(difference) > 50) {
+      setCurrentImages((prev) => {
+        const currentIndex =
+          prev[shoeId] || 0;
+
+        let newIndex = currentIndex;
+
+        if (difference > 0) {
+          if (currentIndex < images.length - 1) {
+            newIndex = currentIndex + 1;
+          }
+        } else {
+          if (currentIndex > 0) {
+            newIndex = currentIndex - 1;
+          }
+        }
+
+        return {
+          ...prev,
+          [shoeId]: newIndex,
+        };
+      });
+    }
+
+    delete touchStartX.current[shoeId];
+  };
+
+  const handleImageChange = (shoeId, imageIndex) => {
+    setCurrentImages((prev) => ({
+      ...prev,
+      [shoeId]: imageIndex,
+    }));
+  };
+
   return (
     <section className="shoes-section">
 
@@ -115,6 +167,16 @@ const Shoes = ({ limit, products }) => {
               shoe?._id ||
               shoe?.id ||
               shoe?.shoeId;
+
+            const images =
+              shoe.images?.length > 0
+                ? shoe.images
+                : shoe.image
+                ? [shoe.image]
+                : [];
+
+            const currentImageIndex =
+              currentImages[shoeId] || 0;
 
             const price =
               Number(shoe.price || 0);
@@ -146,7 +208,22 @@ const Shoes = ({ limit, products }) => {
                 key={shoeId || index}
               >
 
-                <div className="shoe-image">
+                <div
+                  className="shoe-image"
+                  onTouchStart={(e) =>
+                    handleTouchStart(
+                      shoeId,
+                      e
+                    )
+                  }
+                  onTouchEnd={(e) =>
+                    handleTouchEnd(
+                      shoeId,
+                      images,
+                      e
+                    )
+                  }
+                >
 
                   {discount > 0 && (
                     <span className="discount-badge">
@@ -154,10 +231,43 @@ const Shoes = ({ limit, products }) => {
                     </span>
                   )}
 
-                  <img
-                    src={`${url}/images/${shoe.image}`}
-                    alt={shoe.name || "Shoe"}
-                  />
+                  {images.length > 0 && (
+                    <img
+                      src={`${url}/images/${images[currentImageIndex]}`}
+                      alt={shoe.name || "Shoe"}
+                      draggable="false"
+                    />
+                  )}
+
+                  {images.length > 1 && (
+                    <div className="image-dots">
+
+                      {images.map(
+                        (_, imageIndex) => (
+                          <button
+                            key={imageIndex}
+                            type="button"
+                            className={
+                              currentImageIndex ===
+                              imageIndex
+                                ? "image-dot active"
+                                : "image-dot"
+                            }
+                            onClick={() =>
+                              handleImageChange(
+                                shoeId,
+                                imageIndex
+                              )
+                            }
+                            aria-label={`Show image ${
+                              imageIndex + 1
+                            }`}
+                          />
+                        )
+                      )}
+
+                    </div>
+                  )}
 
                 </div>
 
