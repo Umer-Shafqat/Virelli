@@ -98,7 +98,10 @@ const Shoes = ({ limit, products }) => {
   };
 
   const handleTouchEnd = (shoeId, images, e) => {
-    if (touchStartX.current[shoeId] === undefined) {
+    if (
+      touchStartX.current[shoeId] === undefined ||
+      images.length <= 1
+    ) {
       return;
     }
 
@@ -162,15 +165,11 @@ const Shoes = ({ limit, products }) => {
     <section className="shoes-section">
 
       <div className="shoes-heading">
-
-        <h2>
-          Our Shoes Collection
-        </h2>
+        <h2>Our Shoes Collection</h2>
 
         <p>
           Explore all of our latest shoe designs
         </p>
-
       </div>
 
       <div className="shoes-grid">
@@ -185,14 +184,24 @@ const Shoes = ({ limit, products }) => {
               shoe?.shoeId;
 
             const images =
-              shoe.images?.length > 0
+              Array.isArray(shoe.images) &&
+              shoe.images.length > 0
                 ? shoe.images
                 : shoe.image
                 ? [shoe.image]
                 : [];
 
-            const currentImageIndex =
+            let currentImageIndex =
               currentImages[shoeId] || 0;
+
+            if (
+              currentImageIndex >= images.length
+            ) {
+              currentImageIndex = 0;
+            }
+
+            const currentImage =
+              images[currentImageIndex];
 
             const price =
               Number(shoe.price || 0);
@@ -256,11 +265,17 @@ const Shoes = ({ limit, products }) => {
                     </span>
                   )}
 
-                  {images.length > 0 && (
+                  {currentImage && (
                     <img
-                      src={`${url}/images/${images[currentImageIndex]}`}
+                      src={`${url}/images/${currentImage}`}
                       alt={shoe.name || "Shoe"}
                       draggable="false"
+                      onError={(e) => {
+                        console.error(
+                          "Image failed:",
+                          e.currentTarget.src
+                        );
+                      }}
                     />
                   )}
 
@@ -278,12 +293,13 @@ const Shoes = ({ limit, products }) => {
                                 ? "image-dot active"
                                 : "image-dot"
                             }
-                            onClick={() =>
+                            onClick={(e) => {
+                              e.stopPropagation();
                               handleImageChange(
                                 shoeId,
                                 imageIndex
-                              )
-                            }
+                              );
+                            }}
                             aria-label={`Show image ${
                               imageIndex + 1
                             }`}
@@ -318,7 +334,6 @@ const Shoes = ({ limit, products }) => {
 
                       {[1, 2, 3, 4, 5].map(
                         (star) => (
-
                           <button
                             key={star}
                             type="button"
@@ -340,7 +355,6 @@ const Shoes = ({ limit, products }) => {
                           >
                             ★
                           </button>
-
                         )
                       )}
 
@@ -380,7 +394,6 @@ const Shoes = ({ limit, products }) => {
 
                     {(shoe.sizes || []).map(
                       (size) => (
-
                         <button
                           key={size}
                           type="button"
@@ -398,7 +411,6 @@ const Shoes = ({ limit, products }) => {
                         >
                           {size}
                         </button>
-
                       )
                     )}
 
