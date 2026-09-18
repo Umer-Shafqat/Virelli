@@ -7,12 +7,23 @@ import OrderModel from "../models/orderModel.js";
 // ===============================
 const addShoe = async (req, res) => {
   try {
-    console.log("req.file:", req.file);
+    console.log("req.files:", req.files);
     console.log("req.body:", req.body);
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one image is required",
+      });
+    }
 
     const shoeType = String(req.body.type || "")
       .trim()
       .toUpperCase();
+
+    const image_filenames = req.files.map(
+      (file) => file.filename
+    );
 
     const shoe = new ShoeModel({
       name: req.body.name,
@@ -28,7 +39,7 @@ const addShoe = async (req, res) => {
 
       category: req.body.category,
 
-      image: req.file.filename,
+      images: image_filenames,
 
       price: Number(req.body.price),
 
@@ -37,8 +48,10 @@ const addShoe = async (req, res) => {
       description: req.body.description,
 
       sizes: req.body.sizes
-        .split(",")
-        .map((size) => Number(size.trim())),
+        ? req.body.sizes
+            .split(",")
+            .map((size) => Number(size.trim()))
+        : [],
 
       popular: req.body.popular === "true",
 
@@ -66,7 +79,6 @@ const addShoe = async (req, res) => {
   }
 };
 
-
 // ===============================
 // GET ALL SHOES
 // ===============================
@@ -89,7 +101,6 @@ const getShoes = async (req, res) => {
     });
   }
 };
-
 
 // ===============================
 // GET SINGLE SHOE
@@ -119,7 +130,6 @@ const getShoeById = async (req, res) => {
   }
 };
 
-
 // ===============================
 // GET NEW ARRIVALS
 // ===============================
@@ -144,7 +154,6 @@ const getNewArrivals = async (req, res) => {
     });
   }
 };
-
 
 // ===============================
 // GET OFFERS
@@ -171,7 +180,6 @@ const getOffers = async (req, res) => {
   }
 };
 
-
 // ===============================
 // ADMIN SEARCH
 // ===============================
@@ -196,7 +204,6 @@ const searchAdmin = async (req, res) => {
     let users = [];
     let orders = [];
 
-
     // =====================================
     // SEARCH SHOES
     // =====================================
@@ -205,7 +212,6 @@ const searchAdmin = async (req, res) => {
       lowerKeyword === "shoe" ||
       lowerKeyword === "shoes"
     ) {
-      // If user searches "shoes", show all shoes
       shoes = await ShoeModel.find().sort({
         createdAt: -1,
       });
@@ -242,7 +248,6 @@ const searchAdmin = async (req, res) => {
       });
     }
 
-
     // =====================================
     // SEARCH USERS
     // =====================================
@@ -251,7 +256,6 @@ const searchAdmin = async (req, res) => {
       lowerKeyword === "user" ||
       lowerKeyword === "users"
     ) {
-      // If user searches "users", show all users
       users = await UserModel.find().sort({
         createdAt: -1,
       });
@@ -276,7 +280,6 @@ const searchAdmin = async (req, res) => {
       });
     }
 
-
     // =====================================
     // SEARCH ORDERS
     // =====================================
@@ -285,13 +288,10 @@ const searchAdmin = async (req, res) => {
       lowerKeyword === "order" ||
       lowerKeyword === "orders"
     ) {
-      // If user searches "orders", show all orders
-      orders = await OrderModel.find()
-        .sort({
-          createdAt: -1,
-        });
+      orders = await OrderModel.find().sort({
+        createdAt: -1,
+      });
     } else {
-      // Search orders by status
       orders = await OrderModel.find({
         status: {
           $regex: keyword,
@@ -308,7 +308,6 @@ const searchAdmin = async (req, res) => {
       users,
       orders,
     });
-
   } catch (error) {
     console.error("Admin search error:", error);
 
@@ -319,6 +318,9 @@ const searchAdmin = async (req, res) => {
   }
 };
 
+// ===============================
+// DELETE SHOE
+// ===============================
 const deleteShoe = async (req, res) => {
   try {
     const shoe = await ShoeModel.findById(req.params.id);
@@ -345,7 +347,6 @@ const deleteShoe = async (req, res) => {
     });
   }
 };
-
 
 // ===============================
 // EXPORT
