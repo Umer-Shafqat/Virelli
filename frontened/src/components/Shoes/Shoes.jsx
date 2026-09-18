@@ -25,6 +25,23 @@ const Shoes = ({ limit, products }) => {
     ? shoeList.slice(0, limit)
     : shoeList;
 
+  const getImageUrl = (image) => {
+    if (!image) return "";
+
+    if (
+      image.startsWith("http://") ||
+      image.startsWith("https://")
+    ) {
+      return image;
+    }
+
+    if (image.startsWith("/images/")) {
+      return `${url}${image}`;
+    }
+
+    return `${url}/images/${image}`;
+  };
+
   const handleSizeSelect = (shoeId, size) => {
     if (!shoeId) {
       alert("Shoe ID is missing");
@@ -267,7 +284,7 @@ const Shoes = ({ limit, products }) => {
 
                   {currentImage && (
                     <img
-                      src={`${url}/images/${currentImage}`}
+                      src={getImageUrl(currentImage)}
                       alt={shoe.name || "Shoe"}
                       draggable="false"
                       onError={(e) => {
