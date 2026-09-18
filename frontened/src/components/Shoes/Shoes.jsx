@@ -142,6 +142,22 @@ const Shoes = ({ limit, products }) => {
     }));
   };
 
+  const handleMouseEnter = (shoeId, images) => {
+    if (images.length > 1) {
+      setCurrentImages((prev) => ({
+        ...prev,
+        [shoeId]: 1,
+      }));
+    }
+  };
+
+  const handleMouseLeave = (shoeId) => {
+    setCurrentImages((prev) => ({
+      ...prev,
+      [shoeId]: 0,
+    }));
+  };
+
   return (
     <section className="shoes-section">
 
@@ -210,6 +226,15 @@ const Shoes = ({ limit, products }) => {
 
                 <div
                   className="shoe-image"
+                  onMouseEnter={() =>
+                    handleMouseEnter(
+                      shoeId,
+                      images
+                    )
+                  }
+                  onMouseLeave={() =>
+                    handleMouseLeave(shoeId)
+                  }
                   onTouchStart={(e) =>
                     handleTouchStart(
                       shoeId,
