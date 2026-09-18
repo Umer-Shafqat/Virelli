@@ -23,8 +23,8 @@ const shoeSchema = new mongoose.Schema(
       required: true,
     },
 
-    image: {
-      type: String,
+    images: {
+      type: [String],
       required: true,
     },
 
@@ -79,6 +79,7 @@ const shoeSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 const shoeModel =
   mongoose.models.shoe ||
   mongoose.model("shoe", shoeSchema);
