@@ -535,10 +535,6 @@ const response = await axios.post(
             />
 
 
-            {/* =================================
-                PAYMENT
-            ================================= */}
-
             <div className="payment-section">
 
               <h2>
