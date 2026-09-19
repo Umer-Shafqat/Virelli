@@ -13,10 +13,6 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // =====================================
-  // FETCH ORDERS
-  // =====================================
-
   useEffect(() => {
     const fetchOrders = async () => {
       if (!token) {
