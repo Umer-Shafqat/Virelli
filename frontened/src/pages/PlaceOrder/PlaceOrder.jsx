@@ -533,8 +533,6 @@ const response = await axios.post(
               }
               required
             />
-
-
             <div className="payment-section">
 
               <h2>
