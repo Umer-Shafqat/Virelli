@@ -6,7 +6,7 @@ const Category = () => {
   const categories = [
     {
       name: "Chapal",
-      image: assets.chapal1,
+      image: assets.shoesCategory,
       category: "Chapal",
     },
     {
