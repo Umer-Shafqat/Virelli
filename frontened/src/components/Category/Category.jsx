@@ -1,12 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Category.css";
-
-import shoesCategory from "../../assets/shoes-category.jpeg";
-import jacketsCategory from "../../assets/jackets-category.jpg";
-import hoodiesCategory from "../../assets/hoodies-category.jpg";
-import watchesCategory from "../../assets/watches-category.jpg";
-import capsCategory from "../../assets/caps-category.jpg";
+import { assets } from "../../assets/assets";
 
 const Category = () => {
   const navigate = useNavigate();
@@ -14,27 +9,27 @@ const Category = () => {
   const categories = [
     {
       name: "Shoes",
-      image: shoesCategory,
+      image: assets.shoesCategory,
       path: "/shoes",
     },
     {
       name: "Jackets",
-      image: jacketsCategory,
+      image: assets.jacketsCategory,
       path: "/shoes",
     },
     {
       name: "Hoodies",
-      image: hoodiesCategory,
+      image: assets.hoodiesCategory,
       path: "/shoes",
     },
     {
       name: "Watches",
-      image: watchesCategory,
+      image: assets.watchesCategory,
       path: "/shoes",
     },
     {
       name: "Caps",
-      image: capsCategory,
+      image: assets.capsCategory,
       path: "/shoes",
     },
   ];
