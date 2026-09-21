@@ -11,34 +11,25 @@ const Category = () => {
     },
     {
       name: "Formal",
-      image: assets.formal1,
+      image: assets.jacketCategory,
       category: "Formal",
     },
     {
       name: "Kids",
-      image: assets.kid1,
+      image: assets.hoodiesCategory,
       category: "Kids",
     },
     {
       name: "Loafers",
-      image: assets.loafer1,
+      image: assets.watchCategory,
       category: "Loafer",
     },
     {
       name: "Men",
-      image: assets.men1,
+      image: assets.capsCategory,
       category: "Men",
     },
-    {
-      name: "Sneakers",
-      image: assets.sneaker1,
-      category: "Sneakers",
-    },
-    {
-      name: "Women",
-      image: assets.women1,
-      category: "Women",
-    },
+   
   ];
 
   return (
