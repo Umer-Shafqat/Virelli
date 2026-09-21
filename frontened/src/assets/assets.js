@@ -16,7 +16,6 @@ import play_store from './play_store.png'
 import cross_icon from './cross_icon.png'
 import logout_icon from './logout_icon.png'
 import profile_icon from './profile_icon.png'
-import header_img from './header_img.png'
 import hero1 from './hero1.png'
 import chapal1 from './chapal1.png'
 import chapal2 from './chapal2.png'
@@ -71,7 +70,6 @@ export const assets ={
     kid2,
     kid3,
     kid4,
-    header_img,
     profile_icon,
     logout_icon,
     logo1,
