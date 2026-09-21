@@ -6,7 +6,7 @@ import shoesCategory from "../../assets/shoes-category.jpg";
 import jacketsCategory from "../../assets/jackets-category.jpg";
 import hoodiesCategory from "../../assets/hoodies-category.jpg";
 import watchesCategory from "../../assets/watches-category.jpg";
-import capsCategory from "../../assets/caps-category.jpg";
+import capsCategory from "../../assets/caps-category.jpeg";
 
 const Category = () => {
   const navigate = useNavigate();
