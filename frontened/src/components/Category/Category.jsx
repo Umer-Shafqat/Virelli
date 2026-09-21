@@ -2,11 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Category.css";
 
-import shoesCategory from "../../assets/shoes-category.jpg";
+import shoesCategory from "../../assets/shoes-category.jpeg";
 import jacketsCategory from "../../assets/jackets-category.jpg";
 import hoodiesCategory from "../../assets/hoodies-category.jpg";
 import watchesCategory from "../../assets/watches-category.jpg";
-import capsCategory from "../../assets/caps-category.jpeg";
+import capsCategory from "../../assets/caps-category.jpg";
 
 const Category = () => {
   const navigate = useNavigate();

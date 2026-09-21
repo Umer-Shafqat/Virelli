@@ -38,9 +38,19 @@ import sneaker3 from './sneaker3.png'
 import sneaker4 from './sneaker4.png'
 import women1 from './women1.png'
 import women2 from './women2.png'
+import shoesCategory from './shoesCategory.jpeg'
+import jacketsCategory from './jacketsCategory.png'
+import hoodiesCategory from './hoodiesCategory.png'
+import watchesCategory from './watchesCategory.png'
+import capsCategory from './capsCategory.png'
 
 
 export const assets ={
+  shoesCategory,
+    jacketsCategory,
+    hoodiesCategory,
+    watchesCategory,
+    capsCategory,
     women1,
     women2,
     sneaker1,
