@@ -10,9 +10,9 @@ const Category = () => {
       category: "Chapal",
     },
     {
-      name: "Formal",
+      name: "kids",
       image: assets.jacketCategory,
-      category: "Formal",
+      category: "kids",
     },
     {
       name: "Kids",
@@ -20,9 +20,9 @@ const Category = () => {
       category: "Kids",
     },
     {
-      name: "Loafers",
+      name: "kids",
       image: assets.watchCategory,
-      category: "Loafer",
+      category: "kids",
     },
     {
       name: "Men",
