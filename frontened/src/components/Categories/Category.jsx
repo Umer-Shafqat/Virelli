@@ -10,33 +10,34 @@ const Category = () => {
       category: "Chapal",
     },
     {
-      name: "kids",
+      name: "Jackets",
       image: assets.jacketCategory,
-      category: "kids",
+      category: "Jackets",
     },
     {
-      name: "Kids",
+      name: "Hoodies",
       image: assets.hoodiesCategory,
-      category: "Kids",
+      category: "Hoodies",
     },
     {
-      name: "kids",
+      name: "Watches",
       image: assets.watchCategory,
-      category: "kids",
+      category: "Watches",
     },
     {
-      name: "Men",
+      name: "Caps",
       image: assets.capsCategory,
-      category: "Men",
+      category: "Caps",
     },
-   
   ];
 
   return (
     <section className="categories">
       <div className="categories-heading">
         <p className="categories-subtitle">EXPLORE OUR COLLECTION</p>
+
         <h2>Shop By Category</h2>
+
         <p className="categories-description">
           Find the perfect footwear for every style and occasion.
         </p>
@@ -55,6 +56,7 @@ const Category = () => {
 
             <div className="category-content">
               <h3>{category.name}</h3>
+
               <button className="category-button">
                 SHOP NOW
               </button>
