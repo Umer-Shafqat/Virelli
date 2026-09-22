@@ -4,8 +4,8 @@ import order_icon from './order_icon.png'
 import profile_image from './profile_image.png'
 import upload_area from './upload_area.png'
 import parcel_icon from './parcel_icon.png'
-import search_icon from './search_icon.png';
-import basket_icon from './basket_icon.png';
+import search_icon from './search_icon.png'
+import basket_icon from './basket_icon.png'
 import remove_icon_red from './remove_icon_red.png'
 import rating_starts from './rating_starts.png'
 import facebook_icon from './facebook_icon.png'
@@ -17,11 +17,12 @@ import cross_icon from './cross_icon.png'
 import logout_icon from './logout_icon.png'
 import profile_icon from './profile_icon.png'
 import hero1 from './hero1.png'
+
 import chapal1 from './chapal1.png'
 import chapal2 from './chapal2.png'
 import formal1 from './formal1.png'
 import formal2 from './formal2.png'
-import formal3  from './formal3.png'
+import formal3 from './formal3.png'
 import kid1 from './kid1.png'
 import kid2 from './kid2.png'
 import kid3 from './kid3.png'
@@ -37,57 +38,58 @@ import sneaker3 from './sneaker3.png'
 import sneaker4 from './sneaker4.png'
 import women1 from './women1.png'
 import women2 from './women2.png'
+
 import shoesCategory from './shoesCategory.png'
 import jacketCategory from './jacketCategory.png'
 import hoodiesCategory from './hoodiesCategory.png'
 import watchCategory from './watchCategory.png'
 import capsCategory from './capsCategory.png'
 
-export const assets ={
+export const assets = {
   shoesCategory,
   jacketCategory,
   hoodiesCategory,
   watchCategory,
   capsCategory,
-    women1,
-    women2,
-    sneaker1,
-    sneaker2,
-    sneaker3,
-    sneaker4,
-    men1,
-    men2,
-    loafer1,
-    loafer2,
-    loafer3,
-    chapal1,
-    chapal2,
-    formal1,
-    formal2,
-    formal3,
-    kid1,
-    kid2,
-    kid3,
-    kid4,
-    profile_icon,
-    logout_icon,
-    logo1,
-    add_icon,
-    order_icon,
-    profile_image,
-    upload_area,
-    parcel_icon,
-    search_icon,
-    basket_icon,
-    remove_icon_red,
-    rating_starts,
-    facebook_icon,
-    linkedin_icon,
-    twitter_icon,
-    app_store,
-    play_store,
-    cross_icon,
-    hero1,
+  women1,
+  women2,
+  sneaker1,
+  sneaker2,
+  sneaker3,
+  sneaker4,
+  men1,
+  men2,
+  loafer1,
+  loafer2,
+  loafer3,
+  chapal1,
+  chapal2,
+  formal1,
+  formal2,
+  formal3,
+  kid1,
+  kid2,
+  kid3,
+  kid4,
+  profile_icon,
+  logout_icon,
+  logo1,
+  add_icon,
+  order_icon,
+  profile_image,
+  upload_area,
+  parcel_icon,
+  search_icon,
+  basket_icon,
+  remove_icon_red,
+  rating_starts,
+  facebook_icon,
+  linkedin_icon,
+  twitter_icon,
+  app_store,
+  play_store,
+  cross_icon,
+  hero1,
 }
 
 export const shoes = [
@@ -101,11 +103,11 @@ export const shoes = [
     discount: 20,
     description: "Traditional and comfortable chapal for everyday use.",
     sizes: [39, 40, 41, 42, 43],
-   rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
-},
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
+  },
   {
     id: 2,
     type: "MEN",
@@ -116,10 +118,10 @@ export const shoes = [
     discount: 10,
     description: "Premium leather chapal with a stylish traditional design.",
     sizes: [40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 3,
@@ -131,10 +133,10 @@ export const shoes = [
     discount: 40,
     description: "Elegant formal shoes perfect for office and business meetings.",
     sizes: [39, 40, 41, 42, 43],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 4,
@@ -146,10 +148,10 @@ export const shoes = [
     discount: 40,
     description: "Classic black formal shoes with a premium finish.",
     sizes: [40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 5,
@@ -161,10 +163,10 @@ export const shoes = [
     discount: 13,
     description: "Premium formal shoes designed for a sophisticated look.",
     sizes: [39, 40, 41, 42, 43],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 6,
@@ -176,10 +178,10 @@ export const shoes = [
     discount: 15,
     description: "Comfortable and stylish shoes for kids.",
     sizes: [28, 29, 30, 31, 32],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 7,
@@ -191,10 +193,10 @@ export const shoes = [
     discount: 30,
     description: "Lightweight sports shoes for active kids.",
     sizes: [28, 29, 30, 31, 32],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 8,
@@ -206,10 +208,10 @@ export const shoes = [
     discount: 17,
     description: "Stylish premium shoes designed for kids.",
     sizes: [29, 30, 31, 32, 33],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 9,
@@ -221,10 +223,10 @@ export const shoes = [
     discount: 22,
     description: "Comfortable walking shoes for everyday activities.",
     sizes: [28, 29, 30, 31, 32],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 10,
@@ -236,10 +238,10 @@ export const shoes = [
     discount: 26,
     description: "Classic loafers with a comfortable and stylish design.",
     sizes: [39, 40, 41, 42, 43],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 11,
@@ -251,10 +253,10 @@ export const shoes = [
     discount: 21,
     description: "Premium loafers perfect for casual and formal occasions.",
     sizes: [40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 12,
@@ -266,10 +268,10 @@ export const shoes = [
     discount: 12,
     description: "Premium leather loafers with a modern design.",
     sizes: [39, 40, 41, 42, 43],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 13,
@@ -281,10 +283,10 @@ export const shoes = [
     discount: 5,
     description: "Comfortable casual shoes for everyday men's fashion.",
     sizes: [40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 14,
@@ -296,10 +298,10 @@ export const shoes = [
     discount: 14,
     description: "Classic men's shoes with a stylish premium look.",
     sizes: [40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 15,
@@ -311,10 +313,10 @@ export const shoes = [
     discount: 11,
     description: "Clean and stylish white sneakers for everyday wear.",
     sizes: [39, 40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 16,
@@ -326,10 +328,10 @@ export const shoes = [
     discount: 8,
     description: "Comfortable sneakers with a modern casual design.",
     sizes: [40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 17,
@@ -341,10 +343,10 @@ export const shoes = [
     discount: 9,
     description: "Lightweight sport sneakers designed for active lifestyles.",
     sizes: [39, 40, 41, 42, 43],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 18,
@@ -356,10 +358,10 @@ export const shoes = [
     discount: 16,
     description: "Premium sneakers with a stylish modern appearance.",
     sizes: [40, 41, 42, 43, 44],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 19,
@@ -371,10 +373,10 @@ export const shoes = [
     discount: 24,
     description: "Elegant and comfortable women's casual shoes.",
     sizes: [36, 37, 38, 39, 40],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
-  }
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   },
   {
     id: 20,
@@ -386,11 +388,11 @@ export const shoes = [
     discount: 4,
     description: "Fashionable women's shoes with premium comfort.",
     sizes: [36, 37, 38, 39, 40],
-      rating: {
-    totalRatings: 1,
-    ratingSum: 5
+    rating: {
+      totalRatings: 1,
+      ratingSum: 5
+    }
   }
-  }
-];
+]
 
 export const url = process.env.REACT_APP_API_URL;
