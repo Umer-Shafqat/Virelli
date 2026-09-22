@@ -11,7 +11,7 @@ const Category = () => {
     },
     {
       name: "Jackets",
-      image: assets.jacketCategory,
+      image: assets.jacketcategory,
       category: "Jackets",
     },
     {
