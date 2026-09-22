@@ -5,9 +5,9 @@ import { assets } from "../../assets/assets";
 const Category = () => {
   const categories = [
     {
-      name: "Chapal",
+      name: "Shoes",
       image: assets.shoesCategory,
-      category: "Chapal",
+      category: "Shoes",
     },
     {
       name: "Jackets",
@@ -32,34 +32,17 @@ const Category = () => {
   ];
 
   return (
-    <section className="categories">
-      <div className="categories-heading">
-        <p className="categories-subtitle">EXPLORE OUR COLLECTION</p>
+    <section className="category-section">
+      <h2>Shop By Category</h2>
 
-        <h2>Shop By Category</h2>
-
-        <p className="categories-description">
-          Find the perfect footwear for every style and occasion.
-        </p>
-      </div>
-
-      <div className="categories-grid">
-        {categories.map((category, index) => (
+      <div className="category-container">
+        {categories.map((item, index) => (
           <div className="category-card" key={index}>
-            <div className="category-image-container">
-              <img
-                src={category.image}
-                alt={category.name}
-                className="category-image"
-              />
-            </div>
+            <img src={item.image} alt={item.name} />
 
-            <div className="category-content">
-              <h3>{category.name}</h3>
-
-              <button className="category-button">
-                SHOP NOW
-              </button>
+            <div className="category-overlay">
+              <h3>{item.name}</h3>
+              <p>SHOP NOW</p>
             </div>
           </div>
         ))}
