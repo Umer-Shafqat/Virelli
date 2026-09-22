@@ -1,32 +1,37 @@
 import React from "react";
 import "./Category.css";
-import { assets } from "../../assets/assets";
+
+import shoesCategory from "../../assets/shoesCategory.png";
+import jacketCategory from "../../assets/jacketCategory.png";
+import hoodiesCategory from "../../assets/hoodiesCategory.png";
+import watchCategory from "../../assets/watchCategory.png";
+import capsCategory from "../../assets/capsCategory.png";
 
 const Category = () => {
   const categories = [
     {
       name: "Shoes",
-      image: assets.shoesCategory,
+      image: shoesCategory,
       category: "Shoes",
     },
     {
       name: "Jackets",
-      image: assets.jacketCategory,
+      image: jacketCategory,
       category: "Jackets",
     },
     {
       name: "Hoodies",
-      image: assets.hoodiesCategory,
+      image: hoodiesCategory,
       category: "Hoodies",
     },
     {
       name: "Watches",
-      image: assets.watchCategory,
+      image: watchCategory,
       category: "Watches",
     },
     {
       name: "Caps",
-      image: assets.capsCategory,
+      image: capsCategory,
       category: "Caps",
     },
   ];
