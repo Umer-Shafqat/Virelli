@@ -20,9 +20,9 @@ const Category = () => {
       category: "Hoodies",
     },
     {
-      name: "Watches",
+      name: "watches",
       image: assets.watchCategory,
-      category: "Watches",
+      category: "watches",
     },
     {
       name: "Caps",

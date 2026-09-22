@@ -49,7 +49,7 @@ export const assets = {
   shoesCategory,
   jacketCategory,
   hoodiesCategory,
-  watchCategory,
+watchCategory,
   capsCategory,
   women1,
   women2,
