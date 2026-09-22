@@ -16,52 +16,100 @@ import play_store from './play_store.png'
 import cross_icon from './cross_icon.png'
 import logout_icon from './logout_icon.png'
 import profile_icon from './profile_icon.png'
+
 import hero1 from './hero1.png'
 
 import chapal1 from './chapal1.png'
 import chapal2 from './chapal2.png'
+
 import formal1 from './formal1.png'
 import formal2 from './formal2.png'
 import formal3 from './formal3.png'
+
 import kid1 from './kid1.png'
 import kid2 from './kid2.png'
 import kid3 from './kid3.png'
 import kid4 from './kid4.png'
+
 import loafer1 from './loafer1.png'
 import loafer2 from './loafer2.png'
 import loafer3 from './loafer3.png'
+
 import men1 from './men1.png'
 import men2 from './men2.png'
+
 import sneaker1 from './sneaker1.png'
 import sneaker2 from './sneaker2.png'
 import sneaker3 from './sneaker3.png'
 import sneaker4 from './sneaker4.png'
+
 import women1 from './women1.png'
 import women2 from './women2.png'
 
+
+// ==========================================
+// CATEGORY IMAGES
+// ==========================================
+
+import shoesCategory from './shoesCategory.png'
+import hoodiesCategory from './hoodiesCategory.png'
+import jacketCategory from './jacketCategory.png'
+import watchCategory from './watchCategory.png'
+import capsCategory from './capsCategory.png'
+
+
+// ==========================================
+// ASSETS
+// ==========================================
+
 export const assets = {
+
+  // Category Images
+  shoesCategory,
+  hoodiesCategory,
+  jacketCategory,
+  watchCategory,
+  capsCategory,
+
+  // Women
   women1,
   women2,
+
+  // Sneakers
   sneaker1,
   sneaker2,
   sneaker3,
   sneaker4,
+
+  // Men
   men1,
   men2,
+
+  // Loafers
   loafer1,
   loafer2,
   loafer3,
+
+  // Chapal
   chapal1,
   chapal2,
+
+  // Formal
   formal1,
   formal2,
   formal3,
+
+  // Kids
   kid1,
   kid2,
   kid3,
   kid4,
+
+  // Profile / Account
   profile_icon,
   logout_icon,
+
+  // General
   logo1,
   add_icon,
   order_icon,
@@ -72,16 +120,28 @@ export const assets = {
   basket_icon,
   remove_icon_red,
   rating_starts,
+
+  // Social
   facebook_icon,
   linkedin_icon,
   twitter_icon,
+
+  // App
   app_store,
   play_store,
+
+  // Other
   cross_icon,
   hero1,
 }
 
+
+// ==========================================
+// SHOES
+// ==========================================
+
 export const shoes = [
+
   {
     id: 1,
     type: "MEN",
@@ -97,6 +157,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 2,
     type: "MEN",
@@ -112,6 +173,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 3,
     type: "MEN",
@@ -127,6 +189,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 4,
     type: "MEN",
@@ -142,6 +205,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 5,
     type: "MEN",
@@ -157,6 +221,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 6,
     type: "KID",
@@ -172,6 +237,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 7,
     type: "KID",
@@ -187,6 +253,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 8,
     type: "KID",
@@ -202,6 +269,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 9,
     type: "KID",
@@ -217,6 +285,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 10,
     type: "MEN",
@@ -232,6 +301,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 11,
     type: "MEN",
@@ -247,6 +317,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 12,
     type: "MEN",
@@ -262,6 +333,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 13,
     type: "MEN",
@@ -277,6 +349,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 14,
     type: "MEN",
@@ -292,6 +365,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 15,
     type: "MEN",
@@ -307,6 +381,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 16,
     type: "MEN",
@@ -322,6 +397,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 17,
     type: "MEN",
@@ -337,6 +413,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 18,
     type: "MEN",
@@ -352,6 +429,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 19,
     type: "WOMEN",
@@ -367,6 +445,7 @@ export const shoes = [
       ratingSum: 5
     }
   },
+
   {
     id: 20,
     type: "WOMEN",
@@ -382,6 +461,8 @@ export const shoes = [
       ratingSum: 5
     }
   }
+
 ]
+
 
 export const url = process.env.REACT_APP_API_URL;

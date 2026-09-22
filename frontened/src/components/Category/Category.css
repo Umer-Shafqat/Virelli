@@ -1,0 +1,154 @@
+.category-section {
+  width: 100%;
+  padding: 45px 20px;
+  background: #f8eeee;
+  text-align: center;
+}
+
+
+/* Heading */
+
+.category-title {
+  margin: 0 0 35px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #111;
+}
+
+
+/* Categories container */
+
+.category-list {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 30px;
+}
+
+
+/* Individual category */
+
+.category-item {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+
+/* Circle */
+
+.category-image {
+  width: 170px;
+  height: 170px;
+
+  border-radius: 50%;
+
+  background: #fff5e8;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  transition: transform 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+
+/* Image */
+
+.category-image img {
+  width: 85%;
+  height: 85%;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* Hover */
+
+.category-item:hover .category-image {
+  transform: translateY(-8px) scale(1.04);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Category name */
+
+.category-item h3 {
+  margin-top: 18px;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #222;
+}
+
+@media (max-width: 768px) {
+
+  .category-section {
+    padding: 35px 15px;
+  }
+
+  .category-title {
+    font-size: 26px;
+    margin-bottom: 25px;
+  }
+
+  .category-list {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px 15px;
+  }
+
+  .category-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  .category-item h3 {
+    font-size: 16px;
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .category-section {
+    padding: 30px 10px;
+  }
+
+  .category-title {
+    font-size: 24px;
+  }
+
+  .category-list {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 25px 10px;
+  }
+
+  .category-image {
+    width: 115px;
+    height: 115px;
+  }
+
+  .category-item h3 {
+    font-size: 15px;
+  }
+}
