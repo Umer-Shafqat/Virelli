@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import "./Shoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
-import { assets } from "../../assets/assets";
 
 const Shoes = ({ limit, products }) => {
   const { shoes, addToCart, url } = useContext(StoreContext);
