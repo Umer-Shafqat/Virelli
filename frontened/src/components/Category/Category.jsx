@@ -1,29 +1,33 @@
 import React from "react";
 import "./Category.css";
-import { assets } from "../../assets/assets";
+
+import shoesCategory from "../../assets/shoesCategory.png";
+import hoodiesCategory from "../../assets/hoodiesCategory.png";
+import jacketCategory from "../../assets/jacketCategory.png";
+import watchCategory from "../../assets/watchCategory.png";
+import capsCategory from "../../assets/capsCategory.png";
 
 const Category = () => {
-
   const categories = [
     {
       name: "Shoes",
-      image: assets.shoesCategory,
+      image: shoesCategory,
     },
     {
       name: "Hoodies",
-      image: assets.hoodiesCategory,
+      image: hoodiesCategory,
     },
     {
       name: "Jackets",
-      image: assets.jacketCategory,
+      image: jacketCategory,
     },
     {
       name: "Watches",
-      image: assets.watchCategory,
+      image: watchCategory,
     },
     {
       name: "Caps",
-      image: assets.capsCategory,
+      image: capsCategory,
     },
   ];
 
@@ -34,24 +38,43 @@ const Category = () => {
         Shop by Category
       </h2>
 
-      <div className="category-list">
+      <div className="category-slider">
 
-        {categories.map((category, index) => (
+        <div className="category-track">
 
-          <div className="category-item" key={index}>
+          {/* First set */}
+          {categories.map((item, index) => (
+            <div className="category-item" key={`first-${index}`}>
 
-            <div className="category-image">
-              <img
-                src={category.image}
-                alt={category.name}
-              />
+              <div className="category-image">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                />
+              </div>
+
+              <h3>{item.name}</h3>
+
             </div>
+          ))}
 
-            <h3>{category.name}</h3>
+          {/* Duplicate set */}
+          {categories.map((item, index) => (
+            <div className="category-item" key={`second-${index}`}>
 
-          </div>
+              <div className="category-image">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                />
+              </div>
 
-        ))}
+              <h3>{item.name}</h3>
+
+            </div>
+          ))}
+
+        </div>
 
       </div>
 
