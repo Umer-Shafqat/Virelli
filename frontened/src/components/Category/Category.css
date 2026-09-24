@@ -53,12 +53,6 @@
   align-items: center;
 
   cursor: pointer;
-
-  /*
-    All categories move vertically
-    together at the same time
-  */
-  animation: categoryFloat 3s ease-in-out infinite;
 }
 
 
@@ -131,34 +125,36 @@
 
   color: #222;
 
-  transition:
-    transform 0.3s ease,
-    color 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 
 .category-item:hover h3 {
-  transform: translateY(-3px);
+  transform: translateX(-3px);
 }
 
 
 /* ==========================================
-   VERTICAL FLOATING ANIMATION
-   ALL CATEGORIES MOVE TOGETHER
+   RIGHT TO LEFT ANIMATION
 ========================================== */
 
-@keyframes categoryFloat {
+.category-list {
+  animation: moveRightToLeft 6s ease-in-out infinite;
+}
+
+
+@keyframes moveRightToLeft {
 
   0% {
-    transform: translateY(0);
+    transform: translateX(80px);
   }
 
   50% {
-    transform: translateY(-12px);
+    transform: translateX(-80px);
   }
 
   100% {
-    transform: translateY(0);
+    transform: translateX(80px);
   }
 
 }
@@ -166,7 +162,6 @@
 
 /* ==========================================
    TABLET
-   KEEP ALL 5 IN ONE ROW
 ========================================== */
 
 @media (max-width: 768px) {
@@ -183,13 +178,13 @@
 
 
   .category-list {
-    width: 100%;
-
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 
     gap: 8px;
+
+    animation: moveRightToLeftMobile 5s ease-in-out infinite;
   }
 
 
@@ -220,8 +215,28 @@
 
 
 /* ==========================================
+   MOBILE RIGHT TO LEFT
+========================================== */
+
+@keyframes moveRightToLeftMobile {
+
+  0% {
+    transform: translateX(30px);
+  }
+
+  50% {
+    transform: translateX(-30px);
+  }
+
+  100% {
+    transform: translateX(30px);
+  }
+
+}
+
+
+/* ==========================================
    SMALL MOBILE
-   KEEP ALL 5 IN ONE ROW
 ========================================== */
 
 @media (max-width: 480px) {
@@ -238,16 +253,7 @@
 
 
   .category-list {
-    display: flex;
-    justify-content: space-between;
-
     gap: 4px;
-  }
-
-
-  .category-item {
-    flex: 1;
-    min-width: 0;
   }
 
 
@@ -300,12 +306,6 @@
   }
 
 
-  .category-image img {
-    width: 85%;
-    height: 85%;
-  }
-
-
   .category-item h3 {
     font-size: 11px;
     margin-top: 7px;
@@ -316,12 +316,11 @@
 
 /* ==========================================
    REDUCE MOTION
-   Accessibility
 ========================================== */
 
 @media (prefers-reduced-motion: reduce) {
 
-  .category-item {
+  .category-list {
     animation: none;
   }
 
