@@ -38,11 +38,6 @@
   box-sizing: border-box;
 }
 
-
-/* =====================================
-   SHOE CARD
-===================================== */
-
 .home-shoes-section .shoe-card {
   min-width: 0;
   overflow: hidden;
@@ -50,7 +45,6 @@
   border-radius: 12px;
   box-shadow:
     0 5px 20px rgba(0, 0, 0, 0.08);
-
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -64,207 +58,131 @@
 
 .home-shoes-section .shoe-image {
   width: 100%;
-
   height: 280px;
-
   position: relative;
-
   overflow: hidden;
 }
 
 .home-shoes-section .shoe-image img {
   width: 100%;
-
   height: 100%;
-
   display: block;
-
   object-fit: cover;
-
   transition: transform 0.4s ease;
 }
 
-.home-shoes-section .shoe-card:hover
-.shoe-image img {
+.home-shoes-section .shoe-card:hover .shoe-image img {
   transform: scale(1.05);
 }
 
-
-
 .home-shoes-section .discount-badge {
   position: absolute;
-
   top: 15px;
-
   right: 15px;
-
   z-index: 2;
-
   padding: 8px 12px;
-
   background: red;
-
   color: #fff;
-
   border-radius: 5px;
-
   font-size: 14px;
-
   font-weight: bold;
 }
 
 .home-shoes-section .shoe-info {
   padding: 22px;
-
   box-sizing: border-box;
 }
 
 .home-shoes-section .shoe-info h3 {
   margin: 0 0 8px;
-
   color: #171c29;
-
   font-size: 20px;
-
   line-height: 1.3;
 }
 
 .home-shoes-section .shoe-category {
   margin: 0 0 10px;
-
   color: #777;
-
   font-size: 14px;
 }
 
 .home-shoes-section .shoe-description {
   min-height: 42px;
-
   margin: 0;
-
   color: #666;
-
   font-size: 14px;
-
   line-height: 1.5;
 }
 
-
-/* =====================================
-   PRICE
-===================================== */
-
 .home-shoes-section .price-section {
   display: flex;
-
   align-items: center;
-
   flex-wrap: wrap;
-
   gap: 12px;
-
   margin: 15px 0;
 }
 
 .home-shoes-section .shoe-price {
   margin: 0;
-
   color: #000;
-
   font-size: 20px;
-
   font-weight: 700;
 }
 
 .home-shoes-section .original-price {
   color: red;
-
   font-size: 16px;
-
   text-decoration: line-through;
 }
 
 .home-shoes-section .sizes {
   display: flex;
-
   align-items: center;
-
   flex-wrap: wrap;
-
   gap: 7px;
-
   margin: 15px 0 20px;
 }
 
 .home-shoes-section .sizes button {
   width: 36px;
-
   height: 34px;
-
   padding: 0;
-
   background: #fff;
-
   border: 1px solid #ddd;
-
   border-radius: 5px;
-
   color: #222;
-
   font-size: 12px;
-
   cursor: pointer;
-
   transition: all 0.2s ease;
 }
 
 .home-shoes-section .sizes button:hover {
   background: #000;
-
   color: #fff;
-
   border-color: #000;
 }
 
-.home-shoes-section
-.sizes button.selected-size {
+.home-shoes-section .sizes button.selected-size {
   background: #000;
-
   color: #fff;
-
   border-color: #000;
 }
-
-
-/* =====================================
-   ADD TO CART
-===================================== */
 
 .home-shoes-section .add-cart {
   width: 100%;
-
   padding: 12px;
-
   border: none;
-
   border-radius: 5px;
-
   background: #000;
-
   color: #fff;
-
   font-size: 15px;
-
   font-weight: 600;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
 }
 
 .home-shoes-section .add-cart:hover {
   background: #333;
-
   transform: translateY(-2px);
 }
 
@@ -274,14 +192,106 @@
 
 
 /* =====================================
+   CATEGORY SECTION
+===================================== */
+
+.home-category-section {
+  width: 100%;
+  padding: 70px 5%;
+  box-sizing: border-box;
+  background: #e8ded8;
+}
+
+.home-category-heading {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 45px;
+  text-align: center;
+}
+
+.home-category-heading h2 {
+  margin: 0 0 10px;
+  color: #000;
+  font-size: clamp(28px, 3.5vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.home-category-heading p {
+  margin: 0;
+  color: #777;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.home-category-grid {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 22px;
+}
+
+.home-category-card {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  height: 230px;
+  border-radius: 12px;
+  background: #FFEED6;
+  cursor: pointer;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.home-category-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
+}
+
+.home-category-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.home-category-card:hover img {
+  transform: scale(1.06);
+}
+
+.home-category-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 35px 15px 18px;
+  text-align: center;
+  background: linear-gradient(
+    transparent,
+    rgba(0, 0, 0, 0.75)
+  );
+}
+
+.home-category-overlay h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+/* =====================================
    LARGE LAPTOP
 ===================================== */
 
 @media (max-width: 1200px) {
-
   .home-shoes-section {
     padding-left: 4%;
-
     padding-right: 4%;
   }
 
@@ -296,6 +306,19 @@
   .home-shoes-section .shoe-info {
     padding: 20px;
   }
+
+  .home-category-section {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .home-category-grid {
+    gap: 18px;
+  }
+
+  .home-category-card {
+    height: 210px;
+  }
 }
 
 
@@ -304,7 +327,6 @@
 ===================================== */
 
 @media (max-width: 900px) {
-
   .home-shoes-section {
     padding: 60px 30px;
   }
@@ -323,7 +345,6 @@
 
   .home-shoes-section .shoes-grid {
     grid-template-columns: repeat(2, 1fr);
-
     gap: 20px;
   }
 
@@ -346,6 +367,35 @@
   .home-shoes-section .shoe-price {
     font-size: 18px;
   }
+
+  .home-category-section {
+    padding: 60px 30px;
+  }
+
+  .home-category-heading {
+    margin-bottom: 35px;
+  }
+
+  .home-category-heading h2 {
+    font-size: 30px;
+  }
+
+  .home-category-heading p {
+    font-size: 15px;
+  }
+
+  .home-category-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .home-category-card {
+    height: 200px;
+  }
+
+  .home-category-overlay h3 {
+    font-size: 18px;
+  }
 }
 
 
@@ -354,7 +404,6 @@
 ===================================== */
 
 @media (max-width: 600px) {
-
   .home-shoes-section {
     padding: 50px 20px;
   }
@@ -365,7 +414,6 @@
 
   .home-shoes-heading h2 {
     font-size: 27px;
-
     margin-bottom: 8px;
   }
 
@@ -375,7 +423,6 @@
 
   .home-shoes-section .shoes-grid {
     grid-template-columns: 1fr;
-
     gap: 20px;
   }
 
@@ -417,14 +464,45 @@
 
   .home-shoes-section .sizes button {
     width: 35px;
-
     height: 33px;
   }
 
   .home-shoes-section .add-cart {
     padding: 13px;
-
     font-size: 14px;
+  }
+
+  .home-category-section {
+    padding: 50px 20px;
+  }
+
+  .home-category-heading {
+    margin-bottom: 30px;
+  }
+
+  .home-category-heading h2 {
+    font-size: 27px;
+  }
+
+  .home-category-heading p {
+    font-size: 14px;
+  }
+
+  .home-category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .home-category-card {
+    height: 190px;
+  }
+
+  .home-category-overlay {
+    padding: 30px 10px 15px;
+  }
+
+  .home-category-overlay h3 {
+    font-size: 17px;
   }
 }
 
@@ -434,7 +512,6 @@
 ===================================== */
 
 @media (max-width: 400px) {
-
   .home-shoes-section {
     padding: 45px 15px;
   }
@@ -469,7 +546,6 @@
 
   .home-shoes-section .shoe-description {
     font-size: 12px;
-
     line-height: 1.5;
   }
 
@@ -483,15 +559,40 @@
 
   .home-shoes-section .sizes button {
     width: 33px;
-
     height: 31px;
-
     font-size: 11px;
   }
 
   .home-shoes-section .add-cart {
     padding: 12px;
-
     font-size: 13px;
+  }
+
+  .home-category-section {
+    padding: 45px 15px;
+  }
+
+  .home-category-heading h2 {
+    font-size: 24px;
+  }
+
+  .home-category-heading p {
+    font-size: 13px;
+  }
+
+  .home-category-grid {
+    gap: 12px;
+  }
+
+  .home-category-card {
+    height: 160px;
+  }
+
+  .home-category-overlay {
+    padding: 25px 8px 12px;
+  }
+
+  .home-category-overlay h3 {
+    font-size: 15px;
   }
 }
