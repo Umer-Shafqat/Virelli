@@ -17,10 +17,8 @@
 
 .category-title {
   margin: 0 0 35px;
-
   font-size: 32px;
   font-weight: 700;
-
   color: #111;
 }
 
@@ -32,6 +30,7 @@
 .category-slider {
   width: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 
@@ -42,12 +41,18 @@
 .category-track {
   display: flex;
   align-items: flex-start;
-
   width: max-content;
-
   gap: 30px;
 
-  animation: categoryScroll 15s linear infinite;
+  /* Starts immediately */
+  animation-name: categoryScroll;
+  animation-duration: 15s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+
+  /* Smooth continuous movement */
+  will-change: transform;
 }
 
 
@@ -75,7 +80,6 @@
   height: 170px;
 
   border-radius: 50%;
-
   background: #fff5e8;
 
   display: flex;
@@ -85,13 +89,13 @@
   overflow: hidden;
 
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 
 /* ==========================================
-   IMAGE
+   CATEGORY IMAGE
 ========================================== */
 
 .category-image img {
@@ -99,24 +103,22 @@
   height: 85%;
 
   object-fit: contain;
-
   display: block;
 
-  transition: transform 0.4s ease;
+  transition: transform 0.3s ease;
 }
 
 
 /* ==========================================
-   HOVER
+   HOVER EFFECT
 ========================================== */
 
 .category-item:hover .category-image {
-  transform: scale(1.06);
+  transform: scale(1.05);
 
   box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.15);
 }
-
 
 .category-item:hover .category-image img {
   transform: scale(1.08);
@@ -128,7 +130,7 @@
 ========================================== */
 
 .category-item h3 {
-  margin-top: 18px;
+  margin: 18px 0 0;
 
   font-size: 18px;
   font-weight: 600;
@@ -142,17 +144,13 @@
 ========================================== */
 
 @keyframes categoryScroll {
-
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform: translateX(
-      calc(-50% - 15px)
-    );
+    transform: translate3d(calc(-50% - 15px), 0, 0);
   }
-
 }
 
 
@@ -166,42 +164,35 @@
     padding: 35px 10px;
   }
 
-
   .category-title {
     font-size: 26px;
     margin-bottom: 25px;
   }
 
-
   .category-track {
     gap: 15px;
-
     animation-duration: 12s;
+    animation-delay: 0s;
   }
-
 
   .category-item {
     flex: 0 0 110px;
   }
-
 
   .category-image {
     width: 110px;
     height: 110px;
   }
 
-
   .category-image img {
     width: 85%;
     height: 85%;
   }
 
-
   .category-item h3 {
-    font-size: 15px;
     margin-top: 12px;
+    font-size: 15px;
   }
-
 }
 
 
@@ -215,42 +206,35 @@
     padding: 30px 6px;
   }
 
-
   .category-title {
     font-size: 23px;
     margin-bottom: 22px;
   }
 
-
   .category-track {
     gap: 10px;
-
     animation-duration: 10s;
+    animation-delay: 0s;
   }
-
 
   .category-item {
     flex: 0 0 75px;
   }
-
 
   .category-image {
     width: 75px;
     height: 75px;
   }
 
-
   .category-image img {
     width: 85%;
     height: 85%;
   }
 
-
   .category-item h3 {
-    font-size: 12px;
     margin-top: 8px;
+    font-size: 12px;
   }
-
 }
 
 
@@ -265,36 +249,35 @@
     padding-right: 4px;
   }
 
-
   .category-title {
     font-size: 21px;
     margin-bottom: 20px;
   }
 
-
   .category-track {
     gap: 8px;
-
     animation-duration: 9s;
+    animation-delay: 0s;
   }
-
 
   .category-item {
     flex: 0 0 65px;
   }
-
 
   .category-image {
     width: 65px;
     height: 65px;
   }
 
-
-  .category-item h3 {
-    font-size: 11px;
-    margin-top: 7px;
+  .category-image img {
+    width: 85%;
+    height: 85%;
   }
 
+  .category-item h3 {
+    margin-top: 7px;
+    font-size: 11px;
+  }
 }
 
 
@@ -307,5 +290,4 @@
   .category-track {
     animation: none;
   }
-
 }
