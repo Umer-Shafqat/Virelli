@@ -1,22 +1,33 @@
+/* ==========================================
+   CATEGORY SECTION
+========================================== */
+
 .category-section {
   width: 100%;
   padding: 45px 20px;
   background: #c6b7b7;
   text-align: center;
+  overflow: hidden;
 }
 
 
-/* Heading */
+/* ==========================================
+   HEADING
+========================================== */
 
 .category-title {
   margin: 0 0 35px;
   font-size: 32px;
   font-weight: 700;
   color: #111;
+
+  animation: categoryTitleAnimation 0.8s ease-out both;
 }
 
 
-/* Categories container */
+/* ==========================================
+   CATEGORIES CONTAINER
+========================================== */
 
 .category-list {
   width: 100%;
@@ -31,20 +42,52 @@
 }
 
 
-/* Individual category */
+/* ==========================================
+   INDIVIDUAL CATEGORY
+========================================== */
 
 .category-item {
   flex: 1;
+  min-width: 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
   cursor: pointer;
+
+  /* Animation */
+  opacity: 0;
+  animation: categoryItemAnimation 0.7s ease-out forwards;
 }
 
 
-/* Circle */
+/* Stagger animation */
+
+.category-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.category-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.category-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.category-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.category-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+
+/* ==========================================
+   CIRCLE
+========================================== */
 
 .category-image {
   width: 170px;
@@ -60,12 +103,15 @@
 
   overflow: hidden;
 
-  transition: transform 0.3s ease,
-              box-shadow 0.3s ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 
-/* Image */
+/* ==========================================
+   IMAGE
+========================================== */
 
 .category-image img {
   width: 85%;
@@ -74,19 +120,29 @@
   object-fit: contain;
 
   display: block;
+
+  transition: transform 0.4s ease;
 }
 
 
-/* Hover */
+/* ==========================================
+   HOVER EFFECT
+========================================== */
 
 .category-item:hover .category-image {
   transform: translateY(-8px) scale(1.04);
 
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.category-item:hover .category-image img {
+  transform: scale(1.08);
 }
 
 
-/* Category name */
+/* ==========================================
+   CATEGORY NAME
+========================================== */
 
 .category-item h3 {
   margin-top: 18px;
@@ -95,12 +151,62 @@
   font-weight: 600;
 
   color: #222;
+
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
+
+.category-item:hover h3 {
+  transform: translateY(-3px);
+}
+
+
+/* ==========================================
+   TITLE ANIMATION
+========================================== */
+
+@keyframes categoryTitleAnimation {
+
+  0% {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ==========================================
+   CATEGORY ANIMATION
+========================================== */
+
+@keyframes categoryItemAnimation {
+
+  0% {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ==========================================
+   TABLET / MOBILE
+   KEEP SAME HORIZONTAL LAYOUT
+========================================== */
 
 @media (max-width: 768px) {
 
   .category-section {
-    padding: 35px 15px;
+    padding: 35px 10px;
   }
 
   .category-title {
@@ -109,46 +215,101 @@
   }
 
   .category-list {
-    display: grid;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 
-    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
 
-    gap: 25px 15px;
+    max-width: 100%;
+  }
+
+  .category-item {
+    flex: 1;
+    min-width: 0;
   }
 
   .category-image {
-    width: 120px;
-    height: 120px;
-  }
-
-  .category-item h3 {
-    font-size: 16px;
-    margin-top: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-
-  .category-section {
-    padding: 30px 10px;
-  }
-
-  .category-title {
-    font-size: 24px;
-  }
-
-  .category-list {
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 25px 10px;
-  }
-
-  .category-image {
-    width: 115px;
-    height: 115px;
+    width: 110px;
+    height: 110px;
   }
 
   .category-item h3 {
     font-size: 15px;
+    margin-top: 12px;
+  }
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+   STILL SAME 5-COLUMN LAYOUT
+========================================== */
+
+@media (max-width: 480px) {
+
+  .category-section {
+    padding: 30px 6px;
+  }
+
+  .category-title {
+    font-size: 23px;
+    margin-bottom: 22px;
+  }
+
+  .category-list {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 4px;
+  }
+
+  .category-item {
+    flex: 1;
+  }
+
+  .category-image {
+    width: 65px;
+    height: 65px;
+  }
+
+  .category-image img {
+    width: 85%;
+    height: 85%;
+  }
+
+  .category-item h3 {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+}
+
+
+/* ==========================================
+   VERY SMALL MOBILE
+========================================== */
+
+@media (max-width: 360px) {
+
+  .category-section {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .category-title {
+    font-size: 21px;
+  }
+
+  .category-list {
+    gap: 2px;
+  }
+
+  .category-image {
+    width: 58px;
+    height: 58px;
+  }
+
+  .category-item h3 {
+    font-size: 11px;
   }
 }
