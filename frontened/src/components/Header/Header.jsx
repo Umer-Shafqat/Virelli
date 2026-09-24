@@ -51,7 +51,7 @@ const Header = () => {
         </div>
 
       </div>
-
+      <Category/>
       <Popularshoes />
 
     </>
