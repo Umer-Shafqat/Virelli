@@ -20,13 +20,11 @@
   font-size: 32px;
   font-weight: 700;
   color: #111;
-
-  animation: categoryTitleAnimation 0.8s ease-out both;
 }
 
 
 /* ==========================================
-   CATEGORIES CONTAINER
+   CATEGORY LIST
 ========================================== */
 
 .category-list {
@@ -43,7 +41,7 @@
 
 
 /* ==========================================
-   INDIVIDUAL CATEGORY
+   CATEGORY ITEM
 ========================================== */
 
 .category-item {
@@ -56,37 +54,16 @@
 
   cursor: pointer;
 
-  /* Animation */
-  opacity: 0;
-  animation: categoryItemAnimation 0.7s ease-out forwards;
-}
-
-
-/* Stagger animation */
-
-.category-item:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.category-item:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.category-item:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-.category-item:nth-child(4) {
-  animation-delay: 0.4s;
-}
-
-.category-item:nth-child(5) {
-  animation-delay: 0.5s;
+  /*
+    All categories move vertically
+    together at the same time
+  */
+  animation: categoryFloat 3s ease-in-out infinite;
 }
 
 
 /* ==========================================
-   CIRCLE
+   CATEGORY CIRCLE
 ========================================== */
 
 .category-image {
@@ -110,7 +87,7 @@
 
 
 /* ==========================================
-   IMAGE
+   CATEGORY IMAGE
 ========================================== */
 
 .category-image img {
@@ -130,10 +107,12 @@
 ========================================== */
 
 .category-item:hover .category-image {
-  transform: translateY(-8px) scale(1.04);
+  transform: scale(1.06);
 
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.15);
 }
+
 
 .category-item:hover .category-image img {
   transform: scale(1.08);
@@ -157,50 +136,37 @@
     color 0.3s ease;
 }
 
+
 .category-item:hover h3 {
   transform: translateY(-3px);
 }
 
 
 /* ==========================================
-   TITLE ANIMATION
+   VERTICAL FLOATING ANIMATION
+   ALL CATEGORIES MOVE TOGETHER
 ========================================== */
 
-@keyframes categoryTitleAnimation {
+@keyframes categoryFloat {
 
   0% {
-    opacity: 0;
-    transform: translateY(-25px);
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
   }
 
   100% {
-    opacity: 1;
     transform: translateY(0);
   }
+
 }
 
 
 /* ==========================================
-   CATEGORY ANIMATION
-========================================== */
-
-@keyframes categoryItemAnimation {
-
-  0% {
-    opacity: 0;
-    transform: translateY(35px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-/* ==========================================
-   TABLET / MOBILE
-   KEEP SAME HORIZONTAL LAYOUT
+   TABLET
+   KEEP ALL 5 IN ONE ROW
 ========================================== */
 
 @media (max-width: 768px) {
@@ -209,41 +175,53 @@
     padding: 35px 10px;
   }
 
+
   .category-title {
     font-size: 26px;
     margin-bottom: 25px;
   }
 
+
   .category-list {
+    width: 100%;
+
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 
     gap: 8px;
-
-    max-width: 100%;
   }
+
 
   .category-item {
     flex: 1;
     min-width: 0;
   }
 
+
   .category-image {
     width: 110px;
     height: 110px;
   }
 
+
+  .category-image img {
+    width: 85%;
+    height: 85%;
+  }
+
+
   .category-item h3 {
     font-size: 15px;
     margin-top: 12px;
   }
+
 }
 
 
 /* ==========================================
    SMALL MOBILE
-   STILL SAME 5-COLUMN LAYOUT
+   KEEP ALL 5 IN ONE ROW
 ========================================== */
 
 @media (max-width: 480px) {
@@ -252,10 +230,12 @@
     padding: 30px 6px;
   }
 
+
   .category-title {
     font-size: 23px;
     margin-bottom: 22px;
   }
+
 
   .category-list {
     display: flex;
@@ -264,24 +244,30 @@
     gap: 4px;
   }
 
+
   .category-item {
     flex: 1;
+    min-width: 0;
   }
+
 
   .category-image {
     width: 65px;
     height: 65px;
   }
 
+
   .category-image img {
     width: 85%;
     height: 85%;
   }
 
+
   .category-item h3 {
     font-size: 12px;
     margin-top: 8px;
   }
+
 }
 
 
@@ -296,20 +282,53 @@
     padding-right: 4px;
   }
 
+
   .category-title {
     font-size: 21px;
+    margin-bottom: 20px;
   }
+
 
   .category-list {
     gap: 2px;
   }
+
 
   .category-image {
     width: 58px;
     height: 58px;
   }
 
+
+  .category-image img {
+    width: 85%;
+    height: 85%;
+  }
+
+
   .category-item h3 {
     font-size: 11px;
+    margin-top: 7px;
   }
+
+}
+
+
+/* ==========================================
+   REDUCE MOTION
+   Accessibility
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .category-item {
+    animation: none;
+  }
+
+  .category-image,
+  .category-image img,
+  .category-item h3 {
+    transition: none;
+  }
+
 }
