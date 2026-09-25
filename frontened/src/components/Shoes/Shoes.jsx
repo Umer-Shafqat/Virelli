@@ -1,9 +1,18 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+import { useSearchParams } from "react-router-dom";
 import "./Shoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 const Shoes = ({ limit, products }) => {
   const { shoes, addToCart, url } = useContext(StoreContext);
+
+  const [searchParams] = useSearchParams();
+  const selectedCategory = searchParams.get("category");
 
   const [selectedSizes, setSelectedSizes] = useState({});
   const [shoeList, setShoeList] = useState([]);
@@ -21,9 +30,17 @@ const Shoes = ({ limit, products }) => {
     setShoeList(normalizedList);
   }, [products, shoes]);
 
-  const displayedShoes = limit
-    ? shoeList.slice(0, limit)
+  const categoryFilteredShoes = selectedCategory
+    ? shoeList.filter(
+        (shoe) =>
+          String(shoe.category || "").toLowerCase() ===
+          selectedCategory.toLowerCase()
+      )
     : shoeList;
+
+  const displayedShoes = limit
+    ? categoryFilteredShoes.slice(0, limit)
+    : categoryFilteredShoes;
 
   const getImageUrl = (image) => {
     if (!image) return "";
@@ -72,7 +89,8 @@ const Shoes = ({ limit, products }) => {
             ...shoe,
             rating: {
               totalRatings: oldTotalRatings + 1,
-              ratingSum: oldRatingSum + selectedRating,
+              ratingSum:
+                oldRatingSum + selectedRating,
             },
           };
         }
@@ -125,7 +143,8 @@ const Shoes = ({ limit, products }) => {
       e.changedTouches[0].clientX;
 
     const difference =
-      touchStartX.current[shoeId] - touchEndX;
+      touchStartX.current[shoeId] -
+      touchEndX;
 
     if (Math.abs(difference) > 50) {
       setCurrentImages((prev) => {
@@ -135,12 +154,17 @@ const Shoes = ({ limit, products }) => {
         let newIndex = currentIndex;
 
         if (difference > 0) {
-          if (currentIndex < images.length - 1) {
-            newIndex = currentIndex + 1;
+          if (
+            currentIndex <
+            images.length - 1
+          ) {
+            newIndex =
+              currentIndex + 1;
           }
         } else {
           if (currentIndex > 0) {
-            newIndex = currentIndex - 1;
+            newIndex =
+              currentIndex - 1;
           }
         }
 
@@ -154,14 +178,20 @@ const Shoes = ({ limit, products }) => {
     delete touchStartX.current[shoeId];
   };
 
-  const handleImageChange = (shoeId, imageIndex) => {
+  const handleImageChange = (
+    shoeId,
+    imageIndex
+  ) => {
     setCurrentImages((prev) => ({
       ...prev,
       [shoeId]: imageIndex,
     }));
   };
 
-  const handleMouseEnter = (shoeId, images) => {
+  const handleMouseEnter = (
+    shoeId,
+    images
+  ) => {
     if (images.length > 1) {
       setCurrentImages((prev) => ({
         ...prev,
@@ -181,10 +211,16 @@ const Shoes = ({ limit, products }) => {
     <>
       <section className="shoes-section">
         <div className="shoes-heading">
-          <h2>Our Shoes Collection</h2>
+          <h2>
+            {selectedCategory
+              ? `${selectedCategory} Collection`
+              : "Our Shoes Collection"}
+          </h2>
 
           <p>
-            Explore all of our latest shoe designs
+            {selectedCategory
+              ? `Explore our latest ${selectedCategory.toLowerCase()} products`
+              : "Explore all of our latest shoe designs"}
           </p>
         </div>
 
@@ -208,7 +244,8 @@ const Shoes = ({ limit, products }) => {
                 currentImages[shoeId] || 0;
 
               if (
-                currentImageIndex >= images.length
+                currentImageIndex >=
+                images.length
               ) {
                 currentImageIndex = 0;
               }
@@ -254,7 +291,9 @@ const Shoes = ({ limit, products }) => {
                       )
                     }
                     onMouseLeave={() =>
-                      handleMouseLeave(shoeId)
+                      handleMouseLeave(
+                        shoeId
+                      )
                     }
                     onTouchStart={(e) =>
                       handleTouchStart(
@@ -278,8 +317,12 @@ const Shoes = ({ limit, products }) => {
 
                     {currentImage && (
                       <img
-                        src={getImageUrl(currentImage)}
-                        alt={shoe.name || "Shoe"}
+                        src={getImageUrl(
+                          currentImage
+                        )}
+                        alt={
+                          shoe.name || "Shoe"
+                        }
                         draggable="false"
                         onError={(e) => {
                           console.error(
@@ -293,9 +336,14 @@ const Shoes = ({ limit, products }) => {
                     {images.length > 1 && (
                       <div className="image-dots">
                         {images.map(
-                          (_, imageIndex) => (
+                          (
+                            _,
+                            imageIndex
+                          ) => (
                             <button
-                              key={imageIndex}
+                              key={
+                                imageIndex
+                              }
                               type="button"
                               className={
                                 currentImageIndex ===
@@ -365,7 +413,9 @@ const Shoes = ({ limit, products }) => {
                       </div>
 
                       <span className="rating-number">
-                        {averageRating.toFixed(1)}
+                        {averageRating.toFixed(
+                          1
+                        )}
                       </span>
 
                       <span className="rating-count">
@@ -398,7 +448,8 @@ const Shoes = ({ limit, products }) => {
                             key={size}
                             type="button"
                             className={
-                              selectedSize === size
+                              selectedSize ===
+                              size
                                 ? "size-btn selected"
                                 : "size-btn"
                             }
@@ -419,7 +470,9 @@ const Shoes = ({ limit, products }) => {
                       className="add-cart"
                       type="button"
                       onClick={() =>
-                        handleAddToCart(shoe)
+                        handleAddToCart(
+                          shoe
+                        )
                       }
                     >
                       Add to Cart
@@ -430,7 +483,9 @@ const Shoes = ({ limit, products }) => {
             })
           ) : (
             <p className="no-shoes">
-              No shoes available.
+              {selectedCategory
+                ? `No ${selectedCategory.toLowerCase()} products available.`
+                : "No shoes available."}
             </p>
           )}
         </div>
