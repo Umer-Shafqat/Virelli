@@ -7,7 +7,7 @@ import "./AddShoe.css";
 const AddShoe = () => {
   const [shoeData, setShoeData] = useState({
     name: "",
-    category: "Sneakers",
+    category: "Shoes",
     gender: "MEN",
     popular: "false",
     price: "",
@@ -94,11 +94,11 @@ const AddShoe = () => {
       );
 
       if (response.data.success) {
-        alert("Shoe added successfully!");
+        alert("Product added successfully!");
 
         setShoeData({
           name: "",
-          category: "Sneakers",
+          category: "Shoes",
           gender: "MEN",
           popular: "false",
           price: "",
@@ -140,7 +140,7 @@ const AddShoe = () => {
 
       <div className="addshoe-content">
         <div className="addshoe-card">
-          <h2>Add New Shoe</h2>
+          <h2>Add New Product</h2>
 
           <form onSubmit={handleSubmit}>
             <div className="image-upload">
@@ -185,7 +185,7 @@ const AddShoe = () => {
 
             <div className="form-grid">
               <div className="form-group">
-                <label>Shoe Name</label>
+                <label>Product Name</label>
 
                 <input
                   type="text"
@@ -204,25 +204,14 @@ const AddShoe = () => {
                   name="category"
                   value={shoeData.category}
                   onChange={handleChange}
+                  required
                 >
-                  <option value="Sneakers">
-                    Sneakers
-                  </option>
-                  <option value="Sports">
-                    Sports
-                  </option>
-                  <option value="Loafers">
-                    Loafers
-                  </option>
-                  <option value="Formal">
-                    Formal
-                  </option>
-                  <option value="Boots">
-                    Boots
-                  </option>
-                  <option value="Sandals">
-                    Sandals
-                  </option>
+                  <option value="Shoes">Shoes</option>
+                  <option value="Chapal">Chapal</option>
+                  <option value="Jackets">Jackets</option>
+                  <option value="Hoodies">Hoodies</option>
+                  <option value="Watches">Watches</option>
+                  <option value="Caps">Caps</option>
                 </select>
               </div>
 
@@ -241,7 +230,7 @@ const AddShoe = () => {
               </div>
 
               <div className="form-group">
-                <label>Popular Shoe</label>
+                <label>Popular Product</label>
 
                 <select
                   name="popular"
@@ -318,8 +307,7 @@ const AddShoe = () => {
                   onChange={(e) =>
                     setShoeData({
                       ...shoeData,
-                      isNewArrival:
-                        e.target.checked,
+                      isNewArrival: e.target.checked,
                     })
                   }
                 />{" "}
@@ -345,7 +333,7 @@ const AddShoe = () => {
                 name="description"
                 value={shoeData.description}
                 onChange={handleChange}
-                placeholder="Write shoe description..."
+                placeholder="Write product description..."
                 required
               />
             </div>
@@ -355,9 +343,7 @@ const AddShoe = () => {
               type="submit"
               disabled={loading}
             >
-              {loading
-                ? "Adding Shoe..."
-                : "Add Shoe"}
+              {loading ? "Adding Product..." : "Add Product"}
             </button>
           </form>
         </div>
