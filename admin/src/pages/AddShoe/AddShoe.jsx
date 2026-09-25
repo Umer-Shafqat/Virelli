@@ -12,7 +12,7 @@ const AddShoe = () => {
     popular: "false",
     price: "",
     discount: "",
-    sizes: "",
+    sizes: "39,40,41,42,43",
     description: "",
     isNewArrival: false,
     isOffer: false,
@@ -26,7 +26,7 @@ const AddShoe = () => {
   const backendUrl = "https://virelli.onrender.com";
 
   const shoeCategories = ["Shoes", "Chapal"];
-  const sizeCategories = ["Hoodies", "Jackets", "Watches", "Caps"];
+  const sizeCategories = ["Hoodies", "Jackets"];
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -37,7 +37,7 @@ const AddShoe = () => {
       if (shoeCategories.includes(value)) {
         sizes = "39,40,41,42,43";
       } else if (sizeCategories.includes(value)) {
-        sizes = "Small,Large,X,XXL";
+        sizes = "S,M,L,XL,XXL";
       }
 
       setShoeData((prev) => ({
@@ -157,13 +157,15 @@ const AddShoe = () => {
     }
   };
 
-  const showSizeField = true;
+  const showSizeField =
+    shoeCategories.includes(shoeData.category) ||
+    sizeCategories.includes(shoeData.category);
 
   const sizePlaceholder = shoeCategories.includes(
     shoeData.category
   )
     ? "39,40,41,42,43"
-    : "Small,Large,X,XXL";
+    : "S,M,L,XL,XXL";
 
   return (
     <div className="addshoe-page">
