@@ -12,7 +12,7 @@ const AddShoe = () => {
     popular: "false",
     price: "",
     discount: "",
-    sizes: "39,40,41,42,43",
+    sizes: "",
     description: "",
     isNewArrival: false,
     isOffer: false,
@@ -35,9 +35,9 @@ const AddShoe = () => {
       let sizes = "";
 
       if (shoeCategories.includes(value)) {
-        sizes = "39,40,41,42,43";
+        sizes = "";
       } else if (sizeCategories.includes(value)) {
-        sizes = "S,M,L,XL,XXL";
+        sizes = "";
       }
 
       setShoeData((prev) => ({
