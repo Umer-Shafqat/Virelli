@@ -25,8 +25,30 @@ const AddShoe = () => {
 
   const backendUrl = "https://virelli.onrender.com";
 
+  const shoeCategories = ["Shoes", "Chapal"];
+  const clothingCategories = ["Hoodies", "Jackets"];
+  const noSizeCategories = ["Watches", "Caps"];
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    if (name === "category") {
+      let sizes = "";
+
+      if (shoeCategories.includes(value)) {
+        sizes = "39,40,41,42,43";
+      } else if (clothingCategories.includes(value)) {
+        sizes = "S,M,L,XL,XXL";
+      }
+
+      setShoeData((prev) => ({
+        ...prev,
+        category: value,
+        sizes,
+      }));
+
+      return;
+    }
 
     setShoeData((prev) => ({
       ...prev,
@@ -67,16 +89,25 @@ const AddShoe = () => {
       formData.append("popular", shoeData.popular);
       formData.append("price", shoeData.price);
       formData.append("discount", shoeData.discount);
-      formData.append("sizes", shoeData.sizes);
+
+      if (!noSizeCategories.includes(shoeData.category)) {
+        formData.append("sizes", shoeData.sizes);
+      } else {
+        formData.append("sizes", "");
+      }
+
       formData.append("description", shoeData.description);
+
       formData.append(
         "isNewArrival",
         shoeData.isNewArrival ? "true" : "false"
       );
+
       formData.append(
         "isOffer",
         shoeData.isOffer ? "true" : "false"
       );
+
       formData.append("offerPrice", shoeData.offerPrice);
 
       images.forEach((image) => {
@@ -103,7 +134,7 @@ const AddShoe = () => {
           popular: "false",
           price: "",
           discount: "",
-          sizes: "",
+          sizes: "39,40,41,42,43",
           description: "",
           isNewArrival: false,
           isOffer: false,
@@ -132,6 +163,16 @@ const AddShoe = () => {
       setLoading(false);
     }
   };
+
+  const showSizeField = !noSizeCategories.includes(
+    shoeData.category
+  );
+
+  const sizePlaceholder = shoeCategories.includes(
+    shoeData.category
+  )
+    ? "39,40,41,42,43"
+    : "S,M,L,XL,XXL";
 
   return (
     <div className="addshoe-page">
@@ -267,18 +308,20 @@ const AddShoe = () => {
                 />
               </div>
 
-              <div className="form-group">
-                <label>Sizes</label>
+              {showSizeField && (
+                <div className="form-group">
+                  <label>Sizes</label>
 
-                <input
-                  type="text"
-                  name="sizes"
-                  value={shoeData.sizes}
-                  onChange={handleChange}
-                  placeholder="39,40,41,42,43"
-                  required
-                />
-              </div>
+                  <input
+                    type="text"
+                    name="sizes"
+                    value={shoeData.sizes}
+                    onChange={handleChange}
+                    placeholder={sizePlaceholder}
+                    required
+                  />
+                </div>
+              )}
 
               <div className="form-group">
                 <label>Offer Price</label>
@@ -351,5 +394,3 @@ const AddShoe = () => {
     </div>
   );
 };
-
-export default AddShoe;
