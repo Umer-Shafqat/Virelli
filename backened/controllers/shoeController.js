@@ -34,6 +34,13 @@ const addShoe = async (req, res) => {
       (file) => file.filename
     );
 
+    const sizes = req.body.sizes
+      ? req.body.sizes
+          .split(",")
+          .map((size) => size.trim())
+          .filter((size) => size !== "")
+      : [];
+
     const shoe = new ShoeModel({
       name: req.body.name,
 
@@ -56,12 +63,7 @@ const addShoe = async (req, res) => {
 
       description: req.body.description,
 
-      sizes: req.body.sizes
-        ? req.body.sizes
-            .split(",")
-            .map((size) => Number(size.trim()))
-            .filter((size) => !isNaN(size))
-        : [],
+      sizes: sizes,
 
       popular: req.body.popular === "true",
 
