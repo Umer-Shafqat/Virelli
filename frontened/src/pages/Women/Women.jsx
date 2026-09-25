@@ -59,8 +59,8 @@ const Women = () => {
   return (
     <section className="women-page">
       <div className="women-heading">
-        <h2>Women's Shoes Collection</h2>
-        <p>Explore our latest women's shoe designs</p>
+        <h2>Women's Collection</h2>
+        <p>Explore our latest women's products</p>
       </div>
 
       <div className="shoes-grid">

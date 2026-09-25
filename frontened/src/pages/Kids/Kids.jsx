@@ -59,8 +59,8 @@ const Kids = () => {
   return (
     <section className="kid-page">
       <div className="kid-heading">
-        <h2>Kids' Shoes Collection</h2>
-        <p>Explore our latest kids' shoe designs</p>
+        <h2>Kids' Collection</h2>
+        <p>Explore our latest kids' products</p>
       </div>
 
       <div className="shoes-grid">
