@@ -11,12 +11,12 @@ const Sidebar = () => {
     },
     {
       name: "Add Product",
-      path: "/add-product",
+      path: "/add-shoe",
       icon: "📦",
     },
     {
       name: "List Products",
-      path: "/list-products",
+      path: "/list-shoes",
       icon: "📦",
     },
     {
