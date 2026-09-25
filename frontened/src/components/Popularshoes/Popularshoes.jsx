@@ -54,8 +54,8 @@ const Popularshoes = () => {
   return (
     <section className="shoes-section">
       <div className="shoes-heading">
-        <h2>Popular Shoes</h2>
-        <p>Check out our most popular shoe designs</p>
+        <h2>Popular Products</h2>
+        <p>Check out our most popular products</p>
       </div>
 
       <div className="shoes-grid">
