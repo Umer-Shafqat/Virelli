@@ -26,8 +26,7 @@ const AddShoe = () => {
   const backendUrl = "https://virelli.onrender.com";
 
   const shoeCategories = ["Shoes", "Chapal"];
-  const clothingCategories = ["Hoodies", "Jackets"];
-  const noSizeCategories = ["Watches", "Caps"];
+  const sizeCategories = ["Hoodies", "Jackets", "Watches", "Caps"];
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -37,8 +36,8 @@ const AddShoe = () => {
 
       if (shoeCategories.includes(value)) {
         sizes = "39,40,41,42,43";
-      } else if (clothingCategories.includes(value)) {
-        sizes = "S,M,L,XL,XXL";
+      } else if (sizeCategories.includes(value)) {
+        sizes = "Small,Large,X,XXL";
       }
 
       setShoeData((prev) => ({
@@ -89,13 +88,7 @@ const AddShoe = () => {
       formData.append("popular", shoeData.popular);
       formData.append("price", shoeData.price);
       formData.append("discount", shoeData.discount);
-
-      if (!noSizeCategories.includes(shoeData.category)) {
-        formData.append("sizes", shoeData.sizes);
-      } else {
-        formData.append("sizes", "");
-      }
-
+      formData.append("sizes", shoeData.sizes);
       formData.append("description", shoeData.description);
 
       formData.append(
@@ -164,15 +157,13 @@ const AddShoe = () => {
     }
   };
 
-  const showSizeField = !noSizeCategories.includes(
-    shoeData.category
-  );
+  const showSizeField = true;
 
   const sizePlaceholder = shoeCategories.includes(
     shoeData.category
   )
     ? "39,40,41,42,43"
-    : "S,M,L,XL,XXL";
+    : "Small,Large,X,XXL";
 
   return (
     <div className="addshoe-page">
@@ -394,3 +385,5 @@ const AddShoe = () => {
     </div>
   );
 };
+
+export default AddShoe;
