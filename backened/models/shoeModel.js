@@ -44,7 +44,7 @@ const shoeSchema = new mongoose.Schema(
     },
 
     sizes: {
-      type: [Number],
+      type: [String],
       default: [],
     },
 
