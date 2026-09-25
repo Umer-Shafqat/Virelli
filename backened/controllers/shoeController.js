@@ -21,6 +21,15 @@ const addShoe = async (req, res) => {
       .trim()
       .toUpperCase();
 
+    const category = String(req.body.category || "").trim();
+
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "Product category is required",
+      });
+    }
+
     const image_filenames = req.files.map(
       (file) => file.filename
     );
@@ -37,7 +46,7 @@ const addShoe = async (req, res) => {
           ? "KID"
           : "",
 
-      category: req.body.category,
+      category: category,
 
       images: image_filenames,
 
@@ -51,6 +60,7 @@ const addShoe = async (req, res) => {
         ? req.body.sizes
             .split(",")
             .map((size) => Number(size.trim()))
+            .filter((size) => !isNaN(size))
         : [],
 
       popular: req.body.popular === "true",
@@ -197,7 +207,6 @@ const searchAdmin = async (req, res) => {
     }
 
     const keyword = q.trim();
-
     const lowerKeyword = keyword.toLowerCase();
 
     let shoes = [];
