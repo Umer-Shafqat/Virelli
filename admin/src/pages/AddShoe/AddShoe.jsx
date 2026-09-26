@@ -12,6 +12,7 @@ const AddShoe = () => {
     popular: "false",
     price: "",
     discount: "",
+    requiresSize: true,
     sizes: "",
     description: "",
     isNewArrival: false,
@@ -25,29 +26,9 @@ const AddShoe = () => {
 
   const backendUrl = "https://virelli.onrender.com";
 
-  const shoeCategories = ["Shoes", "Chapal"];
-  const sizeCategories = ["Hoodies", "Jackets"];
-
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
-    if (name === "category") {
-      let sizes = "";
-
-      if (shoeCategories.includes(value)) {
-        sizes = "";
-      } else if (sizeCategories.includes(value)) {
-        sizes = "";
-      }
-
-      setShoeData((prev) => ({
-        ...prev,
-        category: value,
-        sizes,
-      }));
-
-      return;
-    }
 
     setShoeData((prev) => ({
       ...prev,
@@ -55,6 +36,7 @@ const AddShoe = () => {
     }));
   };
 
+  // Handle image selection
   const handleImages = (e) => {
     const files = Array.from(e.target.files);
 
@@ -69,11 +51,21 @@ const AddShoe = () => {
     setPreviews(imagePreviews);
   };
 
+  // Submit product
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (images.length === 0) {
       alert("Please select at least one image.");
+      return;
+    }
+
+    // If product requires size, make sure sizes are entered
+    if (
+      shoeData.requiresSize &&
+      shoeData.sizes.trim() === ""
+    ) {
+      alert("Please enter product sizes.");
       return;
     }
 
@@ -88,7 +80,19 @@ const AddShoe = () => {
       formData.append("popular", shoeData.popular);
       formData.append("price", shoeData.price);
       formData.append("discount", shoeData.discount);
-      formData.append("sizes", shoeData.sizes);
+
+      // Send requiresSize to backend
+      formData.append(
+        "requiresSize",
+        shoeData.requiresSize ? "true" : "false"
+      );
+
+      // If size is not required, send empty sizes
+      formData.append(
+        "sizes",
+        shoeData.requiresSize ? shoeData.sizes : ""
+      );
+
       formData.append("description", shoeData.description);
 
       formData.append(
@@ -103,6 +107,7 @@ const AddShoe = () => {
 
       formData.append("offerPrice", shoeData.offerPrice);
 
+      // Add images
       images.forEach((image) => {
         formData.append("images", image);
       });
@@ -120,6 +125,7 @@ const AddShoe = () => {
       if (response.data.success) {
         alert("Product added successfully!");
 
+        // Reset form
         setShoeData({
           name: "",
           category: "Shoes",
@@ -127,7 +133,8 @@ const AddShoe = () => {
           popular: "false",
           price: "",
           discount: "",
-          sizes: "39,40,41,42,43",
+          requiresSize: true,
+          sizes: "",
           description: "",
           isNewArrival: false,
           isOffer: false,
@@ -157,15 +164,12 @@ const AddShoe = () => {
     }
   };
 
-  const showSizeField =
-    shoeCategories.includes(shoeData.category) ||
-    sizeCategories.includes(shoeData.category);
-
-  const sizePlaceholder = shoeCategories.includes(
-    shoeData.category
-  )
-    ? "39,40,41,42,43"
-    : "S,M,L,XL,XXL";
+  // Placeholder changes according to whether size is required
+  const sizePlaceholder =
+    shoeData.category === "Shoes" ||
+    shoeData.category === "Chapal"
+      ? "39,40,41,42,43"
+      : "S,M,L,XL,XXL";
 
   return (
     <div className="addshoe-page">
@@ -177,6 +181,8 @@ const AddShoe = () => {
           <h2>Add New Product</h2>
 
           <form onSubmit={handleSubmit}>
+
+            {/* ================= IMAGE UPLOAD ================= */}
             <div className="image-upload">
               <label>Product Images</label>
 
@@ -217,7 +223,10 @@ const AddShoe = () => {
               )}
             </div>
 
+            {/* ================= FORM ================= */}
             <div className="form-grid">
+
+              {/* Product Name */}
               <div className="form-group">
                 <label>Product Name</label>
 
@@ -231,6 +240,7 @@ const AddShoe = () => {
                 />
               </div>
 
+              {/* Category */}
               <div className="form-group">
                 <label>Category</label>
 
@@ -249,6 +259,7 @@ const AddShoe = () => {
                 </select>
               </div>
 
+              {/* Gender */}
               <div className="form-group">
                 <label>Gender</label>
 
@@ -263,6 +274,7 @@ const AddShoe = () => {
                 </select>
               </div>
 
+              {/* Popular Product */}
               <div className="form-group">
                 <label>Popular Product</label>
 
@@ -276,6 +288,7 @@ const AddShoe = () => {
                 </select>
               </div>
 
+              {/* Price */}
               <div className="form-group">
                 <label>Price</label>
 
@@ -289,6 +302,7 @@ const AddShoe = () => {
                 />
               </div>
 
+              {/* Discount */}
               <div className="form-group">
                 <label>Discount (%)</label>
 
@@ -301,7 +315,31 @@ const AddShoe = () => {
                 />
               </div>
 
-              {showSizeField && (
+              {/* ================= REQUIRES SIZE ================= */}
+              <div className="form-group">
+                <label>Requires Size</label>
+
+                <select
+                  name="requiresSize"
+                  value={shoeData.requiresSize ? "true" : "false"}
+                  onChange={(e) =>
+                    setShoeData((prev) => ({
+                      ...prev,
+                      requiresSize: e.target.value === "true",
+                      sizes:
+                        e.target.value === "true"
+                          ? prev.sizes
+                          : "",
+                    }))
+                  }
+                >
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              {/* ================= SIZES ================= */}
+              {shoeData.requiresSize && (
                 <div className="form-group">
                   <label>Sizes</label>
 
@@ -313,9 +351,14 @@ const AddShoe = () => {
                     placeholder={sizePlaceholder}
                     required
                   />
+
+                  <small>
+                    Example: 39,40,41,42,43
+                  </small>
                 </div>
               )}
 
+              {/* Offer Price */}
               <div className="form-group">
                 <label>Offer Price</label>
 
@@ -329,6 +372,7 @@ const AddShoe = () => {
               </div>
             </div>
 
+            {/* ================= CHECKBOXES ================= */}
             <div
               style={{
                 display: "flex",
@@ -361,6 +405,7 @@ const AddShoe = () => {
               </label>
             </div>
 
+            {/* ================= DESCRIPTION ================= */}
             <div className="form-group">
               <label>Description</label>
 
@@ -374,13 +419,17 @@ const AddShoe = () => {
               />
             </div>
 
+            {/* ================= SUBMIT ================= */}
             <button
               className="submit-btn"
               type="submit"
               disabled={loading}
             >
-              {loading ? "Adding Product..." : "Add Product"}
+              {loading
+                ? "Adding Product..."
+                : "Add Product"}
             </button>
+
           </form>
         </div>
       </div>
