@@ -1,20 +1,36 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import "./Women.css";
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
+import {
+  StoreContext,
+} from "../../Context/StoreContext/StoreContext";
 
 const Women = () => {
-  const { shoes, addToCart, url } = useContext(StoreContext);
+  const {
+    shoes,
+    addToCart,
+    url,
+  } = useContext(StoreContext);
 
   const [shoeList, setShoeList] = useState([]);
-  const [selectedSizes, setSelectedSizes] = useState({});
+  const [selectedSizes, setSelectedSizes] =
+    useState({});
 
   useEffect(() => {
     setShoeList(
-      shoes.filter((item) => item.type === "WOMEN")
+      shoes.filter(
+        (item) => item.type === "WOMEN"
+      )
     );
   }, [shoes]);
 
-  const handleSizeSelect = (shoeId, size) => {
+  const handleSizeSelect = (
+    shoeId,
+    size
+  ) => {
     setSelectedSizes((prev) => ({
       ...prev,
       [shoeId]: size,
@@ -22,9 +38,21 @@ const Women = () => {
   };
 
   const handleAddToCart = (shoe) => {
-    const selectedSize = selectedSizes[shoe._id];
+    const requiresSize =
+      shoe.requiresSize !== false;
 
-    if (!selectedSize) {
+    if (!requiresSize) {
+      addToCart(shoe, "N/A");
+      return;
+    }
+
+    const selectedSize =
+      selectedSizes[shoe._id];
+
+    if (
+      !selectedSize ||
+      String(selectedSize).trim() === ""
+    ) {
       alert("Please select a size first");
       return;
     }
@@ -32,7 +60,10 @@ const Women = () => {
     addToCart(shoe, selectedSize);
   };
 
-  const handleRating = (shoeId, selectedRating) => {
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
     setShoeList((prevShoes) =>
       prevShoes.map((shoe) => {
         if (shoe._id === shoeId) {
@@ -45,8 +76,11 @@ const Women = () => {
           return {
             ...shoe,
             rating: {
-              totalRatings: oldTotalRatings + 1,
-              ratingSum: oldRatingSum + selectedRating,
+              totalRatings:
+                oldTotalRatings + 1,
+              ratingSum:
+                oldRatingSum +
+                selectedRating,
             },
           };
         }
@@ -60,25 +94,38 @@ const Women = () => {
     <section className="women-page">
       <div className="women-heading">
         <h2>Women's Collection</h2>
-        <p>Explore our latest women's products</p>
+
+        <p>
+          Explore our latest women's products
+        </p>
       </div>
 
       <div className="shoes-grid">
         {shoeList.map((shoe) => {
-          const price = Number(shoe.price || 0);
+          const price =
+            Number(shoe.price || 0);
 
           const discountedPrice =
-            price - (price * (shoe.discount || 0)) / 100;
+            price -
+            (price *
+              (shoe.discount || 0)) /
+              100;
 
           const averageRating =
-            shoe.rating && shoe.rating.totalRatings > 0
+            shoe.rating &&
+            shoe.rating.totalRatings > 0
               ? shoe.rating.ratingSum /
                 shoe.rating.totalRatings
               : 5;
-              //women section
+
+          const requiresSize =
+            shoe.requiresSize !== false;
 
           return (
-            <div className="shoe-card" key={shoe._id}>
+            <div
+              className="shoe-card"
+              key={shoe._id}
+            >
               <div className="shoe-image">
                 {shoe.discount > 0 && (
                   <span className="discount-badge">
@@ -105,22 +152,30 @@ const Women = () => {
 
                 <div className="rating">
                   <div className="stars">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        className={
-                          star <= Math.round(averageRating)
-                            ? "star filled"
-                            : "star"
-                        }
-                        onClick={() =>
-                          handleRating(shoe._id, star)
-                        }
-                      >
-                        ★
-                      </button>
-                    ))}
+                    {[1, 2, 3, 4, 5].map(
+                      (star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          className={
+                            star <=
+                            Math.round(
+                              averageRating
+                            )
+                              ? "star filled"
+                              : "star"
+                          }
+                          onClick={() =>
+                            handleRating(
+                              shoe._id,
+                              star
+                            )
+                          }
+                        >
+                          ★
+                        </button>
+                      )
+                    )}
                   </div>
 
                   <span className="rating-number">
@@ -128,47 +183,63 @@ const Women = () => {
                   </span>
 
                   <span className="rating-count">
-                    ({shoe.rating?.totalRatings || 0})
+                    (
+                    {shoe.rating
+                      ?.totalRatings || 0}
+                    )
                   </span>
                 </div>
 
                 <div className="price-section">
                   <h4 className="shoe-price">
-                    Rs. {discountedPrice.toLocaleString()}
+                    Rs.{" "}
+                    {discountedPrice.toLocaleString()}
                   </h4>
 
                   {shoe.discount > 0 && (
                     <span className="original-price">
-                      Rs. {price.toLocaleString()}
+                      Rs.{" "}
+                      {price.toLocaleString()}
                     </span>
                   )}
                 </div>
 
-                <div className="sizes">
-                  <div className="size-buttons">
-                    {(shoe.sizes || []).map((size) => (
-                      <button
-                        key={size}
-                        type="button"
-                        className={
-                          selectedSizes[shoe._id] === size
-                            ? "selected-size"
-                            : ""
-                        }
-                        onClick={() =>
-                          handleSizeSelect(shoe._id, size)
-                        }
-                      >
-                        {size}
-                      </button>
-                    ))}
+                {requiresSize && (
+                  <div className="sizes">
+                    <div className="size-buttons">
+                      {(shoe.sizes || []).map(
+                        (size) => (
+                          <button
+                            key={size}
+                            type="button"
+                            className={
+                              selectedSizes[
+                                shoe._id
+                              ] === size
+                                ? "selected-size"
+                                : ""
+                            }
+                            onClick={() =>
+                              handleSizeSelect(
+                                shoe._id,
+                                size
+                              )
+                            }
+                          >
+                            {size}
+                          </button>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <button
                   className="add-cart"
                   type="button"
-                  onClick={() => handleAddToCart(shoe)}
+                  onClick={() =>
+                    handleAddToCart(shoe)
+                  }
                 >
                   Add to Cart
                 </button>

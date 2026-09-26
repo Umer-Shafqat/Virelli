@@ -170,14 +170,10 @@ const Offers = () => {
                   ).padStart(2, "0")}
                 </span>
 
-                <small>
-                  DAYS
-                </small>
+                <small>DAYS</small>
               </div>
 
-              <div className="colon">
-                :
-              </div>
+              <div className="colon">:</div>
 
               <div className="time-box">
                 <span>
@@ -186,14 +182,10 @@ const Offers = () => {
                   ).padStart(2, "0")}
                 </span>
 
-                <small>
-                  HOURS
-                </small>
+                <small>HOURS</small>
               </div>
 
-              <div className="colon">
-                :
-              </div>
+              <div className="colon">:</div>
 
               <div className="time-box">
                 <span>
@@ -202,14 +194,10 @@ const Offers = () => {
                   ).padStart(2, "0")}
                 </span>
 
-                <small>
-                  MIN
-                </small>
+                <small>MIN</small>
               </div>
 
-              <div className="colon">
-                :
-              </div>
+              <div className="colon">:</div>
 
               <div className="time-box">
                 <span>
@@ -218,9 +206,7 @@ const Offers = () => {
                   ).padStart(2, "0")}
                 </span>
 
-                <small>
-                  SEC
-                </small>
+                <small>SEC</small>
               </div>
             </div>
           </div>
@@ -237,9 +223,7 @@ const Offers = () => {
         </p>
       ) : offers.length === 0 ? (
         <div className="no-offers">
-          <h2>
-            No Offer Shoes
-          </h2>
+          <h2>No Offer Shoes</h2>
 
           <p>
             No shoes are currently
@@ -270,13 +254,10 @@ const Offers = () => {
               </div>
 
               <div className="offer-info">
-                <h2>
-                  {shoe.name}
-                </h2>
+                <h2>{shoe.name}</h2>
 
                 <p className="shoe-category">
-                  {shoe.type} •{" "}
-                  {shoe.category}
+                  {shoe.type} • {shoe.category}
                 </p>
 
                 <p className="shoe-description">

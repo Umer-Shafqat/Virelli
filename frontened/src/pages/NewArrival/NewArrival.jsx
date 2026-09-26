@@ -92,9 +92,7 @@ const NewArrival = () => {
               </div>
 
               <div className="new-arrival-info">
-                <h2>
-                  {shoe.name}
-                </h2>
+                <h2>{shoe.name}</h2>
 
                 <p className="shoe-category">
                   {shoe.type} • {shoe.category}
