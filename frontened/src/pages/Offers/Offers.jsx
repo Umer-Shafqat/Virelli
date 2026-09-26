@@ -5,8 +5,6 @@ import "./Offers.css";
 const API_URL =
   process.env.REACT_APP_API_URL || "http://localhost:4000";
 
-
-
 const offerStartDate = new Date(
   "2026-08-09T00:00:00"
 );
@@ -29,21 +27,18 @@ const Offers = () => {
     const updateCountdown = () => {
       const now = new Date();
 
-      // Before offer starts
       if (now < offerStartDate) {
         setOfferActive(false);
         setTimeLeft(null);
         return;
       }
 
-      // After offer ends
       if (now >= offerEndDate) {
         setOfferActive(false);
         setTimeLeft(null);
         return;
       }
 
-      // Offer is active
       setOfferActive(true);
 
       const difference =
@@ -91,10 +86,6 @@ const Offers = () => {
     };
   }, []);
 
-  // =====================================
-  // FETCH OFFER SHOES
-  // =====================================
-
   useEffect(() => {
     const fetchOffers = async () => {
       try {
@@ -131,22 +122,26 @@ const Offers = () => {
     fetchOffers();
   }, []);
 
-  // =====================================
-  // PAGE
-  // =====================================
+  const getImageUrl = (shoe) => {
+    if (
+      Array.isArray(shoe.images) &&
+      shoe.images.length > 0
+    ) {
+      return `${API_URL}/images/${shoe.images[0]}`;
+    }
+
+    if (shoe.image) {
+      return `${API_URL}/images/${shoe.image}`;
+    }
+
+    return "/placeholder.png";
+  };
 
   return (
     <div className="offers-page">
-
-      {/* =====================================
-          MEGA SALE
-      ===================================== */}
-
       {offerActive && timeLeft && (
         <div className="offer-sale-plate">
-
           <div className="sale-content">
-
             <div className="sale-title">
               🔥 MEGA SALE 🔥
             </div>
@@ -167,12 +162,7 @@ const Offers = () => {
               )}
             </div>
 
-            {/* COUNTDOWN */}
-
             <div className="countdown">
-
-              {/* DAYS */}
-
               <div className="time-box">
                 <span>
                   {String(
@@ -188,8 +178,6 @@ const Offers = () => {
               <div className="colon">
                 :
               </div>
-
-              {/* HOURS */}
 
               <div className="time-box">
                 <span>
@@ -207,8 +195,6 @@ const Offers = () => {
                 :
               </div>
 
-              {/* MINUTES */}
-
               <div className="time-box">
                 <span>
                   {String(
@@ -225,8 +211,6 @@ const Offers = () => {
                 :
               </div>
 
-              {/* SECONDS */}
-
               <div className="time-box">
                 <span>
                   {String(
@@ -238,40 +222,21 @@ const Offers = () => {
                   SEC
                 </small>
               </div>
-
             </div>
-
           </div>
-
         </div>
       )}
-
-      {/* =====================================
-          TITLE
-      ===================================== */}
 
       <h1 className="offers-title">
         Special Offers
       </h1>
 
-      {/* =====================================
-          LOADING
-      ===================================== */}
-
       {loading ? (
-
         <p className="loading">
           Loading...
         </p>
-
       ) : offers.length === 0 ? (
-
-        /* =====================================
-           NO OFFERS
-        ===================================== */
-
         <div className="no-offers">
-
           <h2>
             No Offer Shoes
           </h2>
@@ -280,44 +245,31 @@ const Offers = () => {
             No shoes are currently
             available on offer.
           </p>
-
         </div>
-
       ) : (
-
-        /* =====================================
-           OFFER SHOES
-        ===================================== */
-
         <div className="offers-container">
-
           {offers.map((shoe) => (
-
             <div
               className="offer-card"
               key={shoe._id}
             >
-
-              {/* IMAGE */}
-
               <div className="offer-image-box">
-
                 <img
-                  src={`${API_URL}/images/${shoe.image}`}
+                  src={getImageUrl(shoe)}
                   alt={shoe.name}
                   className="offer-image"
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "/placeholder.png";
+                  }}
                 />
 
                 <span className="offer-badge">
                   OFFER
                 </span>
-
               </div>
 
-              {/* INFORMATION */}
-
               <div className="offer-info">
-
                 <h2>
                   {shoe.name}
                 </h2>
@@ -331,13 +283,9 @@ const Offers = () => {
                   {shoe.description}
                 </p>
 
-                {/* PRICE */}
-
                 <div className="price-section">
-
                   {Number(shoe.discount) > 0 ? (
                     <>
-
                       <span className="old-price">
                         Rs.{" "}
                         {Number(
@@ -348,10 +296,16 @@ const Offers = () => {
                       <span className="new-price">
                         Rs.{" "}
                         {Math.round(
-                          Number(shoe.price || 0) -
+                          Number(
+                            shoe.price || 0
+                          ) -
                             (
-                              Number(shoe.price || 0) *
-                              Number(shoe.discount || 0)
+                              Number(
+                                shoe.price || 0
+                              ) *
+                              Number(
+                                shoe.discount || 0
+                              )
                             ) /
                               100
                         ).toLocaleString()}
@@ -360,31 +314,21 @@ const Offers = () => {
                       <span className="discount">
                         {shoe.discount}% OFF
                       </span>
-
                     </>
                   ) : (
-
                     <span className="new-price">
                       Rs.{" "}
                       {Number(
                         shoe.price || 0
                       ).toLocaleString()}
                     </span>
-
                   )}
-
                 </div>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       )}
-
     </div>
   );
 };
