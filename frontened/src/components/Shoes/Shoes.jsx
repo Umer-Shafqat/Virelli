@@ -9,38 +9,67 @@ import "./Shoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 const Shoes = ({ limit, products }) => {
-  const { shoes, addToCart, url } = useContext(StoreContext);
+  const { shoes, addToCart, url } =
+    useContext(StoreContext);
 
   const [searchParams] = useSearchParams();
-  const selectedCategory = searchParams.get("category");
+  const selectedCategory =
+    searchParams.get("category");
 
-  const [selectedSizes, setSelectedSizes] = useState({});
+  const [selectedSizes, setSelectedSizes] =
+    useState({});
+
   const [shoeList, setShoeList] = useState([]);
-  const [currentImages, setCurrentImages] = useState({});
+
+  const [currentImages, setCurrentImages] =
+    useState({});
+
   const touchStartX = useRef({});
+
+  /* ==========================================
+     NORMALIZE PRODUCTS
+  ========================================== */
 
   useEffect(() => {
     const list = products || shoes || [];
 
     const normalizedList = list.map((shoe) => ({
       ...shoe,
-      _id: shoe._id || shoe.id || shoe.shoeId,
+      _id:
+        shoe._id ||
+        shoe.id ||
+        shoe.shoeId,
     }));
 
     setShoeList(normalizedList);
   }, [products, shoes]);
 
-  const categoryFilteredShoes = selectedCategory
-    ? shoeList.filter(
-        (shoe) =>
-          String(shoe.category || "").toLowerCase() ===
-          selectedCategory.toLowerCase()
-      )
-    : shoeList;
+  /* ==========================================
+     CATEGORY FILTER
+  ========================================== */
+
+  const categoryFilteredShoes =
+    selectedCategory
+      ? shoeList.filter(
+          (shoe) =>
+            String(
+              shoe.category || ""
+            ).toLowerCase() ===
+            selectedCategory.toLowerCase()
+        )
+      : shoeList;
+
+  /* ==========================================
+     LIMIT PRODUCTS
+  ========================================== */
 
   const displayedShoes = limit
     ? categoryFilteredShoes.slice(0, limit)
     : categoryFilteredShoes;
+
+  /* ==========================================
+     IMAGE URL
+  ========================================== */
 
   const getImageUrl = (image) => {
     if (!image) return "";
@@ -59,7 +88,14 @@ const Shoes = ({ limit, products }) => {
     return `${url}/images/${image}`;
   };
 
-  const handleSizeSelect = (shoeId, size) => {
+  /* ==========================================
+     SIZE SELECT
+  ========================================== */
+
+  const handleSizeSelect = (
+    shoeId,
+    size
+  ) => {
     if (!shoeId) {
       alert("Shoe ID is missing");
       return;
@@ -71,7 +107,14 @@ const Shoes = ({ limit, products }) => {
     }));
   };
 
-  const handleRating = (shoeId, selectedRating) => {
+  /* ==========================================
+     RATING
+  ========================================== */
+
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
     if (!shoeId) {
       return;
     }
@@ -88,9 +131,12 @@ const Shoes = ({ limit, products }) => {
           return {
             ...shoe,
             rating: {
-              totalRatings: oldTotalRatings + 1,
+              totalRatings:
+                oldTotalRatings + 1,
+
               ratingSum:
-                oldRatingSum + selectedRating,
+                oldRatingSum +
+                selectedRating,
             },
           };
         }
@@ -100,46 +146,82 @@ const Shoes = ({ limit, products }) => {
     );
   };
 
-  // ==========================================
-  // ADD TO CART
-  // Watches and Caps do NOT require size
-  // Other products DO require size
-  // ==========================================
+  /* ==========================================
+     ADD TO CART
+
+     IMPORTANT:
+     Size requirement now comes from
+     Admin/backend using requiresSize.
+
+     requiresSize === false
+       → no size required
+
+     requiresSize === true
+       → size required
+
+     undefined
+       → treated as size required
+       → protects old products
+  ========================================== */
+
   const handleAddToCart = (shoe) => {
-    const category = String(
-      shoe.category || ""
-    ).toLowerCase().trim();
+    const requiresSize =
+      shoe.requiresSize !== false;
 
-    // Products that do not need size
-    const noSizeRequired =
-      category === "watches" ||
-      category === "watch" ||
-      category === "caps" ||
-      category === "cap";
+    /* ===============================
+       NO SIZE REQUIRED
+    =============================== */
 
-    // Watches and Caps can be added directly
-    if (noSizeRequired) {
+    if (!requiresSize) {
       addToCart(shoe, "N/A");
       return;
     }
 
-    // All other products need a size
-    if (!selectedSizes[shoe._id]) {
+    /* ===============================
+       SIZE REQUIRED
+    =============================== */
+
+    const selectedSize =
+      selectedSizes[shoe._id];
+
+    if (
+      !selectedSize ||
+      String(selectedSize).trim() === ""
+    ) {
       alert("Please select a size first");
       return;
     }
 
-    addToCart(shoe, selectedSizes[shoe._id]);
+    addToCart(
+      shoe,
+      selectedSize
+    );
   };
 
-  const handleTouchStart = (shoeId, e) => {
+  /* ==========================================
+     TOUCH START
+  ========================================== */
+
+  const handleTouchStart = (
+    shoeId,
+    e
+  ) => {
     touchStartX.current[shoeId] =
       e.touches[0].clientX;
   };
 
-  const handleTouchEnd = (shoeId, images, e) => {
+  /* ==========================================
+     TOUCH END
+  ========================================== */
+
+  const handleTouchEnd = (
+    shoeId,
+    images,
+    e
+  ) => {
     if (
-      touchStartX.current[shoeId] === undefined ||
+      touchStartX.current[shoeId] ===
+        undefined ||
       images.length <= 1
     ) {
       return;
@@ -157,8 +239,10 @@ const Shoes = ({ limit, products }) => {
         const currentIndex =
           prev[shoeId] || 0;
 
-        let newIndex = currentIndex;
+        let newIndex =
+          currentIndex;
 
+        /* Swipe left */
         if (difference > 0) {
           if (
             currentIndex <
@@ -167,7 +251,10 @@ const Shoes = ({ limit, products }) => {
             newIndex =
               currentIndex + 1;
           }
-        } else {
+        }
+
+        /* Swipe right */
+        else {
           if (currentIndex > 0) {
             newIndex =
               currentIndex - 1;
@@ -181,8 +268,14 @@ const Shoes = ({ limit, products }) => {
       });
     }
 
-    delete touchStartX.current[shoeId];
+    delete touchStartX.current[
+      shoeId
+    ];
   };
+
+  /* ==========================================
+     IMAGE DOT CHANGE
+  ========================================== */
 
   const handleImageChange = (
     shoeId,
@@ -193,6 +286,10 @@ const Shoes = ({ limit, products }) => {
       [shoeId]: imageIndex,
     }));
   };
+
+  /* ==========================================
+     MOUSE ENTER
+  ========================================== */
 
   const handleMouseEnter = (
     shoeId,
@@ -206,16 +303,31 @@ const Shoes = ({ limit, products }) => {
     }
   };
 
-  const handleMouseLeave = (shoeId) => {
+  /* ==========================================
+     MOUSE LEAVE
+  ========================================== */
+
+  const handleMouseLeave = (
+    shoeId
+  ) => {
     setCurrentImages((prev) => ({
       ...prev,
       [shoeId]: 0,
     }));
   };
 
+  /* ==========================================
+     RENDER
+  ========================================== */
+
   return (
     <>
       <section className="shoes-section">
+
+        {/* ===============================
+            HEADING
+        =============================== */}
+
         <div className="shoes-heading">
           <h2>
             {selectedCategory
@@ -230,288 +342,397 @@ const Shoes = ({ limit, products }) => {
           </p>
         </div>
 
+        {/* ===============================
+            PRODUCTS GRID
+        =============================== */}
+
         <div className="shoes-grid">
+
           {displayedShoes.length > 0 ? (
-            displayedShoes.map((shoe, index) => {
-              const shoeId =
-                shoe?._id ||
-                shoe?.id ||
-                shoe?.shoeId;
+            displayedShoes.map(
+              (shoe, index) => {
 
-              const images =
-                Array.isArray(shoe.images) &&
-                shoe.images.length > 0
-                  ? shoe.images
-                  : shoe.image
-                  ? [shoe.image]
-                  : [];
+                const shoeId =
+                  shoe?._id ||
+                  shoe?.id ||
+                  shoe?.shoeId;
 
-              let currentImageIndex =
-                currentImages[shoeId] || 0;
+                /* ===============================
+                   PRODUCT IMAGES
+                =============================== */
 
-              if (
-                currentImageIndex >=
-                images.length
-              ) {
-                currentImageIndex = 0;
-              }
+                const images =
+                  Array.isArray(
+                    shoe.images
+                  ) &&
+                  shoe.images.length > 0
+                    ? shoe.images
+                    : shoe.image
+                    ? [shoe.image]
+                    : [];
 
-              const currentImage =
-                images[currentImageIndex];
+                /* ===============================
+                   CURRENT IMAGE
+                =============================== */
 
-              const price =
-                Number(shoe.price || 0);
+                let currentImageIndex =
+                  currentImages[
+                    shoeId
+                  ] || 0;
 
-              const discount =
-                Number(shoe.discount || 0);
+                if (
+                  currentImageIndex >=
+                  images.length
+                ) {
+                  currentImageIndex = 0;
+                }
 
-              const discountedPrice =
-                price -
-                (price * discount) / 100;
+                const currentImage =
+                  images[
+                    currentImageIndex
+                  ];
 
-              const totalRatings =
-                shoe.rating?.totalRatings || 0;
+                /* ===============================
+                   PRICE
+                =============================== */
 
-              const ratingSum =
-                shoe.rating?.ratingSum || 0;
+                const price =
+                  Number(
+                    shoe.price || 0
+                  );
 
-              const averageRating =
-                totalRatings > 0
-                  ? ratingSum / totalRatings
-                  : 5;
+                const discount =
+                  Number(
+                    shoe.discount || 0
+                  );
 
-              const selectedSize =
-                selectedSizes[shoeId];
+                const discountedPrice =
+                  price -
+                  (price * discount) /
+                    100;
 
-              // Check whether this product needs a size
-              const category = String(
-                shoe.category || ""
-              )
-                .toLowerCase()
-                .trim();
+                /* ===============================
+                   RATING
+                =============================== */
 
-              const noSizeRequired =
-                category === "watches" ||
-                category === "watch" ||
-                category === "caps" ||
-                category === "cap";
+                const totalRatings =
+                  shoe.rating
+                    ?.totalRatings || 0;
 
-              return (
-                <div
-                  className="shoe-card"
-                  key={shoeId || index}
-                >
+                const ratingSum =
+                  shoe.rating
+                    ?.ratingSum || 0;
+
+                const averageRating =
+                  totalRatings > 0
+                    ? ratingSum /
+                      totalRatings
+                    : 5;
+
+                /* ===============================
+                   SELECTED SIZE
+                =============================== */
+
+                const selectedSize =
+                  selectedSizes[
+                    shoeId
+                  ];
+
+                /* ===============================
+                   SIZE REQUIREMENT
+                   
+                   Controlled by Admin/backend
+                =============================== */
+
+                const requiresSize =
+                  shoe.requiresSize !== false;
+
+                return (
                   <div
-                    className="shoe-image"
-                    onMouseEnter={() =>
-                      handleMouseEnter(
-                        shoeId,
-                        images
-                      )
-                    }
-                    onMouseLeave={() =>
-                      handleMouseLeave(
-                        shoeId
-                      )
-                    }
-                    onTouchStart={(e) =>
-                      handleTouchStart(
-                        shoeId,
-                        e
-                      )
-                    }
-                    onTouchEnd={(e) =>
-                      handleTouchEnd(
-                        shoeId,
-                        images,
-                        e
-                      )
+                    className="shoe-card"
+                    key={
+                      shoeId || index
                     }
                   >
-                    {discount > 0 && (
-                      <span className="discount-badge">
-                        {discount}% OFF
-                      </span>
-                    )}
 
-                    {currentImage && (
-                      <img
-                        src={getImageUrl(
-                          currentImage
-                        )}
-                        alt={
-                          shoe.name || "Shoe"
-                        }
-                        draggable="false"
-                        onError={(e) => {
-                          console.error(
-                            "Image failed:",
-                            e.currentTarget.src
-                          );
-                        }}
-                      />
-                    )}
+                    {/* ==========================
+                        PRODUCT IMAGE
+                    ========================== */}
 
-                    {images.length > 1 && (
-                      <div className="image-dots">
-                        {images.map(
-                          (
-                            _,
-                            imageIndex
-                          ) => (
-                            <button
-                              key={
-                                imageIndex
-                              }
-                              type="button"
-                              className={
-                                currentImageIndex ===
-                                imageIndex
-                                  ? "image-dot active"
-                                  : "image-dot"
-                              }
-                              onClick={(e) => {
-                                e.stopPropagation();
+                    <div
+                      className="shoe-image"
 
-                                handleImageChange(
-                                  shoeId,
-                                  imageIndex
-                                );
-                              }}
-                              aria-label={`Show image ${
-                                imageIndex + 1
-                              }`}
-                            />
-                          )
-                        )}
-                      </div>
-                    )}
-                  </div>
+                      onMouseEnter={() =>
+                        handleMouseEnter(
+                          shoeId,
+                          images
+                        )
+                      }
 
-                  <div className="shoe-info">
-                    <h3>
-                      {shoe.name}
-                    </h3>
+                      onMouseLeave={() =>
+                        handleMouseLeave(
+                          shoeId
+                        )
+                      }
 
-                    <p className="shoe-category">
-                      {shoe.category}
-                    </p>
+                      onTouchStart={(e) =>
+                        handleTouchStart(
+                          shoeId,
+                          e
+                        )
+                      }
 
-                    {shoe.description && (
-                      <p className="shoe-description">
-                        {shoe.description}
-                      </p>
-                    )}
-
-                    <div className="rating">
-                      <div className="stars">
-                        {[1, 2, 3, 4, 5].map(
-                          (star) => (
-                            <button
-                              key={star}
-                              type="button"
-                              className={
-                                star <=
-                                Math.round(
-                                  averageRating
-                                )
-                                  ? "star filled"
-                                  : "star"
-                              }
-                              onClick={() =>
-                                handleRating(
-                                  shoeId,
-                                  star
-                                )
-                              }
-                              aria-label={`Rate ${star} stars`}
-                            >
-                              ★
-                            </button>
-                          )
-                        )}
-                      </div>
-
-                      <span className="rating-number">
-                        {averageRating.toFixed(
-                          1
-                        )}
-                      </span>
-
-                      <span className="rating-count">
-                        ({totalRatings})
-                      </span>
-                    </div>
-
-                    <div className="price-section">
-                      <h4 className="shoe-price">
-                        Rs.{" "}
-                        {discountedPrice.toLocaleString()}
-                      </h4>
-
-                      {discount > 0 && (
-                        <span className="original-price">
-                          Rs.{" "}
-                          {price.toLocaleString()}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* ==========================================
-                        SIZE SECTION
-                        Only show for products that need size
-                    ========================================== */}
-
-                    {!noSizeRequired && (
-                      <div className="sizes">
-                        <span className="size-label">
-                          Size:
-                        </span>
-
-                        {(shoe.sizes || []).map(
-                          (size) => (
-                            <button
-                              key={size}
-                              type="button"
-                              className={
-                                selectedSize ===
-                                size
-                                  ? "size-btn selected"
-                                  : "size-btn"
-                              }
-                              onClick={() =>
-                                handleSizeSelect(
-                                  shoeId,
-                                  size
-                                )
-                              }
-                            >
-                              {size}
-                            </button>
-                          )
-                        )}
-                      </div>
-                    )}
-
-                    {/* ==========================================
-                        ADD TO CART
-                    ========================================== */}
-
-                    <button
-                      className="add-cart"
-                      type="button"
-                      onClick={() =>
-                        handleAddToCart(
-                          shoe
+                      onTouchEnd={(e) =>
+                        handleTouchEnd(
+                          shoeId,
+                          images,
+                          e
                         )
                       }
                     >
-                      Add to Cart
-                    </button>
+
+                      {/* DISCOUNT */}
+
+                      {discount > 0 && (
+                        <span className="discount-badge">
+                          {discount}% OFF
+                        </span>
+                      )}
+
+                      {/* IMAGE */}
+
+                      {currentImage && (
+                        <img
+                          src={getImageUrl(
+                            currentImage
+                          )}
+                          alt={
+                            shoe.name ||
+                            "Shoe"
+                          }
+                          draggable="false"
+
+                          onError={(e) => {
+                            console.error(
+                              "Image failed:",
+                              e.currentTarget
+                                .src
+                            );
+                          }}
+                        />
+                      )}
+
+                      {/* IMAGE DOTS */}
+
+                      {images.length >
+                        1 && (
+                        <div className="image-dots">
+
+                          {images.map(
+                            (
+                              _,
+                              imageIndex
+                            ) => (
+                              <button
+                                key={
+                                  imageIndex
+                                }
+                                type="button"
+
+                                className={
+                                  currentImageIndex ===
+                                  imageIndex
+                                    ? "image-dot active"
+                                    : "image-dot"
+                                }
+
+                                onClick={(e) => {
+                                  e.stopPropagation();
+
+                                  handleImageChange(
+                                    shoeId,
+                                    imageIndex
+                                  );
+                                }}
+
+                                aria-label={`Show image ${
+                                  imageIndex +
+                                  1
+                                }`}
+                              />
+                            )
+                          )}
+
+                        </div>
+                      )}
+
+                    </div>
+
+                    {/* ==========================
+                        PRODUCT INFORMATION
+                    ========================== */}
+
+                    <div className="shoe-info">
+
+                      {/* NAME */}
+
+                      <h3>
+                        {shoe.name}
+                      </h3>
+
+                      {/* CATEGORY */}
+
+                      <p className="shoe-category">
+                        {shoe.category}
+                      </p>
+
+                      {/* DESCRIPTION */}
+
+                      {shoe.description && (
+                        <p className="shoe-description">
+                          {
+                            shoe.description
+                          }
+                        </p>
+                      )}
+
+                      {/* ==========================
+                          RATING
+                      ========================== */}
+
+                      <div className="rating">
+
+                        <div className="stars">
+
+                          {[1, 2, 3, 4, 5].map(
+                            (star) => (
+                              <button
+                                key={star}
+                                type="button"
+
+                                className={
+                                  star <=
+                                  Math.round(
+                                    averageRating
+                                  )
+                                    ? "star filled"
+                                    : "star"
+                                }
+
+                                onClick={() =>
+                                  handleRating(
+                                    shoeId,
+                                    star
+                                  )
+                                }
+
+                                aria-label={`Rate ${star} stars`}
+                              >
+                                ★
+                              </button>
+                            )
+                          )}
+
+                        </div>
+
+                        <span className="rating-number">
+                          {averageRating.toFixed(
+                            1
+                          )}
+                        </span>
+
+                        <span className="rating-count">
+                          ({totalRatings})
+                        </span>
+
+                      </div>
+
+                      {/* ==========================
+                          PRICE
+                      ========================== */}
+
+                      <div className="price-section">
+
+                        <h4 className="shoe-price">
+                          Rs.{" "}
+                          {discountedPrice.toLocaleString()}
+                        </h4>
+
+                        {discount > 0 && (
+                          <span className="original-price">
+                            Rs.{" "}
+                            {price.toLocaleString()}
+                          </span>
+                        )}
+
+                      </div>
+
+                      {/* ==========================
+                          SIZE SECTION
+
+                          ONLY SHOW IF:
+                          requiresSize === true
+                      ========================== */}
+
+                      {requiresSize && (
+                        <div className="sizes">
+
+                          <span className="size-label">
+                            Size:
+                          </span>
+
+                          {(shoe.sizes ||
+                            []
+                          ).map(
+                            (size) => (
+                              <button
+                                key={size}
+                                type="button"
+
+                                className={
+                                  selectedSize ===
+                                  size
+                                    ? "size-btn selected"
+                                    : "size-btn"
+                                }
+
+                                onClick={() =>
+                                  handleSizeSelect(
+                                    shoeId,
+                                    size
+                                  )
+                                }
+                              >
+                                {size}
+                              </button>
+                            )
+                          )}
+
+                        </div>
+                      )}
+
+                      {/* ==========================
+                          ADD TO CART
+                      ========================== */}
+
+                      <button
+                        className="add-cart"
+                        type="button"
+
+                        onClick={() =>
+                          handleAddToCart(
+                            shoe
+                          )
+                        }
+                      >
+                        Add to Cart
+                      </button>
+
+                    </div>
                   </div>
-                </div>
-              );
-            })
+                );
+              }
+            )
           ) : (
             <p className="no-shoes">
               {selectedCategory
@@ -519,6 +740,7 @@ const Shoes = ({ limit, products }) => {
                 : "No shoes available."}
             </p>
           )}
+
         </div>
       </section>
     </>
