@@ -68,11 +68,15 @@ const shoeSchema = new mongoose.Schema(
         type: Number,
         default: 0,
       },
-
+      
       ratingSum: {
         type: Number,
         default: 0,
       },
+      requiresSize: {
+      type: Boolean,
+       default: true
+}
     },
   },
   {
