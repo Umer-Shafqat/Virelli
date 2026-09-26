@@ -21,11 +21,12 @@ const shoeSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
+      trim: true,
     },
 
     images: {
       type: [String],
-      required: true,
+      default: [],
     },
 
     price: {
@@ -41,6 +42,11 @@ const shoeSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+
+    requiresSize: {
+      type: Boolean,
+      default: true,
     },
 
     sizes: {
@@ -68,15 +74,11 @@ const shoeSchema = new mongoose.Schema(
         type: Number,
         default: 0,
       },
-      
+
       ratingSum: {
         type: Number,
         default: 0,
       },
-      requiresSize: {
-      type: Boolean,
-       default: true
-}
     },
   },
   {
