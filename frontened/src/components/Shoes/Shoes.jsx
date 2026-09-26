@@ -100,30 +100,36 @@ const Shoes = ({ limit, products }) => {
     );
   };
 
+  // ==========================================
+  // ADD TO CART
+  // Watches and Caps do NOT require size
+  // Other products DO require size
+  // ==========================================
   const handleAddToCart = (shoe) => {
-    const shoeId =
-      shoe?._id ||
-      shoe?.id ||
-      shoe?.shoeId;
+    const category = String(
+      shoe.category || ""
+    ).toLowerCase().trim();
 
-    const selectedSize =
-      selectedSizes[shoeId];
+    // Products that do not need size
+    const noSizeRequired =
+      category === "watches" ||
+      category === "watch" ||
+      category === "caps" ||
+      category === "cap";
 
-    if (!shoeId) {
-      alert("Shoe ID is missing");
-      console.error(
-        "Shoe object does not contain an ID:",
-        shoe
-      );
+    // Watches and Caps can be added directly
+    if (noSizeRequired) {
+      addToCart(shoe, "N/A");
       return;
     }
 
-    if (!selectedSize) {
+    // All other products need a size
+    if (!selectedSizes[shoe._id]) {
       alert("Please select a size first");
       return;
     }
 
-    addToCart(shoeId, selectedSize);
+    addToCart(shoe, selectedSizes[shoe._id]);
   };
 
   const handleTouchStart = (shoeId, e) => {
@@ -277,6 +283,19 @@ const Shoes = ({ limit, products }) => {
               const selectedSize =
                 selectedSizes[shoeId];
 
+              // Check whether this product needs a size
+              const category = String(
+                shoe.category || ""
+              )
+                .toLowerCase()
+                .trim();
+
+              const noSizeRequired =
+                category === "watches" ||
+                category === "watch" ||
+                category === "caps" ||
+                category === "cap";
+
               return (
                 <div
                   className="shoe-card"
@@ -353,6 +372,7 @@ const Shoes = ({ limit, products }) => {
                               }
                               onClick={(e) => {
                                 e.stopPropagation();
+
                                 handleImageChange(
                                   shoeId,
                                   imageIndex
@@ -437,34 +457,45 @@ const Shoes = ({ limit, products }) => {
                       )}
                     </div>
 
-                    <div className="sizes">
-                      <span className="size-label">
-                        Size:
-                      </span>
+                    {/* ==========================================
+                        SIZE SECTION
+                        Only show for products that need size
+                    ========================================== */}
 
-                      {(shoe.sizes || []).map(
-                        (size) => (
-                          <button
-                            key={size}
-                            type="button"
-                            className={
-                              selectedSize ===
-                              size
-                                ? "size-btn selected"
-                                : "size-btn"
-                            }
-                            onClick={() =>
-                              handleSizeSelect(
-                                shoeId,
+                    {!noSizeRequired && (
+                      <div className="sizes">
+                        <span className="size-label">
+                          Size:
+                        </span>
+
+                        {(shoe.sizes || []).map(
+                          (size) => (
+                            <button
+                              key={size}
+                              type="button"
+                              className={
+                                selectedSize ===
                                 size
-                              )
-                            }
-                          >
-                            {size}
-                          </button>
-                        )
-                      )}
-                    </div>
+                                  ? "size-btn selected"
+                                  : "size-btn"
+                              }
+                              onClick={() =>
+                                handleSizeSelect(
+                                  shoeId,
+                                  size
+                                )
+                              }
+                            >
+                              {size}
+                            </button>
+                          )
+                        )}
+                      </div>
+                    )}
+
+                    {/* ==========================================
+                        ADD TO CART
+                    ========================================== */}
 
                     <button
                       className="add-cart"
