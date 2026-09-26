@@ -51,6 +51,18 @@ const Popularshoes = () => {
     addToCart(shoe, selectedSize);
   };
 
+  const getImageUrl = (shoe) => {
+    if (shoe.images && Array.isArray(shoe.images) && shoe.images.length > 0) {
+      return `${url}/images/${shoe.images[0]}`;
+    }
+
+    if (shoe.image) {
+      return `${url}/images/${shoe.image}`;
+    }
+
+    return "/placeholder.png";
+  };
+
   return (
     <section className="shoes-section">
       <div className="shoes-heading">
@@ -80,21 +92,20 @@ const Popularshoes = () => {
                 )}
 
                 <img
-                  src={`${url}/images/${shoe.image}`}
+                  src={getImageUrl(shoe)}
                   alt={shoe.name}
+                  onError={(e) => {
+                    e.currentTarget.src = "/placeholder.png";
+                  }}
                 />
               </div>
 
               <div className="shoe-info">
                 <h3>{shoe.name}</h3>
 
-                <p className="shoe-category">
-                  {shoe.category}
-                </p>
+                <p className="shoe-category">{shoe.category}</p>
 
-                <p className="shoe-description">
-                  {shoe.description}
-                </p>
+                <p className="shoe-description">{shoe.description}</p>
 
                 <div className="rating">
                   <div className="stars">
@@ -107,9 +118,7 @@ const Popularshoes = () => {
                             ? "star filled"
                             : "star"
                         }
-                        onClick={() =>
-                          handleRating(shoe._id, star)
-                        }
+                        onClick={() => handleRating(shoe._id, star)}
                       >
                         ★
                       </button>
@@ -148,9 +157,7 @@ const Popularshoes = () => {
                             ? "selected-size"
                             : ""
                         }
-                        onClick={() =>
-                          handleSizeSelect(shoe._id, size)
-                        }
+                        onClick={() => handleSizeSelect(shoe._id, size)}
                       >
                         {size}
                       </button>
