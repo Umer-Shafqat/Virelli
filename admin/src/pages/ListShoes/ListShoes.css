@@ -65,7 +65,7 @@
 .shoe-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 900px;
+  min-width: 1050px;
 }
 
 .shoe-table thead {
@@ -78,6 +78,7 @@
   text-align: left;
   font-size: 15px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .shoe-table tbody tr {
@@ -106,6 +107,52 @@
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid #e2e8f0;
+  display: block;
+}
+
+/* ===================================
+   SIZE STATUS
+=================================== */
+
+.size-required,
+.size-not-required {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.size-required {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.size-not-required {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* ===================================
+   SIZES
+=================================== */
+
+.sizes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 180px;
+}
+
+.size-item {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #334155;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 /* ===================================
@@ -149,6 +196,10 @@
     margin-left: 220px;
     padding: 25px;
   }
+
+  .shoe-table {
+    min-width: 1050px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -173,7 +224,7 @@
   }
 
   .shoe-table {
-    min-width: 750px;
+    min-width: 950px;
   }
 
   .shoe-image {
@@ -203,5 +254,14 @@
   .delete-btn {
     padding: 8px 14px;
     font-size: 12px;
+  }
+
+  .sizes-list {
+    max-width: 140px;
+  }
+
+  .size-item {
+    padding: 3px 6px;
+    font-size: 11px;
   }
 }
