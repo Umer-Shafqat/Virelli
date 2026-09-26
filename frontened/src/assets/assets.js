@@ -71,7 +71,6 @@ export const assets ={
     kid2,
     kid3,
     kid4,
-    header_img,
     profile_icon,
     logout_icon,
     logo1,
