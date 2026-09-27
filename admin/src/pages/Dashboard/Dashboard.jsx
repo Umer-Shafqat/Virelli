@@ -99,7 +99,7 @@ const Dashboard = () => {
 
         <section className="dashboard-header">
           <h1>Dashboard</h1>
-          <p>Welcome back! Here's an overview of your shoe store.</p>
+          <p>Welcome back! Here's an overview of your store.</p>
         </section>
 
         <section className="dashboard-cards">
