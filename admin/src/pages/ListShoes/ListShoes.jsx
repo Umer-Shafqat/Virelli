@@ -8,9 +8,11 @@ const ListShoes = () => {
   const [shoes, setShoes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Use the same backend URL from environment
   const backendUrl = process.env.REACT_APP_API_URL;
 
+  // =================================
+  // FETCH PRODUCTS
+  // =================================
   const fetchShoes = async () => {
     try {
       setLoading(true);
@@ -24,16 +26,27 @@ const ListShoes = () => {
       if (response.data.success) {
         setShoes(response.data.data || []);
       } else {
-        alert(response.data.message || "Unable to fetch products.");
+        alert(
+          response.data.message ||
+            "Unable to fetch products."
+        );
       }
     } catch (error) {
       console.error("Fetch shoes error:", error);
 
       if (error.response) {
-        console.error("Server response:", error.response.data);
-        console.error("Status:", error.response.status);
+        console.error(
+          "Server response:",
+          error.response.data
+        );
+        console.error(
+          "Status:",
+          error.response.status
+        );
       } else if (error.request) {
-        console.error("No response received from server.");
+        console.error(
+          "No response received from server."
+        );
       }
 
       alert("Failed to fetch shoes.");
@@ -42,10 +55,17 @@ const ListShoes = () => {
     }
   };
 
+  // =================================
+  // LOAD PRODUCTS
+  // =================================
   useEffect(() => {
     fetchShoes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // =================================
+  // DELETE PRODUCT
+  // =================================
   const deleteShoe = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
@@ -60,16 +80,27 @@ const ListShoes = () => {
 
       if (response.data.success) {
         alert("Product deleted successfully.");
+
         fetchShoes();
       } else {
-        alert(response.data.message);
+        alert(
+          response.data.message ||
+            "Unable to delete product."
+        );
       }
     } catch (error) {
-      console.error("Delete product error:", error);
+      console.error(
+        "Delete product error:",
+        error
+      );
+
       alert("Unable to delete product.");
     }
   };
 
+  // =================================
+  // PRODUCT IMAGE
+  // =================================
   const getProductImage = (shoe) => {
     if (
       Array.isArray(shoe.images) &&
@@ -88,27 +119,44 @@ const ListShoes = () => {
   return (
     <div className="listshoes-page">
       <Sidebar />
+
       <Navbar />
 
       <div className="listshoes-content">
         <div className="listshoes-card">
 
+          {/* =========================
+              HEADER
+          ========================= */}
           <div className="page-header">
             <h2>All Products</h2>
-            <span>Total: {shoes.length}</span>
+
+            <span>
+              Total: {shoes.length}
+            </span>
           </div>
 
+          {/* =========================
+              LOADING
+          ========================= */}
           {loading ? (
             <h3 className="loading-text">
               Loading Products...
             </h3>
           ) : shoes.length === 0 ? (
+            /* =========================
+               EMPTY
+            ========================= */
             <h3 className="loading-text">
               No Products Found
             </h3>
           ) : (
+            /* =========================
+               PRODUCTS TABLE
+            ========================= */
             <div className="table-wrapper">
               <table className="shoe-table">
+
                 <thead>
                   <tr>
                     <th>Image</th>
@@ -125,35 +173,45 @@ const ListShoes = () => {
                   {shoes.map((shoe) => (
                     <tr key={shoe._id}>
 
+                      {/* IMAGE */}
                       <td>
                         <img
                           src={getProductImage(shoe)}
                           alt={shoe.name}
                           className="shoe-image"
                           onError={(e) => {
-                            e.target.src = "/no-image.png";
+                            e.target.src =
+                              "/no-image.png";
                           }}
                         />
                       </td>
 
-                      <td>{shoe.name}</td>
+                      {/* NAME */}
+                      <td>
+                        {shoe.name}
+                      </td>
 
+                      {/* CATEGORY */}
                       <td>
                         {shoe.category || "Shoes"}
                       </td>
 
+                      {/* TYPE */}
                       <td>
                         {shoe.type || "-"}
                       </td>
 
+                      {/* PRICE */}
                       <td>
                         Rs. {shoe.price}
                       </td>
 
+                      {/* DISCOUNT */}
                       <td>
                         {shoe.discount || 0}%
                       </td>
 
+                      {/* DELETE */}
                       <td>
                         <button
                           className="delete-btn"
@@ -168,10 +226,10 @@ const ListShoes = () => {
                     </tr>
                   ))}
                 </tbody>
+
               </table>
             </div>
           )}
-
         </div>
       </div>
     </div>
