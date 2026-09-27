@@ -1,73 +1,28 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
-import path from "path";
-import { fileURLToPath } from "url";
-
-// Routes
+import connectDB from "./config/db.js";
 import shoeRouter from "./routes/shoeRoute.js";
+import orderRouter from "./routes/orderRoute.js";
+import cartRouter from "./routes/cartRoute.js";
+import userRouter from "./routes/userRoute.js";
+import adminRouter from "./routes/adminRoute.js";
 
 dotenv.config();
 
 const app = express();
 
-// ==========================================
-// DIRECTORY SETUP
-// ==========================================
+connectDB();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// ==========================================
-// MIDDLEWARE
-// ==========================================
-
-app.use(cors());
 app.use(express.json());
-
-// ==========================================
-// SERVE UPLOADED IMAGES
-// ==========================================
-
-app.use(
-  "/images",
-  express.static(path.join(__dirname, "uploads"))
-);
-
-// ==========================================
-// DATABASE
-// ==========================================
-
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("MongoDB Connected Successfully");
-  })
-  .catch((error) => {
-    console.log("MongoDB Connection Error:", error.message);
-  });
-
-// ==========================================
-// ROUTES
-// ==========================================
-
+app.use(cors());
+app.use("/images", express.static("uploads"));
 app.use("/api/shoes", shoeRouter);
+app.use("/api/order", orderRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/user", userRouter);
+app.use("/api/admin", adminRouter);
 
-// ==========================================
-// TEST ROUTE
-// ==========================================
-
-app.get("/", (req, res) => {
-  res.send("Virelli Backend Running...");
-});
-
-// ==========================================
-// SERVER
-// ==========================================
-
-const PORT = process.env.PORT || 4000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(4000, () => {
+  console.log("Server running on port 4000");
 });
