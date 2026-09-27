@@ -10,12 +10,12 @@ const Sidebar = () => {
       icon: "📊",
     },
     {
-      name: "Add Shoe",
+      name: "Add Product",
       path: "/add-shoe",
       icon: "👟",
     },
     {
-      name: "List Shoes",
+      name: "List Products",
       path: "/list-shoes",
       icon: "📦",
     },
@@ -40,7 +40,7 @@ const Sidebar = () => {
     <aside className="sidebar">
       <div className="sidebar-logo">
         <h2>Virelli Admin</h2>
-        <p>Shoe Store Panel</p>
+        <p>Virelli Store Panel</p>
       </div>
 
       <nav className="sidebar-menu">
