@@ -1,6 +1,8 @@
 import express from "express";
+
 import authMiddleware from "../middleware/authMiddleware.js";
 import adminMiddleware from "../middleware/adminMiddleware.js";
+
 import {
   getDashboard,
   getAllUsers,
@@ -9,13 +11,15 @@ import {
   updateOrderStatus,
   adminLogin,
   getDailySales,
-  searchAdmin
+  searchAdmin,
 } from "../controllers/adminController.js";
 
 const adminRouter = express.Router();
 
+// Admin Login
 adminRouter.post("/login", adminLogin);
 
+// Dashboard
 adminRouter.get(
   "/dashboard",
   authMiddleware,
@@ -23,7 +27,7 @@ adminRouter.get(
   getDashboard
 );
 
-
+// Users
 adminRouter.get(
   "/users",
   authMiddleware,
@@ -31,7 +35,7 @@ adminRouter.get(
   getAllUsers
 );
 
-
+// Analytics
 adminRouter.get(
   "/analytics",
   authMiddleware,
@@ -39,7 +43,7 @@ adminRouter.get(
   getAnalytics
 );
 
-
+// Orders
 adminRouter.get(
   "/orders",
   authMiddleware,
@@ -47,6 +51,15 @@ adminRouter.get(
   getAllOrders
 );
 
+// Admin list
+adminRouter.get(
+  "/list",
+  authMiddleware,
+  adminMiddleware,
+  getAllOrders
+);
+
+// Update order status
 adminRouter.put(
   "/orders/:id/status",
   authMiddleware,
@@ -54,6 +67,7 @@ adminRouter.put(
   updateOrderStatus
 );
 
+// Daily sales
 adminRouter.get(
   "/daily-sales",
   authMiddleware,
@@ -61,7 +75,8 @@ adminRouter.get(
   getDailySales
 );
 
-  adminRouter.get(
+// Search
+adminRouter.get(
   "/search",
   authMiddleware,
   adminMiddleware,
