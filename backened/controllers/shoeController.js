@@ -10,7 +10,6 @@ try {
 console.log("req.files:", req.files);
 console.log("req.body:", req.body);
 
-```
 if (!req.files || req.files.length === 0) {
   return res.status(400).json({
     success: false,
@@ -82,17 +81,14 @@ return res.status(201).json({
   message: "Shoe added successfully",
   shoe: savedShoe,
 });
-```
 
 } catch (error) {
 console.error("Add shoe error:", error);
 
-```
 return res.status(500).json({
   success: false,
   message: error.message,
 });
-```
 
 }
 };
@@ -106,23 +102,18 @@ const shoes = await ShoeModel.find().sort({
 createdAt: -1,
 });
 
-```
 return res.status(200).json({
   success: true,
   data: shoes,
 });
-```
 
 } catch (error) {
 console.error("Get shoes error:", error);
 
-```
 return res.status(500).json({
   success: false,
   message: error.message,
 });
-```
-
 }
 };
 
@@ -133,7 +124,6 @@ const getShoeById = async (req, res) => {
 try {
 const shoe = await ShoeModel.findById(req.params.id);
 
-```
 if (!shoe) {
   return res.status(404).json({
     success: false,
@@ -145,17 +135,13 @@ return res.status(200).json({
   success: true,
   shoe,
 });
-```
 
 } catch (error) {
 console.error("Get shoe by ID error:", error);
-
-```
 return res.status(500).json({
   success: false,
   message: error.message,
 });
-```
 
 }
 };
@@ -171,23 +157,19 @@ isNewArrival: true,
 createdAt: -1,
 });
 
-```
 return res.status(200).json({
   success: true,
   shoes,
 });
-```
 
 } catch (error) {
 console.error("Get new arrivals error:", error);
 
-```
+
 return res.status(500).json({
   success: false,
   message: error.message,
 });
-```
-
 }
 };
 
@@ -202,22 +184,18 @@ isOffer: true,
 createdAt: -1,
 });
 
-```
 return res.status(200).json({
   success: true,
   shoes,
 });
-```
 
 } catch (error) {
 console.error("Get offers error:", error);
 
-```
 return res.status(500).json({
   success: false,
   message: error.message,
 });
-```
 
 }
 };
@@ -229,7 +207,6 @@ const searchAdmin = async (req, res) => {
 try {
 const { q } = req.query;
 
-```
 if (!q || q.trim() === "") {
   return res.json({
     success: true,
@@ -350,17 +327,14 @@ return res.status(200).json({
   users,
   orders,
 });
-```
 
 } catch (error) {
 console.error("Admin search error:", error);
 
-```
 return res.status(500).json({
   success: false,
   message: error.message,
 });
-```
 
 }
 };
@@ -372,7 +346,6 @@ const deleteShoe = async (req, res) => {
 try {
 const shoe = await ShoeModel.findById(req.params.id);
 
-```
 if (!shoe) {
   return res.status(404).json({
     success: false,
@@ -386,17 +359,14 @@ return res.status(200).json({
   success: true,
   message: "Shoe deleted successfully",
 });
-```
 
 } catch (error) {
 console.error("Delete shoe error:", error);
 
-```
 return res.status(500).json({
   success: false,
   message: error.message,
 });
-```
 
 }
 };
