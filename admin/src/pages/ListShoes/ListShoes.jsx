@@ -8,7 +8,7 @@ const ListShoes = () => {
   const [shoes, setShoes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const backendUrl = "https://virelli.onrender.com"; // Replace with your backend URL
+  const backendUrl = "https://virelli.onrender.com";
 
   const fetchShoes = async () => {
     try {
@@ -33,12 +33,9 @@ const ListShoes = () => {
     fetchShoes();
   }, []);
 
-  // ================================
-  // Delete Shoe
-  // ================================
   const deleteShoe = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this shoe?"
+      "Are you sure you want to delete this product?"
     );
 
     if (!confirmDelete) return;
@@ -49,15 +46,27 @@ const ListShoes = () => {
       );
 
       if (response.data.success) {
-        alert("Shoe deleted successfully.");
+        alert("Product deleted successfully.");
         fetchShoes();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
       console.error(error);
-      alert("Unable to delete shoe.");
+      alert("Unable to delete product.");
     }
+  };
+
+  const getProductImage = (shoe) => {
+    if (Array.isArray(shoe.images) && shoe.images.length > 0) {
+      return `${backendUrl}/images/${shoe.images[0]}`;
+    }
+
+    if (shoe.image) {
+      return `${backendUrl}/images/${shoe.image}`;
+    }
+
+    return "/no-image.png";
   };
 
   return (
@@ -67,7 +76,6 @@ const ListShoes = () => {
 
       <div className="listshoes-content">
         <div className="listshoes-card">
-
           <div className="page-header">
             <h2>All Shoes</h2>
             <span>Total: {shoes.length}</span>
@@ -97,7 +105,7 @@ const ListShoes = () => {
                     <tr key={shoe._id}>
                       <td>
                         <img
-                          src={`${backendUrl}/images/${shoe.image}`}
+                          src={getProductImage(shoe)}
                           alt={shoe.name}
                           className="shoe-image"
                           onError={(e) => {
@@ -107,10 +115,10 @@ const ListShoes = () => {
                       </td>
 
                       <td>{shoe.name}</td>
-                      <td>{shoe.category}</td>
+                      <td>{shoe.category || "Shoes"}</td>
                       <td>{shoe.type}</td>
                       <td>Rs. {shoe.price}</td>
-                      <td>{shoe.discount}%</td>
+                      <td>{shoe.discount || 0}%</td>
 
                       <td>
                         <button
@@ -123,11 +131,9 @@ const ListShoes = () => {
                     </tr>
                   ))}
                 </tbody>
-
               </table>
             </div>
           )}
-
         </div>
       </div>
     </div>
