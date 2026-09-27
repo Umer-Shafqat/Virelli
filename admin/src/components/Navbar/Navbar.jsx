@@ -22,7 +22,7 @@ const searchNow = () => {
     <header className="admin-navbar">
       <div className="navbar-left">
         <h2>Admin Dashboard</h2>
-        <p>Manage your Virelli Shoe Store</p>
+        <p>Manage your Virelli Store</p>
       </div>
 
       <div className="navbar-center">
