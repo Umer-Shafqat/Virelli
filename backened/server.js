@@ -15,14 +15,28 @@ const app = express();
 connectDB();
 
 app.use(express.json());
+
 app.use(cors());
+
 app.use("/images", express.static("uploads"));
+
+app.get("/", (req, res) => {
+  res.send("Virelli Backend Running...");
+});
+
 app.use("/api/shoes", shoeRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
 
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.method} ${req.originalUrl}`
+  });
+});
+
 app.listen(4000, () => {
-  console.log("Server running on port 4000");
+  console.log("Virelli Backend Running on port 4000");
 });
