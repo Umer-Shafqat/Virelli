@@ -1,89 +1,135 @@
 import mongoose from "mongoose";
 
 const shoeSchema = new mongoose.Schema(
-{
-name: {
-type: String,
-required: true,
-},
+  {
+    // ===============================
+    // PRODUCT NAME
+    // ===============================
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-type: {
-  type: String,
-  required: true,
-  enum: ["MEN", "WOMEN", "KID"],
-},
+    // ===============================
+    // PRODUCT TYPE
+    // MEN / WOMEN / KID
+    // ===============================
+    type: {
+      type: String,
+      required: true,
+      enum: ["MEN", "WOMEN", "KID"],
+    },
 
-popular: {
-  type: Boolean,
-  default: false,
-},
+    // ===============================
+    // CATEGORY
+    // Shoes / Watches / Jackets /
+    // Hoodies / Caps etc.
+    // ===============================
+    category: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-category: {
-  type: String,
-  required: true,
-  trim: true,
-},
+    // ===============================
+    // POPULAR
+    // ===============================
+    popular: {
+      type: Boolean,
+      default: false,
+    },
 
-images: {
-  type: [String],
-  required: true,
-  default: [],
-},
+    // ===============================
+    // PRODUCT IMAGES
+    // ===============================
+    images: {
+      type: [String],
+      required: true,
+      default: [],
+    },
 
-price: {
-  type: Number,
-  required: true,
-},
+    // ===============================
+    // PRICE
+    // ===============================
+    price: {
+      type: Number,
+      required: true,
+    },
 
-discount: {
-  type: Number,
-  default: 0,
-},
+    // ===============================
+    // DISCOUNT
+    // ===============================
+    discount: {
+      type: Number,
+      default: 0,
+    },
 
-description: {
-  type: String,
-  required: true,
-},
+    // ===============================
+    // DESCRIPTION
+    // ===============================
+    description: {
+      type: String,
+      required: true,
+    },
 
-sizes: {
-  type: [String],
-  default: [],
-},
+    // ===============================
+    // SIZES
+    // ===============================
+    sizes: {
+      type: [String],
+      default: [],
+    },
 
-isNewArrival: {
-  type: Boolean,
-  default: false,
-},
+    // ===============================
+    // NEW ARRIVAL
+    // ===============================
+    isNewArrival: {
+      type: Boolean,
+      default: false,
+    },
 
-isOffer: {
-  type: Boolean,
-  default: false,
-},
+    // ===============================
+    // OFFER
+    // ===============================
+    isOffer: {
+      type: Boolean,
+      default: false,
+    },
 
-offerPrice: {
-  type: Number,
-  default: 0,
-},
+    // ===============================
+    // OFFER PRICE
+    // ===============================
+    offerPrice: {
+      type: Number,
+      default: 0,
+    },
 
-rating: {
-  totalRatings: {
-    type: Number,
-    default: 0,
+    // ===============================
+    // RATING
+    // ===============================
+    rating: {
+      totalRatings: {
+        type: Number,
+        default: 0,
+      },
+
+      ratingSum: {
+        type: Number,
+        default: 0,
+      },
+    },
   },
-
-  ratingSum: {
-    type: Number,
-    default: 0,
-  },
-},
-},
-{
-timestamps: true,
-}
+  {
+    timestamps: true,
+  }
 );
 
+// ===============================
+// MODEL
+// ===============================
 const shoeModel =
-mongoose.models.shoe ||
-mongoose.model("shoe", shoeSchema);
+  mongoose.models.shoe ||
+  mongoose.model("shoe", shoeSchema);
 
 export default shoeModel;
