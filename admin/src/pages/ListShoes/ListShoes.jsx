@@ -8,21 +8,34 @@ const ListShoes = () => {
   const [shoes, setShoes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const backendUrl = "https://virelli.onrender.com";
+  // Use the same backend URL from environment
+  const backendUrl = process.env.REACT_APP_API_URL;
 
   const fetchShoes = async () => {
     try {
+      setLoading(true);
+
       const response = await axios.get(
         `${backendUrl}/api/shoes/list`
       );
 
+      console.log("List Shoes Response:", response.data);
+
       if (response.data.success) {
         setShoes(response.data.data || []);
       } else {
-        alert(response.data.message);
+        alert(response.data.message || "Unable to fetch products.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Fetch shoes error:", error);
+
+      if (error.response) {
+        console.error("Server response:", error.response.data);
+        console.error("Status:", error.response.status);
+      } else if (error.request) {
+        console.error("No response received from server.");
+      }
+
       alert("Failed to fetch shoes.");
     } finally {
       setLoading(false);
@@ -52,13 +65,16 @@ const ListShoes = () => {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Delete product error:", error);
       alert("Unable to delete product.");
     }
   };
 
   const getProductImage = (shoe) => {
-    if (Array.isArray(shoe.images) && shoe.images.length > 0) {
+    if (
+      Array.isArray(shoe.images) &&
+      shoe.images.length > 0
+    ) {
       return `${backendUrl}/images/${shoe.images[0]}`;
     }
 
@@ -76,15 +92,20 @@ const ListShoes = () => {
 
       <div className="listshoes-content">
         <div className="listshoes-card">
+
           <div className="page-header">
-            <h2>All Shoes</h2>
+            <h2>All Products</h2>
             <span>Total: {shoes.length}</span>
           </div>
 
           {loading ? (
-            <h3 className="loading-text">Loading Shoes...</h3>
+            <h3 className="loading-text">
+              Loading Products...
+            </h3>
           ) : shoes.length === 0 ? (
-            <h3 className="loading-text">No Shoes Found</h3>
+            <h3 className="loading-text">
+              No Products Found
+            </h3>
           ) : (
             <div className="table-wrapper">
               <table className="shoe-table">
@@ -103,6 +124,7 @@ const ListShoes = () => {
                 <tbody>
                   {shoes.map((shoe) => (
                     <tr key={shoe._id}>
+
                       <td>
                         <img
                           src={getProductImage(shoe)}
@@ -115,25 +137,41 @@ const ListShoes = () => {
                       </td>
 
                       <td>{shoe.name}</td>
-                      <td>{shoe.category || "Shoes"}</td>
-                      <td>{shoe.type}</td>
-                      <td>Rs. {shoe.price}</td>
-                      <td>{shoe.discount || 0}%</td>
+
+                      <td>
+                        {shoe.category || "Shoes"}
+                      </td>
+
+                      <td>
+                        {shoe.type || "-"}
+                      </td>
+
+                      <td>
+                        Rs. {shoe.price}
+                      </td>
+
+                      <td>
+                        {shoe.discount || 0}%
+                      </td>
 
                       <td>
                         <button
                           className="delete-btn"
-                          onClick={() => deleteShoe(shoe._id)}
+                          onClick={() =>
+                            deleteShoe(shoe._id)
+                          }
                         >
                           Delete
                         </button>
                       </td>
+
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           )}
+
         </div>
       </div>
     </div>
