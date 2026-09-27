@@ -1,87 +1,89 @@
 import mongoose from "mongoose";
 
 const shoeSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
+{
+name: {
+type: String,
+required: true,
+},
 
-    type: {
-      type: String,
-      required: true,
-      enum: ["MEN", "WOMEN", "KID"],
-    },
+type: {
+  type: String,
+  required: true,
+  enum: ["MEN", "WOMEN", "KID"],
+},
 
-    popular: {
-      type: Boolean,
-      default: false,
-    },
+popular: {
+  type: Boolean,
+  default: false,
+},
 
-    category: {
-      type: String,
-      required: true,
-    },
+category: {
+  type: String,
+  required: true,
+  trim: true,
+},
 
-    images: {
-      type: [String],
-      required: true,
-    },
+images: {
+  type: [String],
+  required: true,
+  default: [],
+},
 
-    price: {
-      type: Number,
-      required: true,
-    },
+price: {
+  type: Number,
+  required: true,
+},
 
-    discount: {
-      type: Number,
-      default: 0,
-    },
+discount: {
+  type: Number,
+  default: 0,
+},
 
-    description: {
-      type: String,
-      required: true,
-    },
+description: {
+  type: String,
+  required: true,
+},
 
-    sizes: {
-      type: [String],
-      default: [],
-    },
+sizes: {
+  type: [String],
+  default: [],
+},
 
-    isNewArrival: {
-      type: Boolean,
-      default: false,
-    },
+isNewArrival: {
+  type: Boolean,
+  default: false,
+},
 
-    isOffer: {
-      type: Boolean,
-      default: false,
-    },
+isOffer: {
+  type: Boolean,
+  default: false,
+},
 
-    offerPrice: {
-      type: Number,
-      default: 0,
-    },
+offerPrice: {
+  type: Number,
+  default: 0,
+},
 
-    rating: {
-      totalRatings: {
-        type: Number,
-        default: 0,
-      },
-
-      ratingSum: {
-        type: Number,
-        default: 0,
-      },
-    },
+rating: {
+  totalRatings: {
+    type: Number,
+    default: 0,
   },
-  {
-    timestamps: true,
-  }
+
+  ratingSum: {
+    type: Number,
+    default: 0,
+  },
+},
+},
+{
+timestamps: true,
+}
 );
 
 const shoeModel =
-  mongoose.models.shoe ||
-  mongoose.model("shoe", shoeSchema);
+mongoose.models.shoe ||
+mongoose.model("shoe", shoeSchema);
 
 export default shoeModel;
