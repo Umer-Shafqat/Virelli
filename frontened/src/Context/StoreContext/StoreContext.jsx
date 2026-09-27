@@ -22,10 +22,6 @@ const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const [shoes, setShoes] = useState([]);
 
-  /* =====================================
-     FETCH PRODUCTS
-  ===================================== */
-
   const fetchShoes = useCallback(async () => {
     try {
       const response = await axios.get(
@@ -39,53 +35,6 @@ const StoreContextProvider = ({ children }) => {
       console.log("Fetch shoes error:", error);
     }
   }, [url]);
-
-  /* =====================================
-     FIND PRODUCT
-  ===================================== */
-
-  const findShoe = useCallback(
-    (shoeOrId) => {
-      if (!shoeOrId) return null;
-
-      // Product object was passed
-      if (typeof shoeOrId === "object") {
-        return shoeOrId;
-      }
-
-      // Product ID was passed
-      return (
-        shoes.find(
-          (shoe) =>
-            String(shoe._id) === String(shoeOrId) ||
-            String(shoe.id) === String(shoeOrId)
-        ) || null
-      );
-    },
-    [shoes]
-  );
-
-  /* =====================================
-     CHECK WHETHER SIZE IS REQUIRED
-     
-     IMPORTANT:
-     undefined / old products = size required
-     false = size NOT required
-  ===================================== */
-
-  const productRequiresSize = useCallback(
-    (shoeOrId) => {
-      const shoe = findShoe(shoeOrId);
-
-      if (!shoe) {
-        // Keep old products safe
-        return true;
-      }
-
-      return shoe.requiresSize !== false;
-    },
-    [findShoe]
-  );
 
   /* =====================================
      SAVE CART LOCALLY
@@ -131,29 +80,9 @@ const StoreContextProvider = ({ children }) => {
       return;
     }
 
-    /* =====================================
-       CHECK PRODUCT SIZE REQUIREMENT
-    ===================================== */
-
-    const requiresSize =
-      productRequiresSize(shoeOrId);
-
-    let finalSize = size;
-
-    if (requiresSize) {
-      // Size is required
-      if (
-        !size ||
-        String(size).trim() === ""
-      ) {
-        alert("Please select a size");
-        return;
-      }
-
-      finalSize = String(size).trim();
-    } else {
-      // Size is NOT required
-      finalSize = "N/A";
+    if (!size) {
+      alert("Please select a size");
+      return;
     }
 
     try {
@@ -161,7 +90,7 @@ const StoreContextProvider = ({ children }) => {
         `${url}/api/cart/add`,
         {
           shoeId,
-          size: finalSize,
+          size,
         },
         {
           headers: {
@@ -171,28 +100,19 @@ const StoreContextProvider = ({ children }) => {
       );
 
       if (response.data.success) {
-        const updatedCart =
-          response.data.cart || {};
+        const updatedCart = response.data.cart || {};
 
         setCartItems(updatedCart);
         saveCartLocally(updatedCart);
       }
     } catch (error) {
-      console.log(
-        "Add to cart error:",
-        error
-      );
+      console.log("Add to cart error:", error);
 
       if (error.response?.status === 401) {
-        alert(
-          "Session expired. Please login again."
-        );
+        alert("Session expired. Please login again.");
 
         localStorage.removeItem("token");
-
-        localStorage.removeItem(
-          `cartItems_${token}`
-        );
+        localStorage.removeItem(`cartItems_${token}`);
 
         setToken("");
         setCartItems({});
@@ -202,7 +122,7 @@ const StoreContextProvider = ({ children }) => {
 
       alert(
         error.response?.data?.message ||
-          "Error adding item to cart"
+        "Error adding item to cart"
       );
     }
   };
@@ -231,6 +151,8 @@ const StoreContextProvider = ({ children }) => {
           response.data.cart || {};
 
         /*
+          IMPORTANT:
+
           If MongoDB has cart items,
           use MongoDB cart.
 
@@ -247,14 +169,11 @@ const StoreContextProvider = ({ children }) => {
         }
       }
     } catch (error) {
-      console.log(
-        "Get cart error:",
-        error
-      );
+      console.log("Get cart error:", error);
 
       /*
         If server request fails,
-        keep localStorage cart.
+        keep the localStorage cart.
       */
 
       if (error.response?.status === 401) {
@@ -286,26 +205,6 @@ const StoreContextProvider = ({ children }) => {
   }, [token, url, saveCartLocally]);
 
   /* =====================================
-     NORMALIZE CART SIZE
-     
-     Products without size always use N/A
-  ===================================== */
-
-  const normalizeCartSize = useCallback(
-    (shoeId, size) => {
-      const requiresSize =
-        productRequiresSize(shoeId);
-
-      if (!requiresSize) {
-        return "N/A";
-      }
-
-      return size;
-    },
-    [productRequiresSize]
-  );
-
-  /* =====================================
      REMOVE ONE QUANTITY
   ===================================== */
 
@@ -317,27 +216,12 @@ const StoreContextProvider = ({ children }) => {
       return;
     }
 
-    const finalSize =
-      normalizeCartSize(shoeId, size);
-
-    if (
-      productRequiresSize(shoeId) &&
-      (!finalSize ||
-        String(finalSize).trim() === "")
-    ) {
-      console.log(
-        "Size is required for this product."
-      );
-
-      return;
-    }
-
     try {
       const response = await axios.post(
         `${url}/api/cart/remove`,
         {
           shoeId,
-          size: finalSize,
+          size,
         },
         {
           headers: {
@@ -373,18 +257,8 @@ const StoreContextProvider = ({ children }) => {
       return;
     }
 
-    const finalSize =
-      normalizeCartSize(shoeId, size);
-
-    const cartKey =
-      `${shoeId}-${finalSize}`;
-
     let quantity =
-      cartItems[cartKey] || 0;
-
-    if (quantity <= 0) {
-      return;
-    }
+      cartItems[`${shoeId}-${size}`] || 0;
 
     try {
       while (quantity > 0) {
@@ -393,7 +267,7 @@ const StoreContextProvider = ({ children }) => {
             `${url}/api/cart/remove`,
             {
               shoeId,
-              size: finalSize,
+              size,
             },
             {
               headers: {
@@ -425,7 +299,7 @@ const StoreContextProvider = ({ children }) => {
 
   /* =====================================
      CLEAR CART
-
+     
      ONLY CALL AFTER SUCCESSFUL ORDER
   ===================================== */
 
@@ -480,7 +354,7 @@ const StoreContextProvider = ({ children }) => {
   };
 
   /* =====================================
-     FETCH PRODUCTS
+     FETCH SHOES
   ===================================== */
 
   useEffect(() => {
@@ -499,8 +373,7 @@ const StoreContextProvider = ({ children }) => {
 
     /*
       FIRST:
-      Restore cart immediately
-      from localStorage.
+      Restore cart immediately from localStorage.
     */
 
     try {

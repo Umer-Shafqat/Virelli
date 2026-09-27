@@ -2,6 +2,9 @@ import ShoeModel from "../models/shoeModel.js";
 import UserModel from "../models/userModel.js";
 import OrderModel from "../models/orderModel.js";
 
+// ===============================
+// ADD SHOE
+// ===============================
 const addShoe = async (req, res) => {
   try {
     console.log("req.files:", req.files);
@@ -18,8 +21,7 @@ const addShoe = async (req, res) => {
       .trim()
       .toUpperCase();
 
-    const category = String(req.body.category || "")
-      .trim();
+    const category = String(req.body.category || "").trim();
 
     if (!category) {
       return res.status(400).json({
@@ -28,105 +30,59 @@ const addShoe = async (req, res) => {
       });
     }
 
-    let finalType = "";
-
-    if (shoeType === "MEN") {
-      finalType = "MEN";
-    } else if (shoeType === "WOMEN") {
-      finalType = "WOMEN";
-    } else if (
-      shoeType === "KID" ||
-      shoeType === "KIDS"
-    ) {
-      finalType = "KID";
-    }
-
-    if (!finalType) {
-      return res.status(400).json({
-        success: false,
-        message: "Valid product type is required",
-      });
-    }
-
-    const requiresSize =
-      req.body.requiresSize === "true" ||
-      req.body.requiresSize === true;
-
     const image_filenames = req.files.map(
       (file) => file.filename
     );
 
     const sizes = req.body.sizes
-      ? String(req.body.sizes)
+      ? req.body.sizes
           .split(",")
           .map((size) => size.trim())
           .filter((size) => size !== "")
       : [];
 
-    if (requiresSize && sizes.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: "Sizes are required for this product",
-      });
-    }
-
-    const finalSizes = requiresSize ? sizes : [];
-
     const shoe = new ShoeModel({
-      name: String(req.body.name || "").trim(),
+      name: req.body.name,
 
-      type: finalType,
+      type:
+        shoeType === "MEN"
+          ? "MEN"
+          : shoeType === "WOMEN"
+          ? "WOMEN"
+          : shoeType === "KID" || shoeType === "KIDS"
+          ? "KID"
+          : "",
 
       category: category,
 
       images: image_filenames,
 
-      price: Number(req.body.price || 0),
+      price: Number(req.body.price),
 
       discount: Number(req.body.discount || 0),
 
-      description: String(
-        req.body.description || ""
-      ).trim(),
+      description: req.body.description,
 
-      requiresSize: requiresSize,
+      sizes: sizes,
 
-      sizes: finalSizes,
+      popular: req.body.popular === "true",
 
-      popular:
-        req.body.popular === "true" ||
-        req.body.popular === true,
+      isNewArrival: req.body.isNewArrival === "true",
 
-      isNewArrival:
-        req.body.isNewArrival === "true" ||
-        req.body.isNewArrival === true,
+      isOffer: req.body.isOffer === "true",
 
-      isOffer:
-        req.body.isOffer === "true" ||
-        req.body.isOffer === true,
-
-      offerPrice: Number(
-        req.body.offerPrice || 0
-      ),
+      offerPrice: Number(req.body.offerPrice || 0),
     });
 
     const savedShoe = await shoe.save();
 
-    console.log(
-      "Product saved:",
-      savedShoe
-    );
-
     res.status(201).json({
       success: true,
-      message: "Product added successfully",
+      message: "Shoe added successfully",
       shoe: savedShoe,
     });
   } catch (error) {
-    console.error(
-      "Add product error:",
-      error
-    );
+    console.error(error);
 
     res.status(500).json({
       success: false,
@@ -135,6 +91,9 @@ const addShoe = async (req, res) => {
   }
 };
 
+// ===============================
+// GET ALL SHOES
+// ===============================
 const getShoes = async (req, res) => {
   try {
     const shoes = await ShoeModel.find().sort({
@@ -146,10 +105,7 @@ const getShoes = async (req, res) => {
       data: shoes,
     });
   } catch (error) {
-    console.error(
-      "Get shoes error:",
-      error
-    );
+    console.log(error);
 
     res.status(500).json({
       success: false,
@@ -158,11 +114,12 @@ const getShoes = async (req, res) => {
   }
 };
 
+// ===============================
+// GET SINGLE SHOE
+// ===============================
 const getShoeById = async (req, res) => {
   try {
-    const shoe = await ShoeModel.findById(
-      req.params.id
-    );
+    const shoe = await ShoeModel.findById(req.params.id);
 
     if (!shoe) {
       return res.status(404).json({
@@ -176,10 +133,7 @@ const getShoeById = async (req, res) => {
       shoe,
     });
   } catch (error) {
-    console.error(
-      "Error getting shoe:",
-      error
-    );
+    console.error("Error getting shoe:", error);
 
     res.status(500).json({
       success: false,
@@ -188,23 +142,23 @@ const getShoeById = async (req, res) => {
   }
 };
 
+// ===============================
+// GET NEW ARRIVALS
+// ===============================
 const getNewArrivals = async (req, res) => {
   try {
     const shoes = await ShoeModel.find({
       isNewArrival: true,
-    }).sort({
-      createdAt: -1,
     });
+
+    console.log("New Arrivals:", shoes);
 
     res.json({
       success: true,
-      shoes,
+      shoes: shoes,
     });
   } catch (error) {
-    console.error(
-      "Error getting new arrivals:",
-      error
-    );
+    console.log("Error getting new arrivals:", error);
 
     res.status(500).json({
       success: false,
@@ -213,23 +167,23 @@ const getNewArrivals = async (req, res) => {
   }
 };
 
+// ===============================
+// GET OFFERS
+// ===============================
 const getOffers = async (req, res) => {
   try {
     const shoes = await ShoeModel.find({
       isOffer: true,
-    }).sort({
-      createdAt: -1,
     });
+
+    console.log("Offers:", shoes);
 
     res.json({
       success: true,
-      shoes,
+      shoes: shoes,
     });
   } catch (error) {
-    console.error(
-      "Error getting offers:",
-      error
-    );
+    console.log("Error getting offers:", error);
 
     res.status(500).json({
       success: false,
@@ -238,6 +192,9 @@ const getOffers = async (req, res) => {
   }
 };
 
+// ===============================
+// ADMIN SEARCH
+// ===============================
 const searchAdmin = async (req, res) => {
   try {
     const { q } = req.query;
@@ -257,6 +214,10 @@ const searchAdmin = async (req, res) => {
     let shoes = [];
     let users = [];
     let orders = [];
+
+    // =====================================
+    // SEARCH SHOES
+    // =====================================
 
     if (
       lowerKeyword === "shoe" ||
@@ -298,6 +259,10 @@ const searchAdmin = async (req, res) => {
       });
     }
 
+    // =====================================
+    // SEARCH USERS
+    // =====================================
+
     if (
       lowerKeyword === "user" ||
       lowerKeyword === "users"
@@ -326,6 +291,10 @@ const searchAdmin = async (req, res) => {
       });
     }
 
+    // =====================================
+    // SEARCH ORDERS
+    // =====================================
+
     if (
       lowerKeyword === "order" ||
       lowerKeyword === "orders"
@@ -351,10 +320,7 @@ const searchAdmin = async (req, res) => {
       orders,
     });
   } catch (error) {
-    console.error(
-      "Admin search error:",
-      error
-    );
+    console.error("Admin search error:", error);
 
     res.status(500).json({
       success: false,
@@ -363,11 +329,12 @@ const searchAdmin = async (req, res) => {
   }
 };
 
+// ===============================
+// DELETE SHOE
+// ===============================
 const deleteShoe = async (req, res) => {
   try {
-    const shoe = await ShoeModel.findById(
-      req.params.id
-    );
+    const shoe = await ShoeModel.findById(req.params.id);
 
     if (!shoe) {
       return res.status(404).json({
@@ -376,9 +343,7 @@ const deleteShoe = async (req, res) => {
       });
     }
 
-    await ShoeModel.findByIdAndDelete(
-      req.params.id
-    );
+    await ShoeModel.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
       success: true,
@@ -394,6 +359,9 @@ const deleteShoe = async (req, res) => {
   }
 };
 
+// ===============================
+// EXPORT
+// ===============================
 export {
   addShoe,
   getShoes,

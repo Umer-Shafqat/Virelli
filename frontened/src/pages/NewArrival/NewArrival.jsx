@@ -9,6 +9,8 @@ const NewArrival = () => {
   const [newArrivals, setNewArrivals] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
     const fetchNewArrivals = async () => {
       try {
@@ -18,15 +20,24 @@ const NewArrival = () => {
           `${API_URL}/api/shoes/new-arrivals`
         );
 
-        console.log("New Arrival API:", response.data);
+        console.log(
+          "New Arrival API:",
+          response.data
+        );
 
         if (response.data.success) {
-          setNewArrivals(response.data.shoes || []);
+          setNewArrivals(
+            response.data.shoes || []
+          );
         } else {
           setNewArrivals([]);
         }
       } catch (error) {
-        console.log("Error fetching new arrivals:", error);
+        console.log(
+          "Error fetching new arrivals:",
+          error
+        );
+
         setNewArrivals([]);
       } finally {
         setLoading(false);
@@ -36,32 +47,29 @@ const NewArrival = () => {
     fetchNewArrivals();
   }, []);
 
-  const getImageUrl = (shoe) => {
-    if (
-      Array.isArray(shoe.images) &&
-      shoe.images.length > 0
-    ) {
-      return `${API_URL}/images/${shoe.images[0]}`;
-    }
-
-    if (shoe.image) {
-      return `${API_URL}/images/${shoe.image}`;
-    }
-
-    return "/placeholder.png";
-  };
+  // =====================================
+  // PAGE
+  // =====================================
 
   return (
     <div className="new-arrival-page">
+
+      {/* TITLE */}
+
       <h1 className="new-arrival-title">
         New Arrivals
       </h1>
+
+      {/* LOADING */}
 
       {loading ? (
         <p className="loading">
           Loading...
         </p>
       ) : newArrivals.length === 0 ? (
+
+        /* NO NEW ARRIVALS */
+
         <div className="no-arrivals">
           <h2>No New Arrivals</h2>
 
@@ -69,30 +77,43 @@ const NewArrival = () => {
             No shoes have been added as new arrivals.
           </p>
         </div>
+
       ) : (
+
+        /* NEW ARRIVALS */
+
         <div className="new-arrival-container">
+
           {newArrivals.map((shoe) => (
+
             <div
               className="new-arrival-card"
               key={shoe._id}
             >
+
+              {/* IMAGE */}
+
               <div className="new-arrival-image-box">
+
                 <img
-                  src={getImageUrl(shoe)}
+                  src={`${API_URL}/images/${shoe.image}`}
                   alt={shoe.name}
                   className="new-arrival-image"
-                  onError={(e) => {
-                    e.currentTarget.src = "/placeholder.png";
-                  }}
                 />
 
                 <span className="new-arrival-badge">
                   NEW
                 </span>
+
               </div>
 
+              {/* INFORMATION */}
+
               <div className="new-arrival-info">
-                <h2>{shoe.name}</h2>
+
+                <h2>
+                  {shoe.name}
+                </h2>
 
                 <p className="shoe-category">
                   {shoe.type} • {shoe.category}
@@ -102,9 +123,13 @@ const NewArrival = () => {
                   {shoe.description}
                 </p>
 
+                {/* PRICE */}
+
                 <div className="price-section">
+
                   {Number(shoe.discount) > 0 ? (
                     <>
+
                       <span className="old-price">
                         Rs.{" "}
                         {Number(
@@ -127,21 +152,31 @@ const NewArrival = () => {
                       <span className="discount">
                         {shoe.discount}% OFF
                       </span>
+
                     </>
                   ) : (
+
                     <span className="new-price">
                       Rs.{" "}
                       {Number(
                         shoe.price || 0
                       ).toLocaleString()}
                     </span>
+
                   )}
+
                 </div>
+
               </div>
+
             </div>
+
           ))}
+
         </div>
+
       )}
+
     </div>
   );
 };

@@ -8,12 +8,10 @@ const ListShoes = () => {
   const [shoes, setShoes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const backendUrl = "https://virelli.onrender.com";
+  const backendUrl = "https://virelli.onrender.com"; // Replace with your backend URL
 
   const fetchShoes = async () => {
     try {
-      setLoading(true);
-
       const response = await axios.get(
         `${backendUrl}/api/shoes/list`
       );
@@ -76,13 +74,9 @@ const ListShoes = () => {
           </div>
 
           {loading ? (
-            <h3 className="loading-text">
-              Loading Shoes...
-            </h3>
+            <h3 className="loading-text">Loading Shoes...</h3>
           ) : shoes.length === 0 ? (
-            <h3 className="loading-text">
-              No Shoes Found
-            </h3>
+            <h3 className="loading-text">No Shoes Found</h3>
           ) : (
             <div className="table-wrapper">
               <table className="shoe-table">
@@ -94,113 +88,46 @@ const ListShoes = () => {
                     <th>Type</th>
                     <th>Price</th>
                     <th>Discount</th>
-                    <th>Requires Size</th>
-                    <th>Sizes</th>
                     <th>Action</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {shoes.map((shoe) => {
-                    // Old products without requiresSize
-                    // are treated as requiring a size.
-                    const requiresSize =
-                      shoe.requiresSize !== false;
+                  {shoes.map((shoe) => (
+                    <tr key={shoe._id}>
+                      <td>
+                        <img
+                          src={`${backendUrl}/images/${shoe.image}`}
+                          alt={shoe.name}
+                          className="shoe-image"
+                          onError={(e) => {
+                            e.target.src = "/no-image.png";
+                          }}
+                        />
+                      </td>
 
-                    return (
-                      <tr key={shoe._id}>
-                        {/* Image */}
-                        <td>
-                          <img
-                            src={`${backendUrl}/images/${shoe.image}`}
-                            alt={shoe.name}
-                            className="shoe-image"
-                            onError={(e) => {
-                              e.target.src =
-                                "/no-image.png";
-                            }}
-                          />
-                        </td>
+                      <td>{shoe.name}</td>
+                      <td>{shoe.category}</td>
+                      <td>{shoe.type}</td>
+                      <td>Rs. {shoe.price}</td>
+                      <td>{shoe.discount}%</td>
 
-                        {/* Name */}
-                        <td>
-                          {shoe.name}
-                        </td>
-
-                        {/* Category */}
-                        <td>
-                          {shoe.category}
-                        </td>
-
-                        {/* Type */}
-                        <td>
-                          {shoe.type}
-                        </td>
-
-                        {/* Price */}
-                        <td>
-                          Rs.{" "}
-                          {Number(
-                            shoe.price || 0
-                          ).toLocaleString()}
-                        </td>
-
-                        {/* Discount */}
-                        <td>
-                          {shoe.discount || 0}%
-                        </td>
-
-                        {/* Requires Size */}
-                        <td>
-                          <span
-                            className={
-                              requiresSize
-                                ? "size-required"
-                                : "size-not-required"
-                            }
-                          >
-                            {requiresSize
-                              ? "Yes"
-                              : "No"}
-                          </span>
-                        </td>
-
-                        {/* Sizes */}
-                        <td>
-                          {requiresSize ? (
-                            Array.isArray(
-                              shoe.sizes
-                            ) &&
-                            shoe.sizes.length > 0 ? (
-                              shoe.sizes.join(", ")
-                            ) : (
-                              "No sizes"
-                            )
-                          ) : (
-                            "N/A"
-                          )}
-                        </td>
-
-                        {/* Delete */}
-                        <td>
-                          <button
-                            className="delete-btn"
-                            onClick={() =>
-                              deleteShoe(
-                                shoe._id
-                              )
-                            }
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                      <td>
+                        <button
+                          className="delete-btn"
+                          onClick={() => deleteShoe(shoe._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
+
               </table>
             </div>
           )}
+
         </div>
       </div>
     </div>

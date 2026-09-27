@@ -9,22 +9,14 @@ import "./Shoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 const Shoes = ({ limit, products }) => {
-  const { shoes, addToCart, url } =
-    useContext(StoreContext);
+  const { shoes, addToCart, url } = useContext(StoreContext);
 
   const [searchParams] = useSearchParams();
+  const selectedCategory = searchParams.get("category");
 
-  const selectedCategory =
-    searchParams.get("category");
-
-  const [selectedSizes, setSelectedSizes] =
-    useState({});
-
+  const [selectedSizes, setSelectedSizes] = useState({});
   const [shoeList, setShoeList] = useState([]);
-
-  const [currentImages, setCurrentImages] =
-    useState({});
-
+  const [currentImages, setCurrentImages] = useState({});
   const touchStartX = useRef({});
 
   useEffect(() => {
@@ -32,68 +24,42 @@ const Shoes = ({ limit, products }) => {
 
     const normalizedList = list.map((shoe) => ({
       ...shoe,
-      _id:
-        shoe._id ||
-        shoe.id ||
-        shoe.shoeId,
+      _id: shoe._id || shoe.id || shoe.shoeId,
     }));
 
     setShoeList(normalizedList);
   }, [products, shoes]);
 
-  const normalizeCategory = (value) => {
-    return String(value || "")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, " ");
-  };
-
-  const categoryFilteredShoes =
-    selectedCategory
-      ? shoeList.filter(
-          (shoe) =>
-            normalizeCategory(
-              shoe.category
-            ) ===
-            normalizeCategory(
-              selectedCategory
-            )
-        )
-      : shoeList;
+  const categoryFilteredShoes = selectedCategory
+    ? shoeList.filter(
+        (shoe) =>
+          String(shoe.category || "").toLowerCase() ===
+          selectedCategory.toLowerCase()
+      )
+    : shoeList;
 
   const displayedShoes = limit
     ? categoryFilteredShoes.slice(0, limit)
     : categoryFilteredShoes;
 
   const getImageUrl = (image) => {
-    if (!image) {
-      return "";
-    }
-
-    const imageString = String(image).trim();
+    if (!image) return "";
 
     if (
-      imageString.startsWith("http://") ||
-      imageString.startsWith("https://")
+      image.startsWith("http://") ||
+      image.startsWith("https://")
     ) {
-      return imageString;
+      return image;
     }
 
-    if (imageString.startsWith("/images/")) {
-      return `${url}${imageString}`;
+    if (image.startsWith("/images/")) {
+      return `${url}${image}`;
     }
 
-    if (imageString.startsWith("images/")) {
-      return `${url}/${imageString}`;
-    }
-
-    return `${url}/images/${imageString}`;
+    return `${url}/images/${image}`;
   };
 
-  const handleSizeSelect = (
-    shoeId,
-    size
-  ) => {
+  const handleSizeSelect = (shoeId, size) => {
     if (!shoeId) {
       alert("Shoe ID is missing");
       return;
@@ -105,10 +71,7 @@ const Shoes = ({ limit, products }) => {
     }));
   };
 
-  const handleRating = (
-    shoeId,
-    selectedRating
-  ) => {
+  const handleRating = (shoeId, selectedRating) => {
     if (!shoeId) {
       return;
     }
@@ -125,12 +88,9 @@ const Shoes = ({ limit, products }) => {
           return {
             ...shoe,
             rating: {
-              totalRatings:
-                oldTotalRatings + 1,
-
+              totalRatings: oldTotalRatings + 1,
               ratingSum:
-                oldRatingSum +
-                selectedRating,
+                oldRatingSum + selectedRating,
             },
           };
         }
@@ -141,47 +101,39 @@ const Shoes = ({ limit, products }) => {
   };
 
   const handleAddToCart = (shoe) => {
-    const requiresSize =
-      shoe.requiresSize !== false;
+    const shoeId =
+      shoe?._id ||
+      shoe?.id ||
+      shoe?.shoeId;
 
-    if (!requiresSize) {
-      addToCart(shoe, "N/A");
+    const selectedSize =
+      selectedSizes[shoeId];
+
+    if (!shoeId) {
+      alert("Shoe ID is missing");
+      console.error(
+        "Shoe object does not contain an ID:",
+        shoe
+      );
       return;
     }
 
-    const selectedSize =
-      selectedSizes[shoe._id];
-
-    if (
-      !selectedSize ||
-      String(selectedSize).trim() === ""
-    ) {
+    if (!selectedSize) {
       alert("Please select a size first");
       return;
     }
 
-    addToCart(
-      shoe,
-      selectedSize
-    );
+    addToCart(shoeId, selectedSize);
   };
 
-  const handleTouchStart = (
-    shoeId,
-    e
-  ) => {
+  const handleTouchStart = (shoeId, e) => {
     touchStartX.current[shoeId] =
       e.touches[0].clientX;
   };
 
-  const handleTouchEnd = (
-    shoeId,
-    images,
-    e
-  ) => {
+  const handleTouchEnd = (shoeId, images, e) => {
     if (
-      touchStartX.current[shoeId] ===
-        undefined ||
+      touchStartX.current[shoeId] === undefined ||
       images.length <= 1
     ) {
       return;
@@ -199,8 +151,7 @@ const Shoes = ({ limit, products }) => {
         const currentIndex =
           prev[shoeId] || 0;
 
-        let newIndex =
-          currentIndex;
+        let newIndex = currentIndex;
 
         if (difference > 0) {
           if (
@@ -224,9 +175,7 @@ const Shoes = ({ limit, products }) => {
       });
     }
 
-    delete touchStartX.current[
-      shoeId
-    ];
+    delete touchStartX.current[shoeId];
   };
 
   const handleImageChange = (
@@ -251,9 +200,7 @@ const Shoes = ({ limit, products }) => {
     }
   };
 
-  const handleMouseLeave = (
-    shoeId
-  ) => {
+  const handleMouseLeave = (shoeId) => {
     setCurrentImages((prev) => ({
       ...prev,
       [shoeId]: 0,
@@ -261,34 +208,32 @@ const Shoes = ({ limit, products }) => {
   };
 
   return (
-    <section className="shoes-section">
-      <div className="shoes-heading">
-        <h2>
-          {selectedCategory
-            ? `${selectedCategory} Collection`
-            : "Our Shoes Collection"}
-        </h2>
+    <>
+      <section className="shoes-section">
+        <div className="shoes-heading">
+          <h2>
+            {selectedCategory
+              ? `${selectedCategory} Collection`
+              : "Our Shoes Collection"}
+          </h2>
 
-        <p>
-          {selectedCategory
-            ? `Explore our latest ${selectedCategory.toLowerCase()} products`
-            : "Explore all of our latest shoe designs"}
-        </p>
-      </div>
+          <p>
+            {selectedCategory
+              ? `Explore our latest ${selectedCategory.toLowerCase()} products`
+              : "Explore all of our latest shoe designs"}
+          </p>
+        </div>
 
-      <div className="shoes-grid">
-        {displayedShoes.length > 0 ? (
-          displayedShoes.map(
-            (shoe, index) => {
+        <div className="shoes-grid">
+          {displayedShoes.length > 0 ? (
+            displayedShoes.map((shoe, index) => {
               const shoeId =
                 shoe?._id ||
                 shoe?.id ||
                 shoe?.shoeId;
 
               const images =
-                Array.isArray(
-                  shoe.images
-                ) &&
+                Array.isArray(shoe.images) &&
                 shoe.images.length > 0
                   ? shoe.images
                   : shoe.image
@@ -296,9 +241,7 @@ const Shoes = ({ limit, products }) => {
                   : [];
 
               let currentImageIndex =
-                currentImages[
-                  shoeId
-                ] || 0;
+                currentImages[shoeId] || 0;
 
               if (
                 currentImageIndex >=
@@ -308,50 +251,36 @@ const Shoes = ({ limit, products }) => {
               }
 
               const currentImage =
-                images[
-                  currentImageIndex
-                ];
+                images[currentImageIndex];
 
-              const price = Number(
-                shoe.price || 0
-              );
+              const price =
+                Number(shoe.price || 0);
 
-              const discount = Number(
-                shoe.discount || 0
-              );
+              const discount =
+                Number(shoe.discount || 0);
 
               const discountedPrice =
                 price -
-                (price * discount) /
-                  100;
+                (price * discount) / 100;
 
               const totalRatings =
-                shoe.rating
-                  ?.totalRatings || 0;
+                shoe.rating?.totalRatings || 0;
 
               const ratingSum =
-                shoe.rating
-                  ?.ratingSum || 0;
+                shoe.rating?.ratingSum || 0;
 
               const averageRating =
                 totalRatings > 0
-                  ? ratingSum /
-                    totalRatings
+                  ? ratingSum / totalRatings
                   : 5;
 
               const selectedSize =
                 selectedSizes[shoeId];
 
-              const requiresSize =
-                shoe.requiresSize !==
-                false;
-
               return (
                 <div
                   className="shoe-card"
-                  key={
-                    shoeId || index
-                  }
+                  key={shoeId || index}
                 >
                   <div
                     className="shoe-image"
@@ -392,23 +321,19 @@ const Shoes = ({ limit, products }) => {
                           currentImage
                         )}
                         alt={
-                          shoe.name ||
-                          "Product"
+                          shoe.name || "Shoe"
                         }
                         draggable="false"
                         onError={(e) => {
                           console.error(
                             "Image failed:",
-                            e
-                              .currentTarget
-                              .src
+                            e.currentTarget.src
                           );
                         }}
                       />
                     )}
 
-                    {images.length >
-                      1 && (
+                    {images.length > 1 && (
                       <div className="image-dots">
                         {images.map(
                           (
@@ -426,19 +351,15 @@ const Shoes = ({ limit, products }) => {
                                   ? "image-dot active"
                                   : "image-dot"
                               }
-                              onClick={(
-                                e
-                              ) => {
+                              onClick={(e) => {
                                 e.stopPropagation();
-
                                 handleImageChange(
                                   shoeId,
                                   imageIndex
                                 );
                               }}
                               aria-label={`Show image ${
-                                imageIndex +
-                                1
+                                imageIndex + 1
                               }`}
                             />
                           )
@@ -458,9 +379,7 @@ const Shoes = ({ limit, products }) => {
 
                     {shoe.description && (
                       <p className="shoe-description">
-                        {
-                          shoe.description
-                        }
+                        {shoe.description}
                       </p>
                     )}
 
@@ -518,39 +437,34 @@ const Shoes = ({ limit, products }) => {
                       )}
                     </div>
 
-                    {requiresSize && (
-                      <div className="sizes">
-                        <span className="size-label">
-                          Size:
-                        </span>
+                    <div className="sizes">
+                      <span className="size-label">
+                        Size:
+                      </span>
 
-                        {(
-                          shoe.sizes ||
-                          []
-                        ).map(
-                          (size) => (
-                            <button
-                              key={size}
-                              type="button"
-                              className={
-                                selectedSize ===
+                      {(shoe.sizes || []).map(
+                        (size) => (
+                          <button
+                            key={size}
+                            type="button"
+                            className={
+                              selectedSize ===
+                              size
+                                ? "size-btn selected"
+                                : "size-btn"
+                            }
+                            onClick={() =>
+                              handleSizeSelect(
+                                shoeId,
                                 size
-                                  ? "size-btn selected"
-                                  : "size-btn"
-                              }
-                              onClick={() =>
-                                handleSizeSelect(
-                                  shoeId,
-                                  size
-                                )
-                              }
-                            >
-                              {size}
-                            </button>
-                          )
-                        )}
-                      </div>
-                    )}
+                              )
+                            }
+                          >
+                            {size}
+                          </button>
+                        )
+                      )}
+                    </div>
 
                     <button
                       className="add-cart"
@@ -566,17 +480,17 @@ const Shoes = ({ limit, products }) => {
                   </div>
                 </div>
               );
-            }
-          )
-        ) : (
-          <p className="no-shoes">
-            {selectedCategory
-              ? `No ${selectedCategory.toLowerCase()} products available.`
-              : "No shoes available."}
-          </p>
-        )}
-      </div>
-    </section>
+            })
+          ) : (
+            <p className="no-shoes">
+              {selectedCategory
+                ? `No ${selectedCategory.toLowerCase()} products available.`
+                : "No shoes available."}
+            </p>
+          )}
+        </div>
+      </section>
+    </>
   );
 };
 

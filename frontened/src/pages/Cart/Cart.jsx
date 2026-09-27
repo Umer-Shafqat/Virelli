@@ -34,23 +34,9 @@ const Cart = () => {
 
   const totalAmount = subtotal + deliveryCharges;
 
-  const getImageUrl = (shoe) => {
-    if (
-      Array.isArray(shoe.images) &&
-      shoe.images.length > 0
-    ) {
-      return `${process.env.REACT_APP_API_URL}/images/${shoe.images[0]}`;
-    }
-
-    if (shoe.image) {
-      return `${process.env.REACT_APP_API_URL}/images/${shoe.image}`;
-    }
-
-    return "/placeholder.png";
-  };
-
   return (
     <div className="cart-page">
+
       <h1>My Cart</h1>
 
       {cartEntries.length === 0 ? (
@@ -62,7 +48,9 @@ const Cart = () => {
         <>
           <div className="cart-container">
             <div className="cart-items">
+
               {cartEntries.map(([key, quantity]) => {
+
                 const [shoeId, size] = key.split("-");
 
                 const shoe = shoes.find(
@@ -78,20 +66,22 @@ const Cart = () => {
                     className="cart-item"
                     key={key}
                   >
-                    <img
-                      src={getImageUrl(shoe)}
-                      alt={shoe.name || "Product"}
-                      className="cart-shoe-image"
-                      onError={(e) => {
-                        console.log(
-                          "Image not found:",
-                          e.target.src
-                        );
-                        e.target.src = "/placeholder.png";
-                      }}
+
+                   <img
+                    src={`${process.env.REACT_APP_API_URL}/images/${shoe.image}`}
+                    alt={shoe.name || "Shoe"}
+                    className="cart-shoe-image"
+                    onError={(e) => {
+                    console.log("Image not found:", e.target.src);
+                    e.target.style.display = "none";
+                    }}
                     />
 
+
+                    {/* SHOE DETAILS */}
+
                     <div className="cart-item-details">
+
                       <h2>
                         {shoe.name}
                       </h2>
@@ -107,13 +97,15 @@ const Cart = () => {
 
                       <h3>
                         Rs.{" "}
-                        {shoe.price.toLocaleString(
-                          "en-PK"
-                        )}
+                        {shoe.price.toLocaleString("en-PK")}
                       </h3>
+
                     </div>
 
+
+
                     <div className="quantity-control">
+
                       <button
                         type="button"
                         onClick={() =>
@@ -141,14 +133,21 @@ const Cart = () => {
                       >
                         +
                       </button>
+
                     </div>
+
+
+                    {/* ITEM TOTAL */}
 
                     <div className="item-total">
                       Rs.{" "}
-                      {(
-                        shoe.price * quantity
-                      ).toLocaleString("en-PK")}
+                      {(shoe.price * quantity).toLocaleString(
+                        "en-PK"
+                      )}
                     </div>
+
+
+                    {/* REMOVE BUTTON */}
 
                     <button
                       type="button"
@@ -162,51 +161,58 @@ const Cart = () => {
                     >
                       Remove
                     </button>
+
                   </div>
                 );
               })}
+
             </div>
+
           </div>
 
           <div className="total-amount">
+
             <div className="amount-row">
+
               <span>
                 Subtotal
               </span>
 
               <span>
                 PKR{" "}
-                {subtotal.toLocaleString(
-                  "en-PK"
-                )}
+                {subtotal.toLocaleString("en-PK")}
               </span>
+
             </div>
 
+
             <div className="amount-row">
+
               <span>
                 Delivery Charges
               </span>
 
               <span>
                 PKR{" "}
-                {deliveryCharges.toLocaleString(
-                  "en-PK"
-                )}
+                {deliveryCharges.toLocaleString("en-PK")}
               </span>
+
             </div>
 
+
             <div className="amount-row total-row">
+
               <span>
                 Total Amount
               </span>
 
               <span>
                 PKR{" "}
-                {totalAmount.toLocaleString(
-                  "en-PK"
-                )}
+                {totalAmount.toLocaleString("en-PK")}
               </span>
+
             </div>
+
 
             <button
               type="button"
@@ -223,9 +229,11 @@ const Cart = () => {
             >
               Proceed to Checkout
             </button>
+
           </div>
         </>
       )}
+
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import cartModel from "../models/cartModel.js";
-import ShoeModel from "../models/shoeModel.js";
+
 
 // =================================
 // ADD TO CART
@@ -7,14 +7,13 @@ import ShoeModel from "../models/shoeModel.js";
 
 const addToCart = async (req, res) => {
   try {
+
     const userId = req.userId;
 
     const { shoeId, size } = req.body;
 
-    // =================================
-    // CHECK USER
-    // =================================
 
+    // Check user
     if (!userId) {
       return res.status(401).json({
         success: false,
@@ -22,56 +21,22 @@ const addToCart = async (req, res) => {
       });
     }
 
-    // =================================
-    // CHECK SHOE ID
-    // =================================
 
-    if (!shoeId) {
+    // Check shoe ID and size
+    if (!shoeId || !size) {
       return res.status(400).json({
         success: false,
-        message: "Product ID is required",
+        message: "Shoe ID and size are required",
       });
     }
 
-    // =================================
-    // FIND PRODUCT
-    // =================================
-
-    const shoe = await ShoeModel.findById(shoeId);
-
-    if (!shoe) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found",
-      });
-    }
-
-    // =================================
-    // CHECK WHETHER SIZE IS REQUIRED
-    // =================================
-
-    let finalSize = size;
-
-    if (shoe.requiresSize) {
-      // Product requires size
-      if (!size || String(size).trim() === "") {
-        return res.status(400).json({
-          success: false,
-          message: "Please select a size",
-        });
-      }
-
-      finalSize = String(size).trim();
-    } else {
-      // Product does NOT require size
-      finalSize = "N/A";
-    }
 
     // =================================
     // CREATE CART KEY
     // =================================
 
-    const key = `${shoeId}-${finalSize}`;
+    const key = `${shoeId}-${size}`;
+
 
     // =================================
     // FIND USER CART
@@ -81,11 +46,8 @@ const addToCart = async (req, res) => {
       userId,
     });
 
-    // =================================
-    // CREATE NEW CART
-    // =================================
-
     if (!cart) {
+
       cart = new cartModel({
         userId,
 
@@ -93,21 +55,31 @@ const addToCart = async (req, res) => {
           [key]: 1,
         },
       });
+
     }
+
 
     // =================================
     // EXISTING CART
     // =================================
 
     else {
+
+      // Get current quantity
       const currentQuantity =
         cart.items?.[key] || 0;
 
+
+      // Increase quantity
       cart.items[key] =
         currentQuantity + 1;
 
+
+      // Important when using dynamic object keys
       cart.markModified("items");
+
     }
+
 
     // =================================
     // SAVE CART
@@ -115,16 +87,20 @@ const addToCart = async (req, res) => {
 
     await cart.save();
 
+
     // =================================
     // RESPONSE
     // =================================
 
     return res.status(200).json({
       success: true,
-      message: "Product added to cart",
+      message: "Shoe added to cart",
       cart: cart.items,
     });
+
+
   } catch (error) {
+
     console.log(
       "Add Cart Error:",
       error
@@ -134,16 +110,16 @@ const addToCart = async (req, res) => {
       success: false,
       message: "Error adding to cart",
     });
+
   }
 };
 
-// =================================
-// GET CART
-// =================================
-
 const getCart = async (req, res) => {
+
   try {
+
     const userId = req.userId;
+
 
     const cart =
       await cartModel.findOne({
@@ -151,11 +127,14 @@ const getCart = async (req, res) => {
       });
 
     if (!cart) {
+
       return res.status(200).json({
         success: true,
         cartData: {},
       });
+
     }
+
 
     // =================================
     // RETURN COMPLETE CART
@@ -165,7 +144,10 @@ const getCart = async (req, res) => {
       success: true,
       cartData: cart.items || {},
     });
+
+
   } catch (error) {
+
     console.log(
       "Get Cart Error:",
       error
@@ -175,66 +157,16 @@ const getCart = async (req, res) => {
       success: false,
       message: "Error getting cart",
     });
+
   }
+
 };
-
-// =================================
-// REMOVE FROM CART
-// =================================
-
 const removeFromCart = async (req, res) => {
   try {
     const userId = req.userId;
-
     const { shoeId, size } = req.body;
 
-    if (!shoeId) {
-      return res.status(400).json({
-        success: false,
-        message: "Product ID is required",
-      });
-    }
-
-    // =================================
-    // FIND PRODUCT
-    // =================================
-
-    const shoe = await ShoeModel.findById(shoeId);
-
-    if (!shoe) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found",
-      });
-    }
-
-    // =================================
-    // DETERMINE SIZE
-    // =================================
-
-    let finalSize = size;
-
-    if (shoe.requiresSize) {
-      if (!size || String(size).trim() === "") {
-        return res.status(400).json({
-          success: false,
-          message: "Size is required",
-        });
-      }
-
-      finalSize = String(size).trim();
-    } else {
-      finalSize = "N/A";
-    }
-
-    // =================================
-    // FIND CART
-    // =================================
-
-    const cart =
-      await cartModel.findOne({
-        userId,
-      });
+    const cart = await cartModel.findOne({ userId });
 
     if (!cart) {
       return res.status(404).json({
@@ -243,11 +175,8 @@ const removeFromCart = async (req, res) => {
       });
     }
 
-    // =================================
-    // SAME KEY AS ADD TO CART
-    // =================================
-
-    const key = `${shoeId}-${finalSize}`;
+    // SAME KEY AS addToCart
+    const key = `${shoeId}-${size}`;
 
     if (cart.items[key]) {
       cart.items[key]--;
@@ -257,7 +186,6 @@ const removeFromCart = async (req, res) => {
       }
 
       cart.markModified("items");
-
       await cart.save();
     }
 
@@ -266,11 +194,9 @@ const removeFromCart = async (req, res) => {
       message: "Item removed",
       cart: cart.items,
     });
+
   } catch (error) {
-    console.log(
-      "Remove Cart Error:",
-      error
-    );
+    console.log("Remove Cart Error:", error);
 
     return res.status(500).json({
       success: false,
@@ -279,33 +205,39 @@ const removeFromCart = async (req, res) => {
   }
 };
 
-// =================================
-// CLEAR CART
-// =================================
-
 const clearCart = async (req, res) => {
+
   try {
+
     const userId = req.userId;
+
 
     const cart =
       await cartModel.findOne({
         userId,
       });
 
+
     if (cart) {
+
       cart.items = {};
 
       cart.markModified("items");
 
       await cart.save();
+
     }
+
 
     return res.status(200).json({
       success: true,
       message: "Cart cleared",
       cart: {},
     });
+
+
   } catch (error) {
+
     console.log(
       "Clear Cart Error:",
       error
@@ -315,12 +247,16 @@ const clearCart = async (req, res) => {
       success: false,
       message: "Error clearing cart",
     });
+
   }
+
 };
+
+
 
 export {
   addToCart,
   getCart,
   removeFromCart,
   clearCart,
-}
+};
