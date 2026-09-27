@@ -5,387 +5,396 @@ import Navbar from "../../components/Navbar/Navbar";
 import "./AddShoe.css";
 
 const AddShoe = () => {
-  const [shoeData, setShoeData] = useState({
-    name: "",
-    category: "Shoes",
-    gender: "MEN",
-    popular: "false",
-    price: "",
-    discount: "",
-    sizes: "",
-    description: "",
-    isNewArrival: false,
-    isOffer: false,
-    offerPrice: "",
+const [shoeData, setShoeData] = useState({
+name: "",
+category: "Shoes",
+gender: "MEN",
+popular: "false",
+price: "",
+discount: "",
+sizes: "",
+description: "",
+isNewArrival: false,
+isOffer: false,
+offerPrice: "",
+});
+
+const [images, setImages] = useState([]);
+const [previews, setPreviews] = useState([]);
+const [loading, setLoading] = useState(false);
+
+const backendUrl = "https://virelli.onrender.com";
+
+const shoeCategories = ["Shoes", "Chapal"];
+const sizeCategories = ["Hoodies", "Jackets"];
+
+const handleChange = (e) => {
+const { name, value, type, checked } = e.target;
+
+if (name === "category") {
+  let sizes = "";
+
+  if (shoeCategories.includes(value)) {
+    sizes = "";
+  } else if (sizeCategories.includes(value)) {
+    sizes = "";
+  }
+
+  setShoeData((prev) => ({
+    ...prev,
+    category: value,
+    sizes,
+  }));
+
+  return;
+}
+
+setShoeData((prev) => ({
+  ...prev,
+  [name]: type === "checkbox" ? checked : value,
+}));
+
+};
+
+const handleImages = (e) => {
+const files = Array.from(e.target.files);
+
+
+if (!files.length) return;
+
+setImages(files);
+
+const imagePreviews = files.map((file) =>
+  URL.createObjectURL(file)
+);
+
+setPreviews(imagePreviews);
+
+};
+
+const handleSubmit = async (e) => {
+e.preventDefault();
+
+if (images.length === 0) {
+  alert("Please select at least one image.");
+  return;
+}
+
+try {
+  setLoading(true);
+
+  const formData = new FormData();
+
+  formData.append("name", shoeData.name);
+  formData.append("category", shoeData.category);
+  formData.append("type", shoeData.gender);
+  formData.append("popular", shoeData.popular);
+  formData.append("price", shoeData.price);
+  formData.append("discount", shoeData.discount);
+  formData.append("sizes", shoeData.sizes);
+  formData.append("description", shoeData.description);
+
+  formData.append(
+    "isNewArrival",
+    shoeData.isNewArrival ? "true" : "false"
+  );
+
+  formData.append(
+    "isOffer",
+    shoeData.isOffer ? "true" : "false"
+  );
+
+  formData.append(
+    "offerPrice",
+    shoeData.offerPrice
+  );
+
+  images.forEach((image) => {
+    formData.append("images", image);
   });
 
-  const [images, setImages] = useState([]);
-  const [previews, setPreviews] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const backendUrl = "https://virelli.onrender.com";
-
-  const shoeCategories = ["Shoes", "Chapal"];
-  const sizeCategories = ["Hoodies", "Jackets"];
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (name === "category") {
-      let sizes = "";
-
-      if (shoeCategories.includes(value)) {
-        sizes = "";
-      } else if (sizeCategories.includes(value)) {
-        sizes = "";
-      }
-
-      setShoeData((prev) => ({
-        ...prev,
-        category: value,
-        sizes,
-      }));
-
-      return;
+  const response = await axios.post(
+    `${backendUrl}/api/shoes/add`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     }
+  );
 
-    setShoeData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  if (response.data.success) {
+    alert("Product added successfully!");
 
-  const handleImages = (e) => {
-    const files = Array.from(e.target.files);
+    setShoeData({
+      name: "",
+      category: "Shoes",
+      gender: "MEN",
+      popular: "false",
+      price: "",
+      discount: "",
+      sizes: "",
+      description: "",
+      isNewArrival: false,
+      isOffer: false,
+      offerPrice: "",
+    });
 
-    if (!files.length) return;
+    setImages([]);
+    setPreviews([]);
 
-    setImages(files);
-
-    const imagePreviews = files.map((file) =>
-      URL.createObjectURL(file)
+    e.target.reset();
+  } else {
+    alert(
+      response.data.message ||
+        "Failed to add product."
     );
+  }
+} catch (error) {
+  console.error("Add product error:", error);
 
-    setPreviews(imagePreviews);
-  };
+  if (error.response) {
+    alert(
+      error.response.data.message ||
+        "Something went wrong."
+    );
+  } else {
+    alert(error.message);
+  }
+} finally {
+  setLoading(false);
+}
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const showShoeSizeField =
+shoeCategories.includes(shoeData.category);
 
-    if (images.length === 0) {
-      alert("Please select at least one image.");
-      return;
-    }
+const showClothingSizeField =
+sizeCategories.includes(shoeData.category);
 
-    try {
-      setLoading(true);
+const showSizeField =
+showShoeSizeField || showClothingSizeField;
 
-      const formData = new FormData();
+const sizePlaceholder = showShoeSizeField
+? "39,40,41,42,43"
+: "S,M,L,XL,XXL";
 
-      formData.append("name", shoeData.name);
-      formData.append("category", shoeData.category);
-      formData.append("type", shoeData.gender);
-      formData.append("popular", shoeData.popular);
-      formData.append("price", shoeData.price);
-      formData.append("discount", shoeData.discount);
-      formData.append("sizes", shoeData.sizes);
-      formData.append("description", shoeData.description);
+return ( <div className="addshoe-page"> <Sidebar /> <Navbar />
 
-      formData.append(
-        "isNewArrival",
-        shoeData.isNewArrival ? "true" : "false"
-      );
+```
+  <div className="addshoe-content">
+    <div className="addshoe-card">
+      <h2>Add New Product</h2>
 
-      formData.append(
-        "isOffer",
-        shoeData.isOffer ? "true" : "false"
-      );
+      <form onSubmit={handleSubmit}>
+        <div className="image-upload">
+          <label>Product Images</label>
 
-      formData.append("offerPrice", shoeData.offerPrice);
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImages}
+            multiple
+            required
+          />
 
-      images.forEach((image) => {
-        formData.append("images", image);
-      });
+          {previews.length > 0 && (
+            <div className="image-preview-container">
+              {previews.map((preview, index) => (
+                <div
+                  className="image-preview-box"
+                  key={index}
+                >
+                  <img
+                    src={preview}
+                    alt={`Preview ${index + 1}`}
+                    className="image-preview"
+                  />
 
-      const response = await axios.post(
-        `${backendUrl}/api/shoes/add`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+                  <span className="image-number">
+                    {index + 1}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
 
-      if (response.data.success) {
-        alert("Product added successfully!");
+          {images.length > 0 && (
+            <p className="selected-image-text">
+              {images.length} image
+              {images.length > 1 ? "s" : ""} selected
+            </p>
+          )}
+        </div>
 
-        setShoeData({
-          name: "",
-          category: "Shoes",
-          gender: "MEN",
-          popular: "false",
-          price: "",
-          discount: "",
-          sizes: "39,40,41,42,43",
-          description: "",
-          isNewArrival: false,
-          isOffer: false,
-          offerPrice: "",
-        });
+        <div className="form-grid">
+          <div className="form-group">
+            <label>Product Name</label>
 
-        setImages([]);
-        setPreviews([]);
+            <input
+              type="text"
+              name="name"
+              value={shoeData.name}
+              onChange={handleChange}
+              placeholder="Nike Air Max"
+              required
+            />
+          </div>
 
-        e.target.reset();
-      } else {
-        alert(response.data.message);
-      }
-    } catch (error) {
-      console.error(error);
+          <div className="form-group">
+            <label>Category</label>
 
-      if (error.response) {
-        alert(
-          error.response.data.message ||
-            "Something went wrong."
-        );
-      } else {
-        alert(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+            <select
+              name="category"
+              value={shoeData.category}
+              onChange={handleChange}
+              required
+            >
+              <option value="Shoes">Shoes</option>
+              <option value="Chapal">Chapal</option>
+              <option value="Jackets">Jackets</option>
+              <option value="Hoodies">Hoodies</option>
+              <option value="Watches">Watches</option>
+              <option value="Caps">Caps</option>
+            </select>
+          </div>
 
-  const showSizeField =
-    shoeCategories.includes(shoeData.category) ||
-    sizeCategories.includes(shoeData.category);
+          <div className="form-group">
+            <label>Gender</label>
 
-  const sizePlaceholder = shoeCategories.includes(
-    shoeData.category
-  )
-    ? "39,40,41,42,43"
-    : "S,M,L,XL,XXL";
+            <select
+              name="gender"
+              value={shoeData.gender}
+              onChange={handleChange}
+            >
+              <option value="MEN">Men</option>
+              <option value="WOMEN">Women</option>
+              <option value="KID">Kids</option>
+            </select>
+          </div>
 
-  return (
-    <div className="addshoe-page">
-      <Sidebar />
-      <Navbar />
+          <div className="form-group">
+            <label>Popular Product</label>
 
-      <div className="addshoe-content">
-        <div className="addshoe-card">
-          <h2>Add New Product</h2>
+            <select
+              name="popular"
+              value={shoeData.popular}
+              onChange={handleChange}
+            >
+              <option value="false">No</option>
+              <option value="true">Yes</option>
+            </select>
+          </div>
 
-          <form onSubmit={handleSubmit}>
-            <div className="image-upload">
-              <label>Product Images</label>
+          <div className="form-group">
+            <label>Price</label>
+
+            <input
+              type="number"
+              name="price"
+              value={shoeData.price}
+              onChange={handleChange}
+              placeholder="4500"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Discount (%)</label>
+
+            <input
+              type="number"
+              name="discount"
+              value={shoeData.discount}
+              onChange={handleChange}
+              placeholder="10"
+            />
+          </div>
+
+          {showSizeField && (
+            <div className="form-group">
+              <label>Sizes</label>
 
               <input
-                type="file"
-                accept="image/*"
-                onChange={handleImages}
-                multiple
-                required
-              />
-
-              {previews.length > 0 && (
-                <div className="image-preview-container">
-                  {previews.map((preview, index) => (
-                    <div
-                      className="image-preview-box"
-                      key={index}
-                    >
-                      <img
-                        src={preview}
-                        alt={`Preview ${index + 1}`}
-                        className="image-preview"
-                      />
-
-                      <span className="image-number">
-                        {index + 1}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {images.length > 0 && (
-                <p className="selected-image-text">
-                  {images.length} image
-                  {images.length > 1 ? "s" : ""} selected
-                </p>
-              )}
-            </div>
-
-            <div className="form-grid">
-              <div className="form-group">
-                <label>Product Name</label>
-
-                <input
-                  type="text"
-                  name="name"
-                  value={shoeData.name}
-                  onChange={handleChange}
-                  placeholder="Nike Air Max"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Category</label>
-
-                <select
-                  name="category"
-                  value={shoeData.category}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="Shoes">Shoes</option>
-                  <option value="Chapal">Chapal</option>
-                  <option value="Jackets">Jackets</option>
-                  <option value="Hoodies">Hoodies</option>
-                  <option value="Watches">Watches</option>
-                  <option value="Caps">Caps</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Gender</label>
-
-                <select
-                  name="gender"
-                  value={shoeData.gender}
-                  onChange={handleChange}
-                >
-                  <option value="MEN">Men</option>
-                  <option value="WOMEN">Women</option>
-                  <option value="KID">Kids</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Popular Product</label>
-
-                <select
-                  name="popular"
-                  value={shoeData.popular}
-                  onChange={handleChange}
-                >
-                  <option value="false">No</option>
-                  <option value="true">Yes</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Price</label>
-
-                <input
-                  type="number"
-                  name="price"
-                  value={shoeData.price}
-                  onChange={handleChange}
-                  placeholder="4500"
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Discount (%)</label>
-
-                <input
-                  type="number"
-                  name="discount"
-                  value={shoeData.discount}
-                  onChange={handleChange}
-                  placeholder="10"
-                />
-              </div>
-
-              {showSizeField && (
-                <div className="form-group">
-                  <label>Sizes</label>
-
-                  <input
-                    type="text"
-                    name="sizes"
-                    value={shoeData.sizes}
-                    onChange={handleChange}
-                    placeholder={sizePlaceholder}
-                    required
-                  />
-                </div>
-              )}
-
-              <div className="form-group">
-                <label>Offer Price</label>
-
-                <input
-                  type="number"
-                  name="offerPrice"
-                  value={shoeData.offerPrice}
-                  onChange={handleChange}
-                  placeholder="3500"
-                />
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                gap: "30px",
-                margin: "20px 0",
-              }}
-            >
-              <label>
-                <input
-                  type="checkbox"
-                  checked={shoeData.isNewArrival}
-                  onChange={(e) =>
-                    setShoeData({
-                      ...shoeData,
-                      isNewArrival: e.target.checked,
-                    })
-                  }
-                />{" "}
-                New Arrival
-              </label>
-
-              <label>
-                <input
-                  type="checkbox"
-                  name="isOffer"
-                  checked={shoeData.isOffer}
-                  onChange={handleChange}
-                />{" "}
-                Offer
-              </label>
-            </div>
-
-            <div className="form-group">
-              <label>Description</label>
-
-              <textarea
-                rows="5"
-                name="description"
-                value={shoeData.description}
+                type="text"
+                name="sizes"
+                value={shoeData.sizes}
                 onChange={handleChange}
-                placeholder="Write product description..."
+                placeholder={sizePlaceholder}
                 required
               />
             </div>
+          )}
 
-            <button
-              className="submit-btn"
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? "Adding Product..." : "Add Product"}
-            </button>
-          </form>
+          <div className="form-group">
+            <label>Offer Price</label>
+
+            <input
+              type="number"
+              name="offerPrice"
+              value={shoeData.offerPrice}
+              onChange={handleChange}
+              placeholder="3500"
+            />
+          </div>
         </div>
-      </div>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "30px",
+            margin: "20px 0",
+          }}
+        >
+          <label>
+            <input
+              type="checkbox"
+              name="isNewArrival"
+              checked={shoeData.isNewArrival}
+              onChange={handleChange}
+            />{" "}
+            New Arrival
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              name="isOffer"
+              checked={shoeData.isOffer}
+              onChange={handleChange}
+            />{" "}
+            Offer
+          </label>
+        </div>
+
+        <div className="form-group">
+          <label>Description</label>
+
+          <textarea
+            rows="5"
+            name="description"
+            value={shoeData.description}
+            onChange={handleChange}
+            placeholder="Write product description..."
+            required
+          />
+        </div>
+
+        <button
+          className="submit-btn"
+          type="submit"
+          disabled={loading}
+        >
+          {loading
+            ? "Adding Product..."
+            : "Add Product"}
+        </button>
+      </form>
     </div>
-  );
+  </div>
+</div>
+
+);
 };
 
 export default AddShoe;
