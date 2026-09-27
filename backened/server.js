@@ -1,28 +1,28 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./config/db.js";
-import shoeRouter from "./routes/shoeRoute.js";
-import orderRouter from "./routes/orderRoute.js";
-import cartRouter from "./routes/cartRoute.js";
-import userRouter from "./routes/userRoute.js";
-import adminRouter from "./routes/adminRoute.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
 const app = express();
 
-connectDB();
-
-app.use(express.json());
 app.use(cors());
-app.use("/images", express.static("uploads"));
-app.use("/api/shoes", shoeRouter);
-app.use("/api/order", orderRouter);
-app.use("/api/cart", cartRouter);
-app.use("/api/user", userRouter);
-app.use("/api/admin", adminRouter);
+app.use(express.json());
 
-app.listen(4000, () => {
-  console.log("Server running on port 4000");
+// Get current directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve uploaded images
+app.use("/images", express.static(path.join(__dirname, "uploads")));
+
+// Your other routes
+// app.use("/api/shoes", shoeRouter);
+
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
