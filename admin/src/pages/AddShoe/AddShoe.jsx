@@ -181,7 +181,6 @@ const sizePlaceholder = showShoeSizeField
 
 return ( <div className="addshoe-page"> <Sidebar /> <Navbar />
 
-```
   <div className="addshoe-content">
     <div className="addshoe-card">
       <h2>Add New Product</h2>
