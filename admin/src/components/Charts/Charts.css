@@ -21,10 +21,6 @@
   color: #64748b;
 }
 
-/* ===================================
-   BAR CHART
-=================================== */
-
 .bar-chart {
   display: flex;
   align-items: flex-end;
