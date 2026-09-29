@@ -15,10 +15,6 @@
   z-index: 999;
 }
 
-/* ===================================
-   LEFT
-=================================== */
-
 .navbar-left {
   display: flex;
   flex-direction: column;
