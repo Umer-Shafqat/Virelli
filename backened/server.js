@@ -39,9 +39,6 @@ app.use("/api/admin", adminRouter);
 // ===============================
 const PORT = process.env.PORT || 4000;
 
-// ===============================
-// START SERVER
-// ===============================
 const startServer = async () => {
   try {
     await connectDB();
