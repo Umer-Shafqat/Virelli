@@ -19,10 +19,6 @@
   box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* ===================================
-   HEADER
-=================================== */
-
 .users-header {
   display: flex;
   justify-content: space-between;
