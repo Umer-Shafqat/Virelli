@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
 import axios from "axios";
 import "./Offers.css";
 
 const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:4000";
+  process.env.REACT_APP_API_URL ||
+  "http://localhost:4000";
 
-
+// =====================================================
+// OFFER DATES
+// =====================================================
 
 const offerStartDate = new Date(
   "2026-08-09T00:00:00"
@@ -15,9 +22,16 @@ const offerEndDate = new Date(
   "2026-10-10T23:59:59"
 );
 
+// =====================================================
+// OFFERS
+// =====================================================
+
 const Offers = () => {
-  const [offers, setOffers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [offers, setOffers] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   const [offerActive, setOfferActive] =
     useState(false);
@@ -25,25 +39,104 @@ const Offers = () => {
   const [timeLeft, setTimeLeft] =
     useState(null);
 
+  // =====================================================
+  // GET IMAGE URL
+  // =====================================================
+
+  const getImageUrl = (shoe) => {
+    let productImages = [];
+
+    // -----------------------------------------
+    // NEW CLOUDINARY STRUCTURE
+    // -----------------------------------------
+
+    if (
+      Array.isArray(shoe?.images) &&
+      shoe.images.length > 0
+    ) {
+      productImages = shoe.images;
+    }
+
+    // -----------------------------------------
+    // OLD STRUCTURE SUPPORT
+    // -----------------------------------------
+
+    else if (shoe?.image) {
+      productImages = [shoe.image];
+    }
+
+    if (productImages.length === 0) {
+      return "";
+    }
+
+    const image =
+      productImages[0];
+
+    // -----------------------------------------
+    // CLOUDINARY URL
+    // -----------------------------------------
+
+    if (
+      typeof image === "string" &&
+      (
+        image.startsWith("http://") ||
+        image.startsWith("https://")
+      )
+    ) {
+      return image;
+    }
+
+    // -----------------------------------------
+    // OLD LOCAL IMAGE
+    // -----------------------------------------
+
+    if (
+      typeof image === "string"
+    ) {
+      return `${API_URL}/images/${image}`;
+    }
+
+    return "";
+  };
+
+  // =====================================================
+  // OFFER COUNTDOWN
+  // =====================================================
+
   useEffect(() => {
+
     const updateCountdown = () => {
+
       const now = new Date();
 
-      // Before offer starts
-      if (now < offerStartDate) {
+      // -----------------------------------------
+      // BEFORE OFFER START
+      // -----------------------------------------
+
+      if (
+        now < offerStartDate
+      ) {
         setOfferActive(false);
         setTimeLeft(null);
         return;
       }
 
-      // After offer ends
-      if (now >= offerEndDate) {
+      // -----------------------------------------
+      // AFTER OFFER END
+      // -----------------------------------------
+
+      if (
+        now >= offerEndDate
+      ) {
         setOfferActive(false);
         setTimeLeft(null);
         return;
       }
 
-      // Offer is active
+      // -----------------------------------------
+      // OFFER ACTIVE
+      // -----------------------------------------
+
       setOfferActive(true);
 
       const difference =
@@ -68,7 +161,8 @@ const Offers = () => {
       );
 
       const seconds = Math.floor(
-        (difference / 1000) % 60
+        (difference / 1000) %
+          60
       );
 
       setTimeLeft({
@@ -81,182 +175,226 @@ const Offers = () => {
 
     updateCountdown();
 
-    const timer = setInterval(
-      updateCountdown,
-      1000
-    );
+    const timer =
+      setInterval(
+        updateCountdown,
+        1000
+      );
 
     return () => {
       clearInterval(timer);
     };
+
   }, []);
 
-  // =====================================
+  // =====================================================
   // FETCH OFFER SHOES
-  // =====================================
+  // =====================================================
 
   useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        setLoading(true);
 
-        const response = await axios.get(
-          `${API_URL}/api/shoes/offers`
-        );
+    const fetchOffers =
+      async () => {
 
-        console.log(
-          "Offers API:",
-          response.data
-        );
+        try {
 
-        if (response.data.success) {
-          setOffers(
-            response.data.shoes || []
+          setLoading(true);
+
+          const response =
+            await axios.get(
+              `${API_URL}/api/shoes/offers`
+            );
+
+          console.log(
+            "Offers API:",
+            response.data
           );
-        } else {
-          setOffers([]);
-        }
-      } catch (error) {
-        console.log(
-          "Error fetching offers:",
-          error
-        );
 
-        setOffers([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+          if (
+            response.data.success
+          ) {
+
+            setOffers(
+              response.data.shoes || []
+            );
+
+          } else {
+
+            setOffers([]);
+
+          }
+
+        } catch (error) {
+
+          console.log(
+            "Error fetching offers:",
+            error
+          );
+
+          setOffers([]);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+      };
 
     fetchOffers();
+
   }, []);
 
-  // =====================================
+  // =====================================================
   // PAGE
-  // =====================================
+  // =====================================================
 
   return (
     <div className="offers-page">
 
-      {/* =====================================
+      {/* =================================================
           MEGA SALE
-      ===================================== */}
+      ================================================= */}
 
-      {offerActive && timeLeft && (
-        <div className="offer-sale-plate">
+      {offerActive &&
+        timeLeft && (
 
-          <div className="sale-content">
+          <div className="offer-sale-plate">
 
-            <div className="sale-title">
-              🔥 MEGA SALE 🔥
-            </div>
+            <div className="sale-content">
 
-            <div className="sale-percent">
-              20% OFF
-            </div>
-
-            <div className="sale-date">
-              Offer ends on{" "}
-              {offerEndDate.toLocaleDateString(
-                "en-GB",
-                {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                }
-              )}
-            </div>
-
-            {/* COUNTDOWN */}
-
-            <div className="countdown">
-
-              {/* DAYS */}
-
-              <div className="time-box">
-                <span>
-                  {String(
-                    timeLeft.days
-                  ).padStart(2, "0")}
-                </span>
-
-                <small>
-                  DAYS
-                </small>
+              <div className="sale-title">
+                🔥 MEGA SALE 🔥
               </div>
 
-              <div className="colon">
-                :
+              <div className="sale-percent">
+                20% OFF
               </div>
 
-              {/* HOURS */}
+              <div className="sale-date">
 
-              <div className="time-box">
-                <span>
-                  {String(
-                    timeLeft.hours
-                  ).padStart(2, "0")}
-                </span>
+                Offer ends on{" "}
 
-                <small>
-                  HOURS
-                </small>
+                {offerEndDate.toLocaleDateString(
+                  "en-GB",
+                  {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  }
+                )}
+
               </div>
 
-              <div className="colon">
-                :
-              </div>
+              {/* ================= COUNTDOWN ================= */}
 
-              {/* MINUTES */}
+              <div className="countdown">
 
-              <div className="time-box">
-                <span>
-                  {String(
-                    timeLeft.minutes
-                  ).padStart(2, "0")}
-                </span>
+                {/* DAYS */}
 
-                <small>
-                  MIN
-                </small>
-              </div>
+                <div className="time-box">
 
-              <div className="colon">
-                :
-              </div>
+                  <span>
+                    {String(
+                      timeLeft.days
+                    ).padStart(
+                      2,
+                      "0"
+                    )}
+                  </span>
 
-              {/* SECONDS */}
+                  <small>
+                    DAYS
+                  </small>
 
-              <div className="time-box">
-                <span>
-                  {String(
-                    timeLeft.seconds
-                  ).padStart(2, "0")}
-                </span>
+                </div>
 
-                <small>
-                  SEC
-                </small>
+                <div className="colon">
+                  :
+                </div>
+
+                {/* HOURS */}
+
+                <div className="time-box">
+
+                  <span>
+                    {String(
+                      timeLeft.hours
+                    ).padStart(
+                      2,
+                      "0"
+                    )}
+                  </span>
+
+                  <small>
+                    HOURS
+                  </small>
+
+                </div>
+
+                <div className="colon">
+                  :
+                </div>
+
+                {/* MINUTES */}
+
+                <div className="time-box">
+
+                  <span>
+                    {String(
+                      timeLeft.minutes
+                    ).padStart(
+                      2,
+                      "0"
+                    )}
+                  </span>
+
+                  <small>
+                    MIN
+                  </small>
+
+                </div>
+
+                <div className="colon">
+                  :
+                </div>
+
+                {/* SECONDS */}
+
+                <div className="time-box">
+
+                  <span>
+                    {String(
+                      timeLeft.seconds
+                    ).padStart(
+                      2,
+                      "0"
+                    )}
+                  </span>
+
+                  <small>
+                    SEC
+                  </small>
+
+                </div>
+
               </div>
 
             </div>
 
           </div>
+        )}
 
-        </div>
-      )}
-
-      {/* =====================================
+      {/* =================================================
           TITLE
-      ===================================== */}
+      ================================================= */}
 
       <h1 className="offers-title">
         Special Offers
       </h1>
 
-      {/* =====================================
+      {/* =================================================
           LOADING
-      ===================================== */}
+      ================================================= */}
 
       {loading ? (
 
@@ -266,9 +404,9 @@ const Offers = () => {
 
       ) : offers.length === 0 ? (
 
-        /* =====================================
+        /* =================================================
            NO OFFERS
-        ===================================== */
+        ================================================= */
 
         <div className="no-offers">
 
@@ -285,101 +423,146 @@ const Offers = () => {
 
       ) : (
 
-        /* =====================================
+        /* =================================================
            OFFER SHOES
-        ===================================== */
+        ================================================= */
 
         <div className="offers-container">
 
-          {offers.map((shoe) => (
+          {offers.map(
+            (shoe) => {
 
-            <div
-              className="offer-card"
-              key={shoe._id}
-            >
+              const imageUrl =
+                getImageUrl(shoe);
 
-              {/* IMAGE */}
+              const price =
+                Number(
+                  shoe.price || 0
+                );
 
-              <div className="offer-image-box">
+              const discount =
+                Number(
+                  shoe.discount || 0
+                );
 
-                <img
-                  src={`${API_URL}/images/${shoe.image}`}
-                  alt={shoe.name}
-                  className="offer-image"
-                />
+              const discountedPrice =
+                Math.round(
+                  price -
+                    (
+                      price *
+                      discount
+                    ) /
+                      100
+                );
 
-                <span className="offer-badge">
-                  OFFER
-                </span>
+              return (
 
-              </div>
+                <div
+                  className="offer-card"
+                  key={shoe._id}
+                >
 
-              {/* INFORMATION */}
+                  {/* ================= IMAGE ================= */}
 
-              <div className="offer-info">
+                  <div className="offer-image-box">
 
-                <h2>
-                  {shoe.name}
-                </h2>
+                    {imageUrl ? (
 
-                <p className="shoe-category">
-                  {shoe.type} •{" "}
-                  {shoe.category}
-                </p>
+                      <img
+                        src={imageUrl}
+                        alt={
+                          shoe.name ||
+                          "Shoe"
+                        }
+                        className="offer-image"
 
-                <p className="shoe-description">
-                  {shoe.description}
-                </p>
+                        onError={(e) => {
 
-                {/* PRICE */}
+                          console.error(
+                            "Offer image failed:",
+                            e.currentTarget.src
+                          );
 
-                <div className="price-section">
+                          e.currentTarget.style.display =
+                            "none";
+                        }}
+                      />
 
-                  {Number(shoe.discount) > 0 ? (
-                    <>
+                    ) : (
 
-                      <span className="old-price">
-                        Rs.{" "}
-                        {Number(
-                          shoe.price || 0
-                        ).toLocaleString()}
-                      </span>
+                      <div className="image-placeholder">
+                        No Image
+                      </div>
 
-                      <span className="new-price">
-                        Rs.{" "}
-                        {Math.round(
-                          Number(shoe.price || 0) -
-                            (
-                              Number(shoe.price || 0) *
-                              Number(shoe.discount || 0)
-                            ) /
-                              100
-                        ).toLocaleString()}
-                      </span>
+                    )}
 
-                      <span className="discount">
-                        {shoe.discount}% OFF
-                      </span>
-
-                    </>
-                  ) : (
-
-                    <span className="new-price">
-                      Rs.{" "}
-                      {Number(
-                        shoe.price || 0
-                      ).toLocaleString()}
+                    <span className="offer-badge">
+                      OFFER
                     </span>
 
-                  )}
+                  </div>
+
+                  {/* ================= INFORMATION ================= */}
+
+                  <div className="offer-info">
+
+                    <h2>
+                      {shoe.name}
+                    </h2>
+
+                    <p className="shoe-category">
+                      {shoe.type} •{" "}
+                      {shoe.category}
+                    </p>
+
+                    {shoe.description && (
+                      <p className="shoe-description">
+                        {shoe.description}
+                      </p>
+                    )}
+
+                    {/* ================= PRICE ================= */}
+
+                    <div className="price-section">
+
+                      {discount > 0 ? (
+
+                        <>
+
+                          <span className="old-price">
+                            Rs.{" "}
+                            {price.toLocaleString()}
+                          </span>
+
+                          <span className="new-price">
+                            Rs.{" "}
+                            {discountedPrice.toLocaleString()}
+                          </span>
+
+                          <span className="discount">
+                            {discount}% OFF
+                          </span>
+
+                        </>
+
+                      ) : (
+
+                        <span className="new-price">
+                          Rs.{" "}
+                          {price.toLocaleString()}
+                        </span>
+
+                      )}
+
+                    </div>
+
+                  </div>
 
                 </div>
 
-              </div>
-
-            </div>
-
-          ))}
+              );
+            }
+          )}
 
         </div>
 
