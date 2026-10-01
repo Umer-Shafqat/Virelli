@@ -79,7 +79,7 @@ const Popularshoes = () => {
                   </span>
                 )}
 
-                <img
+            <img
   src={`${url}/images/${shoe.images?.[0]}`}
   alt={shoe.name}
 />
