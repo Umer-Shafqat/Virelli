@@ -80,9 +80,9 @@ const Popularshoes = () => {
                 )}
 
                 <img
-                  src={`${url}/images/${shoe.image}`}
-                  alt={shoe.name}
-                />
+  src={`${url}/images/${shoe.images?.[0]}`}
+  alt={shoe.name}
+/>
               </div>
 
               <div className="shoe-info">
