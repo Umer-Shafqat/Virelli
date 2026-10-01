@@ -6,6 +6,7 @@ import {
   getShoeById,
   getNewArrivals,
   getOffers,
+  searchAdmin,
   deleteShoe,
 } from "../controllers/shoeController.js";
 
@@ -13,41 +14,22 @@ import upload from "../middleware/multer.js";
 
 const shoeRouter = express.Router();
 
-// Add shoe
 shoeRouter.post(
   "/add",
   upload.array("images", 20),
   addShoe
 );
 
-// Get all shoes
-shoeRouter.get(
-  "/list",
-  getShoes
-);
+shoeRouter.get("/list", getShoes);
 
-// Get new arrivals
-shoeRouter.get(
-  "/new-arrivals",
-  getNewArrivals
-);
+shoeRouter.get("/new-arrivals", getNewArrivals);
 
-// Get offers
-shoeRouter.get(
-  "/offers",
-  getOffers
-);
+shoeRouter.get("/offers", getOffers);
 
-// Get shoe by ID
-shoeRouter.get(
-  "/:id",
-  getShoeById
-);
+shoeRouter.get("/search", searchAdmin);
 
-// Delete shoe
-shoeRouter.delete(
-  "/:id",
-  deleteShoe
-);
+shoeRouter.get("/:id", getShoeById);
+
+shoeRouter.delete("/:id", deleteShoe);
 
 export default shoeRouter;

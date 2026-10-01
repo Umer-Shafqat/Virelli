@@ -1,385 +1,426 @@
 import ShoeModel from "../models/shoeModel.js";
 import UserModel from "../models/userModel.js";
 import OrderModel from "../models/orderModel.js";
+import cloudinary from "../config/cloudinary.js";
+
+// ===============================
+// UPLOAD IMAGE TO CLOUDINARY
+// ===============================
+
+const uploadToCloudinary = (fileBuffer) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: "virelli/products",
+        resource_type: "image",
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
+        }
+      }
+    );
+
+    uploadStream.end(fileBuffer);
+  });
+};
 
 // ===============================
 // ADD SHOE
 // ===============================
+
 const addShoe = async (req, res) => {
-try {
-console.log("req.files:", req.files);
-console.log("req.body:", req.body);
+  try {
+    console.log("req.files:", req.files);
+    console.log("req.body:", req.body);
 
-if (!req.files || req.files.length === 0) {
-  return res.status(400).json({
-    success: false,
-    message: "At least one image is required",
-  });
-}
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one image is required",
+      });
+    }
 
-const shoeType = String(req.body.type || "")
-  .trim()
-  .toUpperCase();
+    const shoeType = String(req.body.type || "")
+      .trim()
+      .toUpperCase();
 
-const category = String(req.body.category || "").trim();
+    const category = String(req.body.category || "").trim();
 
-if (!category) {
-  return res.status(400).json({
-    success: false,
-    message: "Product category is required",
-  });
-}
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        message: "Product category is required",
+      });
+    }
 
-const image_filenames = req.files.map(
-  (file) => file.filename
-);
+    // ===============================
+    // UPLOAD IMAGES TO CLOUDINARY
+    // ===============================
 
-const sizes = req.body.sizes
-  ? req.body.sizes
-      .split(",")
-      .map((size) => size.trim())
-      .filter((size) => size !== "")
-  : [];
+    const image_urls = [];
 
-const shoe = new ShoeModel({
-  name: req.body.name,
+    for (const file of req.files) {
+      const imageUrl = await uploadToCloudinary(file.buffer);
 
-  type:
-    shoeType === "MEN"
-      ? "MEN"
-      : shoeType === "WOMEN"
-      ? "WOMEN"
-      : shoeType === "KID" || shoeType === "KIDS"
-      ? "KID"
-      : "",
+      image_urls.push(imageUrl);
+    }
 
-  category,
+    // ===============================
+    // SIZES
+    // ===============================
 
-  images: image_filenames,
+    const sizes = req.body.sizes
+      ? req.body.sizes
+          .split(",")
+          .map((size) => size.trim())
+          .filter((size) => size !== "")
+      : [];
 
-  price: Number(req.body.price),
+    // ===============================
+    // CREATE SHOE
+    // ===============================
 
-  discount: Number(req.body.discount || 0),
+    const shoe = new ShoeModel({
+      name: req.body.name,
 
-  description: req.body.description || "",
+      type:
+        shoeType === "MEN"
+          ? "MEN"
+          : shoeType === "WOMEN"
+          ? "WOMEN"
+          : shoeType === "KID" || shoeType === "KIDS"
+          ? "KID"
+          : "",
 
-  sizes,
+      category,
 
-  popular: req.body.popular === "true",
+      // Store Cloudinary URLs
+      images: image_urls,
 
-  isNewArrival: req.body.isNewArrival === "true",
+      price: Number(req.body.price),
 
-  isOffer: req.body.isOffer === "true",
+      discount: Number(req.body.discount || 0),
 
-  offerPrice: Number(req.body.offerPrice || 0),
-});
+      description: req.body.description || "",
 
-const savedShoe = await shoe.save();
+      sizes,
 
-return res.status(201).json({
-  success: true,
-  message: "Shoe added successfully",
-  shoe: savedShoe,
-});
+      popular: req.body.popular === "true",
 
-} catch (error) {
-console.error("Add shoe error:", error);
+      isNewArrival:
+        req.body.isNewArrival === "true",
 
-return res.status(500).json({
-  success: false,
-  message: error.message,
-});
+      isOffer:
+        req.body.isOffer === "true",
 
-}
+      offerPrice:
+        Number(req.body.offerPrice || 0),
+    });
+
+    const savedShoe = await shoe.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Shoe added successfully",
+      shoe: savedShoe,
+    });
+  } catch (error) {
+    console.error("Add shoe error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // ===============================
 // GET ALL SHOES
 // ===============================
+
 const getShoes = async (req, res) => {
-try {
-const shoes = await ShoeModel.find().sort({
-createdAt: -1,
-});
+  try {
+    const shoes = await ShoeModel.find().sort({
+      createdAt: -1,
+    });
 
-return res.status(200).json({
-  success: true,
-  data: shoes,
-});
+    return res.status(200).json({
+      success: true,
+      data: shoes,
+    });
+  } catch (error) {
+    console.error("Get shoes error:", error);
 
-} catch (error) {
-console.error("Get shoes error:", error);
-
-return res.status(500).json({
-  success: false,
-  message: error.message,
-});
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // ===============================
 // GET SINGLE SHOE
 // ===============================
+
 const getShoeById = async (req, res) => {
-try {
-const shoe = await ShoeModel.findById(req.params.id);
+  try {
+    const shoe = await ShoeModel.findById(req.params.id);
 
-if (!shoe) {
-  return res.status(404).json({
-    success: false,
-    message: "Shoe not found",
-  });
-}
+    if (!shoe) {
+      return res.status(404).json({
+        success: false,
+        message: "Shoe not found",
+      });
+    }
 
-return res.status(200).json({
-  success: true,
-  shoe,
-});
+    return res.status(200).json({
+      success: true,
+      shoe,
+    });
+  } catch (error) {
+    console.error("Get shoe by ID error:", error);
 
-} catch (error) {
-console.error("Get shoe by ID error:", error);
-return res.status(500).json({
-  success: false,
-  message: error.message,
-});
-
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // ===============================
 // GET NEW ARRIVALS
 // ===============================
+
 const getNewArrivals = async (req, res) => {
-try {
-const shoes = await ShoeModel.find({
-isNewArrival: true,
-}).sort({
-createdAt: -1,
-});
+  try {
+    const shoes = await ShoeModel.find({
+      isNewArrival: true,
+    }).sort({
+      createdAt: -1,
+    });
 
-return res.status(200).json({
-  success: true,
-  shoes,
-});
+    return res.status(200).json({
+      success: true,
+      shoes,
+    });
+  } catch (error) {
+    console.error("Get new arrivals error:", error);
 
-} catch (error) {
-console.error("Get new arrivals error:", error);
-
-
-return res.status(500).json({
-  success: false,
-  message: error.message,
-});
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // ===============================
 // GET OFFERS
 // ===============================
+
 const getOffers = async (req, res) => {
-try {
-const shoes = await ShoeModel.find({
-isOffer: true,
-}).sort({
-createdAt: -1,
-});
+  try {
+    const shoes = await ShoeModel.find({
+      isOffer: true,
+    }).sort({
+      createdAt: -1,
+    });
 
-return res.status(200).json({
-  success: true,
-  shoes,
-});
+    return res.status(200).json({
+      success: true,
+      shoes,
+    });
+  } catch (error) {
+    console.error("Get offers error:", error);
 
-} catch (error) {
-console.error("Get offers error:", error);
-
-return res.status(500).json({
-  success: false,
-  message: error.message,
-});
-
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // ===============================
 // ADMIN SEARCH
 // ===============================
+
 const searchAdmin = async (req, res) => {
-try {
-const { q } = req.query;
+  try {
+    const { q } = req.query;
 
-if (!q || q.trim() === "") {
-  return res.json({
-    success: true,
-    shoes: [],
-    users: [],
-    orders: [],
-  });
-}
+    if (!q || q.trim() === "") {
+      return res.json({
+        success: true,
+        shoes: [],
+        users: [],
+        orders: [],
+      });
+    }
 
-const keyword = q.trim();
-const lowerKeyword = keyword.toLowerCase();
+    const keyword = q.trim();
+    const lowerKeyword = keyword.toLowerCase();
 
-let shoes = [];
-let users = [];
-let orders = [];
+    let shoes = [];
+    let users = [];
+    let orders = [];
 
-// =====================================
-// SEARCH SHOES
-// =====================================
+    // =====================================
+    // SEARCH SHOES
+    // =====================================
 
-if (
-  lowerKeyword === "shoe" ||
-  lowerKeyword === "shoes"
-) {
-  shoes = await ShoeModel.find().sort({
-    createdAt: -1,
-  });
-} else {
-  shoes = await ShoeModel.find({
-    $or: [
-      {
-        name: {
+    if (
+      lowerKeyword === "shoe" ||
+      lowerKeyword === "shoes"
+    ) {
+      shoes = await ShoeModel.find().sort({
+        createdAt: -1,
+      });
+    } else {
+      shoes = await ShoeModel.find({
+        $or: [
+          {
+            name: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            category: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            type: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            description: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+        ],
+      }).sort({
+        createdAt: -1,
+      });
+    }
+
+    // =====================================
+    // SEARCH USERS
+    // =====================================
+
+    if (
+      lowerKeyword === "user" ||
+      lowerKeyword === "users"
+    ) {
+      users = await UserModel.find().sort({
+        createdAt: -1,
+      });
+    } else {
+      users = await UserModel.find({
+        $or: [
+          {
+            name: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+          {
+            email: {
+              $regex: keyword,
+              $options: "i",
+            },
+          },
+        ],
+      }).sort({
+        createdAt: -1,
+      });
+    }
+
+    // =====================================
+    // SEARCH ORDERS
+    // =====================================
+
+    if (
+      lowerKeyword === "order" ||
+      lowerKeyword === "orders"
+    ) {
+      orders = await OrderModel.find().sort({
+        createdAt: -1,
+      });
+    } else {
+      orders = await OrderModel.find({
+        status: {
           $regex: keyword,
           $options: "i",
         },
-      },
-      {
-        category: {
-          $regex: keyword,
-          $options: "i",
-        },
-      },
-      {
-        type: {
-          $regex: keyword,
-          $options: "i",
-        },
-      },
-      {
-        description: {
-          $regex: keyword,
-          $options: "i",
-        },
-      },
-    ],
-  }).sort({
-    createdAt: -1,
-  });
-}
+      }).sort({
+        createdAt: -1,
+      });
+    }
 
-// =====================================
-// SEARCH USERS
-// =====================================
+    return res.status(200).json({
+      success: true,
+      shoes,
+      users,
+      orders,
+    });
+  } catch (error) {
+    console.error("Admin search error:", error);
 
-if (
-  lowerKeyword === "user" ||
-  lowerKeyword === "users"
-) {
-  users = await UserModel.find().sort({
-    createdAt: -1,
-  });
-} else {
-  users = await UserModel.find({
-    $or: [
-      {
-        name: {
-          $regex: keyword,
-          $options: "i",
-        },
-      },
-      {
-        email: {
-          $regex: keyword,
-          $options: "i",
-        },
-      },
-    ],
-  }).sort({
-    createdAt: -1,
-  });
-}
-
-// =====================================
-// SEARCH ORDERS
-// =====================================
-
-if (
-  lowerKeyword === "order" ||
-  lowerKeyword === "orders"
-) {
-  orders = await OrderModel.find().sort({
-    createdAt: -1,
-  });
-} else {
-  orders = await OrderModel.find({
-    status: {
-      $regex: keyword,
-      $options: "i",
-    },
-  }).sort({
-    createdAt: -1,
-  });
-}
-
-return res.status(200).json({
-  success: true,
-  shoes,
-  users,
-  orders,
-});
-
-} catch (error) {
-console.error("Admin search error:", error);
-
-return res.status(500).json({
-  success: false,
-  message: error.message,
-});
-
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // ===============================
 // DELETE SHOE
 // ===============================
+
 const deleteShoe = async (req, res) => {
-try {
-const shoe = await ShoeModel.findById(req.params.id);
+  try {
+    const shoe = await ShoeModel.findById(req.params.id);
 
-if (!shoe) {
-  return res.status(404).json({
-    success: false,
-    message: "Shoe not found",
-  });
-}
+    if (!shoe) {
+      return res.status(404).json({
+        success: false,
+        message: "Shoe not found",
+      });
+    }
 
-await ShoeModel.findByIdAndDelete(req.params.id);
+    await ShoeModel.findByIdAndDelete(req.params.id);
 
-return res.status(200).json({
-  success: true,
-  message: "Shoe deleted successfully",
-});
+    return res.status(200).json({
+      success: true,
+      message: "Shoe deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete shoe error:", error);
 
-} catch (error) {
-console.error("Delete shoe error:", error);
-
-return res.status(500).json({
-  success: false,
-  message: error.message,
-});
-
-}
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // ===============================
 // EXPORT
 // ===============================
+
 export {
-addShoe,
-getShoes,
-getShoeById,
-getNewArrivals,
-getOffers,
-searchAdmin,
-deleteShoe,
+  addShoe,
+  getShoes,
+  getShoeById,
+  getNewArrivals,
+  getOffers,
+  searchAdmin,
+  deleteShoe,
 };
