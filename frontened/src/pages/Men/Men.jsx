@@ -1,226 +1,446 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+
 import "./Men.css";
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
+
+import {
+  StoreContext,
+} from "../../Context/StoreContext/StoreContext";
 
 const Men = () => {
-const { shoes, addToCart, url } = useContext(StoreContext);
+  const {
+    shoes,
+    addToCart,
+    url,
+  } = useContext(StoreContext);
 
-const [shoeList, setShoeList] = useState([]);
-const [selectedSizes, setSelectedSizes] = useState({});
+  const [shoeList, setShoeList] =
+    useState([]);
 
-useEffect(() => {
-setShoeList(
-shoes.filter(
-(item) =>
-item.type?.toUpperCase() === "MEN"
-)
-);
-}, [shoes]);
+  const [selectedSizes, setSelectedSizes] =
+    useState({});
 
-const handleSizeSelect = (shoeId, size) => {
-setSelectedSizes((prev) => ({
-...prev,
-[shoeId]: size,
-}));
-};
+  // =====================================================
+  // GET MEN PRODUCTS
+  // =====================================================
 
-const handleAddToCart = (shoe) => {
-const selectedSize = selectedSizes[shoe._id];
-if (!selectedSize) {
-  alert("Please select a size first");
-  return;
-}
+  useEffect(() => {
+    if (Array.isArray(shoes)) {
+      setShoeList(
+        shoes.filter(
+          (item) =>
+            item.type?.toUpperCase() === "MEN"
+        )
+      );
+    } else {
+      setShoeList([]);
+    }
+  }, [shoes]);
 
-addToCart(shoe, selectedSize);
+  // =====================================================
+  // GET IMAGE URL
+  // =====================================================
 
-};
+  const getImageUrl = (shoe) => {
+    let productImages = [];
 
-const handleRating = (shoeId, selectedRating) => {
-setShoeList((prevShoes) =>
-prevShoes.map((shoe) => {
-if (shoe._id === shoeId) {
-const oldTotalRatings =
-shoe.rating?.totalRatings || 0;
-
-      const oldRatingSum =
-        shoe.rating?.ratingSum || 0;
-
-      return {
-        ...shoe,
-        rating: {
-          totalRatings: oldTotalRatings + 1,
-          ratingSum:
-            oldRatingSum + selectedRating,
-        },
-      };
+    // New database structure
+    if (
+      Array.isArray(shoe?.images) &&
+      shoe.images.length > 0
+    ) {
+      productImages = shoe.images;
     }
 
-    return shoe;
-  })
-);
+    // Old database structure
+    else if (shoe?.image) {
+      productImages = [shoe.image];
+    }
 
-};
+    if (productImages.length === 0) {
+      return "";
+    }
 
-return ( <section className="men-page"> <div className="men-heading"> <h2>Men's Collection</h2> <p>Explore our latest men's products</p> </div>
+    const image = productImages[0];
 
-  <div className="shoes-grid">
-    {shoeList.map((shoe) => {
-      const price = Number(shoe.price || 0);
+    // =================================================
+    // CLOUDINARY IMAGE
+    // =================================================
 
-      const discountedPrice =
-        price -
-        (price * (shoe.discount || 0)) / 100;
+    if (
+      typeof image === "string" &&
+      (
+        image.startsWith("http://") ||
+        image.startsWith("https://")
+      )
+    ) {
+      return image;
+    }
 
-      const averageRating =
-        shoe.rating &&
-        shoe.rating.totalRatings > 0
-          ? shoe.rating.ratingSum /
-            shoe.rating.totalRatings
-          : 5;
+    // =================================================
+    // OLD LOCAL IMAGE
+    // =================================================
 
-      const productImages =
-        Array.isArray(shoe.images) &&
-        shoe.images.length > 0
-          ? shoe.images
-          : shoe.image
-          ? [shoe.image]
-          : [];
+    if (typeof image === "string") {
+      return `${url}/images/${image}`;
+    }
 
-      const imageUrl =
-        productImages.length > 0
-          ? `${url}/images/${productImages[0]}`
-          : "";
+    return "";
+  };
 
-      return (
-        <div
-          className="shoe-card"
-          key={shoe._id}
-        >
-          <div className="shoe-image">
-            {shoe.discount > 0 && (
-              <span className="discount-badge">
-                {shoe.discount}% OFF
-              </span>
-            )}
+  // =====================================================
+  // SELECT SIZE
+  // =====================================================
 
-            {imageUrl && (
-              <img
-                src={imageUrl}
-                alt={shoe.name}
-              />
-            )}
-          </div>
+  const handleSizeSelect = (
+    shoeId,
+    size
+  ) => {
+    setSelectedSizes((prev) => ({
+      ...prev,
+      [shoeId]: size,
+    }));
+  };
 
-          <div className="shoe-info">
-            <h3>{shoe.name}</h3>
+  // =====================================================
+  // ADD TO CART
+  // =====================================================
 
-            <p className="shoe-category">
-              {shoe.category}
-            </p>
+  const handleAddToCart = (shoe) => {
+    const selectedSize =
+      selectedSizes[shoe._id];
 
-            <p className="shoe-description">
-              {shoe.description}
-            </p>
+    if (!selectedSize) {
+      alert("Please select a size first");
+      return;
+    }
 
-            <div className="rating">
-              <div className="stars">
-                {[1, 2, 3, 4, 5].map(
-                  (star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      className={
-                        star <=
-                        Math.round(
-                          averageRating
-                        )
-                          ? "star filled"
-                          : "star"
+    addToCart(
+      shoe,
+      selectedSize
+    );
+  };
+
+  // =====================================================
+  // RATING
+  // =====================================================
+
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
+    setShoeList((prevShoes) =>
+      prevShoes.map((shoe) => {
+
+        if (shoe._id === shoeId) {
+
+          const oldTotalRatings =
+            shoe.rating
+              ?.totalRatings || 0;
+
+          const oldRatingSum =
+            shoe.rating
+              ?.ratingSum || 0;
+
+          return {
+            ...shoe,
+
+            rating: {
+              totalRatings:
+                oldTotalRatings + 1,
+
+              ratingSum:
+                oldRatingSum +
+                selectedRating,
+            },
+          };
+        }
+
+        return shoe;
+      })
+    );
+  };
+
+  // =====================================================
+  // RETURN
+  // =====================================================
+
+  return (
+    <section className="men-page">
+
+      {/* ================= HEADING ================= */}
+
+      <div className="men-heading">
+
+        <h2>
+          Men's Collection
+        </h2>
+
+        <p>
+          Explore our latest men's products
+        </p>
+
+      </div>
+
+      {/* ================= PRODUCTS ================= */}
+
+      <div className="shoes-grid">
+
+        {shoeList.length > 0 ? (
+
+          shoeList.map((shoe) => {
+
+            // -----------------------------------------
+            // PRICE
+            // -----------------------------------------
+
+            const price =
+              Number(shoe.price || 0);
+
+            const discount =
+              Number(
+                shoe.discount || 0
+              );
+
+            const discountedPrice =
+              price -
+              (price * discount) /
+                100;
+
+            // -----------------------------------------
+            // RATING
+            // -----------------------------------------
+
+            const averageRating =
+              shoe.rating &&
+              shoe.rating.totalRatings >
+                0
+
+                ? shoe.rating.ratingSum /
+                  shoe.rating.totalRatings
+
+                : 5;
+
+            // -----------------------------------------
+            // IMAGE
+            // -----------------------------------------
+
+            const imageUrl =
+              getImageUrl(shoe);
+
+            return (
+
+              <div
+                className="shoe-card"
+                key={shoe._id}
+              >
+
+                {/* ================= IMAGE ================= */}
+
+                <div className="shoe-image">
+
+                  {discount > 0 && (
+                    <span className="discount-badge">
+                      {discount}% OFF
+                    </span>
+                  )}
+
+                  {imageUrl ? (
+
+                    <img
+                      src={imageUrl}
+                      alt={
+                        shoe.name ||
+                        "Men's shoe"
                       }
-                      onClick={() =>
-                        handleRating(
-                          shoe._id,
-                          star
+
+                      onError={(e) => {
+                        console.error(
+                          "Men product image failed:",
+                          e.currentTarget.src
+                        );
+
+                        e.currentTarget.style.display =
+                          "none";
+                      }}
+                    />
+
+                  ) : (
+
+                    <div className="image-placeholder">
+                      No Image
+                    </div>
+
+                  )}
+
+                </div>
+
+                {/* ================= INFO ================= */}
+
+                <div className="shoe-info">
+
+                  <h3>
+                    {shoe.name}
+                  </h3>
+
+                  <p className="shoe-category">
+                    {shoe.category}
+                  </p>
+
+                  {shoe.description && (
+                    <p className="shoe-description">
+                      {shoe.description}
+                    </p>
+                  )}
+
+                  {/* ================= RATING ================= */}
+
+                  <div className="rating">
+
+                    <div className="stars">
+
+                      {[1, 2, 3, 4, 5].map(
+                        (star) => (
+
+                          <button
+                            key={star}
+                            type="button"
+
+                            className={
+                              star <=
+                              Math.round(
+                                averageRating
+                              )
+                                ? "star filled"
+                                : "star"
+                            }
+
+                            onClick={() =>
+                              handleRating(
+                                shoe._id,
+                                star
+                              )
+                            }
+                          >
+                            ★
+                          </button>
+
                         )
-                      }
-                    >
-                      ★
-                    </button>
-                  )
-                )}
+                      )}
+
+                    </div>
+
+                    <span className="rating-number">
+                      {averageRating.toFixed(
+                        1
+                      )}
+                    </span>
+
+                    <span className="rating-count">
+                      (
+                      {shoe.rating
+                        ?.totalRatings ||
+                        0}
+                      )
+                    </span>
+
+                  </div>
+
+                  {/* ================= PRICE ================= */}
+
+                  <div className="price-section">
+
+                    <h4 className="shoe-price">
+                      Rs.{" "}
+                      {discountedPrice.toLocaleString()}
+                    </h4>
+
+                    {discount > 0 && (
+
+                      <span className="original-price">
+                        Rs.{" "}
+                        {price.toLocaleString()}
+                      </span>
+
+                    )}
+
+                  </div>
+
+                  {/* ================= SIZES ================= */}
+
+                  <div className="sizes">
+
+                    <div className="size-buttons">
+
+                      {(shoe.sizes || []).map(
+                        (size) => (
+
+                          <button
+                            key={size}
+                            type="button"
+
+                            className={
+                              selectedSizes[
+                                shoe._id
+                              ] === size
+                                ? "selected-size"
+                                : ""
+                            }
+
+                            onClick={() =>
+                              handleSizeSelect(
+                                shoe._id,
+                                size
+                              )
+                            }
+                          >
+                            {size}
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                  {/* ================= CART ================= */}
+
+                  <button
+                    className="add-cart"
+                    type="button"
+
+                    onClick={() =>
+                      handleAddToCart(
+                        shoe
+                      )
+                    }
+                  >
+                    Add to Cart
+                  </button>
+
+                </div>
+
               </div>
 
-              <span className="rating-number">
-                {averageRating.toFixed(1)}
-              </span>
+            );
+          })
 
-              <span className="rating-count">
-                (
-                {shoe.rating
-                  ?.totalRatings || 0}
-                )
-              </span>
-            </div>
+        ) : (
 
-            <div className="price-section">
-              <h4 className="shoe-price">
-                Rs.{" "}
-                {discountedPrice.toLocaleString()}
-              </h4>
+          <p className="no-shoes">
+            No men's products available.
+          </p>
 
-              {shoe.discount > 0 && (
-                <span className="original-price">
-                  Rs.{" "}
-                  {price.toLocaleString()}
-                </span>
-              )}
-            </div>
+        )}
 
-            <div className="sizes">
-              <div className="size-buttons">
-                {(shoe.sizes || []).map(
-                  (size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      className={
-                        selectedSizes[
-                          shoe._id
-                        ] === size
-                          ? "selected-size"
-                          : ""
-                      }
-                      onClick={() =>
-                        handleSizeSelect(
-                          shoe._id,
-                          size
-                        )
-                      }
-                    >
-                      {size}
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
+      </div>
 
-            <button
-              className="add-cart"
-              type="button"
-              onClick={() =>
-                handleAddToCart(shoe)
-              }
-            >
-              Add to Cart
-            </button>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-</section>
-
-);
+    </section>
+  );
 };
 
 export default Men;
