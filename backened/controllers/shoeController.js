@@ -3,9 +3,9 @@ import UserModel from "../models/userModel.js";
 import OrderModel from "../models/orderModel.js";
 import cloudinary from "../config/cloudinary.js";
 
-// ===============================
+// ======================================================
 // UPLOAD IMAGE TO CLOUDINARY
-// ===============================
+// ======================================================
 
 const uploadToCloudinary = (fileBuffer) => {
   return new Promise((resolve, reject) => {
@@ -18,7 +18,7 @@ const uploadToCloudinary = (fileBuffer) => {
         if (error) {
           reject(error);
         } else {
-          resolve(result.secure_url);
+          resolve(result);
         }
       }
     );
@@ -27,14 +27,22 @@ const uploadToCloudinary = (fileBuffer) => {
   });
 };
 
-// ===============================
+// ======================================================
 // ADD SHOE
-// ===============================
+// ======================================================
 
 const addShoe = async (req, res) => {
   try {
+    console.log("=================================");
+    console.log("ADDING NEW SHOE");
+    console.log("=================================");
+
     console.log("req.files:", req.files);
     console.log("req.body:", req.body);
+
+    // --------------------------------------------------
+    // CHECK IMAGES
+    // --------------------------------------------------
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
@@ -43,9 +51,35 @@ const addShoe = async (req, res) => {
       });
     }
 
+    // --------------------------------------------------
+    // CHECK CLOUDINARY ENVIRONMENT VARIABLES
+    // --------------------------------------------------
+
+    if (
+      !process.env.CLOUDINARY_CLOUD_NAME ||
+      !process.env.CLOUDINARY_API_KEY ||
+      !process.env.CLOUDINARY_API_SECRET
+    ) {
+      console.error("Cloudinary environment variables are missing");
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Cloudinary configuration is missing. Please check Vercel environment variables.",
+      });
+    }
+
+    // --------------------------------------------------
+    // SHOE TYPE
+    // --------------------------------------------------
+
     const shoeType = String(req.body.type || "")
       .trim()
       .toUpperCase();
+
+    // --------------------------------------------------
+    // CATEGORY
+    // --------------------------------------------------
 
     const category = String(req.body.category || "").trim();
 
@@ -56,32 +90,46 @@ const addShoe = async (req, res) => {
       });
     }
 
-    // ===============================
-    // UPLOAD IMAGES TO CLOUDINARY
-    // ===============================
+    // --------------------------------------------------
+    // UPLOAD ALL IMAGES TO CLOUDINARY
+    // --------------------------------------------------
 
-    const image_urls = [];
+    console.log("Uploading images to Cloudinary...");
 
-    for (const file of req.files) {
-      const imageUrl = await uploadToCloudinary(file.buffer);
+    const uploadedImages = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await uploadToCloudinary(file.buffer);
 
-      image_urls.push(imageUrl);
-    }
+        console.log("Image uploaded:", result.secure_url);
 
-    // ===============================
+        return {
+          url: result.secure_url,
+          public_id: result.public_id,
+        };
+      })
+    );
+
+    // Only store URLs in MongoDB
+    const image_urls = uploadedImages.map(
+      (image) => image.url
+    );
+
+    console.log("Cloudinary image URLs:", image_urls);
+
+    // --------------------------------------------------
     // SIZES
-    // ===============================
+    // --------------------------------------------------
 
     const sizes = req.body.sizes
-      ? req.body.sizes
+      ? String(req.body.sizes)
           .split(",")
           .map((size) => size.trim())
           .filter((size) => size !== "")
       : [];
 
-    // ===============================
+    // --------------------------------------------------
     // CREATE SHOE
-    // ===============================
+    // --------------------------------------------------
 
     const shoe = new ShoeModel({
       name: req.body.name,
@@ -97,7 +145,7 @@ const addShoe = async (req, res) => {
 
       category,
 
-      // Store Cloudinary URLs
+      // Cloudinary URLs
       images: image_urls,
 
       price: Number(req.body.price),
@@ -120,7 +168,17 @@ const addShoe = async (req, res) => {
         Number(req.body.offerPrice || 0),
     });
 
+    // --------------------------------------------------
+    // SAVE TO MONGODB
+    // --------------------------------------------------
+
     const savedShoe = await shoe.save();
+
+    console.log("Shoe saved successfully");
+
+    // --------------------------------------------------
+    // RESPONSE
+    // --------------------------------------------------
 
     return res.status(201).json({
       success: true,
@@ -128,7 +186,10 @@ const addShoe = async (req, res) => {
       shoe: savedShoe,
     });
   } catch (error) {
-    console.error("Add shoe error:", error);
+    console.error("=================================");
+    console.error("ADD SHOE ERROR");
+    console.error("=================================");
+    console.error(error);
 
     return res.status(500).json({
       success: false,
@@ -137,9 +198,9 @@ const addShoe = async (req, res) => {
   }
 };
 
-// ===============================
+// ======================================================
 // GET ALL SHOES
-// ===============================
+// ======================================================
 
 const getShoes = async (req, res) => {
   try {
@@ -161,9 +222,9 @@ const getShoes = async (req, res) => {
   }
 };
 
-// ===============================
+// ======================================================
 // GET SINGLE SHOE
-// ===============================
+// ======================================================
 
 const getShoeById = async (req, res) => {
   try {
@@ -190,9 +251,9 @@ const getShoeById = async (req, res) => {
   }
 };
 
-// ===============================
+// ======================================================
 // GET NEW ARRIVALS
-// ===============================
+// ======================================================
 
 const getNewArrivals = async (req, res) => {
   try {
@@ -216,9 +277,9 @@ const getNewArrivals = async (req, res) => {
   }
 };
 
-// ===============================
+// ======================================================
 // GET OFFERS
-// ===============================
+// ======================================================
 
 const getOffers = async (req, res) => {
   try {
@@ -242,13 +303,17 @@ const getOffers = async (req, res) => {
   }
 };
 
-// ===============================
+// ======================================================
 // ADMIN SEARCH
-// ===============================
+// ======================================================
 
 const searchAdmin = async (req, res) => {
   try {
     const { q } = req.query;
+
+    // --------------------------------------------------
+    // EMPTY SEARCH
+    // --------------------------------------------------
 
     if (!q || q.trim() === "") {
       return res.json({
@@ -266,9 +331,9 @@ const searchAdmin = async (req, res) => {
     let users = [];
     let orders = [];
 
-    // =====================================
+    // ==================================================
     // SEARCH SHOES
-    // =====================================
+    // ==================================================
 
     if (
       lowerKeyword === "shoe" ||
@@ -310,9 +375,9 @@ const searchAdmin = async (req, res) => {
       });
     }
 
-    // =====================================
+    // ==================================================
     // SEARCH USERS
-    // =====================================
+    // ==================================================
 
     if (
       lowerKeyword === "user" ||
@@ -342,9 +407,9 @@ const searchAdmin = async (req, res) => {
       });
     }
 
-    // =====================================
+    // ==================================================
     // SEARCH ORDERS
-    // =====================================
+    // ==================================================
 
     if (
       lowerKeyword === "order" ||
@@ -364,6 +429,10 @@ const searchAdmin = async (req, res) => {
       });
     }
 
+    // ==================================================
+    // RESPONSE
+    // ==================================================
+
     return res.status(200).json({
       success: true,
       shoes,
@@ -380,12 +449,16 @@ const searchAdmin = async (req, res) => {
   }
 };
 
-// ===============================
+// ======================================================
 // DELETE SHOE
-// ===============================
+// ======================================================
 
 const deleteShoe = async (req, res) => {
   try {
+    // --------------------------------------------------
+    // FIND SHOE
+    // --------------------------------------------------
+
     const shoe = await ShoeModel.findById(req.params.id);
 
     if (!shoe) {
@@ -394,6 +467,10 @@ const deleteShoe = async (req, res) => {
         message: "Shoe not found",
       });
     }
+
+    // --------------------------------------------------
+    // DELETE FROM MONGODB
+    // --------------------------------------------------
 
     await ShoeModel.findByIdAndDelete(req.params.id);
 
@@ -411,9 +488,9 @@ const deleteShoe = async (req, res) => {
   }
 };
 
-// ===============================
+// ======================================================
 // EXPORT
-// ===============================
+// ======================================================
 
 export {
   addShoe,
