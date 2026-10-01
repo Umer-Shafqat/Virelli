@@ -17,6 +17,19 @@ import axios from "axios";
 import "./PlaceOrder.css";
 
 
+// =====================================================
+// API URL
+// =====================================================
+
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  "http://localhost:4000";
+
+
+// =====================================================
+// PLACE ORDER
+// =====================================================
+
 const PlaceOrder = () => {
 
   const navigate = useNavigate();
@@ -24,9 +37,9 @@ const PlaceOrder = () => {
   const location = useLocation();
 
 
-  /* =====================================
-     ORDER TOTALS
-  ===================================== */
+  // =====================================================
+  // ORDER TOTALS
+  // =====================================================
 
   const {
     subtotal = 0,
@@ -35,9 +48,9 @@ const PlaceOrder = () => {
   } = location.state || {};
 
 
-  /* =====================================
-     STORE CONTEXT
-  ===================================== */
+  // =====================================================
+  // STORE CONTEXT
+  // =====================================================
 
   const {
     cartItems,
@@ -47,13 +60,13 @@ const PlaceOrder = () => {
   } = useContext(StoreContext);
 
 
-  /* =====================================
-     FORM DATA
-  ===================================== */
+  // =====================================================
+  // FORM DATA
+  // =====================================================
 
   const [
     formData,
-    setFormData
+    setFormData,
   ] = useState({
 
     firstName: "",
@@ -70,32 +83,35 @@ const PlaceOrder = () => {
 
     country: "Pakistan",
 
-    paymentMethod: "Cash on Delivery",
+    paymentMethod:
+      "Cash on Delivery",
 
   });
 
 
-  /* =====================================
-     LOADING
-  ===================================== */
+  // =====================================================
+  // LOADING
+  // =====================================================
 
   const [
     loading,
-    setLoading
+    setLoading,
   ] = useState(false);
 
 
-  /* =====================================
-     CART ENTRIES
-  ===================================== */
+  // =====================================================
+  // CART ENTRIES
+  // =====================================================
 
   const cartEntries =
-    Object.entries(cartItems || {});
+    Object.entries(
+      cartItems || {}
+    );
 
 
-  /* =====================================
-     FORM CHANGE
-  ===================================== */
+  // =====================================================
+  // FORM CHANGE
+  // =====================================================
 
   const handleChange = (e) => {
 
@@ -111,18 +127,100 @@ const PlaceOrder = () => {
   };
 
 
-  /* =====================================
-     PLACE ORDER
-  ===================================== */
+  // =====================================================
+  // GET CLOUDINARY IMAGE
+  // =====================================================
+
+  const getImageUrl = (shoe) => {
+
+    // -----------------------------------------
+    // NEW STRUCTURE
+    // images: ["Cloudinary URL"]
+    // -----------------------------------------
+
+    if (
+      Array.isArray(shoe?.images) &&
+      shoe.images.length > 0
+    ) {
+
+      const image =
+        shoe.images[0];
+
+      // Cloudinary URL
+      if (
+        typeof image === "string" &&
+        (
+          image.startsWith(
+            "http://"
+          ) ||
+          image.startsWith(
+            "https://"
+          )
+        )
+      ) {
+
+        return image;
+
+      }
+
+      // Old local image support
+      if (
+        typeof image === "string"
+      ) {
+
+        return `${API_URL}/images/${image}`;
+
+      }
+
+    }
+
+
+    // -----------------------------------------
+    // OLD STRUCTURE
+    // image: "filename.jpg"
+    // -----------------------------------------
+
+    if (shoe?.image) {
+
+      if (
+        typeof shoe.image ===
+          "string" &&
+        (
+          shoe.image.startsWith(
+            "http://"
+          ) ||
+          shoe.image.startsWith(
+            "https://"
+          )
+        )
+      ) {
+
+        return shoe.image;
+
+      }
+
+      return `${API_URL}/images/${shoe.image}`;
+
+    }
+
+
+    return "";
+
+  };
+
+
+  // =====================================================
+  // PLACE ORDER
+  // =====================================================
 
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
 
-    /* =====================================
-       CHECK LOGIN
-    ===================================== */
+    // =====================================================
+    // CHECK LOGIN
+    // =====================================================
 
     if (!token) {
 
@@ -133,11 +231,13 @@ const PlaceOrder = () => {
     }
 
 
-    /* =====================================
-       CHECK CART
-    ===================================== */
+    // =====================================================
+    // CHECK CART
+    // =====================================================
 
-    if (cartEntries.length === 0) {
+    if (
+      cartEntries.length === 0
+    ) {
 
       alert(
         "Your cart is empty"
@@ -153,11 +253,12 @@ const PlaceOrder = () => {
       setLoading(true);
 
 
-      /* =====================================
-         CREATE ORDER ITEMS
-      ===================================== */
+      // =====================================================
+      // CREATE ORDER ITEMS
+      // =====================================================
 
       const orderItems =
+
         cartEntries
 
           .map(
@@ -165,16 +266,18 @@ const PlaceOrder = () => {
 
               const [
                 shoeId,
-                size
+                size,
               ] = key.split("-");
 
 
-              /* Find shoe */
+              // -----------------------------------------
+              // FIND SHOE
+              // -----------------------------------------
 
               const shoe =
                 shoes.find(
                   (item) =>
-                    item._id.toString() ===
+                    item._id?.toString() ===
                     shoeId
                 );
 
@@ -185,6 +288,18 @@ const PlaceOrder = () => {
 
               }
 
+
+              // -----------------------------------------
+              // GET IMAGE
+              // -----------------------------------------
+
+              const imageUrl =
+                getImageUrl(shoe);
+
+
+              // -----------------------------------------
+              // ORDER ITEM
+              // -----------------------------------------
 
               return {
 
@@ -201,10 +316,25 @@ const PlaceOrder = () => {
                   shoe.type,
 
                 price:
-                  shoe.price,
+                  Number(
+                    shoe.price || 0
+                  ),
 
+                // IMPORTANT:
+                // Save Cloudinary URL
                 image:
-                  shoe.image,
+                  imageUrl,
+
+                // Also save images array
+                // for future compatibility
+                images:
+                  Array.isArray(
+                    shoe.images
+                  )
+                    ? shoe.images
+                    : imageUrl
+                    ? [imageUrl]
+                    : [],
 
                 size:
                   Number(size),
@@ -213,10 +343,13 @@ const PlaceOrder = () => {
                   Number(quantity),
 
                 discount:
-                  shoe.discount || 0,
+                  Number(
+                    shoe.discount || 0
+                  ),
 
                 description:
-                  shoe.description || "",
+                  shoe.description ||
+                  "",
 
               };
 
@@ -226,9 +359,9 @@ const PlaceOrder = () => {
           .filter(Boolean);
 
 
-      /* =====================================
-         VALID ORDER ITEMS
-      ===================================== */
+      // =====================================================
+      // VALID ORDER ITEMS
+      // =====================================================
 
       if (
         orderItems.length === 0
@@ -243,9 +376,9 @@ const PlaceOrder = () => {
       }
 
 
-      /* =====================================
-         ORDER DATA
-      ===================================== */
+      // =====================================================
+      // ORDER DATA
+      // =====================================================
 
       const orderData = {
 
@@ -255,11 +388,14 @@ const PlaceOrder = () => {
         items:
           orderItems,
 
-        subtotal,
+        subtotal:
+          Number(subtotal),
 
-        deliveryCharges,
+        deliveryCharges:
+          Number(deliveryCharges),
 
-        totalAmount,
+        totalAmount:
+          Number(totalAmount),
 
       };
 
@@ -274,18 +410,35 @@ const PlaceOrder = () => {
         "Order Items:",
         orderItems
       );
-   
-      const url = process.env.REACT_APP_API_URL;
 
-const response = await axios.post(
-  `${url}/api/order/place`,
-  orderData,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+
+      // =====================================================
+      // SEND ORDER
+      // =====================================================
+
+      const response =
+        await axios.post(
+
+          `${API_URL}/api/order/place`,
+
+          orderData,
+
+          {
+            headers: {
+
+              Authorization:
+                `Bearer ${token}`,
+
+            },
+
+          }
+
+        );
+
+
+      // =====================================================
+      // SUCCESS
+      // =====================================================
 
       if (
         response.data.success
@@ -305,7 +458,6 @@ const response = await axios.post(
 
       }
 
-
     } catch (error) {
 
       console.log(
@@ -314,12 +466,13 @@ const response = await axios.post(
       );
 
 
-      /* =====================================
-         AUTH ERROR
-      ===================================== */
+      // =====================================================
+      // AUTH ERROR
+      // =====================================================
 
       if (
-        error.response?.status === 401
+        error.response?.status ===
+        401
       ) {
 
         alert(
@@ -349,9 +502,9 @@ const response = await axios.post(
   };
 
 
-  /* =====================================
-     EMPTY CART
-  ===================================== */
+  // =====================================================
+  // EMPTY CART
+  // =====================================================
 
   if (
     cartEntries.length === 0
@@ -375,9 +528,7 @@ const response = await axios.post(
             navigate("/shoes")
           }
         >
-
           Continue Shopping
-
         </button>
 
       </div>
@@ -387,9 +538,9 @@ const response = await axios.post(
   }
 
 
-  /* =====================================
-     PAGE
-  ===================================== */
+  // =====================================================
+  // PAGE
+  // =====================================================
 
   return (
 
@@ -403,9 +554,9 @@ const response = await axios.post(
       <div className="place-order-container">
 
 
-        {/* =================================
+        {/* =================================================
             DELIVERY SECTION
-        ================================= */}
+        ================================================= */}
 
         <div className="delivery-section">
 
@@ -421,7 +572,9 @@ const response = await axios.post(
           >
 
 
-            {/* NAME */}
+            {/* =================================================
+                NAME
+            ================================================= */}
 
             <div className="name-fields">
 
@@ -455,7 +608,9 @@ const response = await axios.post(
             </div>
 
 
-            {/* EMAIL */}
+            {/* =================================================
+                EMAIL
+            ================================================= */}
 
             <input
               type="email"
@@ -471,7 +626,9 @@ const response = await axios.post(
             />
 
 
-            {/* PHONE */}
+            {/* =================================================
+                PHONE
+            ================================================= */}
 
             <input
               type="tel"
@@ -487,7 +644,9 @@ const response = await axios.post(
             />
 
 
-            {/* ADDRESS */}
+            {/* =================================================
+                ADDRESS
+            ================================================= */}
 
             <input
               type="text"
@@ -503,7 +662,9 @@ const response = await axios.post(
             />
 
 
-            {/* CITY */}
+            {/* =================================================
+                CITY
+            ================================================= */}
 
             <input
               type="text"
@@ -519,7 +680,9 @@ const response = await axios.post(
             />
 
 
-            {/* COUNTRY */}
+            {/* =================================================
+                COUNTRY
+            ================================================= */}
 
             <input
               type="text"
@@ -533,6 +696,12 @@ const response = await axios.post(
               }
               required
             />
+
+
+            {/* =================================================
+                PAYMENT
+            ================================================= */}
+
             <div className="payment-section">
 
               <h2>
@@ -590,9 +759,9 @@ const response = await axios.post(
             </div>
 
 
-            {/* =================================
+            {/* =================================================
                 CONFIRM ORDER
-            ================================= */}
+            ================================================= */}
 
             <button
               type="submit"
@@ -602,8 +771,7 @@ const response = await axios.post(
 
               {loading
                 ? "Placing Order..."
-                : "Confirm Order"
-              }
+                : "Confirm Order"}
 
             </button>
 
@@ -612,9 +780,9 @@ const response = await axios.post(
         </div>
 
 
-        {/* =================================
+        {/* =================================================
             ORDER SUMMARY
-        ================================= */}
+        ================================================= */}
 
         <div className="order-summary">
 
@@ -630,14 +798,14 @@ const response = await axios.post(
 
                 const [
                   shoeId,
-                  size
+                  size,
                 ] = key.split("-");
 
 
                 const shoe =
                   shoes.find(
                     (item) =>
-                      item._id.toString() ===
+                      item._id?.toString() ===
                       shoeId
                   );
 
@@ -649,6 +817,10 @@ const response = await axios.post(
                 }
 
 
+                const imageUrl =
+                  getImageUrl(shoe);
+
+
                 return (
 
                   <div
@@ -656,10 +828,40 @@ const response = await axios.post(
                     key={key}
                   >
 
-                    <img
-                      src={`${process.env.REACT_APP_API_URL}/images/${shoe.image}`}
-                      alt={shoe.name}
-                    />
+                    {/* =================================================
+                        CLOUDINARY IMAGE
+                    ================================================= */}
+
+                    {imageUrl ? (
+
+                      <img
+                        src={imageUrl}
+                        alt={
+                          shoe.name ||
+                          "Shoe"
+                        }
+
+                        onError={(e) => {
+
+                          console.error(
+                            "Order summary image failed:",
+                            e.currentTarget.src
+                          );
+
+                          e.currentTarget.style.display =
+                            "none";
+
+                        }}
+
+                      />
+
+                    ) : (
+
+                      <div className="image-placeholder">
+                        No Image
+                      </div>
+
+                    )}
 
 
                     <div
@@ -678,12 +880,14 @@ const response = await axios.post(
 
 
                       <p>
-                        Size: {size}
+                        Size:{" "}
+                        {size}
                       </p>
 
 
                       <p>
-                        Quantity: {quantity}
+                        Quantity:{" "}
+                        {quantity}
                       </p>
 
                     </div>
@@ -694,9 +898,12 @@ const response = await axios.post(
                       PKR{" "}
 
                       {(
-                        shoe.price *
-                        quantity
-
+                        Number(
+                          shoe.price || 0
+                        ) *
+                        Number(
+                          quantity || 0
+                        )
                       ).toLocaleString(
                         "en-PK"
                       )}
@@ -714,7 +921,10 @@ const response = await axios.post(
           </div>
 
 
-         
+          {/* =================================================
+              SUMMARY PRICES
+          ================================================= */}
+
           <div
             className="summary-prices"
           >
@@ -731,7 +941,9 @@ const response = await axios.post(
 
                 PKR{" "}
 
-                {subtotal.toLocaleString(
+                {Number(
+                  subtotal
+                ).toLocaleString(
                   "en-PK"
                 )}
 
@@ -752,7 +964,9 @@ const response = await axios.post(
 
                 PKR{" "}
 
-                {deliveryCharges.toLocaleString(
+                {Number(
+                  deliveryCharges
+                ).toLocaleString(
                   "en-PK"
                 )}
 
@@ -773,7 +987,9 @@ const response = await axios.post(
 
                 PKR{" "}
 
-                {totalAmount.toLocaleString(
+                {Number(
+                  totalAmount
+                ).toLocaleString(
                   "en-PK"
                 )}
 
