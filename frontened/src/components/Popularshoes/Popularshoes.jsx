@@ -3,21 +3,36 @@ import "./Popularshoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 const Popularshoes = () => {
-  const { shoes, addToCart, url } = useContext(StoreContext);
+  const { shoes, addToCart } = useContext(StoreContext);
 
   const [shoeList, setShoeList] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState({});
 
+  // =====================================================
+  // GET POPULAR SHOES
+  // =====================================================
+
   useEffect(() => {
-    setShoeList(shoes.filter((shoe) => shoe.popular));
+    if (Array.isArray(shoes)) {
+      setShoeList(shoes.filter((shoe) => shoe.popular));
+    } else {
+      setShoeList([]);
+    }
   }, [shoes]);
+
+  // =====================================================
+  // RATING
+  // =====================================================
 
   const handleRating = (shoeId, selectedRating) => {
     setShoeList((prevShoes) =>
       prevShoes.map((shoe) => {
         if (shoe._id === shoeId) {
-          const oldTotalRatings = shoe.rating?.totalRatings || 0;
-          const oldRatingSum = shoe.rating?.ratingSum || 0;
+          const oldTotalRatings =
+            shoe.rating?.totalRatings || 0;
+
+          const oldRatingSum =
+            shoe.rating?.ratingSum || 0;
 
           return {
             ...shoe,
@@ -33,12 +48,20 @@ const Popularshoes = () => {
     );
   };
 
+  // =====================================================
+  // SIZE SELECT
+  // =====================================================
+
   const handleSizeSelect = (shoeId, size) => {
     setSelectedSizes((prev) => ({
       ...prev,
       [shoeId]: size,
     }));
   };
+
+  // =====================================================
+  // ADD TO CART
+  // =====================================================
 
   const handleAddToCart = (shoe) => {
     const selectedSize = selectedSizes[shoe._id];
@@ -51,66 +74,164 @@ const Popularshoes = () => {
     addToCart(shoe, selectedSize);
   };
 
+  // =====================================================
+  // IMAGE URL
+  // =====================================================
+
+  const getImageUrl = (shoe) => {
+    if (
+      !shoe ||
+      !Array.isArray(shoe.images) ||
+      shoe.images.length === 0
+    ) {
+      return "/placeholder.png";
+    }
+
+    const image = shoe.images[0];
+
+    // New Cloudinary images
+    if (
+      typeof image === "string" &&
+      image.startsWith("http")
+    ) {
+      return image;
+    }
+
+    // Old/local image path
+    if (typeof image === "string") {
+      return image.startsWith("/")
+        ? image
+        : `/images/${image}`;
+    }
+
+    return "/placeholder.png";
+  };
+
+  // =====================================================
+  // RENDER
+  // =====================================================
+
   return (
     <section className="shoes-section">
+      {/* ================= HEADING ================= */}
+
       <div className="shoes-heading">
         <h2>Popular Products</h2>
-        <p>Check out our most popular products</p>
+
+        <p>
+          Check out our most popular products
+        </p>
       </div>
+
+      {/* ================= SHOES GRID ================= */}
 
       <div className="shoes-grid">
         {shoeList.map((shoe) => {
+          // -------------------------------------------
+          // PRICE
+          // -------------------------------------------
+
           const price = Number(shoe.price || 0);
 
+          const discount = Number(
+            shoe.discount || 0
+          );
+
           const discountedPrice =
-            price - (price * (shoe.discount || 0)) / 100;
+            price - (price * discount) / 100;
+
+          // -------------------------------------------
+          // RATING
+          // -------------------------------------------
 
           const averageRating =
-            shoe.rating && shoe.rating.totalRatings > 0
-              ? shoe.rating.ratingSum / shoe.rating.totalRatings
+            shoe.rating &&
+            shoe.rating.totalRatings > 0
+              ? shoe.rating.ratingSum /
+                shoe.rating.totalRatings
               : 5;
 
+          // -------------------------------------------
+          // IMAGE
+          // -------------------------------------------
+
+          const imageUrl = getImageUrl(shoe);
+
           return (
-            <div className="shoe-card" key={shoe._id}>
+            <div
+              className="shoe-card"
+              key={shoe._id}
+            >
+              {/* ================= IMAGE ================= */}
+
               <div className="shoe-image">
-                {shoe.discount > 0 && (
+                {/* Discount Badge */}
+
+                {discount > 0 && (
                   <span className="discount-badge">
-                    {shoe.discount}% OFF
+                    {discount}% OFF
                   </span>
                 )}
 
-               <img src={item.images[0]} alt={item.name} />
+                {/* Product Image */}
+
+                <img
+                  src={imageUrl}
+                  alt={shoe.name || "Shoe"}
+                  onError={(event) => {
+                    event.currentTarget.src =
+                      "/placeholder.png";
+                  }}
+                />
               </div>
 
+              {/* ================= INFO ================= */}
+
               <div className="shoe-info">
+                {/* Product Name */}
+
                 <h3>{shoe.name}</h3>
+
+                {/* Category */}
 
                 <p className="shoe-category">
                   {shoe.category}
                 </p>
 
+                {/* Description */}
+
                 <p className="shoe-description">
                   {shoe.description}
                 </p>
 
+                {/* ================= RATING ================= */}
+
                 <div className="rating">
                   <div className="stars">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        className={
-                          star <= Math.round(averageRating)
-                            ? "star filled"
-                            : "star"
-                        }
-                        onClick={() =>
-                          handleRating(shoe._id, star)
-                        }
-                      >
-                        ★
-                      </button>
-                    ))}
+                    {[1, 2, 3, 4, 5].map(
+                      (star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          className={
+                            star <=
+                            Math.round(
+                              averageRating
+                            )
+                              ? "star filled"
+                              : "star"
+                          }
+                          onClick={() =>
+                            handleRating(
+                              shoe._id,
+                              star
+                            )
+                          }
+                        >
+                          ★
+                        </button>
+                      )
+                    )}
                   </div>
 
                   <span className="rating-number">
@@ -118,47 +239,67 @@ const Popularshoes = () => {
                   </span>
 
                   <span className="rating-count">
-                    ({shoe.rating?.totalRatings || 0})
+                    (
+                    {shoe.rating
+                      ?.totalRatings || 0}
+                    )
                   </span>
                 </div>
 
+                {/* ================= PRICE ================= */}
+
                 <div className="price-section">
                   <h4 className="shoe-price">
-                    Rs. {discountedPrice.toLocaleString()}
+                    Rs.{" "}
+                    {discountedPrice.toLocaleString()}
                   </h4>
 
-                  {shoe.discount > 0 && (
+                  {discount > 0 && (
                     <span className="original-price">
-                      Rs. {price.toLocaleString()}
+                      Rs.{" "}
+                      {price.toLocaleString()}
                     </span>
                   )}
                 </div>
 
+                {/* ================= SIZES ================= */}
+
                 <div className="sizes">
                   <div className="size-buttons">
-                    {(shoe.sizes || []).map((size) => (
-                      <button
-                        key={size}
-                        type="button"
-                        className={
-                          selectedSizes[shoe._id] === size
-                            ? "selected-size"
-                            : ""
-                        }
-                        onClick={() =>
-                          handleSizeSelect(shoe._id, size)
-                        }
-                      >
-                        {size}
-                      </button>
-                    ))}
+                    {(shoe.sizes || []).map(
+                      (size) => (
+                        <button
+                          key={size}
+                          type="button"
+                          className={
+                            selectedSizes[
+                              shoe._id
+                            ] === size
+                              ? "selected-size"
+                              : ""
+                          }
+                          onClick={() =>
+                            handleSizeSelect(
+                              shoe._id,
+                              size
+                            )
+                          }
+                        >
+                          {size}
+                        </button>
+                      )
+                    )}
                   </div>
                 </div>
+
+                {/* ================= CART ================= */}
 
                 <button
                   className="add-cart"
                   type="button"
-                  onClick={() => handleAddToCart(shoe)}
+                  onClick={() =>
+                    handleAddToCart(shoe)
+                  }
                 >
                   Add to Cart
                 </button>
