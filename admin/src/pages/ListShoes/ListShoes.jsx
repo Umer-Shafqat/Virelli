@@ -1,239 +1,598 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
+
 import "./ListShoes.css";
 
+
+// =====================================================
+// API URL
+// =====================================================
+
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  "http://localhost:4000";
+
+
+// =====================================================
+// LIST SHOES
+// =====================================================
+
 const ListShoes = () => {
-  const [shoes, setShoes] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  const backendUrl = process.env.REACT_APP_API_URL;
+  const [shoes, setShoes] =
+    useState([]);
 
-  // =================================
+  const [loading, setLoading] =
+    useState(true);
+
+
+  // =====================================================
   // FETCH PRODUCTS
-  // =================================
+  // =====================================================
+
   const fetchShoes = async () => {
+
     try {
+
       setLoading(true);
 
-      const response = await axios.get(
-        `${backendUrl}/api/shoes/list`
+
+      const response =
+        await axios.get(
+          `${API_URL}/api/shoes/list`
+        );
+
+
+      console.log(
+        "List Shoes Response:",
+        response.data
       );
 
-      console.log("List Shoes Response:", response.data);
 
-      if (response.data.success) {
-        setShoes(response.data.data || []);
+      if (
+        response.data.success
+      ) {
+
+        setShoes(
+          response.data.data || []
+        );
+
       } else {
+
         alert(
           response.data.message ||
-            "Unable to fetch products."
+          "Unable to fetch products."
         );
+
       }
+
     } catch (error) {
-      console.error("Fetch shoes error:", error);
+
+      console.error(
+        "Fetch shoes error:",
+        error
+      );
+
 
       if (error.response) {
+
         console.error(
           "Server response:",
           error.response.data
         );
+
         console.error(
           "Status:",
           error.response.status
         );
-      } else if (error.request) {
+
+      } else if (
+        error.request
+      ) {
+
         console.error(
           "No response received from server."
         );
+
       }
 
-      alert("Failed to fetch shoes.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // =================================
-  // LOAD PRODUCTS
-  // =================================
-  useEffect(() => {
-    fetchShoes();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // =================================
-  // DELETE PRODUCT
-  // =================================
-  const deleteShoe = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-      const response = await axios.delete(
-        `${backendUrl}/api/shoes/${id}`
+      alert(
+        "Failed to fetch shoes."
       );
 
-      if (response.data.success) {
-        alert("Product deleted successfully.");
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  // =====================================================
+  // LOAD PRODUCTS
+  // =====================================================
+
+  useEffect(() => {
+
+    fetchShoes();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  }, []);
+
+
+  // =====================================================
+  // DELETE PRODUCT
+  // =====================================================
+
+  const deleteShoe = async (id) => {
+
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this product?"
+      );
+
+
+    if (!confirmDelete) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await axios.delete(
+          `${API_URL}/api/shoes/${id}`
+        );
+
+
+      if (
+        response.data.success
+      ) {
+
+        alert(
+          "Product deleted successfully."
+        );
+
 
         fetchShoes();
+
       } else {
+
         alert(
           response.data.message ||
-            "Unable to delete product."
+          "Unable to delete product."
         );
+
       }
+
     } catch (error) {
+
       console.error(
         "Delete product error:",
         error
       );
 
-      alert("Unable to delete product.");
+
+      alert(
+        "Unable to delete product."
+      );
+
     }
+
   };
 
-  // =================================
-  // PRODUCT IMAGE
-  // =================================
-  const getProductImage = (shoe) => {
+
+  // =====================================================
+  // GET PRODUCT IMAGE
+  // =====================================================
+
+  const getProductImage = (
+    shoe
+  ) => {
+
+    // =================================================
+    // NEW CLOUDINARY STRUCTURE
+    // =================================================
+
     if (
-      Array.isArray(shoe.images) &&
+      Array.isArray(
+        shoe.images
+      ) &&
       shoe.images.length > 0
     ) {
-      return `${backendUrl}/images/${shoe.images[0]}`;
+
+      const image =
+        shoe.images[0];
+
+
+      // ---------------------------------------------
+      // CLOUDINARY URL
+      // ---------------------------------------------
+
+      if (
+        typeof image === "string" &&
+        (
+          image.startsWith(
+            "http://"
+          ) ||
+          image.startsWith(
+            "https://"
+          )
+        )
+      ) {
+
+        return image;
+
+      }
+
+
+      // ---------------------------------------------
+      // OLD LOCAL IMAGE SUPPORT
+      // ---------------------------------------------
+
+      if (
+        typeof image === "string"
+      ) {
+
+        return `${API_URL}/images/${image}`;
+
+      }
+
     }
 
-    if (shoe.image) {
-      return `${backendUrl}/images/${shoe.image}`;
+
+    // =================================================
+    // OLD `image` FIELD SUPPORT
+    // =================================================
+
+    if (
+      shoe.image
+    ) {
+
+      // ---------------------------------------------
+      // IF image IS ALREADY URL
+      // ---------------------------------------------
+
+      if (
+        typeof shoe.image ===
+          "string" &&
+        (
+          shoe.image.startsWith(
+            "http://"
+          ) ||
+          shoe.image.startsWith(
+            "https://"
+          )
+        )
+      ) {
+
+        return shoe.image;
+
+      }
+
+
+      // ---------------------------------------------
+      // OLD LOCAL IMAGE
+      // ---------------------------------------------
+
+      return `${API_URL}/images/${shoe.image}`;
+
     }
+
+
+    // =================================================
+    // NO IMAGE
+    // =================================================
 
     return "/no-image.png";
+
   };
 
+
+  // =====================================================
+  // PAGE
+  // =====================================================
+
   return (
+
     <div className="listshoes-page">
+
+
+      {/* =================================================
+          SIDEBAR
+      ================================================= */}
+
       <Sidebar />
+
+
+      {/* =================================================
+          NAVBAR
+      ================================================= */}
 
       <Navbar />
 
+
+      {/* =================================================
+          CONTENT
+      ================================================= */}
+
       <div className="listshoes-content">
+
         <div className="listshoes-card">
 
-          {/* =========================
+
+          {/* =================================================
               HEADER
-          ========================= */}
+          ================================================= */}
+
           <div className="page-header">
-            <h2>All Products</h2>
+
+            <h2>
+              All Products
+            </h2>
+
 
             <span>
               Total: {shoes.length}
             </span>
+
           </div>
 
-          {/* =========================
+
+          {/* =================================================
               LOADING
-          ========================= */}
+          ================================================= */}
+
           {loading ? (
+
             <h3 className="loading-text">
+
               Loading Products...
+
             </h3>
+
+
           ) : shoes.length === 0 ? (
-            /* =========================
+
+            /* =================================================
                EMPTY
-            ========================= */
+            ================================================= */
+
             <h3 className="loading-text">
+
               No Products Found
+
             </h3>
+
+
           ) : (
-            /* =========================
+
+            /* =================================================
                PRODUCTS TABLE
-            ========================= */
+            ================================================= */
+
             <div className="table-wrapper">
+
               <table className="shoe-table">
 
+
+                {/* =================================================
+                    TABLE HEAD
+                ================================================= */}
+
                 <thead>
+
                   <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Discount</th>
-                    <th>Action</th>
+
+                    <th>
+                      Image
+                    </th>
+
+                    <th>
+                      Name
+                    </th>
+
+                    <th>
+                      Category
+                    </th>
+
+                    <th>
+                      Type
+                    </th>
+
+                    <th>
+                      Price
+                    </th>
+
+                    <th>
+                      Discount
+                    </th>
+
+                    <th>
+                      Action
+                    </th>
+
                   </tr>
+
                 </thead>
 
+
+                {/* =================================================
+                    TABLE BODY
+                ================================================= */}
+
                 <tbody>
-                  {shoes.map((shoe) => (
-                    <tr key={shoe._id}>
 
-                      {/* IMAGE */}
-                      <td>
-                        <img
-                          src={getProductImage(shoe)}
-                          alt={shoe.name}
-                          className="shoe-image"
-                          onError={(e) => {
-                            e.target.src =
-                              "/no-image.png";
-                          }}
-                        />
-                      </td>
+                  {shoes.map(
+                    (shoe) => (
 
-                      {/* NAME */}
-                      <td>
-                        {shoe.name}
-                      </td>
+                      <tr
+                        key={
+                          shoe._id
+                        }
+                      >
 
-                      {/* CATEGORY */}
-                      <td>
-                        {shoe.category || "Shoes"}
-                      </td>
 
-                      {/* TYPE */}
-                      <td>
-                        {shoe.type || "-"}
-                      </td>
+                        {/* =================================================
+                            IMAGE
+                        ================================================= */}
 
-                      {/* PRICE */}
-                      <td>
-                        Rs. {shoe.price}
-                      </td>
+                        <td>
 
-                      {/* DISCOUNT */}
-                      <td>
-                        {shoe.discount || 0}%
-                      </td>
+                          <img
+                            src={
+                              getProductImage(
+                                shoe
+                              )
+                            }
 
-                      {/* DELETE */}
-                      <td>
-                        <button
-                          className="delete-btn"
-                          onClick={() =>
-                            deleteShoe(shoe._id)
-                          }
-                        >
-                          Delete
-                        </button>
-                      </td>
+                            alt={
+                              shoe.name ||
+                              "Shoe"
+                            }
 
-                    </tr>
-                  ))}
+                            className="shoe-image"
+
+                            onError={(
+                              e
+                            ) => {
+
+                              console.error(
+                                "Product image failed:",
+                                e.currentTarget.src
+                              );
+
+
+                              e.currentTarget.src =
+                                "/no-image.png";
+
+                            }}
+
+                          />
+
+                        </td>
+
+
+                        {/* =================================================
+                            NAME
+                        ================================================= */}
+
+                        <td>
+
+                          {shoe.name}
+
+                        </td>
+
+
+                        {/* =================================================
+                            CATEGORY
+                        ================================================= */}
+
+                        <td>
+
+                          {shoe.category ||
+                            "Shoes"}
+
+                        </td>
+
+
+                        {/* =================================================
+                            TYPE
+                        ================================================= */}
+
+                        <td>
+
+                          {shoe.type ||
+                            "-"}
+
+                        </td>
+
+
+                        {/* =================================================
+                            PRICE
+                        ================================================= */}
+
+                        <td>
+
+                          Rs.{" "}
+
+                          {Number(
+                            shoe.price || 0
+                          ).toLocaleString(
+                            "en-PK"
+                          )}
+
+                        </td>
+
+
+                        {/* =================================================
+                            DISCOUNT
+                        ================================================= */}
+
+                        <td>
+
+                          {Number(
+                            shoe.discount || 0
+                          )}
+
+                          %
+
+                        </td>
+
+
+                        {/* =================================================
+                            DELETE
+                        ================================================= */}
+
+                        <td>
+
+                          <button
+                            className="delete-btn"
+
+                            onClick={() =>
+                              deleteShoe(
+                                shoe._id
+                              )
+                            }
+                          >
+
+                            Delete
+
+                          </button>
+
+                        </td>
+
+
+                      </tr>
+
+                    )
+                  )}
+
                 </tbody>
 
               </table>
+
             </div>
+
           )}
+
         </div>
+
       </div>
+
     </div>
+
   );
+
 };
+
 
 export default ListShoes;
