@@ -1,177 +1,323 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
 import axios from "axios";
 import "./NewArrival.css";
 
 const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:4000";
+  process.env.REACT_APP_API_URL ||
+  "http://localhost:4000";
 
 const NewArrival = () => {
-  const [newArrivals, setNewArrivals] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [newArrivals, setNewArrivals] =
+    useState([]);
 
+  const [loading, setLoading] =
+    useState(true);
 
+  // =====================================================
+  // GET IMAGE URL
+  // =====================================================
+
+  const getImageUrl = (shoe) => {
+    let productImages = [];
+
+    // -----------------------------------------
+    // NEW STRUCTURE
+    // images: ["Cloudinary URL"]
+    // -----------------------------------------
+
+    if (
+      Array.isArray(shoe?.images) &&
+      shoe.images.length > 0
+    ) {
+      productImages = shoe.images;
+    }
+
+    // -----------------------------------------
+    // OLD STRUCTURE
+    // image: "filename.jpg"
+    // -----------------------------------------
+
+    else if (shoe?.image) {
+      productImages = [shoe.image];
+    }
+
+    if (productImages.length === 0) {
+      return "";
+    }
+
+    const image =
+      productImages[0];
+
+    // -----------------------------------------
+    // CLOUDINARY URL
+    // -----------------------------------------
+
+    if (
+      typeof image === "string" &&
+      (
+        image.startsWith("http://") ||
+        image.startsWith("https://")
+      )
+    ) {
+      return image;
+    }
+
+    // -----------------------------------------
+    // OLD LOCAL IMAGE
+    // -----------------------------------------
+
+    if (
+      typeof image === "string"
+    ) {
+      return `${API_URL}/images/${image}`;
+    }
+
+    return "";
+  };
+
+  // =====================================================
+  // FETCH NEW ARRIVALS
+  // =====================================================
 
   useEffect(() => {
-    const fetchNewArrivals = async () => {
-      try {
-        setLoading(true);
+    const fetchNewArrivals =
+      async () => {
 
-        const response = await axios.get(
-          `${API_URL}/api/shoes/new-arrivals`
-        );
+        try {
 
-        console.log(
-          "New Arrival API:",
-          response.data
-        );
+          setLoading(true);
 
-        if (response.data.success) {
-          setNewArrivals(
-            response.data.shoes || []
+          const response =
+            await axios.get(
+              `${API_URL}/api/shoes/new-arrivals`
+            );
+
+          console.log(
+            "New Arrival API:",
+            response.data
           );
-        } else {
-          setNewArrivals([]);
-        }
-      } catch (error) {
-        console.log(
-          "Error fetching new arrivals:",
-          error
-        );
 
-        setNewArrivals([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+          if (
+            response.data.success
+          ) {
+
+            setNewArrivals(
+              response.data.shoes || []
+            );
+
+          } else {
+
+            setNewArrivals([]);
+
+          }
+
+        } catch (error) {
+
+          console.log(
+            "Error fetching new arrivals:",
+            error
+          );
+
+          setNewArrivals([]);
+
+        } finally {
+
+          setLoading(false);
+
+        }
+      };
 
     fetchNewArrivals();
+
   }, []);
 
-  // =====================================
+  // =====================================================
   // PAGE
-  // =====================================
+  // =====================================================
 
   return (
     <div className="new-arrival-page">
 
-      {/* TITLE */}
+      {/* =================================================
+          TITLE
+      ================================================= */}
 
       <h1 className="new-arrival-title">
         New Arrivals
       </h1>
 
-      {/* LOADING */}
+      {/* =================================================
+          LOADING
+      ================================================= */}
 
       {loading ? (
+
         <p className="loading">
           Loading...
         </p>
+
       ) : newArrivals.length === 0 ? (
 
-        /* NO NEW ARRIVALS */
+        /* =================================================
+           NO NEW ARRIVALS
+        ================================================= */
 
         <div className="no-arrivals">
-          <h2>No New Arrivals</h2>
+
+          <h2>
+            No New Arrivals
+          </h2>
 
           <p>
-            No shoes have been added as new arrivals.
+            No shoes have been added as
+            new arrivals.
           </p>
+
         </div>
 
       ) : (
 
-        /* NEW ARRIVALS */
+        /* =================================================
+           NEW ARRIVALS
+        ================================================= */
 
         <div className="new-arrival-container">
 
-          {newArrivals.map((shoe) => (
+          {newArrivals.map(
+            (shoe) => {
 
-            <div
-              className="new-arrival-card"
-              key={shoe._id}
-            >
+              const imageUrl =
+                getImageUrl(shoe);
 
-              {/* IMAGE */}
+              const price =
+                Number(
+                  shoe.price || 0
+                );
 
-              <div className="new-arrival-image-box">
+              const discount =
+                Number(
+                  shoe.discount || 0
+                );
 
-                <img
-                  src={`${API_URL}/images/${shoe.image}`}
-                  alt={shoe.name}
-                  className="new-arrival-image"
-                />
+              const discountedPrice =
+                Math.round(
+                  price -
+                  (price * discount) /
+                    100
+                );
 
-                <span className="new-arrival-badge">
-                  NEW
-                </span>
+              return (
 
-              </div>
+                <div
+                  className="new-arrival-card"
+                  key={shoe._id}
+                >
 
-              {/* INFORMATION */}
+                  {/* ================= IMAGE ================= */}
 
-              <div className="new-arrival-info">
+                  <div className="new-arrival-image-box">
 
-                <h2>
-                  {shoe.name}
-                </h2>
+                    {imageUrl ? (
 
-                <p className="shoe-category">
-                  {shoe.type} • {shoe.category}
-                </p>
+                      <img
+                        src={imageUrl}
+                        alt={
+                          shoe.name ||
+                          "Shoe"
+                        }
+                        className="new-arrival-image"
 
-                <p className="shoe-description">
-                  {shoe.description}
-                </p>
+                        onError={(e) => {
 
-                {/* PRICE */}
+                          console.error(
+                            "New arrival image failed:",
+                            e.currentTarget.src
+                          );
 
-                <div className="price-section">
+                          e.currentTarget.style.display =
+                            "none";
+                        }}
+                      />
 
-                  {Number(shoe.discount) > 0 ? (
-                    <>
+                    ) : (
 
-                      <span className="old-price">
-                        Rs.{" "}
-                        {Number(
-                          shoe.price || 0
-                        ).toLocaleString()}
-                      </span>
+                      <div className="image-placeholder">
+                        No Image
+                      </div>
 
-                      <span className="new-price">
-                        Rs.{" "}
-                        {Math.round(
-                          Number(shoe.price || 0) -
-                            (
-                              Number(shoe.price || 0) *
-                              Number(shoe.discount || 0)
-                            ) /
-                              100
-                        ).toLocaleString()}
-                      </span>
+                    )}
 
-                      <span className="discount">
-                        {shoe.discount}% OFF
-                      </span>
-
-                    </>
-                  ) : (
-
-                    <span className="new-price">
-                      Rs.{" "}
-                      {Number(
-                        shoe.price || 0
-                      ).toLocaleString()}
+                    <span className="new-arrival-badge">
+                      NEW
                     </span>
 
-                  )}
+                  </div>
+
+                  {/* ================= INFORMATION ================= */}
+
+                  <div className="new-arrival-info">
+
+                    <h2>
+                      {shoe.name}
+                    </h2>
+
+                    <p className="shoe-category">
+                      {shoe.type} •{" "}
+                      {shoe.category}
+                    </p>
+
+                    {shoe.description && (
+                      <p className="shoe-description">
+                        {shoe.description}
+                      </p>
+                    )}
+
+                    {/* ================= PRICE ================= */}
+
+                    <div className="price-section">
+
+                      {discount > 0 ? (
+
+                        <>
+
+                          <span className="old-price">
+                            Rs.{" "}
+                            {price.toLocaleString()}
+                          </span>
+
+                          <span className="new-price">
+                            Rs.{" "}
+                            {discountedPrice.toLocaleString()}
+                          </span>
+
+                          <span className="discount">
+                            {discount}% OFF
+                          </span>
+
+                        </>
+
+                      ) : (
+
+                        <span className="new-price">
+                          Rs.{" "}
+                          {price.toLocaleString()}
+                        </span>
+
+                      )}
+
+                    </div>
+
+                  </div>
 
                 </div>
 
-              </div>
-
-            </div>
-
-          ))}
+              );
+            }
+          )}
 
         </div>
 
