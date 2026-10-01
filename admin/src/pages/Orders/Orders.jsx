@@ -1,391 +1,598 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
-import "./Orders.css";
 
-const Orders = () => {
-  const backendUrl = "https://virelli.onrender.com"; // Replace with your backend URL
+import "./ListShoes.css";
 
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  const fetchOrders = async () => {
+// =====================================================
+// API URL
+// =====================================================
+
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  "http://localhost:4000";
+
+
+// =====================================================
+// LIST SHOES
+// =====================================================
+
+const ListShoes = () => {
+
+  const [shoes, setShoes] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+
+  // =====================================================
+  // FETCH PRODUCTS
+  // =====================================================
+
+  const fetchShoes = async () => {
+
     try {
-      const response = await axios.get(`${backendUrl}/api/order/list`);
 
-      if (response.data.success) {
-        setOrders(response.data.data || []);
+      setLoading(true);
+
+
+      const response =
+        await axios.get(
+          `${API_URL}/api/shoes/list`
+        );
+
+
+      console.log(
+        "List Shoes Response:",
+        response.data
+      );
+
+
+      if (
+        response.data.success
+      ) {
+
+        setShoes(
+          response.data.data || []
+        );
+
       } else {
-        alert(response.data.message);
+
+        alert(
+          response.data.message ||
+          "Unable to fetch products."
+        );
+
       }
+
     } catch (error) {
-      console.error(error);
-      alert("Failed to fetch orders.");
+
+      console.error(
+        "Fetch shoes error:",
+        error
+      );
+
+
+      if (error.response) {
+
+        console.error(
+          "Server response:",
+          error.response.data
+        );
+
+        console.error(
+          "Status:",
+          error.response.status
+        );
+
+      } else if (
+        error.request
+      ) {
+
+        console.error(
+          "No response received from server."
+        );
+
+      }
+
+
+      alert(
+        "Failed to fetch shoes."
+      );
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
+
+
+  // =====================================================
+  // LOAD PRODUCTS
+  // =====================================================
 
   useEffect(() => {
-    fetchOrders();
+
+    fetchShoes();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
-  const updateStatus = async (id, status) => {
-    try {
-      const response = await axios.post(
-        `${backendUrl}/api/order/status`,
-        {
-          orderId: id,
-          status,
-        }
+
+  // =====================================================
+  // DELETE PRODUCT
+  // =====================================================
+
+  const deleteShoe = async (id) => {
+
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this product?"
       );
 
-      if (response.data.success) {
-        fetchOrders();
+
+    if (!confirmDelete) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await axios.delete(
+          `${API_URL}/api/shoes/${id}`
+        );
+
+
+      if (
+        response.data.success
+      ) {
+
+        alert(
+          "Product deleted successfully."
+        );
+
+
+        fetchShoes();
+
       } else {
-        alert(response.data.message);
+
+        alert(
+          response.data.message ||
+          "Unable to delete product."
+        );
+
       }
+
     } catch (error) {
-      console.error(error);
-      alert("Unable to update order status.");
-    }
-  };
 
-  const deleteOrder = async (id) => {
-    if (!window.confirm("Delete this order?")) return;
-
-    try {
-      const response = await axios.delete(
-        `${backendUrl}/api/order/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      console.error(
+        "Delete product error:",
+        error
       );
 
-      if (response.data.success) {
-        alert(response.data.message);
-        fetchOrders();
-      }
-    } catch (error) {
-      console.log(error);
+
+      alert(
+        "Unable to delete product."
+      );
+
     }
+
   };
 
-  // ================================
-  // PRINT ORDER
-  // ================================
 
-  const printOrder = (order) => {
-    const printWindow = window.open("", "_blank");
+  // =====================================================
+  // GET PRODUCT IMAGE
+  // =====================================================
 
-    printWindow.document.write(`
-      <html>
-      <head>
-        <title>Order Invoice</title>
+  const getProductImage = (
+    shoe
+  ) => {
 
-        <style>
-          body{
-            font-family:Arial,sans-serif;
-            padding:30px;
-            color:#222;
-          }
+    // =================================================
+    // NEW CLOUDINARY STRUCTURE
+    // =================================================
 
-          h1,h2,h3{
-            margin:5px 0;
-          }
+    if (
+      Array.isArray(
+        shoe.images
+      ) &&
+      shoe.images.length > 0
+    ) {
 
-          table{
-            width:100%;
-            border-collapse:collapse;
-            margin-top:20px;
-          }
+      const image =
+        shoe.images[0];
 
-          table,th,td{
-            border:1px solid #ddd;
-          }
 
-          th,td{
-            padding:10px;
-            text-align:left;
-          }
+      // ---------------------------------------------
+      // CLOUDINARY URL
+      // ---------------------------------------------
 
-          .section{
-            margin-top:20px;
-          }
+      if (
+        typeof image === "string" &&
+        (
+          image.startsWith(
+            "http://"
+          ) ||
+          image.startsWith(
+            "https://"
+          )
+        )
+      ) {
 
-          .total{
-            margin-top:20px;
-            font-size:18px;
-            font-weight:bold;
-          }
-        </style>
+        return image;
 
-      </head>
+      }
 
-      <body>
 
-        <h1>Virelli Shoes Store</h1>
-        <h2>Customer Invoice</h2>
+      // ---------------------------------------------
+      // OLD LOCAL IMAGE SUPPORT
+      // ---------------------------------------------
 
-        <div class="section">
+      if (
+        typeof image === "string"
+      ) {
 
-          <h3>Customer Information</h3>
+        return `${API_URL}/images/${image}`;
 
-          <p><strong>Name:</strong> ${order.customer.firstName} ${order.customer.lastName}</p>
+      }
 
-          <p><strong>Email:</strong> ${order.customer.email}</p>
+    }
 
-          <p><strong>Phone:</strong> ${order.customer.phone}</p>
 
-          <p><strong>Address:</strong> ${order.customer.address}</p>
+    // =================================================
+    // OLD `image` FIELD SUPPORT
+    // =================================================
 
-          <p><strong>City:</strong> ${order.customer.city}</p>
+    if (
+      shoe.image
+    ) {
 
-          <p><strong>Country:</strong> ${order.customer.country}</p>
+      // ---------------------------------------------
+      // IF image IS ALREADY URL
+      // ---------------------------------------------
 
-          <p><strong>Payment:</strong> ${order.customer.paymentMethod}</p>
+      if (
+        typeof shoe.image ===
+          "string" &&
+        (
+          shoe.image.startsWith(
+            "http://"
+          ) ||
+          shoe.image.startsWith(
+            "https://"
+          )
+        )
+      ) {
 
-          <p><strong>Status:</strong> ${order.status}</p>
+        return shoe.image;
 
-          <p><strong>Date:</strong> ${new Date(
-            order.createdAt
-          ).toLocaleString()}</p>
+      }
 
-          <p><strong>Order ID:</strong> ${order._id}</p>
 
-        </div>
+      // ---------------------------------------------
+      // OLD LOCAL IMAGE
+      // ---------------------------------------------
 
-        <div class="section">
+      return `${API_URL}/images/${shoe.image}`;
 
-          <h3>Products</h3>
+    }
 
-          <table>
 
-            <thead>
+    // =================================================
+    // NO IMAGE
+    // =================================================
 
-              <tr>
-                <th>Product</th>
-                <th>Type</th>
-                <th>Size</th>
-                <th>Quantity</th>
-                <th>Price</th>
-              </tr>
+    return "/no-image.png";
 
-            </thead>
-
-            <tbody>
-
-              ${order.items
-                .map(
-                  (item) => `
-                    <tr>
-                      <td>${item.name}</td>
-                      <td>${item.type}</td>
-                      <td>${item.size}</td>
-                      <td>${item.quantity}</td>
-                      <td>Rs. ${item.price}</td>
-                    </tr>
-                  `
-                )
-                .join("")}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-        <div class="total">
-
-          <p>Subtotal : Rs. ${order.subtotal}</p>
-
-          <p>Delivery Charges : Rs. ${order.deliveryCharges}</p>
-
-          <p>Total Amount : Rs. ${order.totalAmount}</p>
-
-        </div>
-
-      </body>
-      </html>
-    `);
-
-   printWindow.document.close();
-
-printWindow.onload = () => {
-  printWindow.focus();
-  printWindow.print();
-
-  printWindow.onafterprint = () => {
-    printWindow.close();
   };
-};
-};
+
+
+  // =====================================================
+  // PAGE
+  // =====================================================
 
   return (
-    <div className="orders-page">
+
+    <div className="listshoes-page">
+
+
+      {/* =================================================
+          SIDEBAR
+      ================================================= */}
+
       <Sidebar />
+
+
+      {/* =================================================
+          NAVBAR
+      ================================================= */}
+
       <Navbar />
 
-      <div className="orders-content">
-        <div className="orders-card">
 
-          <div className="orders-header">
-            <h2>Orders Management</h2>
-            <span>{orders.length} Orders</span>
+      {/* =================================================
+          CONTENT
+      ================================================= */}
+
+      <div className="listshoes-content">
+
+        <div className="listshoes-card">
+
+
+          {/* =================================================
+              HEADER
+          ================================================= */}
+
+          <div className="page-header">
+
+            <h2>
+              All Products
+            </h2>
+
+
+            <span>
+              Total: {shoes.length}
+            </span>
+
           </div>
 
+
+          {/* =================================================
+              LOADING
+          ================================================= */}
+
           {loading ? (
-            <h3 className="loading-text">Loading Orders...</h3>
-          ) : orders.length === 0 ? (
-            <h3 className="loading-text">No Orders Found</h3>
+
+            <h3 className="loading-text">
+
+              Loading Products...
+
+            </h3>
+
+
+          ) : shoes.length === 0 ? (
+
+            /* =================================================
+               EMPTY
+            ================================================= */
+
+            <h3 className="loading-text">
+
+              No Products Found
+
+            </h3>
+
+
           ) : (
-            <div className="orders-list">
 
-              {orders.map((order) => (
+            /* =================================================
+               PRODUCTS TABLE
+            ================================================= */
 
-                <div className="order-item" key={order._id}>
+            <div className="table-wrapper">
 
-                  <div className="order-left">
+              <table className="shoe-table">
 
-                    <div className="order-icon">📦</div>
 
-                    <div className="order-details">
+                {/* =================================================
+                    TABLE HEAD
+                ================================================= */}
 
-                      <h3>
-                        {order.customer?.firstName}{" "}
-                        {order.customer?.lastName}
-                      </h3>
+                <thead>
 
-                      <p>
-                      <strong>Order ID:</strong>{" "}
-                      {order._id}
-                      </p>
+                  <tr>
 
-                      <p>
-                        {order.customer?.address}, {order.customer?.city}
-                      </p>
+                    <th>
+                      Image
+                    </th>
 
-                      <p>{order.customer?.phone}</p>
+                    <th>
+                      Name
+                    </th>
 
-                      <p>
-                        <strong>Email:</strong> {order.customer?.email}
-                      </p>
+                    <th>
+                      Category
+                    </th>
 
-                      <p>
-                        <strong>Country:</strong> {order.customer?.country}
-                      </p>
+                    <th>
+                      Type
+                    </th>
 
-                      <p>
-                        <strong>Payment:</strong>{" "}
-                        {order.customer?.paymentMethod}
-                      </p>
+                    <th>
+                      Price
+                    </th>
 
-                      <p>
-                        <strong>Date:</strong>{" "}
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </p>
+                    <th>
+                      Discount
+                    </th>
 
-                      <hr />
+                    <th>
+                      Action
+                    </th>
 
-                      {order.items?.map((item, index) => (
-                        <div className="order-product" key={index}>
+                  </tr>
+
+                </thead>
+
+
+                {/* =================================================
+                    TABLE BODY
+                ================================================= */}
+
+                <tbody>
+
+                  {shoes.map(
+                    (shoe) => (
+
+                      <tr
+                        key={
+                          shoe._id
+                        }
+                      >
+
+
+                        {/* =================================================
+                            IMAGE
+                        ================================================= */}
+
+                        <td>
 
                           <img
                             src={
-                              item.image?.startsWith("/static")
-                                ? `http://localhost:3000${item.image}`
-                                : `${backendUrl}/images/${item.image}`
+                              getProductImage(
+                                shoe
+                              )
                             }
-                            alt={item.name}
-                            onError={(e) => {
-                              e.target.style.display = "none";
+
+                            alt={
+                              shoe.name ||
+                              "Shoe"
+                            }
+
+                            className="shoe-image"
+
+                            onError={(
+                              e
+                            ) => {
+
+                              console.error(
+                                "Product image failed:",
+                                e.currentTarget.src
+                              );
+
+
+                              e.currentTarget.src =
+                                "/no-image.png";
+
                             }}
+
                           />
 
-                          <div className="product-info">
+                        </td>
 
-                            <h4>{item.name}</h4>
 
-                            <p><strong>Type:</strong> {item.type}</p>
+                        {/* =================================================
+                            NAME
+                        ================================================= */}
 
-                            <p><strong>Size:</strong> {item.size}</p>
+                        <td>
 
-                            <p><strong>Quantity:</strong> {item.quantity}</p>
+                          {shoe.name}
 
-                            <p><strong>Price:</strong> Rs. {item.price}</p>
+                        </td>
 
-                          </div>
 
-                        </div>
-                      ))}
+                        {/* =================================================
+                            CATEGORY
+                        ================================================= */}
 
-                      <hr />
+                        <td>
 
-                      <p>
-                        <strong>Subtotal:</strong> Rs.{" "}
-                        {order.subtotal || order.amount}
-                      </p>
+                          {shoe.category ||
+                            "Shoes"}
 
-                      <p>
-                        <strong>Total Amount:</strong> Rs.{" "}
-                        {order.totalAmount || order.amount}
-                      </p>
+                        </td>
 
-                    </div>
 
-                  </div>
+                        {/* =================================================
+                            TYPE
+                        ================================================= */}
 
-                  <div className="order-right">
+                        <td>
 
-                    <select
-                      value={order.status}
-                      onChange={(e) =>
-                        updateStatus(order._id, e.target.value)
-                      }
-                    >
-                      <option value="Order Placed">Order Placed</option>
-                      <option value="Processing">Processing</option>
-                      <option value="Shipped">Shipped</option>
-                      <option value="Out for Delivery">
-                        Out for Delivery
-                      </option>
-                      <option value="Delivered">Delivered</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
+                          {shoe.type ||
+                            "-"}
 
-                    <button
-                      className="print-order-btn"
-                      onClick={() => printOrder(order)}
-                    >
-                      Print Order
-                    </button>
+                        </td>
 
-                    {(order.status === "Delivered" ||
-                      order.status === "Cancelled") && (
-                      <button
-                        className="delete-order-btn"
-                        onClick={() => deleteOrder(order._id)}
-                      >
-                        Delete Order
-                      </button>
-                    )}
 
-                  </div>
+                        {/* =================================================
+                            PRICE
+                        ================================================= */}
 
-                </div>
+                        <td>
 
-              ))}
+                          Rs.{" "}
+
+                          {Number(
+                            shoe.price || 0
+                          ).toLocaleString(
+                            "en-PK"
+                          )}
+
+                        </td>
+
+
+                        {/* =================================================
+                            DISCOUNT
+                        ================================================= */}
+
+                        <td>
+
+                          {Number(
+                            shoe.discount || 0
+                          )}
+
+                          %
+
+                        </td>
+
+
+                        {/* =================================================
+                            DELETE
+                        ================================================= */}
+
+                        <td>
+
+                          <button
+                            className="delete-btn"
+
+                            onClick={() =>
+                              deleteShoe(
+                                shoe._id
+                              )
+                            }
+                          >
+
+                            Delete
+
+                          </button>
+
+                        </td>
+
+
+                      </tr>
+
+                    )
+                  )}
+
+                </tbody>
+
+              </table>
 
             </div>
+
           )}
 
         </div>
+
       </div>
+
     </div>
+
   );
+
 };
 
-export default Orders;
+
+export default ListShoes;
