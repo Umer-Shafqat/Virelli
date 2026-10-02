@@ -1,20 +1,53 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import "./Popularshoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 const Popularshoes = () => {
-  const { shoes, addToCart } = useContext(StoreContext);
+  const { shoes, addToCart } =
+    useContext(StoreContext);
 
   const [shoeList, setShoeList] = useState([]);
-  const [selectedSizes, setSelectedSizes] = useState({});
+  const [selectedSizes, setSelectedSizes] =
+    useState({});
 
   // =====================================================
-  // GET POPULAR SHOES
+  // CATEGORIES THAT REQUIRE SIZE
+  // =====================================================
+
+  const sizeRequiredCategories = [
+    "Shoes",
+    "Hoodies",
+    "Chapal",
+    "Jackets",
+  ];
+
+  // =====================================================
+  // CHECK IF PRODUCT REQUIRES SIZE
+  // =====================================================
+
+  const requiresSize = (shoe) => {
+    const category = shoe?.category || "";
+
+    return sizeRequiredCategories.some(
+      (requiredCategory) =>
+        category.toLowerCase() ===
+        requiredCategory.toLowerCase()
+    );
+  };
+
+  // =====================================================
+  // GET POPULAR PRODUCTS
   // =====================================================
 
   useEffect(() => {
     if (Array.isArray(shoes)) {
-      setShoeList(shoes.filter((shoe) => shoe.popular));
+      setShoeList(
+        shoes.filter((shoe) => shoe.popular)
+      );
     } else {
       setShoeList([]);
     }
@@ -24,7 +57,10 @@ const Popularshoes = () => {
   // RATING
   // =====================================================
 
-  const handleRating = (shoeId, selectedRating) => {
+  const handleRating = (
+    shoeId,
+    selectedRating
+  ) => {
     setShoeList((prevShoes) =>
       prevShoes.map((shoe) => {
         if (shoe._id === shoeId) {
@@ -37,8 +73,12 @@ const Popularshoes = () => {
           return {
             ...shoe,
             rating: {
-              totalRatings: oldTotalRatings + 1,
-              ratingSum: oldRatingSum + selectedRating,
+              totalRatings:
+                oldTotalRatings + 1,
+
+              ratingSum:
+                oldRatingSum +
+                selectedRating,
             },
           };
         }
@@ -52,7 +92,10 @@ const Popularshoes = () => {
   // SIZE SELECT
   // =====================================================
 
-  const handleSizeSelect = (shoeId, size) => {
+  const handleSizeSelect = (
+    shoeId,
+    size
+  ) => {
     setSelectedSizes((prev) => ({
       ...prev,
       [shoeId]: size,
@@ -64,14 +107,29 @@ const Popularshoes = () => {
   // =====================================================
 
   const handleAddToCart = (shoe) => {
-    const selectedSize = selectedSizes[shoe._id];
+    const selectedSize =
+      selectedSizes[shoe._id];
 
-    if (!selectedSize) {
-      alert("Please select a size first");
+    // ---------------------------------------------
+    // PRODUCTS THAT REQUIRE SIZE
+    // ---------------------------------------------
+
+    if (requiresSize(shoe)) {
+      if (!selectedSize) {
+        alert("Please select a size first");
+        return;
+      }
+
+      addToCart(shoe, selectedSize);
       return;
     }
 
-    addToCart(shoe, selectedSize);
+    // ---------------------------------------------
+    // PRODUCTS THAT DO NOT REQUIRE SIZE
+    // Caps / Watches
+    // ---------------------------------------------
+
+    addToCart(shoe, "no-size");
   };
 
   // =====================================================
@@ -113,32 +171,47 @@ const Popularshoes = () => {
 
   return (
     <section className="shoes-section">
+
       {/* ================= HEADING ================= */}
 
       <div className="shoes-heading">
-        <h2>Popular Products</h2>
+
+        <h2>
+          Popular Products
+        </h2>
 
         <p>
           Check out our most popular products
         </p>
+
       </div>
 
-      {/* ================= SHOES GRID ================= */}
+      {/* ================= PRODUCTS GRID ================= */}
 
       <div className="shoes-grid">
+
         {shoeList.map((shoe) => {
+
+          // -------------------------------------------
+          // CHECK SIZE REQUIREMENT
+          // -------------------------------------------
+
+          const productRequiresSize =
+            requiresSize(shoe);
+
           // -------------------------------------------
           // PRICE
           // -------------------------------------------
 
-          const price = Number(shoe.price || 0);
+          const price =
+            Number(shoe.price || 0);
 
-          const discount = Number(
-            shoe.discount || 0
-          );
+          const discount =
+            Number(shoe.discount || 0);
 
           const discountedPrice =
-            price - (price * discount) / 100;
+            price -
+            (price * discount) / 100;
 
           // -------------------------------------------
           // RATING
@@ -155,16 +228,20 @@ const Popularshoes = () => {
           // IMAGE
           // -------------------------------------------
 
-          const imageUrl = getImageUrl(shoe);
+          const imageUrl =
+            getImageUrl(shoe);
 
           return (
+
             <div
               className="shoe-card"
               key={shoe._id}
             >
+
               {/* ================= IMAGE ================= */}
 
               <div className="shoe-image">
+
                 {/* Discount Badge */}
 
                 {discount > 0 && (
@@ -177,20 +254,27 @@ const Popularshoes = () => {
 
                 <img
                   src={imageUrl}
-                  alt={shoe.name || "Shoe"}
+                  alt={
+                    shoe.name ||
+                    "Product"
+                  }
                   onError={(event) => {
                     event.currentTarget.src =
                       "/placeholder.png";
                   }}
                 />
+
               </div>
 
               {/* ================= INFO ================= */}
 
               <div className="shoe-info">
+
                 {/* Product Name */}
 
-                <h3>{shoe.name}</h3>
+                <h3>
+                  {shoe.name}
+                </h3>
 
                 {/* Category */}
 
@@ -207,9 +291,12 @@ const Popularshoes = () => {
                 {/* ================= RATING ================= */}
 
                 <div className="rating">
+
                   <div className="stars">
+
                     {[1, 2, 3, 4, 5].map(
                       (star) => (
+
                         <button
                           key={star}
                           type="button"
@@ -230,8 +317,10 @@ const Popularshoes = () => {
                         >
                           ★
                         </button>
+
                       )
                     )}
+
                   </div>
 
                   <span className="rating-number">
@@ -244,11 +333,13 @@ const Popularshoes = () => {
                       ?.totalRatings || 0}
                     )
                   </span>
+
                 </div>
 
                 {/* ================= PRICE ================= */}
 
                 <div className="price-section">
+
                   <h4 className="shoe-price">
                     Rs.{" "}
                     {discountedPrice.toLocaleString()}
@@ -260,37 +351,46 @@ const Popularshoes = () => {
                       {price.toLocaleString()}
                     </span>
                   )}
+
                 </div>
 
                 {/* ================= SIZES ================= */}
 
-                <div className="sizes">
-                  <div className="size-buttons">
-                    {(shoe.sizes || []).map(
-                      (size) => (
-                        <button
-                          key={size}
-                          type="button"
-                          className={
-                            selectedSizes[
-                              shoe._id
-                            ] === size
-                              ? "selected-size"
-                              : ""
-                          }
-                          onClick={() =>
-                            handleSizeSelect(
-                              shoe._id,
-                              size
-                            )
-                          }
-                        >
-                          {size}
-                        </button>
-                      )
-                    )}
+                {productRequiresSize && (
+                  <div className="sizes">
+
+                    <div className="size-buttons">
+
+                      {(shoe.sizes || []).map(
+                        (size) => (
+
+                          <button
+                            key={size}
+                            type="button"
+                            className={
+                              selectedSizes[
+                                shoe._id
+                              ] === size
+                                ? "selected-size"
+                                : ""
+                            }
+                            onClick={() =>
+                              handleSizeSelect(
+                                shoe._id,
+                                size
+                              )
+                            }
+                          >
+                            {size}
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
+
                   </div>
-                </div>
+                )}
 
                 {/* ================= CART ================= */}
 
@@ -303,11 +403,16 @@ const Popularshoes = () => {
                 >
                   Add to Cart
                 </button>
+
               </div>
+
             </div>
+
           );
         })}
+
       </div>
+
     </section>
   );
 };
