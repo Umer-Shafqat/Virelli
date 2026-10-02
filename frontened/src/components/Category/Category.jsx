@@ -11,6 +11,10 @@ import capsCategory from "../../assets/capsCategory.png";
 const Category = () => {
   const navigate = useNavigate();
 
+  // =====================================================
+  // CATEGORIES
+  // =====================================================
+
   const categories = [
     {
       name: "Shoes",
@@ -48,7 +52,11 @@ const Category = () => {
   // CATEGORY ITEM
   // =====================================================
 
-  const renderCategory = (item, index, prefix) => {
+  const renderCategory = (
+    item,
+    index,
+    prefix
+  ) => {
     return (
       <div
         className="category-item"
@@ -64,10 +72,15 @@ const Category = () => {
             e.key === " "
           ) {
             e.preventDefault();
-            handleCategoryClick(item.name);
+
+            handleCategoryClick(
+              item.name
+            );
           }
         }}
       >
+        {/* ================= IMAGE ================= */}
+
         <div className="category-image">
           <img
             src={item.image}
@@ -75,7 +88,11 @@ const Category = () => {
           />
         </div>
 
-        <h3>{item.name}</h3>
+        {/* ================= CATEGORY NAME ================= */}
+
+        <h3>
+          {item.name}
+        </h3>
       </div>
     );
   };
@@ -86,38 +103,48 @@ const Category = () => {
 
   return (
     <section className="category-section">
+
+      {/* ================= TITLE ================= */}
+
       <h2 className="category-title">
         Shop by Category
       </h2>
 
+      {/* ================= CATEGORY SLIDER ================= */}
+
       <div className="category-slider">
+
         <div className="category-track">
 
-          {/* FIRST SET */}
+          {/* ================= FIRST SET ================= */}
 
-          {categories.map((item, index) =>
-            renderCategory(
-              item,
-              index,
-              "first"
-            )
+          {categories.map(
+            (item, index) =>
+              renderCategory(
+                item,
+                index,
+                "first"
+              )
           )}
 
-          {/* SECOND SET
+          {/* ================= SECOND SET =================
               Duplicate is intentional for
               infinite slider animation.
           */}
 
-          {categories.map((item, index) =>
-            renderCategory(
-              item,
-              index,
-              "second"
-            )
+          {categories.map(
+            (item, index) =>
+              renderCategory(
+                item,
+                index,
+                "second"
+              )
           )}
 
         </div>
+
       </div>
+
     </section>
   );
 };
