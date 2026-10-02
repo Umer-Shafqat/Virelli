@@ -343,8 +343,6 @@ const Cart = () => {
 
             </div>
 
-            {/* DELIVERY */}
-
             <div className="amount-row">
 
               <span>
