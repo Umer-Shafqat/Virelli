@@ -9,7 +9,9 @@ import { useSearchParams } from "react-router-dom";
 
 import "./Shoes.css";
 
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
+import {
+  StoreContext,
+} from "../../Context/StoreContext/StoreContext";
 
 const Shoes = ({ limit, products }) => {
   const {
@@ -33,7 +35,15 @@ const Shoes = ({ limit, products }) => {
   const [currentImages, setCurrentImages] =
     useState({});
 
-  const touchStartX = useRef({});
+  const touchStartX =
+    useRef({});
+
+  // =====================================================
+  // STORE HOVER INTERVALS
+  // =====================================================
+
+  const hoverIntervals =
+    useRef({});
 
   // =====================================================
   // CATEGORIES THAT REQUIRE SIZE
@@ -379,13 +389,25 @@ const Shoes = ({ limit, products }) => {
   };
 
   // =====================================================
-  // CHANGE IMAGE
+  // CHANGE IMAGE MANUALLY
   // =====================================================
 
   const handleImageChange = (
     shoeId,
     imageIndex
   ) => {
+    // Stop hover slideshow when
+    // user manually selects an image
+    if (hoverIntervals.current[shoeId]) {
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+
+      delete hoverIntervals.current[
+        shoeId
+      ];
+    }
+
     setCurrentImages((prev) => ({
       ...prev,
       [shoeId]: imageIndex,
@@ -400,12 +422,41 @@ const Shoes = ({ limit, products }) => {
     shoeId,
     images
   ) => {
-    if (images.length > 1) {
-      setCurrentImages((prev) => ({
-        ...prev,
-        [shoeId]: 1,
-      }));
+    if (
+      !shoeId ||
+      !Array.isArray(images) ||
+      images.length <= 1
+    ) {
+      return;
     }
+
+    // Clear existing interval first
+    if (hoverIntervals.current[shoeId]) {
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+    }
+
+    // Start from image 2
+    let currentIndex = 1;
+
+    setCurrentImages((prev) => ({
+      ...prev,
+      [shoeId]: currentIndex,
+    }));
+
+    // Swap through ALL images
+    hoverIntervals.current[shoeId] =
+      setInterval(() => {
+        currentIndex =
+          (currentIndex + 1) %
+          images.length;
+
+        setCurrentImages((prev) => ({
+          ...prev,
+          [shoeId]: currentIndex,
+        }));
+      }, 1000);
   };
 
   // =====================================================
@@ -415,11 +466,37 @@ const Shoes = ({ limit, products }) => {
   const handleMouseLeave = (
     shoeId
   ) => {
+    // Stop image slideshow
+    if (hoverIntervals.current[shoeId]) {
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+
+      delete hoverIntervals.current[
+        shoeId
+      ];
+    }
+
+    // Return to first image
     setCurrentImages((prev) => ({
       ...prev,
       [shoeId]: 0,
     }));
   };
+
+  // =====================================================
+  // CLEAN UP HOVER INTERVALS
+  // =====================================================
+
+  useEffect(() => {
+    return () => {
+      Object.values(
+        hoverIntervals.current
+      ).forEach((interval) => {
+        clearInterval(interval);
+      });
+    };
+  }, []);
 
   // =====================================================
   // RENDER
