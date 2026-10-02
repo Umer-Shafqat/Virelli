@@ -24,6 +24,35 @@ const Men = () => {
     useState({});
 
   // =====================================================
+  // SIZE REQUIRED CATEGORIES
+  // =====================================================
+
+  const sizeRequiredCategories = [
+    "Shoes",
+    "Hoodies",
+    "Chapal",
+    "Jackets",
+  ];
+
+  // =====================================================
+  // CHECK IF PRODUCT REQUIRES SIZE
+  // =====================================================
+
+  const requiresSize = (shoe) => {
+    const category = String(
+      shoe?.category || ""
+    )
+      .trim()
+      .toLowerCase();
+
+    return sizeRequiredCategories.some(
+      (requiredCategory) =>
+        category ===
+        requiredCategory.toLowerCase()
+    );
+  };
+
+  // =====================================================
   // GET MEN PRODUCTS
   // =====================================================
 
@@ -110,17 +139,48 @@ const Men = () => {
   // =====================================================
 
   const handleAddToCart = (shoe) => {
-    const selectedSize =
-      selectedSizes[shoe._id];
+    const shoeId =
+      shoe?._id ||
+      shoe?.id ||
+      shoe?.shoeId;
 
-    if (!selectedSize) {
-      alert("Please select a size first");
+    if (!shoeId) {
+      alert("Product ID is missing");
       return;
     }
 
+    const productRequiresSize =
+      requiresSize(shoe);
+
+    // ===============================================
+    // PRODUCTS THAT REQUIRE SIZE
+    // ===============================================
+
+    if (productRequiresSize) {
+      const selectedSize =
+        selectedSizes[shoeId];
+
+      if (!selectedSize) {
+        alert("Please select a size first");
+        return;
+      }
+
+      addToCart(
+        shoe,
+        selectedSize
+      );
+
+      return;
+    }
+
+    // ===============================================
+    // PRODUCTS THAT DO NOT REQUIRE SIZE
+    // Caps / Watches
+    // ===============================================
+
     addToCart(
       shoe,
-      selectedSize
+      "no-size"
     );
   };
 
@@ -231,6 +291,13 @@ const Men = () => {
             const imageUrl =
               getImageUrl(shoe);
 
+            // -----------------------------------------
+            // SIZE REQUIREMENT
+            // -----------------------------------------
+
+            const productRequiresSize =
+              requiresSize(shoe);
+
             return (
 
               <div
@@ -254,7 +321,7 @@ const Men = () => {
                       src={imageUrl}
                       alt={
                         shoe.name ||
-                        "Men's shoe"
+                        "Men's product"
                       }
 
                       onError={(e) => {
@@ -371,41 +438,45 @@ const Men = () => {
 
                   {/* ================= SIZES ================= */}
 
-                  <div className="sizes">
+                  {productRequiresSize && (
 
-                    <div className="size-buttons">
+                    <div className="sizes">
 
-                      {(shoe.sizes || []).map(
-                        (size) => (
+                      <div className="size-buttons">
 
-                          <button
-                            key={size}
-                            type="button"
+                        {(shoe.sizes || []).map(
+                          (size) => (
 
-                            className={
-                              selectedSizes[
-                                shoe._id
-                              ] === size
-                                ? "selected-size"
-                                : ""
-                            }
+                            <button
+                              key={size}
+                              type="button"
 
-                            onClick={() =>
-                              handleSizeSelect(
-                                shoe._id,
-                                size
-                              )
-                            }
-                          >
-                            {size}
-                          </button>
+                              className={
+                                selectedSizes[
+                                  shoe._id
+                                ] === size
+                                  ? "selected-size"
+                                  : ""
+                              }
 
-                        )
-                      )}
+                              onClick={() =>
+                                handleSizeSelect(
+                                  shoe._id,
+                                  size
+                                )
+                              }
+                            >
+                              {size}
+                            </button>
+
+                          )
+                        )}
+
+                      </div>
 
                     </div>
 
-                  </div>
+                  )}
 
                   {/* ================= CART ================= */}
 
