@@ -2,6 +2,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useRef,
 } from "react";
 
 import "./Women.css";
@@ -24,6 +25,16 @@ const Women = () => {
 
   const [selectedSizes, setSelectedSizes] =
     useState({});
+
+
+  // =====================================================
+  // IMAGE SLIDER STATE
+  // =====================================================
+
+  const [currentImages, setCurrentImages] =
+    useState({});
+
+  const hoverIntervals = useRef({});
 
 
   // =====================================================
@@ -84,6 +95,269 @@ const Women = () => {
     }
 
   }, [shoes]);
+
+
+  // =====================================================
+  // GET ALL PRODUCT IMAGES
+  // =====================================================
+
+  const getProductImages = (shoe) => {
+
+    const API_URL =
+      process.env.REACT_APP_API_URL ||
+      "http://localhost:4000";
+
+
+    // =================================================
+    // NEW MULTIPLE IMAGES STRUCTURE
+    // =================================================
+
+    if (
+      Array.isArray(shoe?.images) &&
+      shoe.images.length > 0
+    ) {
+
+      return shoe.images
+        .filter(
+          (image) =>
+            typeof image === "string" &&
+            image.trim() !== ""
+        )
+        .map((image) => {
+
+          // Cloudinary / external URL
+
+          if (
+            image.startsWith("http://") ||
+            image.startsWith("https://")
+          ) {
+
+            return image;
+
+          }
+
+
+          // Local image path
+
+          if (
+            image.startsWith("/images/")
+          ) {
+
+            return `${API_URL}${image}`;
+
+          }
+
+
+          return `${API_URL}/images/${image}`;
+
+        });
+
+    }
+
+
+    // =================================================
+    // OLD SINGLE IMAGE STRUCTURE
+    // =================================================
+
+    if (shoe?.image) {
+
+      if (
+        typeof shoe.image === "string" &&
+        (
+          shoe.image.startsWith("http://") ||
+          shoe.image.startsWith("https://")
+        )
+      ) {
+
+        return [shoe.image];
+
+      }
+
+
+      if (
+        shoe.image.startsWith("/images/")
+      ) {
+
+        return [
+          `${API_URL}${shoe.image}`,
+        ];
+
+      }
+
+
+      return [
+        `${API_URL}/images/${shoe.image}`,
+      ];
+
+    }
+
+
+    return [];
+
+  };
+
+
+  // =====================================================
+  // HOVER IMAGE SLIDESHOW
+  // =====================================================
+
+  const handleMouseEnter = (
+    shoeId,
+    images
+  ) => {
+
+    if (
+      !shoeId ||
+      !Array.isArray(images) ||
+      images.length <= 1
+    ) {
+
+      return;
+
+    }
+
+
+    // Clear previous interval if one exists
+
+    if (
+      hoverIntervals.current[shoeId]
+    ) {
+
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+
+    }
+
+
+    // Start from second image
+
+    let currentIndex = 1;
+
+
+    setCurrentImages((prev) => ({
+
+      ...prev,
+
+      [shoeId]: currentIndex,
+
+    }));
+
+
+    // Change image every second
+
+    hoverIntervals.current[shoeId] =
+      setInterval(() => {
+
+        currentIndex =
+          (currentIndex + 1) %
+          images.length;
+
+
+        setCurrentImages((prev) => ({
+
+          ...prev,
+
+          [shoeId]: currentIndex,
+
+        }));
+
+      }, 1000);
+
+  };
+
+
+  // =====================================================
+  // STOP HOVER SLIDESHOW
+  // =====================================================
+
+  const handleMouseLeave = (
+    shoeId
+  ) => {
+
+    if (
+      hoverIntervals.current[shoeId]
+    ) {
+
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+
+      delete hoverIntervals.current[shoeId];
+
+    }
+
+
+    // Return to first image
+
+    setCurrentImages((prev) => ({
+
+      ...prev,
+
+      [shoeId]: 0,
+
+    }));
+
+  };
+
+
+  // =====================================================
+  // MANUAL IMAGE CHANGE
+  // =====================================================
+
+  const handleImageChange = (
+    shoeId,
+    imageIndex
+  ) => {
+
+    if (
+      hoverIntervals.current[shoeId]
+    ) {
+
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+
+      delete hoverIntervals.current[shoeId];
+
+    }
+
+
+    setCurrentImages((prev) => ({
+
+      ...prev,
+
+      [shoeId]: imageIndex,
+
+    }));
+
+  };
+
+
+  // =====================================================
+  // CLEANUP IMAGE SLIDER INTERVALS
+  // VERCEL SAFE
+  // =====================================================
+
+  useEffect(() => {
+
+    const intervals =
+      hoverIntervals.current;
+
+
+    return () => {
+
+      Object.values(
+        intervals
+      ).forEach((interval) => {
+
+        clearInterval(interval);
+
+      });
+
+    };
+
+  }, []);
 
 
   // =====================================================
@@ -243,100 +517,6 @@ const Women = () => {
 
 
   // =====================================================
-  // CLOUDINARY IMAGE URL
-  // =====================================================
-
-  const getImageUrl = (shoe) => {
-
-    // -----------------------------------------
-    // NEW CLOUDINARY STRUCTURE
-    // -----------------------------------------
-
-    if (
-      Array.isArray(shoe.images) &&
-      shoe.images.length > 0
-    ) {
-
-      const image =
-        shoe.images[0];
-
-
-      // Cloudinary URL
-
-      if (
-        typeof image === "string" &&
-        (
-          image.startsWith(
-            "http://"
-          ) ||
-          image.startsWith(
-            "https://"
-          )
-        )
-      ) {
-
-        return image;
-
-      }
-
-
-      // -----------------------------------------
-      // OLD LOCAL IMAGE SUPPORT
-      // -----------------------------------------
-
-      if (
-        typeof image === "string"
-      ) {
-
-        const API_URL =
-          process.env.REACT_APP_API_URL ||
-          "http://localhost:4000";
-
-        return `${API_URL}/images/${image}`;
-
-      }
-
-    }
-
-
-    // -----------------------------------------
-    // OLD `image` FIELD SUPPORT
-    // -----------------------------------------
-
-    if (shoe.image) {
-
-      if (
-        typeof shoe.image === "string" &&
-        (
-          shoe.image.startsWith(
-            "http://"
-          ) ||
-          shoe.image.startsWith(
-            "https://"
-          )
-        )
-      ) {
-
-        return shoe.image;
-
-      }
-
-
-      const API_URL =
-        process.env.REACT_APP_API_URL ||
-        "http://localhost:4000";
-
-      return `${API_URL}/images/${shoe.image}`;
-
-    }
-
-
-    return "";
-
-  };
-
-
-  // =====================================================
   // PAGE
   // =====================================================
 
@@ -406,11 +586,23 @@ const Women = () => {
 
 
           // =================================================
-          // IMAGE
+          // PRODUCT IMAGES
           // =================================================
 
+          const productImages =
+            getProductImages(shoe);
+
+
+          const imageIndex =
+            currentImages[shoe._id] || 0;
+
+
           const imageUrl =
-            getImageUrl(shoe);
+            productImages[
+              imageIndex
+            ] ||
+            productImages[0] ||
+            "";
 
 
           // =================================================
@@ -430,6 +622,19 @@ const Women = () => {
             <div
               className="shoe-card"
               key={shoe._id}
+
+              onMouseEnter={() =>
+                handleMouseEnter(
+                  shoe._id,
+                  productImages
+                )
+              }
+
+              onMouseLeave={() =>
+                handleMouseLeave(
+                  shoe._id
+                )
+              }
             >
 
 
@@ -478,6 +683,52 @@ const Women = () => {
                   <div className="image-placeholder">
 
                     No Image
+
+                  </div>
+
+                )}
+
+
+                {/* =================================================
+                    IMAGE DOTS
+                ================================================= */}
+
+                {productImages.length > 1 && (
+
+                  <div className="image-dots">
+
+                    {productImages.map(
+                      (_, index) => (
+
+                        <button
+                          key={index}
+                          type="button"
+
+                          className={
+                            imageIndex === index
+                              ? "active"
+                              : ""
+                          }
+
+                          onClick={(e) => {
+
+                            e.stopPropagation();
+
+                            handleImageChange(
+                              shoe._id,
+                              index
+                            );
+
+                          }}
+
+                          aria-label={`Show image ${
+                            index + 1
+                          }`}
+
+                        />
+
+                      )
+                    )}
 
                   </div>
 
