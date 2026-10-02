@@ -11,18 +11,23 @@ import {
   StoreContext,
 } from "../../Context/StoreContext/StoreContext";
 
+
 const Kids = () => {
+
   const {
     shoes,
     addToCart,
     url,
   } = useContext(StoreContext);
 
+
   const [shoeList, setShoeList] =
     useState([]);
 
+
   const [selectedSizes, setSelectedSizes] =
     useState({});
+
 
   // =====================================================
   // CURRENT IMAGES
@@ -31,12 +36,14 @@ const Kids = () => {
   const [currentImages, setCurrentImages] =
     useState({});
 
+
   // =====================================================
   // HOVER INTERVALS
   // =====================================================
 
   const hoverIntervals =
     useRef({});
+
 
   // =====================================================
   // CATEGORIES THAT REQUIRE SIZE
@@ -49,75 +56,113 @@ const Kids = () => {
     "Jackets",
   ];
 
+
   // =====================================================
   // CHECK IF PRODUCT REQUIRES SIZE
   // =====================================================
 
   const requiresSize = (shoe) => {
+
     const category = String(
       shoe?.category || ""
     )
       .trim()
       .toLowerCase();
 
+
     return sizeRequiredCategories.some(
       (requiredCategory) =>
         category ===
         requiredCategory.toLowerCase()
     );
+
   };
+
 
   // =====================================================
   // GET KIDS PRODUCTS
   // =====================================================
 
   useEffect(() => {
+
     if (Array.isArray(shoes)) {
+
       setShoeList(
+
         shoes.filter(
           (item) =>
             item.type?.toUpperCase() ===
             "KID"
         )
+
       );
+
     } else {
+
       setShoeList([]);
+
     }
+
   }, [shoes]);
+
 
   // =====================================================
   // GET PRODUCT IMAGES
   // =====================================================
 
   const getProductImages = (shoe) => {
-    // New structure: images array
+
+    // =================================================
+    // NEW MULTIPLE IMAGE STRUCTURE
+    // =================================================
+
     if (
       Array.isArray(shoe?.images) &&
       shoe.images.length > 0
     ) {
-      return shoe.images;
+
+      return shoe.images.filter(
+        (image) =>
+          typeof image === "string" &&
+          image.trim() !== ""
+      );
+
     }
 
-    // Old structure: single image
-    if (shoe?.image) {
+
+    // =================================================
+    // OLD SINGLE IMAGE STRUCTURE
+    // =================================================
+
+    if (
+      typeof shoe?.image === "string" &&
+      shoe.image.trim() !== ""
+    ) {
+
       return [shoe.image];
+
     }
+
 
     return [];
+
   };
+
 
   // =====================================================
   // IMAGE URL
   // =====================================================
 
   const getImageUrl = (image) => {
+
     if (!image) {
       return "";
     }
 
-    // -----------------------------------------
+
+    // =================================================
     // CLOUDINARY / EXTERNAL IMAGE
-    // -----------------------------------------
+    // =================================================
 
     if (
       typeof image === "string" &&
@@ -126,30 +171,43 @@ const Kids = () => {
         image.startsWith("https://")
       )
     ) {
+
       return image;
+
     }
 
-    // -----------------------------------------
-    // OLD LOCAL IMAGE
-    // -----------------------------------------
+
+    // =================================================
+    // LOCAL IMAGE PATH
+    // =================================================
 
     if (
       typeof image === "string" &&
       image.startsWith("/images/")
     ) {
+
       return `${url}${image}`;
+
     }
 
-    // -----------------------------------------
+
+    // =================================================
     // LOCAL IMAGE FILENAME
-    // -----------------------------------------
+    // =================================================
 
-    if (typeof image === "string") {
+    if (
+      typeof image === "string"
+    ) {
+
       return `${url}/images/${image}`;
+
     }
+
 
     return "";
+
   };
+
 
   // =====================================================
   // SIZE SELECT
@@ -159,33 +217,50 @@ const Kids = () => {
     shoeId,
     size
   ) => {
+
     if (!shoeId) {
-      alert("Product ID is missing");
+
+      alert(
+        "Product ID is missing"
+      );
+
       return;
+
     }
 
+
     setSelectedSizes((prev) => ({
+
       ...prev,
+
       [shoeId]: size,
+
     }));
+
   };
+
 
   // =====================================================
   // ADD TO CART
   // =====================================================
 
   const handleAddToCart = (shoe) => {
+
     const shoeId =
       shoe?._id ||
       shoe?.id ||
       shoe?.shoeId;
 
-    // -----------------------------------------
+
+    // =================================================
     // CHECK PRODUCT ID
-    // -----------------------------------------
+    // =================================================
 
     if (!shoeId) {
-      alert("Product ID is missing");
+
+      alert(
+        "Product ID is missing"
+      );
 
       console.error(
         "Product object does not contain an ID:",
@@ -193,30 +268,38 @@ const Kids = () => {
       );
 
       return;
+
     }
 
-    // -----------------------------------------
+
+    // =================================================
     // CHECK SIZE REQUIREMENT
-    // -----------------------------------------
+    // =================================================
 
     const productRequiresSize =
       requiresSize(shoe);
 
-    // -----------------------------------------
+
+    // =================================================
     // PRODUCTS THAT REQUIRE SIZE
-    // -----------------------------------------
+    // =================================================
 
     if (productRequiresSize) {
+
       const selectedSize =
         selectedSizes[shoeId];
 
+
       if (!selectedSize) {
+
         alert(
           "Please select a size first"
         );
 
         return;
+
       }
+
 
       addToCart(
         shoe,
@@ -224,18 +307,22 @@ const Kids = () => {
       );
 
       return;
+
     }
 
-    // -----------------------------------------
+
+    // =================================================
     // PRODUCTS THAT DO NOT REQUIRE SIZE
     // Caps / Watches
-    // -----------------------------------------
+    // =================================================
 
     addToCart(
       shoe,
       "no-size"
     );
+
   };
+
 
   // =====================================================
   // RATING
@@ -245,37 +332,57 @@ const Kids = () => {
     shoeId,
     selectedRating
   ) => {
-    setShoeList((prevShoes) =>
-      prevShoes.map((shoe) => {
-        if (
-          shoe._id === shoeId
-        ) {
-          const oldTotalRatings =
-            shoe.rating
-              ?.totalRatings || 0;
 
-          const oldRatingSum =
-            shoe.rating
-              ?.ratingSum || 0;
+    setShoeList(
+      (prevShoes) =>
 
-          return {
-            ...shoe,
+        prevShoes.map(
+          (shoe) => {
 
-            rating: {
-              totalRatings:
-                oldTotalRatings + 1,
+            if (
+              shoe._id === shoeId
+            ) {
 
-              ratingSum:
-                oldRatingSum +
-                selectedRating,
-            },
-          };
-        }
+              const oldTotalRatings =
+                shoe.rating
+                  ?.totalRatings || 0;
 
-        return shoe;
-      })
+
+              const oldRatingSum =
+                shoe.rating
+                  ?.ratingSum || 0;
+
+
+              return {
+
+                ...shoe,
+
+                rating: {
+
+                  totalRatings:
+                    oldTotalRatings + 1,
+
+                  ratingSum:
+                    oldRatingSum +
+                    selectedRating,
+
+                },
+
+              };
+
+            }
+
+
+            return shoe;
+
+          }
+
+        )
+
     );
+
   };
+
 
   // =====================================================
   // MOUSE ENTER
@@ -285,47 +392,80 @@ const Kids = () => {
     shoeId,
     images
   ) => {
+
     if (
       !shoeId ||
       !Array.isArray(images) ||
       images.length <= 1
     ) {
+
       return;
+
     }
 
-    // Clear existing interval
+
+    // =================================================
+    // CLEAR EXISTING INTERVAL
+    // =================================================
+
     if (
-      hoverIntervals.current[shoeId]
+      hoverIntervals.current[
+        shoeId
+      ]
     ) {
+
       clearInterval(
-        hoverIntervals.current[shoeId]
+        hoverIntervals.current[
+          shoeId
+        ]
       );
+
     }
 
-    // Start from second image
+
+    // =================================================
+    // START FROM SECOND IMAGE
+    // =================================================
+
     let currentIndex = 1;
 
+
     setCurrentImages((prev) => ({
+
       ...prev,
-      [shoeId]: currentIndex,
+
+      [shoeId]:
+        currentIndex,
+
     }));
+
 
     // =================================================
     // CYCLE THROUGH ALL IMAGES
     // =================================================
 
-    hoverIntervals.current[shoeId] =
-      setInterval(() => {
-        currentIndex =
-          (currentIndex + 1) %
-          images.length;
+    hoverIntervals.current[
+      shoeId
+    ] = setInterval(() => {
 
-        setCurrentImages((prev) => ({
-          ...prev,
-          [shoeId]: currentIndex,
-        }));
-      }, 1000);
+      currentIndex =
+        (currentIndex + 1) %
+        images.length;
+
+
+      setCurrentImages((prev) => ({
+
+        ...prev,
+
+        [shoeId]:
+          currentIndex,
+
+      }));
+
+    }, 1000);
+
   };
+
 
   // =====================================================
   // MOUSE LEAVE
@@ -334,25 +474,44 @@ const Kids = () => {
   const handleMouseLeave = (
     shoeId
   ) => {
-    // Stop slideshow
+
+    // =================================================
+    // STOP SLIDESHOW
+    // =================================================
+
     if (
-      hoverIntervals.current[shoeId]
+      hoverIntervals.current[
+        shoeId
+      ]
     ) {
+
       clearInterval(
-        hoverIntervals.current[shoeId]
+        hoverIntervals.current[
+          shoeId
+        ]
       );
 
       delete hoverIntervals.current[
         shoeId
       ];
+
     }
 
-    // Return to first image
+
+    // =================================================
+    // RETURN TO FIRST IMAGE
+    // =================================================
+
     setCurrentImages((prev) => ({
+
       ...prev,
+
       [shoeId]: 0,
+
     }));
+
   };
+
 
   // =====================================================
   // MANUAL IMAGE CHANGE
@@ -362,50 +521,84 @@ const Kids = () => {
     shoeId,
     imageIndex
   ) => {
-    // Stop hover slideshow
+
+    // =================================================
+    // STOP HOVER SLIDESHOW
+    // =================================================
+
     if (
-      hoverIntervals.current[shoeId]
+      hoverIntervals.current[
+        shoeId
+      ]
     ) {
+
       clearInterval(
-        hoverIntervals.current[shoeId]
+        hoverIntervals.current[
+          shoeId
+        ]
       );
 
       delete hoverIntervals.current[
         shoeId
       ];
+
     }
 
+
     setCurrentImages((prev) => ({
+
       ...prev,
-      [shoeId]: imageIndex,
+
+      [shoeId]:
+        imageIndex,
+
     }));
+
   };
+
 
   // =====================================================
   // CLEANUP HOVER INTERVALS
+  // VERCEL SAFE
   // =====================================================
 
   useEffect(() => {
+
     const intervals =
       hoverIntervals.current;
 
+
     return () => {
-      Object.values(intervals).forEach(
+
+      Object.values(
+        intervals
+      ).forEach(
         (interval) => {
-          clearInterval(interval);
+
+          clearInterval(
+            interval
+          );
+
         }
       );
+
     };
+
   }, []);
+
 
   // =====================================================
   // RETURN
   // =====================================================
 
   return (
+
     <section className="kid-page">
 
-      {/* ================= HEADING ================= */}
+
+      {/* =================================================
+          HEADING
+      ================================================= */}
 
       <div className="kid-heading">
 
@@ -420,148 +613,184 @@ const Kids = () => {
 
       </div>
 
-      {/* ================= PRODUCTS GRID ================= */}
+
+      {/* =================================================
+          PRODUCTS GRID
+      ================================================= */}
 
       <div className="shoes-grid">
 
         {shoeList.length > 0 ? (
 
           shoeList.map((shoe) => {
-            // -----------------------------------------
+
+            // =================================================
             // PRODUCT ID
-            // -----------------------------------------
+            // =================================================
 
             const shoeId =
               shoe?._id ||
               shoe?.id ||
               shoe?.shoeId;
 
-            // -----------------------------------------
+
+            // =================================================
             // PRICE
-            // -----------------------------------------
+            // =================================================
 
             const price =
               Number(
                 shoe.price || 0
               );
 
+
             const discount =
               Number(
                 shoe.discount || 0
               );
 
+
             const discountedPrice =
               price -
-              (price * discount) /
+              (
+                price *
+                discount
+              ) /
                 100;
 
-            // -----------------------------------------
+
+            // =================================================
             // RATING
-            // -----------------------------------------
+            // =================================================
 
             const averageRating =
               shoe.rating &&
               shoe.rating.totalRatings >
                 0
+
                 ? shoe.rating.ratingSum /
                   shoe.rating.totalRatings
+
                 : 5;
 
-            // -----------------------------------------
+
+            // =================================================
             // PRODUCT IMAGES
-            // -----------------------------------------
+            // =================================================
 
             const productImages =
               getProductImages(shoe);
 
-            // -----------------------------------------
+
+            // =================================================
             // CURRENT IMAGE INDEX
-            // -----------------------------------------
+            // =================================================
 
             let currentImageIndex =
               currentImages[shoeId] ||
               0;
 
+
             if (
               currentImageIndex >=
               productImages.length
             ) {
+
               currentImageIndex = 0;
+
             }
 
-            // -----------------------------------------
+
+            // =================================================
             // CURRENT IMAGE
-            // -----------------------------------------
+            // =================================================
 
             const currentImage =
               productImages[
                 currentImageIndex
               ];
 
+
             const imageUrl =
               getImageUrl(
                 currentImage
               );
 
-            // -----------------------------------------
+
+            // =================================================
             // PRODUCT SIZE REQUIREMENT
-            // -----------------------------------------
+            // =================================================
 
             const productRequiresSize =
               requiresSize(shoe);
 
-            // -----------------------------------------
+
+            // =================================================
             // SELECTED SIZE
-            // -----------------------------------------
+            // =================================================
 
             const selectedSize =
               selectedSizes[shoeId];
 
+
             return (
+
               <div
                 className="shoe-card"
                 key={shoeId}
+
+                // Hover entire card
+                onMouseEnter={() =>
+                  handleMouseEnter(
+                    shoeId,
+                    productImages
+                  )
+                }
+
+                onMouseLeave={() =>
+                  handleMouseLeave(
+                    shoeId
+                  )
+                }
               >
 
-                {/* ================= IMAGE ================= */}
 
-                <div
-                  className="shoe-image"
+                {/* =================================================
+                    IMAGE
+                ================================================= */}
 
-                  onMouseEnter={() =>
-                    handleMouseEnter(
-                      shoeId,
-                      productImages
-                    )
-                  }
+                <div className="shoe-image">
 
-                  onMouseLeave={() =>
-                    handleMouseLeave(
-                      shoeId
-                    )
-                  }
-                >
 
-                  {/* Discount */}
+                  {/* DISCOUNT */}
 
                   {discount > 0 && (
+
                     <span className="discount-badge">
+
                       {discount}% OFF
+
                     </span>
+
                   )}
 
-                  {/* Product Image */}
+
+                  {/* PRODUCT IMAGE */}
 
                   {imageUrl ? (
+
                     <img
                       src={imageUrl}
+
                       alt={
                         shoe.name ||
                         "Kids product"
                       }
+
                       draggable="false"
 
                       onError={(e) => {
+
                         console.error(
                           "Kids product image failed:",
                           e.currentTarget.src
@@ -569,18 +798,28 @@ const Kids = () => {
 
                         e.currentTarget.style.display =
                           "none";
+
                       }}
+
                     />
+
                   ) : (
+
                     <div className="image-placeholder">
+
                       No Image
+
                     </div>
+
                   )}
 
-                  {/* ================= IMAGE DOTS ================= */}
 
-                  {productImages.length >
-                    1 && (
+                  {/* =================================================
+                      IMAGE DOTS
+                  ================================================= */}
+
+                  {productImages.length > 1 && (
+
                     <div className="image-dots">
 
                       {productImages.map(
@@ -588,75 +827,104 @@ const Kids = () => {
                           _,
                           imageIndex
                         ) => (
+
                           <button
                             key={
                               imageIndex
                             }
+
                             type="button"
 
                             className={
                               currentImageIndex ===
                               imageIndex
+
                                 ? "image-dot active"
+
                                 : "image-dot"
                             }
 
                             onClick={(e) => {
+
                               e.stopPropagation();
 
                               handleImageChange(
                                 shoeId,
                                 imageIndex
                               );
+
                             }}
 
-                            aria-label={`Show image ${
-                              imageIndex +
-                              1
-                            }`}
+                            aria-label={
+                              `Show image ${
+                                imageIndex +
+                                1
+                              }`
+                            }
+
                           />
+
                         )
                       )}
 
                     </div>
+
                   )}
 
                 </div>
 
-                {/* ================= INFO ================= */}
+
+                {/* =================================================
+                    PRODUCT INFO
+                ================================================= */}
 
                 <div className="shoe-info">
 
-                  {/* Name */}
+
+                  {/* NAME */}
 
                   <h3>
                     {shoe.name}
                   </h3>
 
-                  {/* Category */}
+
+                  {/* CATEGORY */}
 
                   <p className="shoe-category">
+
                     {shoe.category}
+
                   </p>
 
-                  {/* Description */}
+
+                  {/* DESCRIPTION */}
 
                   {shoe.description && (
+
                     <p className="shoe-description">
+
                       {shoe.description}
+
                     </p>
+
                   )}
 
-                  {/* ================= RATING ================= */}
+
+                  {/* =================================================
+                      RATING
+                  ================================================= */}
 
                   <div className="rating">
+
 
                     <div className="stars">
 
                       {[1, 2, 3, 4, 5].map(
                         (star) => (
+
                           <button
                             key={star}
+
                             type="button"
 
                             className={
@@ -664,7 +932,9 @@ const Kids = () => {
                               Math.round(
                                 averageRating
                               )
+
                                 ? "star filled"
+
                                 : "star"
                             }
 
@@ -675,66 +945,107 @@ const Kids = () => {
                               )
                             }
 
-                            aria-label={`Rate ${star} stars`}
+                            aria-label={
+                              `Rate ${star} stars`
+                            }
+
                           >
+
                             ★
+
                           </button>
+
                         )
                       )}
 
                     </div>
 
+
                     <span className="rating-number">
+
                       {averageRating.toFixed(
                         1
                       )}
+
                     </span>
 
+
                     <span className="rating-count">
+
                       (
-                      {shoe.rating
-                        ?.totalRatings ||
-                        0}
+                      {
+                        shoe.rating
+                          ?.totalRatings ||
+                        0
+                      }
                       )
+
                     </span>
 
                   </div>
 
-                  {/* ================= PRICE ================= */}
+
+                  {/* =================================================
+                      PRICE
+                  ================================================= */}
 
                   <div className="price-section">
 
+
                     <h4 className="shoe-price">
+
                       Rs.{" "}
-                      {discountedPrice.toLocaleString()}
+
+                      {Math.round(
+                        discountedPrice
+                      ).toLocaleString(
+                        "en-PK"
+                      )}
+
                     </h4>
 
+
                     {discount > 0 && (
+
                       <span className="original-price">
+
                         Rs.{" "}
-                        {price.toLocaleString()}
+
+                        {price.toLocaleString(
+                          "en-PK"
+                        )}
+
                       </span>
+
                     )}
 
                   </div>
 
-                  {/* ================= SIZES ================= */}
+
+                  {/* =================================================
+                      SIZES
+                  ================================================= */}
 
                   {productRequiresSize && (
+
                     <div className="sizes">
 
                       <div className="size-buttons">
 
                         {(shoe.sizes || []).map(
                           (size) => (
+
                             <button
                               key={size}
+
                               type="button"
 
                               className={
                                 selectedSize ===
                                 size
+
                                   ? "selected-size"
+
                                   : ""
                               }
 
@@ -744,18 +1055,26 @@ const Kids = () => {
                                   size
                                 )
                               }
+
                             >
+
                               {size}
+
                             </button>
+
                           )
                         )}
 
                       </div>
 
                     </div>
+
                   )}
 
-                  {/* ================= CART ================= */}
+
+                  {/* =================================================
+                      ADD TO CART
+                  ================================================= */}
 
                   <button
                     className="add-cart"
@@ -766,20 +1085,28 @@ const Kids = () => {
                         shoe
                       )
                     }
+
                   >
+
                     Add to Cart
+
                   </button>
+
 
                 </div>
 
               </div>
+
             );
+
           })
 
         ) : (
 
           <p className="no-shoes">
+
             No kids products available.
+
           </p>
 
         )}
@@ -787,7 +1114,10 @@ const Kids = () => {
       </div>
 
     </section>
+
   );
+
 };
+
 
 export default Kids;
