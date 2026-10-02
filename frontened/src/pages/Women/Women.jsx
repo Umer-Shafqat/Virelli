@@ -27,20 +27,61 @@ const Women = () => {
 
 
   // =====================================================
-  // FILTER WOMEN SHOES
+  // SIZE REQUIRED CATEGORIES
+  // =====================================================
+
+  const sizeRequiredCategories = [
+    "Shoes",
+    "Hoodies",
+    "Chapal",
+    "Jackets",
+  ];
+
+
+  // =====================================================
+  // CHECK IF PRODUCT REQUIRES SIZE
+  // =====================================================
+
+  const requiresSize = (shoe) => {
+
+    const category = String(
+      shoe?.category || ""
+    )
+      .trim()
+      .toLowerCase();
+
+    return sizeRequiredCategories.some(
+      (requiredCategory) =>
+        category ===
+        requiredCategory.toLowerCase()
+    );
+
+  };
+
+
+  // =====================================================
+  // FILTER WOMEN PRODUCTS
   // =====================================================
 
   useEffect(() => {
 
-    setShoeList(
+    if (Array.isArray(shoes)) {
 
-      shoes.filter(
-        (item) =>
-          item.type?.toUpperCase() ===
-          "WOMEN"
-      )
+      setShoeList(
 
-    );
+        shoes.filter(
+          (item) =>
+            item.type?.toUpperCase() ===
+            "WOMEN"
+        )
+
+      );
+
+    } else {
+
+      setShoeList([]);
+
+    }
 
   }, [shoes]);
 
@@ -71,14 +112,20 @@ const Women = () => {
 
   const handleAddToCart = (shoe) => {
 
-    const selectedSize =
-      selectedSizes[shoe._id];
+    const shoeId =
+      shoe?._id ||
+      shoe?.id ||
+      shoe?.shoeId;
 
 
-    if (!selectedSize) {
+    // -----------------------------------------
+    // CHECK PRODUCT ID
+    // -----------------------------------------
+
+    if (!shoeId) {
 
       alert(
-        "Please select a size first"
+        "Product ID is missing"
       );
 
       return;
@@ -86,9 +133,50 @@ const Women = () => {
     }
 
 
+    const productRequiresSize =
+      requiresSize(shoe);
+
+
+    // =========================================
+    // PRODUCTS THAT REQUIRE SIZE
+    // Shoes / Hoodies / Chapal / Jackets
+    // =========================================
+
+    if (productRequiresSize) {
+
+      const selectedSize =
+        selectedSizes[shoeId];
+
+
+      if (!selectedSize) {
+
+        alert(
+          "Please select a size first"
+        );
+
+        return;
+
+      }
+
+
+      addToCart(
+        shoe,
+        selectedSize
+      );
+
+      return;
+
+    }
+
+
+    // =========================================
+    // PRODUCTS THAT DO NOT REQUIRE SIZE
+    // Caps / Watches
+    // =========================================
+
     addToCart(
       shoe,
-      selectedSize
+      "no-size"
     );
 
   };
@@ -326,6 +414,14 @@ const Women = () => {
 
 
           // =================================================
+          // SIZE REQUIREMENT
+          // =================================================
+
+          const productRequiresSize =
+            requiresSize(shoe);
+
+
+          // =================================================
           // CARD
           // =================================================
 
@@ -360,7 +456,7 @@ const Women = () => {
                     src={imageUrl}
                     alt={
                       shoe.name ||
-                      "Women's Shoe"
+                      "Women's Product"
                     }
 
                     onError={(e) => {
@@ -391,7 +487,7 @@ const Women = () => {
 
 
               {/* =================================================
-                  SHOE INFORMATION
+                  PRODUCT INFORMATION
               ================================================= */}
 
               <div className="shoe-info">
@@ -532,45 +628,49 @@ const Women = () => {
                     SIZES
                 ================================================= */}
 
-                <div className="sizes">
+                {productRequiresSize && (
 
-                  <div className="size-buttons">
+                  <div className="sizes">
 
-                    {(shoe.sizes || []).map(
-                      (size) => (
+                    <div className="size-buttons">
 
-                        <button
-                          key={size}
-                          type="button"
+                      {(shoe.sizes || []).map(
+                        (size) => (
 
-                          className={
-                            selectedSizes[
-                              shoe._id
-                            ] === size
+                          <button
+                            key={size}
+                            type="button"
 
-                              ? "selected-size"
+                            className={
+                              selectedSizes[
+                                shoe._id
+                              ] === size
 
-                              : ""
-                          }
+                                ? "selected-size"
 
-                          onClick={() =>
-                            handleSizeSelect(
-                              shoe._id,
-                              size
-                            )
-                          }
-                        >
+                                : ""
+                            }
 
-                          {size}
+                            onClick={() =>
+                              handleSizeSelect(
+                                shoe._id,
+                                size
+                              )
+                            }
+                          >
 
-                        </button>
+                            {size}
 
-                      )
-                    )}
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
 
                   </div>
 
-                </div>
+                )}
 
 
                 {/* =================================================
