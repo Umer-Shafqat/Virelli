@@ -95,11 +95,18 @@ const Men = () => {
       Array.isArray(shoe?.images) &&
       shoe.images.length > 0
     ) {
-      return shoe.images;
+      return shoe.images.filter(
+        (image) =>
+          typeof image === "string" &&
+          image.trim() !== ""
+      );
     }
 
     // Old database structure
-    if (shoe?.image) {
+    if (
+      typeof shoe?.image === "string" &&
+      shoe.image.trim() !== ""
+    ) {
       return [shoe.image];
     }
 
@@ -478,7 +485,7 @@ const Men = () => {
             // -----------------------------------------
 
             let currentImageIndex =
-              currentImages[shoeId] ||
+              currentImages[shoeId] ??
               0;
 
             if (
@@ -521,26 +528,24 @@ const Men = () => {
               <div
                 className="shoe-card"
                 key={shoeId}
+
+                onMouseEnter={() =>
+                  handleMouseEnter(
+                    shoeId,
+                    productImages
+                  )
+                }
+
+                onMouseLeave={() =>
+                  handleMouseLeave(
+                    shoeId
+                  )
+                }
               >
 
                 {/* ================= IMAGE ================= */}
 
-                <div
-                  className="shoe-image"
-
-                  onMouseEnter={() =>
-                    handleMouseEnter(
-                      shoeId,
-                      productImages
-                    )
-                  }
-
-                  onMouseLeave={() =>
-                    handleMouseLeave(
-                      shoeId
-                    )
-                  }
-                >
+                <div className="shoe-image">
 
                   {/* Discount */}
 
