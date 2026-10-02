@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
+import {
+  StoreContext,
+} from "../../Context/StoreContext/StoreContext";
 import "./Cart.css";
 import { useNavigate } from "react-router-dom";
 
@@ -76,7 +78,16 @@ const Cart = () => {
 
   const subtotal = cartEntries.reduce(
     (total, [key, quantity]) => {
-      const [shoeId] = key.split("-");
+      // Get only the product ID.
+      // This works for both:
+      // productId-M
+      // productId-no-size
+      const separatorIndex = key.indexOf("-");
+
+      const shoeId =
+        separatorIndex === -1
+          ? key
+          : key.slice(0, separatorIndex);
 
       const shoe = shoes.find(
         (item) =>
@@ -142,16 +153,44 @@ const Cart = () => {
                 ([key, quantity]) => {
 
                   // -----------------------------------------
-                  // GET SHOE ID + SIZE
+                  // GET PRODUCT ID + SIZE
+                  // -----------------------------------------
+                  //
+                  // IMPORTANT:
+                  // We cannot use:
+                  //
+                  // const [shoeId, size] = key.split("-");
+                  //
+                  // because:
+                  //
+                  // abc-no-size
+                  //
+                  // becomes:
+                  // ["abc", "no", "size"]
+                  //
+                  // Instead, split only at the FIRST "-".
                   // -----------------------------------------
 
-                  const [
-                    shoeId,
-                    size,
-                  ] = key.split("-");
+                  const separatorIndex =
+                    key.indexOf("-");
+
+                  const shoeId =
+                    separatorIndex === -1
+                      ? key
+                      : key.slice(
+                          0,
+                          separatorIndex
+                        );
+
+                  const size =
+                    separatorIndex === -1
+                      ? "no-size"
+                      : key.slice(
+                          separatorIndex + 1
+                        );
 
                   // -----------------------------------------
-                  // FIND SHOE
+                  // FIND PRODUCT
                   // -----------------------------------------
 
                   const shoe = shoes.find(
@@ -198,7 +237,7 @@ const Cart = () => {
                             src={imageUrl}
                             alt={
                               shoe.name ||
-                              "Shoe"
+                              "Product"
                             }
                             className="cart-shoe-image"
 
@@ -237,12 +276,37 @@ const Cart = () => {
                           </p>
                         )}
 
-                        <p>
-                          <strong>
-                            Size:
-                          </strong>{" "}
-                          {size}
-                        </p>
+                        {/* 
+                          Show size ONLY when product
+                          has a real size.
+
+                          Shoes:
+                          M / L / 42 etc.
+
+                          Hoodies:
+                          M / L / XL etc.
+
+                          Chapal:
+                          40 / 41 / 42 etc.
+
+                          Jackets:
+                          M / L / XL etc.
+
+                          Caps:
+                          hidden
+
+                          Watches:
+                          hidden
+                        */}
+
+                        {size !== "no-size" && (
+                          <p>
+                            <strong>
+                              Size:
+                            </strong>{" "}
+                            {size}
+                          </p>
+                        )}
 
                         <h3>
                           Rs.{" "}
@@ -342,6 +406,8 @@ const Cart = () => {
               </span>
 
             </div>
+
+            {/* DELIVERY */}
 
             <div className="amount-row">
 
