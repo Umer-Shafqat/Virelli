@@ -2,11 +2,14 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useRef,
 } from "react";
 
 import "./Kids.css";
 
-import { StoreContext } from "../../Context/StoreContext/StoreContext";
+import {
+  StoreContext,
+} from "../../Context/StoreContext/StoreContext";
 
 const Kids = () => {
   const {
@@ -20,6 +23,20 @@ const Kids = () => {
 
   const [selectedSizes, setSelectedSizes] =
     useState({});
+
+  // =====================================================
+  // CURRENT IMAGES
+  // =====================================================
+
+  const [currentImages, setCurrentImages] =
+    useState({});
+
+  // =====================================================
+  // HOVER INTERVALS
+  // =====================================================
+
+  const hoverIntervals =
+    useRef({});
 
   // =====================================================
   // CATEGORIES THAT REQUIRE SIZE
@@ -69,33 +86,37 @@ const Kids = () => {
   }, [shoes]);
 
   // =====================================================
-  // IMAGE URL
+  // GET PRODUCT IMAGES
   // =====================================================
 
-  const getImageUrl = (shoe) => {
-    let productImages = [];
-
+  const getProductImages = (shoe) => {
     // New structure: images array
     if (
       Array.isArray(shoe?.images) &&
       shoe.images.length > 0
     ) {
-      productImages = shoe.images;
+      return shoe.images;
     }
 
     // Old structure: single image
-    else if (shoe?.image) {
-      productImages = [shoe.image];
+    if (shoe?.image) {
+      return [shoe.image];
     }
 
-    if (productImages.length === 0) {
+    return [];
+  };
+
+  // =====================================================
+  // IMAGE URL
+  // =====================================================
+
+  const getImageUrl = (image) => {
+    if (!image) {
       return "";
     }
 
-    const image = productImages[0];
-
     // -----------------------------------------
-    // CLOUDINARY IMAGE
+    // CLOUDINARY / EXTERNAL IMAGE
     // -----------------------------------------
 
     if (
@@ -110,6 +131,17 @@ const Kids = () => {
 
     // -----------------------------------------
     // OLD LOCAL IMAGE
+    // -----------------------------------------
+
+    if (
+      typeof image === "string" &&
+      image.startsWith("/images/")
+    ) {
+      return `${url}${image}`;
+    }
+
+    // -----------------------------------------
+    // LOCAL IMAGE FILENAME
     // -----------------------------------------
 
     if (typeof image === "string") {
@@ -182,6 +214,7 @@ const Kids = () => {
         alert(
           "Please select a size first"
         );
+
         return;
       }
 
@@ -214,9 +247,9 @@ const Kids = () => {
   ) => {
     setShoeList((prevShoes) =>
       prevShoes.map((shoe) => {
-
-        if (shoe._id === shoeId) {
-
+        if (
+          shoe._id === shoeId
+        ) {
           const oldTotalRatings =
             shoe.rating
               ?.totalRatings || 0;
@@ -243,6 +276,127 @@ const Kids = () => {
       })
     );
   };
+
+  // =====================================================
+  // MOUSE ENTER
+  // =====================================================
+
+  const handleMouseEnter = (
+    shoeId,
+    images
+  ) => {
+    if (
+      !shoeId ||
+      !Array.isArray(images) ||
+      images.length <= 1
+    ) {
+      return;
+    }
+
+    // Clear existing interval
+    if (
+      hoverIntervals.current[shoeId]
+    ) {
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+    }
+
+    // Start from second image
+    let currentIndex = 1;
+
+    setCurrentImages((prev) => ({
+      ...prev,
+      [shoeId]: currentIndex,
+    }));
+
+    // =================================================
+    // CYCLE THROUGH ALL IMAGES
+    // =================================================
+
+    hoverIntervals.current[shoeId] =
+      setInterval(() => {
+        currentIndex =
+          (currentIndex + 1) %
+          images.length;
+
+        setCurrentImages((prev) => ({
+          ...prev,
+          [shoeId]: currentIndex,
+        }));
+      }, 1000);
+  };
+
+  // =====================================================
+  // MOUSE LEAVE
+  // =====================================================
+
+  const handleMouseLeave = (
+    shoeId
+  ) => {
+    // Stop slideshow
+    if (
+      hoverIntervals.current[shoeId]
+    ) {
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+
+      delete hoverIntervals.current[
+        shoeId
+      ];
+    }
+
+    // Return to first image
+    setCurrentImages((prev) => ({
+      ...prev,
+      [shoeId]: 0,
+    }));
+  };
+
+  // =====================================================
+  // MANUAL IMAGE CHANGE
+  // =====================================================
+
+  const handleImageChange = (
+    shoeId,
+    imageIndex
+  ) => {
+    // Stop hover slideshow
+    if (
+      hoverIntervals.current[shoeId]
+    ) {
+      clearInterval(
+        hoverIntervals.current[shoeId]
+      );
+
+      delete hoverIntervals.current[
+        shoeId
+      ];
+    }
+
+    setCurrentImages((prev) => ({
+      ...prev,
+      [shoeId]: imageIndex,
+    }));
+  };
+
+  // =====================================================
+  // CLEANUP HOVER INTERVALS
+  // =====================================================
+
+  useEffect(() => {
+    const intervals =
+      hoverIntervals.current;
+
+    return () => {
+      Object.values(intervals).forEach(
+        (interval) => {
+          clearInterval(interval);
+        }
+      );
+    };
+  }, []);
 
   // =====================================================
   // RETURN
@@ -273,6 +427,14 @@ const Kids = () => {
         {shoeList.length > 0 ? (
 
           shoeList.map((shoe) => {
+            // -----------------------------------------
+            // PRODUCT ID
+            // -----------------------------------------
+
+            const shoeId =
+              shoe?._id ||
+              shoe?.id ||
+              shoe?.shoeId;
 
             // -----------------------------------------
             // PRICE
@@ -301,18 +463,45 @@ const Kids = () => {
               shoe.rating &&
               shoe.rating.totalRatings >
                 0
-
                 ? shoe.rating.ratingSum /
                   shoe.rating.totalRatings
-
                 : 5;
 
             // -----------------------------------------
-            // IMAGE
+            // PRODUCT IMAGES
             // -----------------------------------------
 
+            const productImages =
+              getProductImages(shoe);
+
+            // -----------------------------------------
+            // CURRENT IMAGE INDEX
+            // -----------------------------------------
+
+            let currentImageIndex =
+              currentImages[shoeId] ||
+              0;
+
+            if (
+              currentImageIndex >=
+              productImages.length
+            ) {
+              currentImageIndex = 0;
+            }
+
+            // -----------------------------------------
+            // CURRENT IMAGE
+            // -----------------------------------------
+
+            const currentImage =
+              productImages[
+                currentImageIndex
+              ];
+
             const imageUrl =
-              getImageUrl(shoe);
+              getImageUrl(
+                currentImage
+              );
 
             // -----------------------------------------
             // PRODUCT SIZE REQUIREMENT
@@ -326,20 +515,32 @@ const Kids = () => {
             // -----------------------------------------
 
             const selectedSize =
-              selectedSizes[
-                shoe._id
-              ];
+              selectedSizes[shoeId];
 
             return (
-
               <div
                 className="shoe-card"
-                key={shoe._id}
+                key={shoeId}
               >
 
                 {/* ================= IMAGE ================= */}
 
-                <div className="shoe-image">
+                <div
+                  className="shoe-image"
+
+                  onMouseEnter={() =>
+                    handleMouseEnter(
+                      shoeId,
+                      productImages
+                    )
+                  }
+
+                  onMouseLeave={() =>
+                    handleMouseLeave(
+                      shoeId
+                    )
+                  }
+                >
 
                   {/* Discount */}
 
@@ -352,13 +553,13 @@ const Kids = () => {
                   {/* Product Image */}
 
                   {imageUrl ? (
-
                     <img
                       src={imageUrl}
                       alt={
                         shoe.name ||
                         "Kids product"
                       }
+                      draggable="false"
 
                       onError={(e) => {
                         console.error(
@@ -370,13 +571,54 @@ const Kids = () => {
                           "none";
                       }}
                     />
-
                   ) : (
-
                     <div className="image-placeholder">
                       No Image
                     </div>
+                  )}
 
+                  {/* ================= IMAGE DOTS ================= */}
+
+                  {productImages.length >
+                    1 && (
+                    <div className="image-dots">
+
+                      {productImages.map(
+                        (
+                          _,
+                          imageIndex
+                        ) => (
+                          <button
+                            key={
+                              imageIndex
+                            }
+                            type="button"
+
+                            className={
+                              currentImageIndex ===
+                              imageIndex
+                                ? "image-dot active"
+                                : "image-dot"
+                            }
+
+                            onClick={(e) => {
+                              e.stopPropagation();
+
+                              handleImageChange(
+                                shoeId,
+                                imageIndex
+                              );
+                            }}
+
+                            aria-label={`Show image ${
+                              imageIndex +
+                              1
+                            }`}
+                          />
+                        )
+                      )}
+
+                    </div>
                   )}
 
                 </div>
@@ -413,7 +655,6 @@ const Kids = () => {
 
                       {[1, 2, 3, 4, 5].map(
                         (star) => (
-
                           <button
                             key={star}
                             type="button"
@@ -429,7 +670,7 @@ const Kids = () => {
 
                             onClick={() =>
                               handleRating(
-                                shoe._id,
+                                shoeId,
                                 star
                               )
                             }
@@ -438,7 +679,6 @@ const Kids = () => {
                           >
                             ★
                           </button>
-
                         )
                       )}
 
@@ -470,12 +710,10 @@ const Kids = () => {
                     </h4>
 
                     {discount > 0 && (
-
                       <span className="original-price">
                         Rs.{" "}
                         {price.toLocaleString()}
                       </span>
-
                     )}
 
                   </div>
@@ -483,14 +721,12 @@ const Kids = () => {
                   {/* ================= SIZES ================= */}
 
                   {productRequiresSize && (
-
                     <div className="sizes">
 
                       <div className="size-buttons">
 
                         {(shoe.sizes || []).map(
                           (size) => (
-
                             <button
                               key={size}
                               type="button"
@@ -504,21 +740,19 @@ const Kids = () => {
 
                               onClick={() =>
                                 handleSizeSelect(
-                                  shoe._id,
+                                  shoeId,
                                   size
                                 )
                               }
                             >
                               {size}
                             </button>
-
                           )
                         )}
 
                       </div>
 
                     </div>
-
                   )}
 
                   {/* ================= CART ================= */}
@@ -539,7 +773,6 @@ const Kids = () => {
                 </div>
 
               </div>
-
             );
           })
 
