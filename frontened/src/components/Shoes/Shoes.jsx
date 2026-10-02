@@ -291,6 +291,7 @@ const Shoes = ({ limit, products }) => {
         alert(
           "Please select a size first"
         );
+
         return;
       }
 
@@ -396,8 +397,7 @@ const Shoes = ({ limit, products }) => {
     shoeId,
     imageIndex
   ) => {
-    // Stop hover slideshow when
-    // user manually selects an image
+    // Stop hover slideshow
     if (hoverIntervals.current[shoeId]) {
       clearInterval(
         hoverIntervals.current[shoeId]
@@ -430,14 +430,14 @@ const Shoes = ({ limit, products }) => {
       return;
     }
 
-    // Clear existing interval first
+    // Clear existing interval
     if (hoverIntervals.current[shoeId]) {
       clearInterval(
         hoverIntervals.current[shoeId]
       );
     }
 
-    // Start from image 2
+    // Start from second image
     let currentIndex = 1;
 
     setCurrentImages((prev) => ({
@@ -445,7 +445,10 @@ const Shoes = ({ limit, products }) => {
       [shoeId]: currentIndex,
     }));
 
-    // Swap through ALL images
+    // =================================================
+    // CYCLE THROUGH ALL IMAGES
+    // =================================================
+
     hoverIntervals.current[shoeId] =
       setInterval(() => {
         currentIndex =
@@ -466,7 +469,7 @@ const Shoes = ({ limit, products }) => {
   const handleMouseLeave = (
     shoeId
   ) => {
-    // Stop image slideshow
+    // Stop slideshow
     if (hoverIntervals.current[shoeId]) {
       clearInterval(
         hoverIntervals.current[shoeId]
@@ -489,12 +492,18 @@ const Shoes = ({ limit, products }) => {
   // =====================================================
 
   useEffect(() => {
+    // IMPORTANT:
+    // Capture the current ref value so
+    // ESLint does not complain during cleanup.
+    const intervals =
+      hoverIntervals.current;
+
     return () => {
-      Object.values(
-        hoverIntervals.current
-      ).forEach((interval) => {
-        clearInterval(interval);
-      });
+      Object.values(intervals).forEach(
+        (interval) => {
+          clearInterval(interval);
+        }
+      );
     };
   }, []);
 
