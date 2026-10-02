@@ -12,9 +12,14 @@ import "./Shoes.css";
 import { StoreContext } from "../../Context/StoreContext/StoreContext";
 
 const Shoes = ({ limit, products }) => {
-  const { shoes, addToCart, url } = useContext(StoreContext);
+  const {
+    shoes,
+    addToCart,
+    url,
+  } = useContext(StoreContext);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] =
+    useSearchParams();
 
   const selectedCategory =
     searchParams.get("category");
@@ -31,35 +36,67 @@ const Shoes = ({ limit, products }) => {
   const touchStartX = useRef({});
 
   // =====================================================
-  // PREPARE SHOES
+  // CATEGORIES THAT REQUIRE SIZE
+  // =====================================================
+
+  const sizeRequiredCategories = [
+    "Shoes",
+    "Hoodies",
+    "Chapal",
+    "Jackets",
+  ];
+
+  // =====================================================
+  // CHECK IF PRODUCT REQUIRES SIZE
+  // =====================================================
+
+  const requiresSize = (shoe) => {
+    const category = String(
+      shoe?.category || ""
+    )
+      .trim()
+      .toLowerCase();
+
+    return sizeRequiredCategories.some(
+      (requiredCategory) =>
+        category ===
+        requiredCategory.toLowerCase()
+    );
+  };
+
+  // =====================================================
+  // PREPARE PRODUCTS
   // =====================================================
 
   useEffect(() => {
     const list =
-      Array.isArray(products) && products.length > 0
+      Array.isArray(products) &&
+      products.length > 0
         ? products
         : shoes || [];
 
-    const normalizedList = list.map((shoe) => ({
-      ...shoe,
+    const normalizedList = list.map(
+      (shoe) => ({
+        ...shoe,
 
-      _id:
-        shoe._id ||
-        shoe.id ||
-        shoe.shoeId,
+        _id:
+          shoe._id ||
+          shoe.id ||
+          shoe.shoeId,
 
-      images:
-        Array.isArray(shoe.images) &&
-        shoe.images.length > 0
-          ? shoe.images
-          : shoe.image
-          ? [shoe.image]
-          : [],
+        images:
+          Array.isArray(shoe.images) &&
+          shoe.images.length > 0
+            ? shoe.images
+            : shoe.image
+            ? [shoe.image]
+            : [],
 
-      category: String(
-        shoe.category || "Shoes"
-      ).trim(),
-    }));
+        category: String(
+          shoe.category || "Shoes"
+        ).trim(),
+      })
+    );
 
     setShoeList(normalizedList);
   }, [products, shoes]);
@@ -68,32 +105,39 @@ const Shoes = ({ limit, products }) => {
   // CATEGORY FILTER
   // =====================================================
 
-  const categoryFilteredShoes = selectedCategory
-    ? shoeList.filter((shoe) => {
-        const productCategory = String(
-          shoe.category || ""
-        )
-          .trim()
-          .toLowerCase();
+  const categoryFilteredShoes =
+    selectedCategory
+      ? shoeList.filter((shoe) => {
+          const productCategory =
+            String(
+              shoe.category || ""
+            )
+              .trim()
+              .toLowerCase();
 
-        const requestedCategory = String(
-          selectedCategory || ""
-        )
-          .trim()
-          .toLowerCase();
+          const requestedCategory =
+            String(
+              selectedCategory || ""
+            )
+              .trim()
+              .toLowerCase();
 
-        return (
-          productCategory === requestedCategory
-        );
-      })
-    : shoeList;
+          return (
+            productCategory ===
+            requestedCategory
+          );
+        })
+      : shoeList;
 
   // =====================================================
   // LIMIT PRODUCTS
   // =====================================================
 
   const displayedShoes = limit
-    ? categoryFilteredShoes.slice(0, limit)
+    ? categoryFilteredShoes.slice(
+        0,
+        limit
+      )
     : categoryFilteredShoes;
 
   // =====================================================
@@ -150,7 +194,7 @@ const Shoes = ({ limit, products }) => {
     size
   ) => {
     if (!shoeId) {
-      alert("Shoe ID is missing");
+      alert("Product ID is missing");
       return;
     }
 
@@ -210,26 +254,53 @@ const Shoes = ({ limit, products }) => {
       shoe?.id ||
       shoe?.shoeId;
 
-    const selectedSize =
-      selectedSizes[shoeId];
-
     if (!shoeId) {
-      alert("Shoe ID is missing");
+      alert("Product ID is missing");
 
       console.error(
-        "Shoe object does not contain an ID:",
+        "Product object does not contain an ID:",
         shoe
       );
 
       return;
     }
 
-    if (!selectedSize) {
-      alert("Please select a size first");
+    const productRequiresSize =
+      requiresSize(shoe);
+
+    // =================================================
+    // PRODUCTS THAT REQUIRE SIZE
+    // Shoes / Hoodies / Chapal / Jackets
+    // =================================================
+
+    if (productRequiresSize) {
+      const selectedSize =
+        selectedSizes[shoeId];
+
+      if (!selectedSize) {
+        alert(
+          "Please select a size first"
+        );
+        return;
+      }
+
+      addToCart(
+        shoe,
+        selectedSize
+      );
+
       return;
     }
 
-    addToCart(shoeId, selectedSize);
+    // =================================================
+    // PRODUCTS THAT DO NOT REQUIRE SIZE
+    // Caps / Watches
+    // =================================================
+
+    addToCart(
+      shoe,
+      "no-size"
+    );
   };
 
   // =====================================================
@@ -273,7 +344,8 @@ const Shoes = ({ limit, products }) => {
         const currentIndex =
           prev[shoeId] || 0;
 
-        let newIndex = currentIndex;
+        let newIndex =
+          currentIndex;
 
         // Swipe left
         if (difference > 0) {
@@ -301,7 +373,9 @@ const Shoes = ({ limit, products }) => {
       });
     }
 
-    delete touchStartX.current[shoeId];
+    delete touchStartX.current[
+      shoeId
+    ];
   };
 
   // =====================================================
@@ -358,6 +432,7 @@ const Shoes = ({ limit, products }) => {
         {/* ================= HEADING ================= */}
 
         <div className="shoes-heading">
+
           <h2>
             {selectedCategory
               ? `${selectedCategory} Collection`
@@ -367,11 +442,12 @@ const Shoes = ({ limit, products }) => {
           <p>
             {selectedCategory
               ? `Explore our latest ${selectedCategory.toLowerCase()} products`
-              : "Explore all of our latest shoe designs"}
+              : "Explore all of our latest products"}
           </p>
+
         </div>
 
-        {/* ================= SHOES GRID ================= */}
+        {/* ================= PRODUCTS GRID ================= */}
 
         <div className="shoes-grid">
 
@@ -381,7 +457,7 @@ const Shoes = ({ limit, products }) => {
               (shoe, index) => {
 
                 // ---------------------------------------
-                // SHOE ID
+                // PRODUCT ID
                 // ---------------------------------------
 
                 const shoeId =
@@ -390,11 +466,20 @@ const Shoes = ({ limit, products }) => {
                   shoe?.shoeId;
 
                 // ---------------------------------------
+                // CHECK SIZE REQUIREMENT
+                // ---------------------------------------
+
+                const productRequiresSize =
+                  requiresSize(shoe);
+
+                // ---------------------------------------
                 // IMAGES
                 // ---------------------------------------
 
                 const images =
-                  Array.isArray(shoe.images) &&
+                  Array.isArray(
+                    shoe.images
+                  ) &&
                   shoe.images.length > 0
                     ? shoe.images
                     : shoe.image
@@ -406,7 +491,9 @@ const Shoes = ({ limit, products }) => {
                 // ---------------------------------------
 
                 let currentImageIndex =
-                  currentImages[shoeId] || 0;
+                  currentImages[
+                    shoeId
+                  ] || 0;
 
                 if (
                   currentImageIndex >=
@@ -416,17 +503,23 @@ const Shoes = ({ limit, products }) => {
                 }
 
                 const currentImage =
-                  images[currentImageIndex];
+                  images[
+                    currentImageIndex
+                  ];
 
                 const imageUrl =
-                  getImageUrl(currentImage);
+                  getImageUrl(
+                    currentImage
+                  );
 
                 // ---------------------------------------
                 // PRICE
                 // ---------------------------------------
 
                 const price =
-                  Number(shoe.price || 0);
+                  Number(
+                    shoe.price || 0
+                  );
 
                 const discount =
                   Number(
@@ -461,13 +554,16 @@ const Shoes = ({ limit, products }) => {
                 // ---------------------------------------
 
                 const selectedSize =
-                  selectedSizes[shoeId];
+                  selectedSizes[
+                    shoeId
+                  ];
 
                 // ---------------------------------------
                 // PRODUCT CARD
                 // ---------------------------------------
 
                 return (
+
                   <div
                     className="shoe-card"
                     key={
@@ -520,11 +616,12 @@ const Shoes = ({ limit, products }) => {
                       {/* Product Image */}
 
                       {imageUrl ? (
+
                         <img
                           src={imageUrl}
                           alt={
                             shoe.name ||
-                            "Shoe"
+                            "Product"
                           }
                           draggable="false"
 
@@ -538,15 +635,19 @@ const Shoes = ({ limit, products }) => {
                               "none";
                           }}
                         />
+
                       ) : (
+
                         <div className="image-placeholder">
                           No Image
                         </div>
+
                       )}
 
                       {/* Image Dots */}
 
                       {images.length > 1 && (
+
                         <div className="image-dots">
 
                           {images.map(
@@ -554,6 +655,7 @@ const Shoes = ({ limit, products }) => {
                               _,
                               imageIndex
                             ) => (
+
                               <button
                                 key={
                                   imageIndex
@@ -581,10 +683,12 @@ const Shoes = ({ limit, products }) => {
                                   1
                                 }`}
                               />
+
                             )
                           )}
 
                         </div>
+
                       )}
 
                     </div>
@@ -621,6 +725,7 @@ const Shoes = ({ limit, products }) => {
 
                           {[1, 2, 3, 4, 5].map(
                             (star) => (
+
                               <button
                                 key={star}
                                 type="button"
@@ -645,6 +750,7 @@ const Shoes = ({ limit, products }) => {
                               >
                                 ★
                               </button>
+
                             )
                           )}
 
@@ -682,38 +788,44 @@ const Shoes = ({ limit, products }) => {
 
                       {/* ================= SIZES ================= */}
 
-                      <div className="sizes">
+                      {productRequiresSize && (
 
-                        <span className="size-label">
-                          Size:
-                        </span>
+                        <div className="sizes">
 
-                        {(shoe.sizes || []).map(
-                          (size) => (
-                            <button
-                              key={size}
-                              type="button"
+                          <span className="size-label">
+                            Size:
+                          </span>
 
-                              className={
-                                selectedSize ===
-                                size
-                                  ? "size-btn selected"
-                                  : "size-btn"
-                              }
+                          {(shoe.sizes || []).map(
+                            (size) => (
 
-                              onClick={() =>
-                                handleSizeSelect(
-                                  shoeId,
+                              <button
+                                key={size}
+                                type="button"
+
+                                className={
+                                  selectedSize ===
                                   size
-                                )
-                              }
-                            >
-                              {size}
-                            </button>
-                          )
-                        )}
+                                    ? "size-btn selected"
+                                    : "size-btn"
+                                }
 
-                      </div>
+                                onClick={() =>
+                                  handleSizeSelect(
+                                    shoeId,
+                                    size
+                                  )
+                                }
+                              >
+                                {size}
+                              </button>
+
+                            )
+                          )}
+
+                        </div>
+
+                      )}
 
                       {/* ================= CART ================= */}
 
@@ -733,6 +845,7 @@ const Shoes = ({ limit, products }) => {
                     </div>
 
                   </div>
+
                 );
               }
             )
@@ -740,9 +853,11 @@ const Shoes = ({ limit, products }) => {
           ) : (
 
             <p className="no-shoes">
+
               {selectedCategory
                 ? `No ${selectedCategory.toLowerCase()} products available.`
-                : "No shoes available."}
+                : "No products available."}
+
             </p>
 
           )}
