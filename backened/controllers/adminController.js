@@ -30,10 +30,12 @@ export const searchAdmin = async (req, res) => {
 
     const orders = await orderModel.find({
       $or: [
-        ...(q.match(/^[0-9a-fA-F]{24}$/)
+        ...( /^[0-9a-fA-F]{24}$/.test(q)
           ? [{ _id: q }]
           : []),
-        { "customer.name": { $regex: q, $options: "i" } },
+        { "customer.firstName": { $regex: q, $options: "i" } },
+        { "customer.lastName": { $regex: q, $options: "i" } },
+        { "customer.email": { $regex: q, $options: "i" } },
       ],
     });
 
@@ -60,14 +62,13 @@ const getDashboardData = async () => {
     totalOrders,
     revenueResult,
     recentOrders,
+    orders,
   ] = await Promise.all([
     userModel.countDocuments(),
 
     shoeModel.countDocuments(),
 
-    orderModel.countDocuments({
-      status: { $ne: "Cancelled" },
-    }),
+    orderModel.countDocuments(),
 
     orderModel.aggregate([
       {
@@ -87,9 +88,13 @@ const getDashboardData = async () => {
 
     orderModel
       .find({})
-      .populate("userId", "name email")
       .sort({ createdAt: -1 })
-      .limit(5),
+      .limit(5)
+      .lean(),
+
+    orderModel.find({
+      status: { $ne: "Cancelled" },
+    }).select("items"),
   ]);
 
   const revenue =
@@ -98,20 +103,22 @@ const getDashboardData = async () => {
       : 0;
 
   const averageOrderValue =
-    totalOrders > 0 ? revenue / totalOrders : 0;
+    orders.length > 0
+      ? revenue / orders.length
+      : 0;
 
   const categoryMap = {};
-
-  const orders = await orderModel.find({
-    status: { $ne: "Cancelled" },
-  });
+  let totalItemsSold = 0;
 
   orders.forEach((order) => {
-    order.items.forEach((item) => {
+    (order.items || []).forEach((item) => {
       const category = item.category || "Other";
+      const quantity = Number(item.quantity) || 0;
 
       categoryMap[category] =
-        (categoryMap[category] || 0) + (item.quantity || 0);
+        (categoryMap[category] || 0) + quantity;
+
+      totalItemsSold += quantity;
     });
   });
 
@@ -126,9 +133,11 @@ const getDashboardData = async () => {
   }
 
   return {
-    totalUsers,
     totalShoes,
+    totalItems: totalShoes,
+    totalItemsSold,
     totalOrders,
+    totalUsers,
     revenue,
     averageOrderValue,
     topSellingCategory,
@@ -139,6 +148,14 @@ const getDashboardData = async () => {
 export const getDashboard = async (req, res) => {
   try {
     const dashboard = await getDashboardData();
+
+    console.log("Dashboard Statistics:", {
+      totalItems: dashboard.totalItems,
+      totalItemsSold: dashboard.totalItemsSold,
+      totalOrders: dashboard.totalOrders,
+      totalUsers: dashboard.totalUsers,
+      revenue: dashboard.revenue,
+    });
 
     return res.status(200).json({
       success: true,
@@ -215,7 +232,6 @@ const getAllOrders = async (req, res) => {
   try {
     const orders = await orderModel
       .find({})
-      .populate("userId", "name email")
       .sort({ createdAt: -1 });
 
     return res.json({
@@ -282,6 +298,7 @@ const getAnalytics = async (req, res) => {
 const getDailySales = async (req, res) => {
   try {
     const sevenDaysAgo = new Date();
+
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
     sevenDaysAgo.setHours(0, 0, 0, 0);
 
@@ -310,6 +327,7 @@ const getDailySales = async (req, res) => {
 
     for (let i = 6; i >= 0; i--) {
       const date = new Date();
+
       date.setDate(date.getDate() - i);
 
       const day = date.getDate();
