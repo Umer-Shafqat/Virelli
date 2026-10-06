@@ -17,12 +17,19 @@ const authMiddleware = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    if (!decoded.id) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid user token",
+      });
+    }
+
     req.user = decoded;
     req.userId = decoded.id;
 
     next();
   } catch (error) {
-    console.log(error);
+    console.log("Auth Error:", error);
 
     return res.status(401).json({
       success: false,
