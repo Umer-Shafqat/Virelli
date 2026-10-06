@@ -4,595 +4,301 @@ import axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 
-import "../Orders/Orders.css";
-
-
-// =====================================================
-// API URL
-// =====================================================
+import "./Order.css";
 
 const API_URL =
   process.env.REACT_APP_API_URL ||
   "http://localhost:4000";
 
-
-// =====================================================
-// LIST SHOES
-// =====================================================
-
-const ListShoes = () => {
-
-  const [shoes, setShoes] =
-    useState([]);
-
-  const [loading, setLoading] =
-    useState(true);
-
+const Order = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // =====================================================
-  // FETCH PRODUCTS
+  // FETCH ALL ORDERS
   // =====================================================
 
-  const fetchShoes = async () => {
-
+  const fetchOrders = async () => {
     try {
-
       setLoading(true);
 
-
-      const response =
-        await axios.get(
-          `${API_URL}/api/shoes/list`
-        );
-
-
-      console.log(
-        "List Shoes Response:",
-        response.data
+      const response = await axios.get(
+        `${API_URL}/api/order/list`
       );
 
+      console.log("Orders Response:", response.data);
 
-      if (
-        response.data.success
-      ) {
-
-        setShoes(
-          response.data.data || []
-        );
-
+      if (response.data.success) {
+        setOrders(response.data.data || []);
       } else {
-
         alert(
           response.data.message ||
-          "Unable to fetch products."
+            "Unable to fetch orders."
         );
-
       }
-
     } catch (error) {
-
-      console.error(
-        "Fetch shoes error:",
-        error
-      );
-
+      console.error("Fetch orders error:", error);
 
       if (error.response) {
-
         console.error(
           "Server response:",
           error.response.data
         );
-
-        console.error(
-          "Status:",
-          error.response.status
-        );
-
-      } else if (
-        error.request
-      ) {
-
-        console.error(
-          "No response received from server."
-        );
-
       }
 
-
-      alert(
-        "Failed to fetch shoes."
-      );
-
+      alert("Failed to fetch orders.");
     } finally {
-
       setLoading(false);
-
     }
-
   };
-
-
-  // =====================================================
-  // LOAD PRODUCTS
-  // =====================================================
 
   useEffect(() => {
-
-    fetchShoes();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-
+    fetchOrders();
   }, []);
 
-
   // =====================================================
-  // DELETE PRODUCT
+  // ORDER CODE
   // =====================================================
 
-  const deleteShoe = async (id) => {
-
-    const confirmDelete =
-      window.confirm(
-        "Are you sure you want to delete this product?"
-      );
-
-
-    if (!confirmDelete) {
-
-      return;
-
-    }
-
-
-    try {
-
-      const response =
-        await axios.delete(
-          `${API_URL}/api/shoes/${id}`
-        );
-
-
-      if (
-        response.data.success
-      ) {
-
-        alert(
-          "Product deleted successfully."
-        );
-
-
-        fetchShoes();
-
-      } else {
-
-        alert(
-          response.data.message ||
-          "Unable to delete product."
-        );
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Delete product error:",
-        error
-      );
-
-
-      alert(
-        "Unable to delete product."
-      );
-
-    }
-
+  const getOrderCode = (order) => {
+    return (
+      order.orderCode ||
+      order.order_code ||
+      order.orderId ||
+      order.orderID ||
+      order._id ||
+      "N/A"
+    );
   };
 
-
   // =====================================================
-  // GET PRODUCT IMAGE
+  // CUSTOMER NAME
   // =====================================================
 
-  const getProductImage = (
-    shoe
-  ) => {
+  const getCustomerName = (order) => {
+    if (order.customerName) return order.customerName;
 
-    // =================================================
-    // NEW CLOUDINARY STRUCTURE
-    // =================================================
+    if (order.user?.name) return order.user.name;
 
-    if (
-      Array.isArray(
-        shoe.images
-      ) &&
-      shoe.images.length > 0
-    ) {
-
-      const image =
-        shoe.images[0];
-
-
-      // ---------------------------------------------
-      // CLOUDINARY URL
-      // ---------------------------------------------
-
-      if (
-        typeof image === "string" &&
-        (
-          image.startsWith(
-            "http://"
-          ) ||
-          image.startsWith(
-            "https://"
-          )
-        )
-      ) {
-
-        return image;
-
-      }
-
-
-      // ---------------------------------------------
-      // OLD LOCAL IMAGE SUPPORT
-      // ---------------------------------------------
-
-      if (
-        typeof image === "string"
-      ) {
-
-        return `${API_URL}/images/${image}`;
-
-      }
-
+    if (order.user?.firstName || order.user?.lastName) {
+      return `${order.user?.firstName || ""} ${
+        order.user?.lastName || ""
+      }`.trim();
     }
 
-
-    // =================================================
-    // OLD `image` FIELD SUPPORT
-    // =================================================
-
-    if (
-      shoe.image
-    ) {
-
-      // ---------------------------------------------
-      // IF image IS ALREADY URL
-      // ---------------------------------------------
-
-      if (
-        typeof shoe.image ===
-          "string" &&
-        (
-          shoe.image.startsWith(
-            "http://"
-          ) ||
-          shoe.image.startsWith(
-            "https://"
-          )
-        )
-      ) {
-
-        return shoe.image;
-
-      }
-
-
-      // ---------------------------------------------
-      // OLD LOCAL IMAGE
-      // ---------------------------------------------
-
-      return `${API_URL}/images/${shoe.image}`;
-
+    if (order.address?.firstName || order.address?.lastName) {
+      return `${order.address?.firstName || ""} ${
+        order.address?.lastName || ""
+      }`.trim();
     }
 
-
-    // =================================================
-    // NO IMAGE
-    // =================================================
-
-    return "/no-image.png";
-
+    return order.name || "Customer";
   };
 
+  // =====================================================
+  // CUSTOMER EMAIL
+  // =====================================================
+
+  const getCustomerEmail = (order) => {
+    return (
+      order.email ||
+      order.user?.email ||
+      order.customerEmail ||
+      "-"
+    );
+  };
+
+  // =====================================================
+  // TOTAL AMOUNT
+  // =====================================================
+
+  const getTotalAmount = (order) => {
+    const amount =
+      order.amount ??
+      order.totalAmount ??
+      order.total ??
+      order.price ??
+      0;
+
+    return Number(amount).toLocaleString("en-PK");
+  };
+
+  // =====================================================
+  // ORDER STATUS
+  // =====================================================
+
+  const getStatus = (order) => {
+    return (
+      order.status ||
+      order.orderStatus ||
+      "Pending"
+    );
+  };
+
+  // =====================================================
+  // ORDER DATE
+  // =====================================================
+
+  const getOrderDate = (order) => {
+    const date =
+      order.createdAt ||
+      order.date ||
+      order.orderDate;
+
+    if (!date) return "-";
+
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+      return date;
+    }
+
+    return parsedDate.toLocaleDateString("en-PK", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // =====================================================
+  // STATUS CLASS
+  // =====================================================
+
+  const getStatusClass = (status) => {
+    const value = String(status).toLowerCase();
+
+    if (
+      value === "delivered" ||
+      value === "completed"
+    ) {
+      return "status delivered";
+    }
+
+    if (
+      value === "cancelled" ||
+      value === "canceled"
+    ) {
+      return "status cancelled";
+    }
+
+    if (
+      value === "shipped" ||
+      value === "out for delivery"
+    ) {
+      return "status shipped";
+    }
+
+    return "status pending";
+  };
 
   // =====================================================
   // PAGE
   // =====================================================
 
   return (
-
-    <div className="listshoes-page">
-
-
-      {/* =================================================
-          SIDEBAR
-      ================================================= */}
-
+    <div className="order-page">
       <Sidebar />
-
-
-      {/* =================================================
-          NAVBAR
-      ================================================= */}
 
       <Navbar />
 
+      <div className="order-content">
+        <div className="order-card">
 
-      {/* =================================================
-          CONTENT
-      ================================================= */}
-
-      <div className="listshoes-content">
-
-        <div className="listshoes-card">
-
-
-          {/* =================================================
-              HEADER
-          ================================================= */}
-
+          {/* HEADER */}
           <div className="page-header">
-
-            <h2>
-              All Products
-            </h2>
-
+            <div>
+              <h2>Orders</h2>
+              <p>View orders placed by customers</p>
+            </div>
 
             <span>
-              Total: {shoes.length}
+              Total Orders: {orders.length}
             </span>
-
           </div>
 
-
-          {/* =================================================
-              LOADING
-          ================================================= */}
-
+          {/* LOADING */}
           {loading ? (
-
             <h3 className="loading-text">
-
-              Loading Products...
-
+              Loading Orders...
             </h3>
-
-
-          ) : shoes.length === 0 ? (
-
-            /* =================================================
-               EMPTY
-            ================================================= */
-
-            <h3 className="loading-text">
-
-              No Products Found
-
-            </h3>
-
-
+          ) : orders.length === 0 ? (
+            <div className="empty-orders">
+              <h3>No Orders Found</h3>
+              <p>
+                Orders will appear here when a customer
+                places an order.
+              </p>
+            </div>
           ) : (
-
-            /* =================================================
-               PRODUCTS TABLE
-            ================================================= */
-
             <div className="table-wrapper">
-
-              <table className="shoe-table">
-
-
-                {/* =================================================
-                    TABLE HEAD
-                ================================================= */}
+              <table className="order-table">
 
                 <thead>
-
                   <tr>
-
-                    <th>
-                      Image
-                    </th>
-
-                    <th>
-                      Name
-                    </th>
-
-                    <th>
-                      Category
-                    </th>
-
-                    <th>
-                      Type
-                    </th>
-
-                    <th>
-                      Price
-                    </th>
-
-                    <th>
-                      Discount
-                    </th>
-
-                    <th>
-                      Action
-                    </th>
-
+                    <th>Order Code</th>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
                   </tr>
-
                 </thead>
 
-
-                {/* =================================================
-                    TABLE BODY
-                ================================================= */}
-
                 <tbody>
+                  {orders.map((order, index) => {
+                    const status = getStatus(order);
 
-                  {shoes.map(
-                    (shoe) => (
-
+                    return (
                       <tr
                         key={
-                          shoe._id
+                          order._id ||
+                          getOrderCode(order) ||
+                          index
                         }
                       >
-
-
-                        {/* =================================================
-                            IMAGE
-                        ================================================= */}
-
                         <td>
-
-                          <img
-                            src={
-                              getProductImage(
-                                shoe
-                              )
-                            }
-
-                            alt={
-                              shoe.name ||
-                              "Shoe"
-                            }
-
-                            className="shoe-image"
-
-                            onError={(
-                              e
-                            ) => {
-
-                              console.error(
-                                "Product image failed:",
-                                e.currentTarget.src
-                              );
-
-
-                              e.currentTarget.src =
-                                "/no-image.png";
-
-                            }}
-
-                          />
-
+                          <strong className="order-code">
+                            {getOrderCode(order)}
+                          </strong>
                         </td>
 
-
-                        {/* =================================================
-                            NAME
-                        ================================================= */}
-
                         <td>
-
-                          {shoe.name}
-
+                          {getCustomerName(order)}
                         </td>
 
-
-                        {/* =================================================
-                            CATEGORY
-                        ================================================= */}
-
                         <td>
-
-                          {shoe.category ||
-                            "Shoes"}
-
+                          {getCustomerEmail(order)}
                         </td>
 
-
-                        {/* =================================================
-                            TYPE
-                        ================================================= */}
-
                         <td>
-
-                          {shoe.type ||
-                            "-"}
-
+                          Rs. {getTotalAmount(order)}
                         </td>
 
-
-                        {/* =================================================
-                            PRICE
-                        ================================================= */}
-
                         <td>
-
-                          Rs.{" "}
-
-                          {Number(
-                            shoe.price || 0
-                          ).toLocaleString(
-                            "en-PK"
-                          )}
-
-                        </td>
-
-
-                        {/* =================================================
-                            DISCOUNT
-                        ================================================= */}
-
-                        <td>
-
-                          {Number(
-                            shoe.discount || 0
-                          )}
-
-                          %
-
-                        </td>
-
-
-                        {/* =================================================
-                            DELETE
-                        ================================================= */}
-
-                        <td>
-
-                          <button
-                            className="delete-btn"
-
-                            onClick={() =>
-                              deleteShoe(
-                                shoe._id
-                              )
-                            }
+                          <span
+                            className={getStatusClass(
+                              status
+                            )}
                           >
-
-                            Delete
-
-                          </button>
-
+                            {status}
+                          </span>
                         </td>
 
-
+                        <td>
+                          {getOrderDate(order)}
+                        </td>
                       </tr>
-
-                    )
-                  )}
-
+                    );
+                  })}
                 </tbody>
 
               </table>
-
             </div>
-
           )}
-
         </div>
-
       </div>
-
     </div>
-
   );
-
 };
 
-
-export default ListShoes;
+export default Order;
