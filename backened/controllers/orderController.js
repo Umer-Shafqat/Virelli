@@ -23,7 +23,7 @@ const placeOrder = async (req, res) => {
     if (!items || items.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "Your cart is empty",
+        message: "Cart is empty",
       });
     }
 
@@ -39,52 +39,59 @@ const placeOrder = async (req, res) => {
     const savedOrder = await newOrder.save();
 
     await cartModel.findOneAndUpdate(
-      {
-        userId,
-      },
-      {
-        items: {},
-      }
+      { userId },
+      { items: {} }
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Order placed successfully",
       order: savedOrder,
     });
   } catch (error) {
-    res.status(500).json({
+    console.log("Place Order Error:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
-export const updateStatus = async (req, res) => {
-  console.log("=========== UPDATE STATUS ===========");
-  console.log("Headers:", req.headers);
-  console.log("Body:", req.body);
-
+const updateStatus = async (req, res) => {
   try {
-    if (!req.body) {
-      return res.status(400).json({
-        success: false,
-        message: "req.body is undefined",
-      });
-    }
+    console.log("STATUS UPDATE HEADERS:", req.headers);
+    console.log("STATUS UPDATE BODY:", req.body);
 
     const { orderId, status } = req.body;
 
-    await orderModel.findByIdAndUpdate(orderId, {
-      status,
-    });
+    if (!orderId || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "Order ID and status are required",
+      });
+    }
 
-    return res.json({
+    const updatedOrder = await orderModel.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    return res.status(200).json({
       success: true,
-      message: "Order status updated",
+      message: "Order status updated successfully",
+      order: updatedOrder,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Update Status Error:", error);
 
     return res.status(500).json({
       success: false,
@@ -97,13 +104,9 @@ const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log("Deleting ID:", id);
-
     const deletedOrder = await orderModel.findOneAndDelete({
       _id: id,
     });
-
-    console.log("Deleted Order:", deletedOrder);
 
     if (!deletedOrder) {
       return res.status(404).json({
@@ -112,12 +115,12 @@ const deleteOrder = async (req, res) => {
       });
     }
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "Order deleted successfully",
     });
   } catch (error) {
-    console.log("Delete Error:", error);
+    console.log("Delete Order Error:", error);
 
     return res.status(500).json({
       success: false,
@@ -137,9 +140,13 @@ const getMyOrders = async (req, res) => {
       });
     }
 
+    console.log("GET MY ORDERS USER ID:", userId);
+
     const orders = await orderModel
-      .find({ userId })
+      .find({ userId: userId })
       .sort({ createdAt: -1 });
+
+    console.log("MY ORDERS COUNT:", orders.length);
 
     return res.status(200).json({
       success: true,
@@ -155,17 +162,19 @@ const getMyOrders = async (req, res) => {
   }
 };
 
-export const listOrders = async (req, res) => {
+const listOrders = async (req, res) => {
   try {
     const orders = await orderModel
       .find({})
       .sort({ createdAt: -1 });
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       data: orders,
     });
   } catch (error) {
+    console.log("List Orders Error:", error);
+
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -175,6 +184,8 @@ export const listOrders = async (req, res) => {
 
 export {
   placeOrder,
+  updateStatus,
   deleteOrder,
   getMyOrders,
+  listOrders,
 };
