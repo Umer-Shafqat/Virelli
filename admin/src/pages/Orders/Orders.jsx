@@ -4,7 +4,7 @@ import axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 
-import "./Order.css";
+import "./Orders.css";
 
 const API_URL =
   process.env.REACT_APP_API_URL ||
