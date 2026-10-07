@@ -139,11 +139,6 @@
   white-space: nowrap;
 }
 
-
-/* =====================================
-   SHOE INFORMATION
-===================================== */
-
 .shoe-info {
   padding: clamp(16px, 2vw, 22px);
 
