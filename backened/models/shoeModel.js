@@ -2,9 +2,6 @@ import mongoose from "mongoose";
 
 const shoeSchema = new mongoose.Schema(
   {
-    // ===============================
-    // PRODUCT NAME
-    // ===============================
     name: {
       type: String,
       required: true,
