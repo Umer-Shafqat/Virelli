@@ -13,8 +13,6 @@ import {
 import upload from "../middleware/multer.js";
 
 const shoeRouter = express.Router();
-
-// Add shoe with multiple images
 shoeRouter.post(
   "/add",
   upload.array("images", 20),
