@@ -1,7 +1,4 @@
 import multer from "multer";
-
-// Store images temporarily in memory.
-// The images will be uploaded to Cloudinary.
 const storage = multer.memoryStorage();
 
 const upload = multer({
