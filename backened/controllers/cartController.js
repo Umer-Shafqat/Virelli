@@ -1,18 +1,9 @@
 import cartModel from "../models/cartModel.js";
-
-// =================================
-// ADD TO CART
-// =================================
-
 const addToCart = async (req, res) => {
   try {
     const userId = req.userId;
 
     const { shoeId, size } = req.body;
-
-    // =================================
-    // CHECK USER
-    // =================================
 
     if (!userId) {
       return res.status(401).json({
