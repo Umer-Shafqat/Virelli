@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar/Navbar";
@@ -11,6 +12,7 @@ const Dashboard = () => {
   const url = process.env.REACT_APP_API_URL;
 
   const [dashboard, setDashboard] = useState({
+    totalItems: 0,
     totalShoes: 0,
     totalOrders: 0,
     totalUsers: 0,
@@ -19,31 +21,46 @@ const Dashboard = () => {
   });
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const fetchDashboard = useCallback(async () => {
     try {
+      setError("");
+
       const token = localStorage.getItem("adminToken");
+
+      if (!token) {
+        setError("Admin token not found. Please login again.");
+        return;
+      }
 
       const response = await axios.get(
         `${url}/api/admin/dashboard`,
         {
           headers: {
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
-      console.log("API URL:", `${url}/api/admin/dashboard`);
-      console.log("Dashboard Response:", response.data);
-      console.log("Dashboard Statistics:", response.data.dashboard);
+      console.log("Dashboard API Response:", response.data);
 
       if (response.data.success) {
-        setDashboard(response.data.dashboard);
+        setDashboard((prev) => ({
+          ...prev,
+          ...response.data.dashboard,
+        }));
       } else {
-        console.log(response.data.message);
+        setError(response.data.message || "Unable to load dashboard.");
       }
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      console.log("Dashboard API Error:", error.response?.data || error.message);
+
+      setError(
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to load dashboard."
+      );
     } finally {
       setLoading(false);
     }
@@ -55,26 +72,26 @@ const Dashboard = () => {
 
   const dashboardCards = [
     {
-      title: "Total Shoes",
-      value: dashboard.totalShoes,
+      title: "Total Items",
+      value: dashboard.totalItems ?? dashboard.totalShoes ?? 0,
       icon: "👟",
       color: "#2563eb",
     },
     {
       title: "Total Orders",
-      value: dashboard.totalOrders,
+      value: dashboard.totalOrders ?? 0,
       icon: "🛒",
       color: "#10b981",
     },
     {
       title: "Total Users",
-      value: dashboard.totalUsers,
+      value: dashboard.totalUsers ?? 0,
       icon: "👥",
       color: "#f59e0b",
     },
     {
       title: "Revenue",
-      value: `Rs. ${Number(dashboard.revenue).toLocaleString("en-PK")}`,
+      value: `Rs. ${Number(dashboard.revenue || 0).toLocaleString("en-PK")}`,
       icon: "💰",
       color: "#ef4444",
     },
@@ -104,6 +121,12 @@ const Dashboard = () => {
           <p>Welcome back! Here's an overview of your store.</p>
         </section>
 
+        {error && (
+          <div style={{ color: "red", marginBottom: "15px" }}>
+            {error}
+          </div>
+        )}
+
         <section className="dashboard-cards">
           {dashboardCards.map((card, index) => (
             <Card
@@ -122,7 +145,7 @@ const Dashboard = () => {
 
         <section className="dashboard-table">
           <h2>Recent Orders</h2>
-          <Table orders={dashboard.recentOrders} />
+          <Table orders={dashboard.recentOrders || []} />
         </section>
       </div>
     </div>
