@@ -14,11 +14,6 @@ const shoeSchema = new mongoose.Schema(
       enum: ["MEN", "WOMEN", "KID"],
     },
 
-    // ===============================
-    // CATEGORY
-    // Shoes / Watches / Jackets /
-    // Hoodies / Caps etc.
-    // ===============================
     category: {
       type: String,
       required: true,
