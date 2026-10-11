@@ -7,11 +7,7 @@ const shoeSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-
-    // ===============================
-    // PRODUCT TYPE
-    // MEN / WOMEN / KID
-    // ===============================
+    
     type: {
       type: String,
       required: true,
