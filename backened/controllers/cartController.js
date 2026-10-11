@@ -12,10 +12,6 @@ const addToCart = async (req, res) => {
       });
     }
 
-    // =================================
-    // CHECK PRODUCT ID
-    // =================================
-
     if (!shoeId) {
       return res.status(400).json({
         success: false,
