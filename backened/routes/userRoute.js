@@ -20,7 +20,6 @@ userRouter.post(
   "/login",
   loginUser
 );
-
 userRouter.get("/list", listUsers);
 
 userRouter.delete("/:id", deleteUser);
