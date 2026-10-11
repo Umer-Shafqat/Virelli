@@ -16,7 +16,6 @@ import {
 
 const adminRouter = express.Router();
 
-// Admin Login
 adminRouter.post("/login", adminLogin);
 
 // Dashboard
