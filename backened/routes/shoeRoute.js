@@ -19,7 +19,6 @@ shoeRouter.post(
   addShoe
 );
 
-// Get all shoes
 shoeRouter.get("/list", getShoes);
 
 // Get new arrivals
