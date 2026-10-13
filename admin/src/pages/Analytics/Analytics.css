@@ -29,10 +29,6 @@
   color: #64748b;
 }
 
-/* ===================================
-   ANALYTICS CARDS
-=================================== */
-
 .analytics-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
