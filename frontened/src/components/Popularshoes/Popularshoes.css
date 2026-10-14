@@ -405,19 +405,9 @@
   transform: translateY(-2px);
 }
 
-
-/* =====================================
-   ADD TO CART ACTIVE
-===================================== */
-
 .add-cart:active {
   transform: translateY(0);
 }
-
-
-/* =====================================
-   LARGE LAPTOP
-===================================== */
 
 @media (max-width: 1200px) {
 
