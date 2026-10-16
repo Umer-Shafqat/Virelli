@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -14,10 +15,7 @@ const Order = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // =====================================================
   // FETCH ALL ORDERS
-  // =====================================================
-
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -33,7 +31,7 @@ const Order = () => {
       } else {
         alert(
           response.data.message ||
-            "Unable to fetch orders."
+          "Unable to fetch orders."
         );
       }
     } catch (error) {
@@ -56,10 +54,7 @@ const Order = () => {
     fetchOrders();
   }, []);
 
-  // =====================================================
   // ORDER CODE
-  // =====================================================
-
   const getOrderCode = (order) => {
     return (
       order.orderCode ||
@@ -71,14 +66,19 @@ const Order = () => {
     );
   };
 
-  // =====================================================
   // CUSTOMER NAME
-  // =====================================================
-
   const getCustomerName = (order) => {
-    if (order.customerName) return order.customerName;
+    if (order.customer?.name) {
+      return order.customer.name;
+    }
 
-    if (order.user?.name) return order.user.name;
+    if (order.customerName) {
+      return order.customerName;
+    }
+
+    if (order.user?.name) {
+      return order.user.name;
+    }
 
     if (order.user?.firstName || order.user?.lastName) {
       return `${order.user?.firstName || ""} ${
@@ -95,23 +95,20 @@ const Order = () => {
     return order.name || "Customer";
   };
 
-  // =====================================================
   // CUSTOMER EMAIL
-  // =====================================================
-
   const getCustomerEmail = (order) => {
     return (
+      order.customer?.email ||
+      order.customerEmail ||
       order.email ||
       order.user?.email ||
-      order.customerEmail ||
+      order.address?.email ||
+      order.shippingAddress?.email ||
       "-"
     );
   };
 
-  // =====================================================
   // TOTAL AMOUNT
-  // =====================================================
-
   const getTotalAmount = (order) => {
     const amount =
       order.amount ??
@@ -123,10 +120,7 @@ const Order = () => {
     return Number(amount).toLocaleString("en-PK");
   };
 
-  // =====================================================
   // ORDER STATUS
-  // =====================================================
-
   const getStatus = (order) => {
     return (
       order.status ||
@@ -135,10 +129,7 @@ const Order = () => {
     );
   };
 
-  // =====================================================
   // ORDER DATE
-  // =====================================================
-
   const getOrderDate = (order) => {
     const date =
       order.createdAt ||
@@ -160,10 +151,7 @@ const Order = () => {
     });
   };
 
-  // =====================================================
   // STATUS CLASS
-  // =====================================================
-
   const getStatusClass = (status) => {
     const value = String(status).toLowerCase();
 
@@ -191,10 +179,7 @@ const Order = () => {
     return "status pending";
   };
 
-  // =====================================================
   // PAGE
-  // =====================================================
-
   return (
     <div className="order-page">
       <Sidebar />
@@ -237,7 +222,7 @@ const Order = () => {
                   <tr>
                     <th>Order Code</th>
                     <th>Customer</th>
-                    <th>Email</th>
+                    <th>Email Address</th>
                     <th>Total</th>
                     <th>Status</th>
                     <th>Date</th>
@@ -276,9 +261,7 @@ const Order = () => {
 
                         <td>
                           <span
-                            className={getStatusClass(
-                              status
-                            )}
+                            className={getStatusClass(status)}
                           >
                             {status}
                           </span>
