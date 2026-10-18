@@ -279,11 +279,6 @@
   font-weight: 700;
 }
 
-
-/* =====================================
-   LARGE LAPTOP
-===================================== */
-
 @media (max-width: 1200px) {
   .home-shoes-section {
     padding-left: 4%;
