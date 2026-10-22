@@ -12,8 +12,6 @@
   background: transparent;
 }
 
-
-
 .logo {
   width: 90px;
   max-width: 90%;
@@ -352,11 +350,6 @@
 .cart-dropdown a:last-child {
   border-radius: 0 0 8px 8px;
 }
-
-
-/* =====================================
-   SIGN OUT BUTTON
-===================================== */
 
 .logout-btn {
   background: transparent;
