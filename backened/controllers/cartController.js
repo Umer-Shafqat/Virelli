@@ -21,10 +21,6 @@ const addToCart = async (req, res) => {
 
     const cartSize = size || "no-size";
 
-    // =================================
-    // CREATE CART KEY
-    // =================================
-
     const key = `${shoeId}-${cartSize}`;
 
     // =================================
