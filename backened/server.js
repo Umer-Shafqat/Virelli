@@ -12,11 +12,6 @@ import userRouter from "./routes/userRoute.js";
 import adminRouter from "./routes/adminRoute.js";
 
 const app = express();
-
-// ===============================
-// MIDDLEWARE
-// ===============================
-
 app.use(express.json());
 
 app.use(
