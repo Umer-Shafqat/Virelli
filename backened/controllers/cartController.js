@@ -19,12 +19,6 @@ const addToCart = async (req, res) => {
       });
     }
 
-    // =================================
-    // SIZE
-    // =================================
-    // Products without sizes such as
-    // Watches and Caps use "no-size".
-
     const cartSize = size || "no-size";
 
     // =================================
