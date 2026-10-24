@@ -560,10 +560,6 @@ const StoreContextProvider = ({ children }) => {
     logout,
   };
 
-  /* =====================================
-  PROVIDER
-  ===================================== */
-
   return (
     <StoreContext.Provider
       value={contextValue}
