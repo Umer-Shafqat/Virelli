@@ -353,25 +353,15 @@
 
 .logout-btn {
   background: transparent;
-
   border: 1px solid #222;
-
   color: #222;
-
   padding: 9px 18px;
-
   border-radius: 5px;
-
   font-size: 13px;
-
   font-weight: 600;
-
   letter-spacing: 0.5px;
-
   cursor: pointer;
-
   white-space: nowrap;
-
   transition: all 0.3s ease;
 }
 
