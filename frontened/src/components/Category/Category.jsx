@@ -505,32 +505,14 @@ const Category = () => {
   return (
 
     <section className="category-section">
-
-
-      {/* =================================================
-          TITLE
-      ================================================= */}
-
       <h2 className="category-title">
 
         Shop by Category
 
       </h2>
-
-
-      {/* =================================================
-          CATEGORY SLIDER
-      ================================================= */}
-
       <div className="category-slider">
 
         <div className="category-track">
-
-
-          {/* =================================================
-              FIRST SET
-          ================================================= */}
-
           {categories.map(
             (item, index) =>
               renderCategory(
