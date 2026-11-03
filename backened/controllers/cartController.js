@@ -23,17 +23,9 @@ const addToCart = async (req, res) => {
 
     const key = `${shoeId}-${cartSize}`;
 
-    // =================================
-    // FIND USER CART
-    // =================================
-
     let cart = await cartModel.findOne({
       userId,
     });
-
-    // =================================
-    // CREATE NEW CART
-    // =================================
 
     if (!cart) {
       cart = new cartModel({
