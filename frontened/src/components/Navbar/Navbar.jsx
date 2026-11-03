@@ -17,21 +17,11 @@ const Navbar = () => {
   const [showCartMenu, setShowCartMenu] = useState(false);
 
   const navigate = useNavigate();
-
-  // =====================================
-  // CART COUNT
-  // =====================================
-
-  const cartCount = Object.values(cartItems).reduce(
+ const cartCount = Object.values(cartItems).reduce(
     (total, quantity) => total + quantity,
     0
   );
-
-  // =====================================
-  // LOGOUT
-  // =====================================
-
-  const handleLogout = () => {
+const handleLogout = () => {
     logout();
 
     alert("You have been signed out successfully!");
