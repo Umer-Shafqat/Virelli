@@ -34,7 +34,6 @@ adminRouter.get(
   getAllUsers
 );
 
-// Analytics
 adminRouter.get(
   "/analytics",
   authMiddleware,
