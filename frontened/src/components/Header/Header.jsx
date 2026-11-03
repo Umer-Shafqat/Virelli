@@ -19,7 +19,6 @@ const Header = () => {
       <div className="header">
 
         <picture>
-          {/* Mobile Hero */}
           <source
             media="(max-width: 600px)"
             srcSet={hero2}
