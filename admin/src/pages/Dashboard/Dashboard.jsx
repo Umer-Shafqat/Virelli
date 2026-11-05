@@ -33,7 +33,9 @@ const Dashboard = () => {
         }
       );
 
-      console.log(response.data);
+      console.log("API URL:", `${url}/api/admin/dashboard`);
+      console.log("Dashboard Response:", response.data);
+      console.log("Dashboard Statistics:", response.data.dashboard);
 
       if (response.data.success) {
         setDashboard(response.data.dashboard);
