@@ -1,3 +1,4 @@
+
 import userModel from "../models/userModel.js";
 import shoeModel from "../models/shoeModel.js";
 import orderModel from "../models/orderModel.js";
@@ -29,37 +30,124 @@ export const searchAdmin = async (req, res) => {
 
     const orders = await orderModel.find({
       $or: [
-        { _id: q.match(/^[0-9a-fA-F]{24}$/) ? q : null },
+        ...(q.match(/^[0-9a-fA-F]{24}$/)
+          ? [{ _id: q }]
+          : []),
         { "customer.name": { $regex: q, $options: "i" } },
       ],
     });
 
-    res.json({
+    return res.json({
       success: true,
       shoes,
       users,
       orders,
     });
   } catch (error) {
-    console.log(error);
+    console.log("Admin Search Error:", error);
 
-    res.json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
+const getDashboardData = async () => {
+  const [
+    totalUsers,
+    totalShoes,
+    totalOrders,
+    revenueResult,
+    recentOrders,
+  ] = await Promise.all([
+    userModel.countDocuments(),
+
+    shoeModel.countDocuments(),
+
+    orderModel.countDocuments({
+      status: { $ne: "Cancelled" },
+    }),
+
+    orderModel.aggregate([
+      {
+        $match: {
+          status: { $ne: "Cancelled" },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: {
+            $sum: "$totalAmount",
+          },
+        },
+      },
+    ]),
+
+    orderModel
+      .find({})
+      .populate("userId", "name email")
+      .sort({ createdAt: -1 })
+      .limit(5),
+  ]);
+
+  const revenue =
+    revenueResult.length > 0
+      ? revenueResult[0].totalRevenue
+      : 0;
+
+  const averageOrderValue =
+    totalOrders > 0 ? revenue / totalOrders : 0;
+
+  const categoryMap = {};
+
+  const orders = await orderModel.find({
+    status: { $ne: "Cancelled" },
+  });
+
+  orders.forEach((order) => {
+    order.items.forEach((item) => {
+      const category = item.category || "Other";
+
+      categoryMap[category] =
+        (categoryMap[category] || 0) + (item.quantity || 0);
+    });
+  });
+
+  let topSellingCategory = "N/A";
+  let max = 0;
+
+  for (const key in categoryMap) {
+    if (categoryMap[key] > max) {
+      max = categoryMap[key];
+      topSellingCategory = key;
+    }
+  }
+
+  return {
+    totalUsers,
+    totalShoes,
+    totalOrders,
+    revenue,
+    averageOrderValue,
+    topSellingCategory,
+    recentOrders,
+  };
+};
+
 export const getDashboard = async (req, res) => {
   try {
     const dashboard = await getDashboardData();
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       dashboard,
     });
   } catch (error) {
-    return res.json({
+    console.log("Dashboard Error:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -98,7 +186,7 @@ const adminLogin = async (req, res) => {
       message: "Invalid email or password",
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -116,13 +204,12 @@ const getAllUsers = async (req, res) => {
       data: users,
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 
 const getAllOrders = async (req, res) => {
   try {
@@ -136,32 +223,45 @@ const getAllOrders = async (req, res) => {
       data: orders,
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
 
-
 const updateOrderStatus = async (req, res) => {
   try {
-    await orderModel.findByIdAndUpdate(req.params.id, {
-      status: req.body.status,
-    });
+    const updatedOrder = await orderModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: req.body.status,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
 
     return res.json({
       success: true,
       message: "Order status updated",
+      data: updatedOrder,
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 
 const getAnalytics = async (req, res) => {
   try {
@@ -172,13 +272,12 @@ const getAnalytics = async (req, res) => {
       analytics: dashboard,
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 };
-
 
 const getDailySales = async (req, res) => {
   try {
@@ -210,9 +309,9 @@ const getDailySales = async (req, res) => {
     const dailySales = [];
 
     for (let i = 6; i >= 0; i--) {
-
       const date = new Date();
       date.setDate(date.getDate() - i);
+
       const day = date.getDate();
       const month = date.getMonth() + 1;
 
@@ -231,71 +330,18 @@ const getDailySales = async (req, res) => {
       });
     }
 
-    res.json({
+    return res.json({
       success: true,
       dailySales,
     });
   } catch (error) {
-    res.json({
+    console.log("Daily Sales Error:", error);
+
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
-};
-
-
-const getDashboardData = async () => {
-  const totalUsers = await userModel.countDocuments();
-  const totalShoes = await shoeModel.countDocuments();
-
-  const orders = await orderModel.find({
-    status: { $ne: "Cancelled" },
-  });
-
-  const totalOrders = orders.length;
-
-  const revenue = orders.reduce(
-    (sum, order) => sum + (order.totalAmount || 0),
-    0
-  );
-
-  const averageOrderValue =
-    totalOrders > 0 ? revenue / totalOrders : 0;
-
-  const categoryMap = {};
-
-  orders.forEach((order) => {
-    order.items.forEach((item) => {
-      categoryMap[item.category] =
-        (categoryMap[item.category] || 0) + item.quantity;
-    });
-  });
-
-  let topSellingCategory = "N/A";
-  let max = 0;
-
-  for (const key in categoryMap) {
-    if (categoryMap[key] > max) {
-      max = categoryMap[key];
-      topSellingCategory = key;
-    }
-  }
-
-  const recentOrders = await orderModel
-  .find({})
-  .populate("userId", "name email")
-  .sort({ createdAt: -1 })
-  .limit(5);
-
-  return {
-    totalUsers,
-    totalShoes,
-    totalOrders,
-    revenue,
-    averageOrderValue,
-    topSellingCategory,
-    recentOrders,
-  };
 };
 
 export {
