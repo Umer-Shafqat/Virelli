@@ -20,26 +20,17 @@ const shoeSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // ===============================
-    // POPULAR
-    // ===============================
     popular: {
       type: Boolean,
       default: false,
     },
 
-    // ===============================
-    // PRODUCT IMAGES
-    // ===============================
     images: {
       type: [String],
       required: true,
       default: [],
     },
 
-    // ===============================
-    // PRICE
-    // ===============================
     price: {
       type: Number,
       required: true,
