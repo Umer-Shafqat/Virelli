@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import {
   StoreContext,
@@ -19,49 +20,40 @@ const Cart = () => {
 
   const deliveryCharges = 300;
 
-  // =====================================================
+  // =====================================
   // CART ENTRIES
-  // =====================================================
+  // =====================================
 
   const cartEntries = Object.entries(cartItems || {});
 
-  // =====================================================
+  // =====================================
   // GET IMAGE URL
-  // =====================================================
+  // =====================================
 
   const getImageUrl = (shoe) => {
-    // New Cloudinary images
     if (
       Array.isArray(shoe?.images) &&
       shoe.images.length > 0
     ) {
       const image = shoe.images[0];
 
-      // Cloudinary / external URL
       if (
         typeof image === "string" &&
-        (
-          image.startsWith("http://") ||
-          image.startsWith("https://")
-        )
+        (image.startsWith("http://") ||
+          image.startsWith("https://"))
       ) {
         return image;
       }
 
-      // Old local filename
-      if (typeof image === "string") {
+      if (typeof image === "string" && image) {
         return `${url}/images/${image}`;
       }
     }
 
-    // Support old database structure
     if (shoe?.image) {
       if (
-        typeof shoe.image === "string" &&
-        (
-          shoe.image.startsWith("http://") ||
-          shoe.image.startsWith("https://")
-        )
+        shoe.image.startsWith("http://") ||
+        shoe.image.startsWith("https://")
       ) {
         return shoe.image;
       }
@@ -72,26 +64,28 @@ const Cart = () => {
     return "";
   };
 
-  // =====================================================
+  // =====================================
+  // GET PRODUCT ID FROM CART KEY
+  // =====================================
+
+  const getProductId = (key) => {
+    const separatorIndex = key.indexOf("-");
+
+    return separatorIndex === -1
+      ? key
+      : key.slice(0, separatorIndex);
+  };
+
+  // =====================================
   // SUBTOTAL
-  // =====================================================
+  // =====================================
 
   const subtotal = cartEntries.reduce(
     (total, [key, quantity]) => {
-      // Get only the product ID.
-      // This works for both:
-      // productId-M
-      // productId-no-size
-      const separatorIndex = key.indexOf("-");
-
-      const shoeId =
-        separatorIndex === -1
-          ? key
-          : key.slice(0, separatorIndex);
+      const shoeId = getProductId(key);
 
       const shoe = shoes.find(
-        (item) =>
-          item._id?.toString() === shoeId
+        (item) => item._id?.toString() === shoeId
       );
 
       if (!shoe) {
@@ -100,345 +94,222 @@ const Cart = () => {
 
       const price = Number(shoe.price || 0);
 
-      return total + price * quantity;
+      return total + price * Number(quantity);
     },
     0
   );
 
-  // =====================================================
+  // =====================================
   // TOTAL
-  // =====================================================
+  // =====================================
 
-  const totalAmount =
-    subtotal + deliveryCharges;
+  const totalAmount = subtotal + deliveryCharges;
 
-  // =====================================================
+  // =====================================
   // RENDER
-  // =====================================================
+  // =====================================
 
   return (
     <div className="cart-page">
 
-      {/* ================= TITLE ================= */}
-
       <h1>My Cart</h1>
 
-      {/* ================= EMPTY CART ================= */}
-
       {cartEntries.length === 0 ? (
-
         <div className="empty-cart">
-
-          <h2>
-            Your cart is empty
-          </h2>
+          <h2>Your cart is empty</h2>
 
           <p>
-            Add some shoes to your cart.
+            Add some products to your cart.
           </p>
-
         </div>
-
       ) : (
-
         <>
-
-          {/* ================= CART CONTAINER ================= */}
-
           <div className="cart-container">
 
             <div className="cart-items">
 
-              {cartEntries.map(
-                ([key, quantity]) => {
+              {cartEntries.map(([key, quantity]) => {
 
-                  // -----------------------------------------
-                  // GET PRODUCT ID + SIZE
-                  // -----------------------------------------
-                  //
-                  // IMPORTANT:
-                  // We cannot use:
-                  //
-                  // const [shoeId, size] = key.split("-");
-                  //
-                  // because:
-                  //
-                  // abc-no-size
-                  //
-                  // becomes:
-                  // ["abc", "no", "size"]
-                  //
-                  // Instead, split only at the FIRST "-".
-                  // -----------------------------------------
+                // GET PRODUCT ID AND SIZE
 
-                  const separatorIndex =
-                    key.indexOf("-");
+                const separatorIndex = key.indexOf("-");
 
-                  const shoeId =
-                    separatorIndex === -1
-                      ? key
-                      : key.slice(
-                          0,
-                          separatorIndex
-                        );
+                const shoeId =
+                  separatorIndex === -1
+                    ? key
+                    : key.slice(0, separatorIndex);
 
-                  const size =
-                    separatorIndex === -1
-                      ? "no-size"
-                      : key.slice(
-                          separatorIndex + 1
-                        );
+                const size =
+                  separatorIndex === -1
+                    ? "no-size"
+                    : key.slice(separatorIndex + 1);
 
-                  // -----------------------------------------
-                  // FIND PRODUCT
-                  // -----------------------------------------
+                // FIND PRODUCT
 
-                  const shoe = shoes.find(
-                    (item) =>
-                      item._id?.toString() ===
-                      shoeId
-                  );
+                const shoe = shoes.find(
+                  (item) =>
+                    item._id?.toString() === shoeId
+                );
 
-                  if (!shoe) {
-                    return null;
-                  }
+                if (!shoe) {
+                  return null;
+                }
 
-                  // -----------------------------------------
-                  // IMAGE
-                  // -----------------------------------------
+                // IMAGE
 
-                  const imageUrl =
-                    getImageUrl(shoe);
+                const imageUrl = getImageUrl(shoe);
 
-                  // -----------------------------------------
-                  // PRICE
-                  // -----------------------------------------
+                // PRICE
 
-                  const price =
-                    Number(shoe.price || 0);
+                const price = Number(shoe.price || 0);
 
-                  const itemTotal =
-                    price * quantity;
+                const itemTotal = price * Number(quantity);
 
-                  return (
+                return (
+                  <div
+                    className="cart-item"
+                    key={key}
+                  >
 
-                    <div
-                      className="cart-item"
-                      key={key}
-                    >
+                    {/* IMAGE */}
 
-                      {/* ================= IMAGE ================= */}
+                    <div className="cart-image-wrapper">
 
-                      <div className="cart-image-wrapper">
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={shoe.name || "Product"}
+                          className="cart-shoe-image"
+                          onError={(e) => {
+                            console.error(
+                              "Cart image failed:",
+                              e.currentTarget.src
+                            );
 
-                        {imageUrl ? (
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                      ) : (
+                        <div className="cart-image-placeholder">
+                          No Image
+                        </div>
+                      )}
 
-                          <img
-                            src={imageUrl}
-                            alt={
-                              shoe.name ||
-                              "Product"
-                            }
-                            className="cart-shoe-image"
+                    </div>
 
-                            onError={(e) => {
-                              console.error(
-                                "Cart image failed:",
-                                e.currentTarget.src
-                              );
+                    {/* DETAILS */}
 
-                              e.currentTarget.style.display =
-                                "none";
-                            }}
-                          />
+                    <div className="cart-item-details">
 
-                        ) : (
+                      <h2>{shoe.name}</h2>
 
-                          <div className="cart-image-placeholder">
-                            No Image
-                          </div>
+                      {shoe.description && (
+                        <p>{shoe.description}</p>
+                      )}
 
-                        )}
+                      {/* SHOW SIZE ONLY FOR SIZED PRODUCTS */}
 
-                      </div>
+                      {size !== "no-size" && (
+                        <p>
+                          <strong>Size:</strong> {size}
+                        </p>
+                      )}
 
-                      {/* ================= DETAILS ================= */}
-
-                      <div className="cart-item-details">
-
-                        <h2>
-                          {shoe.name}
-                        </h2>
-
-                        {shoe.description && (
-                          <p>
-                            {shoe.description}
-                          </p>
-                        )}
-
-                        {/* 
-                          Show size ONLY when product
-                          has a real size.
-
-                          Shoes:
-                          M / L / 42 etc.
-
-                          Hoodies:
-                          M / L / XL etc.
-
-                          Chapal:
-                          40 / 41 / 42 etc.
-
-                          Jackets:
-                          M / L / XL etc.
-
-                          Caps:
-                          hidden
-
-                          Watches:
-                          hidden
-                        */}
-
-                        {size !== "no-size" && (
-                          <p>
-                            <strong>
-                              Size:
-                            </strong>{" "}
-                            {size}
-                          </p>
-                        )}
-
-                        <h3>
-                          Rs.{" "}
-                          {price.toLocaleString(
-                            "en-PK"
-                          )}
-                        </h3>
-
-                      </div>
-
-                      {/* ================= QUANTITY ================= */}
-
-                      <div className="quantity-control">
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            removeFromCart(
-                              shoe._id,
-                              size
-                            )
-                          }
-                        >
-                          -
-                        </button>
-
-                        <span>
-                          {quantity}
-                        </span>
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            addToCart(
-                              shoe,
-                              size
-                            )
-                          }
-                        >
-                          +
-                        </button>
-
-                      </div>
-
-                      {/* ================= ITEM TOTAL ================= */}
-
-                      <div className="item-total">
-
+                      <h3>
                         Rs.{" "}
-                        {itemTotal.toLocaleString(
-                          "en-PK"
-                        )}
+                        {price.toLocaleString("en-PK")}
+                      </h3>
 
-                      </div>
+                    </div>
 
-                      {/* ================= REMOVE ================= */}
+                    {/* QUANTITY */}
+
+                    <div className="quantity-control">
 
                       <button
                         type="button"
-                        className="remove-btn"
                         onClick={() =>
-                          deleteFromCart(
-                            shoe._id,
-                            size
-                          )
+                          removeFromCart(shoe._id, size)
                         }
                       >
-                        Remove
+                        -
+                      </button>
+
+                      <span>{quantity}</span>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          addToCart(shoe, size)
+                        }
+                      >
+                        +
                       </button>
 
                     </div>
-                  );
-                }
-              )}
+
+                    {/* ITEM TOTAL */}
+
+                    <div className="item-total">
+                      Rs.{" "}
+                      {itemTotal.toLocaleString("en-PK")}
+                    </div>
+
+                    {/* REMOVE */}
+
+                    <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={() =>
+                        deleteFromCart(shoe._id, size)
+                      }
+                    >
+                      Remove
+                    </button>
+
+                  </div>
+                );
+              })}
 
             </div>
 
           </div>
 
-          {/* ================= TOTAL ================= */}
+          {/* TOTAL */}
 
           <div className="total-amount">
 
             {/* SUBTOTAL */}
 
             <div className="amount-row">
-
-              <span>
-                Subtotal
-              </span>
+              <span>Subtotal</span>
 
               <span>
                 PKR{" "}
-                {subtotal.toLocaleString(
-                  "en-PK"
-                )}
+                {subtotal.toLocaleString("en-PK")}
               </span>
-
             </div>
 
             {/* DELIVERY */}
 
             <div className="amount-row">
-
-              <span>
-                Delivery Charges
-              </span>
+              <span>Delivery Charges</span>
 
               <span>
                 PKR{" "}
-                {deliveryCharges.toLocaleString(
-                  "en-PK"
-                )}
+                {deliveryCharges.toLocaleString("en-PK")}
               </span>
-
             </div>
 
             {/* TOTAL */}
 
             <div className="amount-row total-row">
-
-              <span>
-                Total Amount
-              </span>
+              <span>Total Amount</span>
 
               <span>
                 PKR{" "}
-                {totalAmount.toLocaleString(
-                  "en-PK"
-                )}
+                {totalAmount.toLocaleString("en-PK")}
               </span>
-
             </div>
 
             {/* CHECKOUT */}
@@ -447,25 +318,20 @@ const Cart = () => {
               type="button"
               className="checkout-btn"
               onClick={() =>
-                navigate(
-                  "/place-order",
-                  {
-                    state: {
-                      subtotal,
-                      deliveryCharges,
-                      totalAmount,
-                    },
-                  }
-                )
+                navigate("/place-order", {
+                  state: {
+                    subtotal,
+                    deliveryCharges,
+                    totalAmount,
+                  },
+                })
               }
             >
               Proceed to Checkout
             </button>
 
           </div>
-
         </>
-
       )}
 
     </div>
