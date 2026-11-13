@@ -1,6 +1,16 @@
 import orderModel from "../models/orderModel.js";
 import cartModel from "../models/cartModel.js";
 
+const SIZE_REQUIRED_CATEGORIES = [
+  "shoes",
+  "hoodies",
+  "chapal",
+  "jackets",
+];
+
+const normalizeCategory = (category) =>
+  String(category || "").trim().toLowerCase();
+
 const placeOrder = async (req, res) => {
   try {
     const userId = req.userId;
@@ -20,17 +30,62 @@ const placeOrder = async (req, res) => {
       });
     }
 
-    if (!items || items.length === 0) {
+    if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({
         success: false,
         message: "Cart is empty",
       });
     }
 
+    // Validate and normalize sizes before passing items to Mongoose.
+    // Shoes, Hoodies, Chapal, Jackets need a numeric size.
+    // Caps and Watches (and other categories) do not need a size.
+    const normalizedItems = [];
+
+    for (let index = 0; index < items.length; index += 1) {
+      const item = items[index];
+
+      if (!item || typeof item !== "object") {
+        return res.status(400).json({
+          success: false,
+          message: `Invalid product at order item ${index + 1}.`,
+        });
+      }
+
+      const category = normalizeCategory(item.category);
+      const requiresSize = SIZE_REQUIRED_CATEGORIES.includes(category);
+
+      if (requiresSize) {
+        const rawSize = item.size;
+
+        if (
+          rawSize === undefined ||
+          rawSize === null ||
+          rawSize === "" ||
+          String(rawSize).trim().toLowerCase() === "no-size" ||
+          !Number.isFinite(Number(rawSize))
+        ) {
+          return res.status(400).json({
+            success: false,
+            message: `Please select a valid size for ${item.name || category} (order item ${index + 1}).`,
+          });
+        }
+
+        normalizedItems.push({
+          ...item,
+          size: Number(rawSize),
+        });
+      } else {
+        // Explicitly remove size from size-less products.
+        const { size: ignoredSize, ...itemWithoutSize } = item;
+        normalizedItems.push(itemWithoutSize);
+      }
+    }
+
     const newOrder = new orderModel({
       userId,
       customer,
-      items,
+      items: normalizedItems,
       subtotal,
       deliveryCharges,
       totalAmount,
@@ -51,9 +106,17 @@ const placeOrder = async (req, res) => {
   } catch (error) {
     console.log("Place Order Error:", error);
 
+    // Validation errors are client-side data problems, not server failures.
+    if (error.name === "ValidationError" || error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: error.message || "Internal server error while placing order",
     });
   }
 };
@@ -143,7 +206,7 @@ const getMyOrders = async (req, res) => {
     console.log("GET MY ORDERS USER ID:", userId);
 
     const orders = await orderModel
-      .find({ userId: userId })
+      .find({ userId })
       .sort({ createdAt: -1 });
 
     console.log("MY ORDERS COUNT:", orders.length);
