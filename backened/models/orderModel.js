@@ -1,12 +1,4 @@
-
 import mongoose from "mongoose";
-
-const sizeRequiredCategories = [
-  "shoes",
-  "hoodies",
-  "chapal",
-  "jackets",
-];
 
 const orderItemSchema = new mongoose.Schema(
   {
@@ -35,15 +27,14 @@ const orderItemSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    // Size is optional at the schema level.
+    // placeOrder validates it only for Shoes, Hoodies, Chapal, and Jackets.
     size: {
       type: Number,
-      required: function () {
-        return sizeRequiredCategories.includes(
-          this.category?.trim().toLowerCase()
-        );
-      },
       default: undefined,
     },
+
     quantity: {
       type: Number,
       required: true,
@@ -83,6 +74,10 @@ const orderSchema = new mongoose.Schema(
     items: {
       type: [orderItemSchema],
       required: true,
+      validate: {
+        validator: (items) => Array.isArray(items) && items.length > 0,
+        message: "An order must contain at least one item.",
+      },
     },
     subtotal: {
       type: Number,
