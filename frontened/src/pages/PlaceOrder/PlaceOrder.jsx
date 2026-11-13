@@ -257,106 +257,88 @@ const PlaceOrder = () => {
       // CREATE ORDER ITEMS
       // =====================================================
 
-      const orderItems =
+      const sizeRequiredCategories = [
+        "shoes",
+        "hoodies",
+        "chapal",
+        "jackets",
+      ];
 
-        cartEntries
+      let missingRequiredSize = false;
 
-          .map(
-            ([key, quantity]) => {
+      const orderItems = cartEntries
+        .map(([key, quantity]) => {
+          // Cart keys use the format: productId-size
+          // Read everything after the first hyphen so values
+          // such as "no-size" are not accidentally truncated.
+          const separatorIndex = key.indexOf("-");
+          const shoeId =
+            separatorIndex >= 0 ? key.slice(0, separatorIndex) : key;
+          const selectedSize =
+            separatorIndex >= 0 ? key.slice(separatorIndex + 1) : "";
 
-              const [
-                shoeId,
-                size,
-              ] = key.split("-");
+          // Find product
+          const shoe = shoes.find(
+            (item) => item._id?.toString() === shoeId
+          );
 
+          if (!shoe) {
+            return null;
+          }
 
-              // -----------------------------------------
-              // FIND SHOE
-              // -----------------------------------------
+          const category = String(shoe.category || "")
+            .trim()
+            .toLowerCase();
 
-              const shoe =
-                shoes.find(
-                  (item) =>
-                    item._id?.toString() ===
-                    shoeId
-                );
+          const requiresSize =
+            sizeRequiredCategories.includes(category);
 
+          // Validate size only for categories that require it.
+          if (
+            requiresSize &&
+            (!selectedSize ||
+              selectedSize.toLowerCase() === "no-size" ||
+              !Number.isFinite(Number(selectedSize)))
+          ) {
+            missingRequiredSize = true;
+            return null;
+          }
 
-              if (!shoe) {
+          const imageUrl = getImageUrl(shoe);
 
-                return null;
+          // Build the order item. Do not send a size field
+          // for Caps, Watches, or any other size-less category.
+          const orderItem = {
+            id: shoe._id,
+            name: shoe.name,
+            category: shoe.category,
+            type: shoe.type,
+            price: Number(shoe.price || 0),
+            image: imageUrl,
+            images: Array.isArray(shoe.images)
+              ? shoe.images
+              : imageUrl
+              ? [imageUrl]
+              : [],
+            quantity: Number(quantity),
+            discount: Number(shoe.discount || 0),
+            description: shoe.description || "",
+          };
 
-              }
+          if (requiresSize) {
+            orderItem.size = Number(selectedSize);
+          }
 
+          return orderItem;
+        })
+        .filter(Boolean);
 
-              // -----------------------------------------
-              // GET IMAGE
-              // -----------------------------------------
-
-              const imageUrl =
-                getImageUrl(shoe);
-
-
-              // -----------------------------------------
-              // ORDER ITEM
-              // -----------------------------------------
-
-              return {
-
-                id:
-                  shoe._id,
-
-                name:
-                  shoe.name,
-
-                category:
-                  shoe.category,
-
-                type:
-                  shoe.type,
-
-                price:
-                  Number(
-                    shoe.price || 0
-                  ),
-
-                // IMPORTANT:
-                // Save Cloudinary URL
-                image:
-                  imageUrl,
-
-                // Also save images array
-                // for future compatibility
-                images:
-                  Array.isArray(
-                    shoe.images
-                  )
-                    ? shoe.images
-                    : imageUrl
-                    ? [imageUrl]
-                    : [],
-
-                size:
-                  Number(size),
-
-                quantity:
-                  Number(quantity),
-
-                discount:
-                  Number(
-                    shoe.discount || 0
-                  ),
-
-                description:
-                  shoe.description ||
-                  "",
-
-              };
-
-            }
-          )
-
-          .filter(Boolean);
+      if (missingRequiredSize) {
+        alert(
+          "Please select a size for Shoes, Hoodies, Chapal, and Jackets before placing your order."
+        );
+        return;
+      }
 
 
       // =====================================================
@@ -881,7 +863,13 @@ const PlaceOrder = () => {
 
                       <p>
                         Size:{" "}
-                        {size}
+                        {["shoes", "hoodies", "chapal", "jackets"].includes(
+                          String(shoe.category || "").trim().toLowerCase()
+                        )
+                          ? size && size.toLowerCase() !== "no-size"
+                            ? size
+                            : "Not selected"
+                          : "Not required"}
                       </p>
 
 
