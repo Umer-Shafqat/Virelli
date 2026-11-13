@@ -267,7 +267,7 @@ const Offers = () => {
               </div>
 
               <div className="sale-percent">
-                20% OFF
+                UPTO 50% OFF
               </div>
 
               <div className="sale-date">
