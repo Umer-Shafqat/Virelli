@@ -1,6 +1,13 @@
 
 import mongoose from "mongoose";
 
+const sizeRequiredCategories = [
+  "shoes",
+  "hoodies",
+  "chapal",
+  "jackets",
+];
+
 const orderItemSchema = new mongoose.Schema(
   {
     id: {
@@ -30,7 +37,12 @@ const orderItemSchema = new mongoose.Schema(
     },
     size: {
       type: Number,
-      required: true,
+      required: function () {
+        return sizeRequiredCategories.includes(
+          this.category?.trim().toLowerCase()
+        );
+      },
+      default: undefined,
     },
     quantity: {
       type: Number,
@@ -59,38 +71,14 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     customer: {
-      firstName: {
-        type: String,
-        required: true,
-      },
-      lastName: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
-      phone: {
-        type: String,
-        required: true,
-      },
-      address: {
-        type: String,
-        required: true,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      country: {
-        type: String,
-        required: true,
-      },
-      paymentMethod: {
-        type: String,
-        required: true,
-      },
+      firstName: { type: String, required: true },
+      lastName: { type: String, required: true },
+      email: { type: String, required: true },
+      phone: { type: String, required: true },
+      address: { type: String, required: true },
+      city: { type: String, required: true },
+      country: { type: String, required: true },
+      paymentMethod: { type: String, required: true },
     },
     items: {
       type: [orderItemSchema],
