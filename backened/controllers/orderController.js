@@ -1,3 +1,4 @@
+
 import orderModel from "../models/orderModel.js";
 import cartModel from "../models/cartModel.js";
 
@@ -11,6 +12,7 @@ const SIZE_REQUIRED_CATEGORIES = [
 const normalizeCategory = (category) =>
   String(category || "").trim().toLowerCase();
 
+// PLACE ORDER
 const placeOrder = async (req, res) => {
   try {
     const userId = req.userId;
@@ -37,9 +39,6 @@ const placeOrder = async (req, res) => {
       });
     }
 
-    // Validate and normalize sizes before passing items to Mongoose.
-    // Shoes, Hoodies, Chapal, Jackets need a numeric size.
-    // Caps and Watches (and other categories) do not need a size.
     const normalizedItems = [];
 
     for (let index = 0; index < items.length; index += 1) {
@@ -76,7 +75,6 @@ const placeOrder = async (req, res) => {
           size: Number(rawSize),
         });
       } else {
-        // Explicitly remove size from size-less products.
         const { size: ignoredSize, ...itemWithoutSize } = item;
         normalizedItems.push(itemWithoutSize);
       }
@@ -103,11 +101,14 @@ const placeOrder = async (req, res) => {
       message: "Order placed successfully",
       order: savedOrder,
     });
+
   } catch (error) {
     console.log("Place Order Error:", error);
 
-    // Validation errors are client-side data problems, not server failures.
-    if (error.name === "ValidationError" || error.name === "CastError") {
+    if (
+      error.name === "ValidationError" ||
+      error.name === "CastError"
+    ) {
       return res.status(400).json({
         success: false,
         message: error.message,
@@ -121,11 +122,9 @@ const placeOrder = async (req, res) => {
   }
 };
 
+// UPDATE ORDER STATUS (ADMIN)
 const updateStatus = async (req, res) => {
   try {
-    console.log("STATUS UPDATE HEADERS:", req.headers);
-    console.log("STATUS UPDATE BODY:", req.body);
-
     const { orderId, status } = req.body;
 
     if (!orderId || !status) {
@@ -138,7 +137,10 @@ const updateStatus = async (req, res) => {
     const updatedOrder = await orderModel.findByIdAndUpdate(
       orderId,
       { status },
-      { new: true }
+      {
+        new: true,
+        runValidators: true,
+      }
     );
 
     if (!updatedOrder) {
@@ -153,6 +155,7 @@ const updateStatus = async (req, res) => {
       message: "Order status updated successfully",
       order: updatedOrder,
     });
+
   } catch (error) {
     console.log("Update Status Error:", error);
 
@@ -163,13 +166,12 @@ const updateStatus = async (req, res) => {
   }
 };
 
+// DELETE ORDER (ADMIN)
 const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedOrder = await orderModel.findOneAndDelete({
-      _id: id,
-    });
+    const deletedOrder = await orderModel.findByIdAndDelete(id);
 
     if (!deletedOrder) {
       return res.status(404).json({
@@ -182,6 +184,7 @@ const deleteOrder = async (req, res) => {
       success: true,
       message: "Order deleted successfully",
     });
+
   } catch (error) {
     console.log("Delete Order Error:", error);
 
@@ -192,6 +195,7 @@ const deleteOrder = async (req, res) => {
   }
 };
 
+// GET LOGGED-IN USER'S ORDERS
 const getMyOrders = async (req, res) => {
   try {
     const userId = req.userId;
@@ -203,18 +207,15 @@ const getMyOrders = async (req, res) => {
       });
     }
 
-    console.log("GET MY ORDERS USER ID:", userId);
-
     const orders = await orderModel
       .find({ userId })
       .sort({ createdAt: -1 });
-
-    console.log("MY ORDERS COUNT:", orders.length);
 
     return res.status(200).json({
       success: true,
       orders,
     });
+
   } catch (error) {
     console.log("Get My Orders Error:", error);
 
@@ -225,6 +226,7 @@ const getMyOrders = async (req, res) => {
   }
 };
 
+// GET ALL ORDERS (ADMIN)
 const listOrders = async (req, res) => {
   try {
     const orders = await orderModel
@@ -235,6 +237,7 @@ const listOrders = async (req, res) => {
       success: true,
       data: orders,
     });
+
   } catch (error) {
     console.log("List Orders Error:", error);
 
