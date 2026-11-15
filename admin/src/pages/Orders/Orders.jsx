@@ -1,5 +1,10 @@
 
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+
 import axios from "axios";
 
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -14,7 +19,7 @@ const API_URL =
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [updatingOrder, setUpdatingOrder] = useState(null);
+  const [updatingOrder, setUpdatingOrder] = useState("");
 
   // GET ADMIN TOKEN
   const getAdminToken = () => {
@@ -22,14 +27,14 @@ const Order = () => {
   };
 
   // FETCH ALL ORDERS
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
 
       const token = getAdminToken();
 
       if (!token) {
-        alert("Please login to admin panel first.");
+        console.error("Admin token not found. Please login again.");
         setOrders([]);
         return;
       }
@@ -43,50 +48,37 @@ const Order = () => {
         }
       );
 
-      console.log("Orders Response:", response.data);
-
       if (response.data.success) {
         setOrders(response.data.data || []);
       } else {
-        alert(
-          response.data.message ||
-          "Unable to fetch orders."
-        );
+        setOrders([]);
       }
     } catch (error) {
-      console.error("Fetch orders error:", error);
-
-      if (error.response) {
-        console.error(
-          "Server response:",
-          error.response.data
-        );
-      }
-
-      alert(
-        error.response?.data?.message ||
-        "Failed to fetch orders."
+      console.error(
+        "Error fetching orders:",
+        error.response?.data || error.message
       );
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
+  // FETCH ORDERS ON PAGE LOAD
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [fetchOrders]);
 
   // UPDATE ORDER STATUS
   const updateOrderStatus = async (orderId, status) => {
     try {
+      setUpdatingOrder(orderId);
+
       const token = getAdminToken();
 
       if (!token) {
-        alert("Admin login required.");
+        alert("Admin login required. Please login again.");
         return;
       }
-
-      setUpdatingOrder(orderId);
 
       const response = await axios.post(
         `${API_URL}/api/order/status`,
@@ -107,198 +99,116 @@ const Order = () => {
             order._id === orderId
               ? {
                   ...order,
-                  status: response.data.order.status,
+                  status:
+                    response.data.order?.status || status,
                 }
               : order
           )
         );
 
-        alert("Order status updated successfully.");
+        alert("Order status updated successfully");
       } else {
         alert(
           response.data.message ||
-          "Unable to update order status."
+            "Unable to update order status"
         );
       }
     } catch (error) {
-      console.error("Update status error:", error);
+      console.error(
+        "Update status error:",
+        error.response?.data || error.message
+      );
 
       alert(
         error.response?.data?.message ||
-        "Failed to update order status."
+          "Error updating order status"
       );
     } finally {
-      setUpdatingOrder(null);
+      setUpdatingOrder("");
     }
   };
 
   // ORDER CODE
   const getOrderCode = (order) => {
-    return (
-      order.orderCode ||
-      order.order_code ||
-      order.orderId ||
-      order.orderID ||
-      order._id ||
-      "N/A"
-    );
+    return order?._id
+      ? order._id.slice(-8).toUpperCase()
+      : "N/A";
   };
 
   // CUSTOMER NAME
   const getCustomerName = (order) => {
-    if (order.customer?.name) {
-      return order.customer.name;
-    }
+    const firstName =
+      order?.customer?.firstName || "";
 
-    if (order.customerName) {
-      return order.customerName;
-    }
+    const lastName =
+      order?.customer?.lastName || "";
 
-    if (order.user?.name) {
-      return order.user.name;
-    }
-
-    if (
-      order.user?.firstName ||
-      order.user?.lastName
-    ) {
-      return `${order.user?.firstName || ""} ${
-        order.user?.lastName || ""
-      }`.trim();
-    }
-
-    if (
-      order.address?.firstName ||
-      order.address?.lastName
-    ) {
-      return `${order.address?.firstName || ""} ${
-        order.address?.lastName || ""
-      }`.trim();
-    }
-
-    return order.name || "Customer";
+    return `${firstName} ${lastName}`.trim() || "N/A";
   };
 
   // CUSTOMER EMAIL
   const getCustomerEmail = (order) => {
-    return (
-      order.customer?.email ||
-      order.customerEmail ||
-      order.email ||
-      order.user?.email ||
-      order.address?.email ||
-      order.shippingAddress?.email ||
-      "-"
-    );
+    return order?.customer?.email || "N/A";
   };
 
   // TOTAL AMOUNT
   const getTotalAmount = (order) => {
-    const amount =
-      order.amount ??
-      order.totalAmount ??
-      order.total ??
-      order.price ??
-      0;
-
-    return Number(amount).toLocaleString("en-PK");
+    return Number(order?.totalAmount || 0).toLocaleString(
+      "en-PK"
+    );
   };
 
   // ORDER STATUS
   const getStatus = (order) => {
-    return order.status || order.orderStatus || "Pending";
+    return order?.status || "Pending";
   };
 
   // ORDER DATE
   const getOrderDate = (order) => {
-    const date =
-      order.createdAt ||
-      order.date ||
-      order.orderDate;
-
-    if (!date) return "-";
-
-    const parsedDate = new Date(date);
-
-    if (Number.isNaN(parsedDate.getTime())) {
-      return date;
-    }
-
-    return parsedDate.toLocaleDateString("en-PK", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+    return order?.createdAt
+      ? new Date(order.createdAt).toLocaleDateString(
+          "en-GB"
+        )
+      : "N/A";
   };
 
-  // STATUS CLASS
+  // STATUS CSS CLASS
   const getStatusClass = (status) => {
-    const value = String(status).toLowerCase();
+    switch (status) {
+      case "Pending":
+        return "status pending";
 
-    if (
-      value === "delivered" ||
-      value === "completed"
-    ) {
-      return "status delivered";
+      case "Cancelled":
+        return "status cancelled";
+
+      case "Shipping":
+        return "status shipped";
+
+      case "Delivered":
+        return "status delivered";
+
+      default:
+        return "status";
     }
-
-    if (
-      value === "cancelled" ||
-      value === "canceled"
-    ) {
-      return "status cancelled";
-    }
-
-    if (
-      value === "shipping" ||
-      value === "shipped" ||
-      value === "out for delivery"
-    ) {
-      return "status shipped";
-    }
-
-    return "status pending";
   };
 
-  // PAGE
   return (
-    <div className="order-page">
+    <div className="admin">
       <Sidebar />
 
-      <Navbar />
+      <div className="admin-content">
+        <Navbar />
 
-      <div className="order-content">
-        <div className="order-card">
+        <div className="orders-page">
+          <h2>All Orders</h2>
 
-          {/* HEADER */}
-          <div className="page-header">
-            <div>
-              <h2>Orders</h2>
-              <p>View orders placed by customers</p>
-            </div>
-
-            <span>
-              Total Orders: {orders.length}
-            </span>
-          </div>
-
-          {/* LOADING */}
           {loading ? (
-            <h3 className="loading-text">
-              Loading Orders...
-            </h3>
+            <p>Loading orders...</p>
           ) : orders.length === 0 ? (
-            <div className="empty-orders">
-              <h3>No Orders Found</h3>
-              <p>
-                Orders will appear here when a customer
-                places an order.
-              </p>
-            </div>
+            <p>No orders found.</p>
           ) : (
-            <div className="table-wrapper">
-              <table className="order-table">
-
+            <div className="orders-table-container">
+              <table className="orders-table">
                 <thead>
                   <tr>
                     <th>Order Code</th>
@@ -312,86 +222,75 @@ const Order = () => {
                 </thead>
 
                 <tbody>
-                  {orders.map((order, index) => {
-                    const status = getStatus(order);
+                  {orders.map((order) => (
+                    <tr key={order._id}>
+                      <td>
+                        #{getOrderCode(order)}
+                      </td>
 
-                    return (
-                      <tr
-                        key={
-                          order._id ||
-                          getOrderCode(order) ||
-                          index
-                        }
-                      >
-                        <td>
-                          <strong className="order-code">
-                            {getOrderCode(order)}
-                          </strong>
-                        </td>
+                      <td>
+                        {getCustomerName(order)}
+                      </td>
 
-                        <td>
-                          {getCustomerName(order)}
-                        </td>
+                      <td>
+                        {getCustomerEmail(order)}
+                      </td>
 
-                        <td>
-                          {getCustomerEmail(order)}
-                        </td>
+                      <td>
+                        PKR {getTotalAmount(order)}
+                      </td>
 
-                        <td>
-                          Rs. {getTotalAmount(order)}
-                        </td>
-
-                        <td>
-                          <span
-                            className={getStatusClass(status)}
-                          >
-                            {status}
-                          </span>
-                        </td>
-
-                        <td>
-                          {getOrderDate(order)}
-                        </td>
-
-                        <td>
-                          <select
-                            value={status}
-                            disabled={updatingOrder === order._id}
-                            onChange={(e) =>
-                              updateOrderStatus(
-                                order._id,
-                                e.target.value
-                              )
-                            }
-                          >
-                            <option value="Pending">
-                              Pending
-                            </option>
-
-                            <option value="Cancelled">
-                              Cancelled
-                            </option>
-
-                            <option value="Shipping">
-                              Shipping
-                            </option>
-
-                            <option value="Delivered">
-                              Delivered
-                            </option>
-                          </select>
-
-                          {updatingOrder === order._id && (
-                            <small>
-                              Updating...
-                            </small>
+                      <td>
+                        <span
+                          className={getStatusClass(
+                            getStatus(order)
                           )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
+                        >
+                          {getStatus(order)}
+                        </span>
+                      </td>
 
+                      <td>
+                        {getOrderDate(order)}
+                      </td>
+
+                      <td>
+                        <select
+                          value={getStatus(order)}
+                          disabled={
+                            updatingOrder === order._id
+                          }
+                          onChange={(e) =>
+                            updateOrderStatus(
+                              order._id,
+                              e.target.value
+                            )
+                          }
+                        >
+                          <option value="Pending">
+                            Pending
+                          </option>
+
+                          <option value="Cancelled">
+                            Cancelled
+                          </option>
+
+                          <option value="Shipping">
+                            Shipping
+                          </option>
+
+                          <option value="Delivered">
+                            Delivered
+                          </option>
+                        </select>
+
+                        {updatingOrder === order._id && (
+                          <span> Updating...</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           )}
