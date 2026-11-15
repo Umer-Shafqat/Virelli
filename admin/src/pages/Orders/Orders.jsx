@@ -14,14 +14,33 @@ const API_URL =
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updatingOrder, setUpdatingOrder] = useState(null);
+
+  // GET ADMIN TOKEN
+  const getAdminToken = () => {
+    return localStorage.getItem("adminToken");
+  };
 
   // FETCH ALL ORDERS
   const fetchOrders = async () => {
     try {
       setLoading(true);
 
+      const token = getAdminToken();
+
+      if (!token) {
+        alert("Please login to admin panel first.");
+        setOrders([]);
+        return;
+      }
+
       const response = await axios.get(
-        `${API_URL}/api/order/list`
+        `${API_URL}/api/order/list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       console.log("Orders Response:", response.data);
@@ -44,7 +63,10 @@ const Order = () => {
         );
       }
 
-      alert("Failed to fetch orders.");
+      alert(
+        error.response?.data?.message ||
+        "Failed to fetch orders."
+      );
     } finally {
       setLoading(false);
     }
@@ -53,6 +75,62 @@ const Order = () => {
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  // UPDATE ORDER STATUS
+  const updateOrderStatus = async (orderId, status) => {
+    try {
+      const token = getAdminToken();
+
+      if (!token) {
+        alert("Admin login required.");
+        return;
+      }
+
+      setUpdatingOrder(orderId);
+
+      const response = await axios.post(
+        `${API_URL}/api/order/status`,
+        {
+          orderId,
+          status,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setOrders((previousOrders) =>
+          previousOrders.map((order) =>
+            order._id === orderId
+              ? {
+                  ...order,
+                  status: response.data.order.status,
+                }
+              : order
+          )
+        );
+
+        alert("Order status updated successfully.");
+      } else {
+        alert(
+          response.data.message ||
+          "Unable to update order status."
+        );
+      }
+    } catch (error) {
+      console.error("Update status error:", error);
+
+      alert(
+        error.response?.data?.message ||
+        "Failed to update order status."
+      );
+    } finally {
+      setUpdatingOrder(null);
+    }
+  };
 
   // ORDER CODE
   const getOrderCode = (order) => {
@@ -80,13 +158,19 @@ const Order = () => {
       return order.user.name;
     }
 
-    if (order.user?.firstName || order.user?.lastName) {
+    if (
+      order.user?.firstName ||
+      order.user?.lastName
+    ) {
       return `${order.user?.firstName || ""} ${
         order.user?.lastName || ""
       }`.trim();
     }
 
-    if (order.address?.firstName || order.address?.lastName) {
+    if (
+      order.address?.firstName ||
+      order.address?.lastName
+    ) {
       return `${order.address?.firstName || ""} ${
         order.address?.lastName || ""
       }`.trim();
@@ -122,11 +206,7 @@ const Order = () => {
 
   // ORDER STATUS
   const getStatus = (order) => {
-    return (
-      order.status ||
-      order.orderStatus ||
-      "Pending"
-    );
+    return order.status || order.orderStatus || "Pending";
   };
 
   // ORDER DATE
@@ -170,6 +250,7 @@ const Order = () => {
     }
 
     if (
+      value === "shipping" ||
       value === "shipped" ||
       value === "out for delivery"
     ) {
@@ -226,6 +307,7 @@ const Order = () => {
                     <th>Total</th>
                     <th>Status</th>
                     <th>Date</th>
+                    <th>Update Status</th>
                   </tr>
                 </thead>
 
@@ -269,6 +351,41 @@ const Order = () => {
 
                         <td>
                           {getOrderDate(order)}
+                        </td>
+
+                        <td>
+                          <select
+                            value={status}
+                            disabled={updatingOrder === order._id}
+                            onChange={(e) =>
+                              updateOrderStatus(
+                                order._id,
+                                e.target.value
+                              )
+                            }
+                          >
+                            <option value="Pending">
+                              Pending
+                            </option>
+
+                            <option value="Cancelled">
+                              Cancelled
+                            </option>
+
+                            <option value="Shipping">
+                              Shipping
+                            </option>
+
+                            <option value="Delivered">
+                              Delivered
+                            </option>
+                          </select>
+
+                          {updatingOrder === order._id && (
+                            <small>
+                              Updating...
+                            </small>
+                          )}
                         </td>
                       </tr>
                     );
