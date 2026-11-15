@@ -21,21 +21,16 @@ const Order = () => {
   const [loading, setLoading] = useState(true);
   const [updatingOrder, setUpdatingOrder] = useState("");
 
-  // GET ADMIN TOKEN
-  const getAdminToken = () => {
-    return localStorage.getItem("adminToken");
-  };
-
   // FETCH ALL ORDERS
   const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
 
-      const token = getAdminToken();
+      const token = localStorage.getItem("adminToken");
 
       if (!token) {
-        console.error("Admin token not found. Please login again.");
         setOrders([]);
+        console.error("Admin token not found");
         return;
       }
 
@@ -55,28 +50,112 @@ const Order = () => {
       }
     } catch (error) {
       console.error(
-        "Error fetching orders:",
+        "Fetch orders error:",
         error.response?.data || error.message
       );
+      setOrders([]);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // FETCH ORDERS ON PAGE LOAD
+  // LOAD ORDERS
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
+
+  // GET CUSTOMER NAME
+  const getCustomerName = (order) => {
+    const customer = order?.customer;
+
+    if (typeof customer === "string") {
+      return customer;
+    }
+
+    const firstName = customer?.firstName || "";
+    const lastName = customer?.lastName || "";
+
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    return (
+      fullName ||
+      customer?.name ||
+      customer?.fullName ||
+      order?.customerName ||
+      order?.user?.name ||
+      [
+        order?.user?.firstName,
+        order?.user?.lastName,
+      ].filter(Boolean).join(" ") ||
+      "N/A"
+    );
+  };
+
+  // GET CUSTOMER EMAIL
+  const getCustomerEmail = (order) => {
+    return (
+      order?.customer?.email ||
+      order?.email ||
+      order?.user?.email ||
+      "N/A"
+    );
+  };
+
+  // GET ORDER CODE
+  const getOrderCode = (order) => {
+    return order?._id
+      ? order._id.slice(-8).toUpperCase()
+      : "N/A";
+  };
+
+  // GET TOTAL AMOUNT
+  const getTotalAmount = (order) => {
+    return Number(
+      order?.totalAmount || 0
+    ).toLocaleString("en-PK");
+  };
+
+  // GET STATUS
+  const getStatus = (order) => {
+    return order?.status || "Pending";
+  };
+
+  // GET ORDER DATE
+  const getOrderDate = (order) => {
+    return order?.createdAt
+      ? new Date(order.createdAt).toLocaleDateString("en-GB")
+      : "N/A";
+  };
+
+  // STATUS CSS CLASS
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Pending":
+        return "status pending";
+
+      case "Cancelled":
+        return "status cancelled";
+
+      case "Shipping":
+        return "status shipped";
+
+      case "Delivered":
+        return "status delivered";
+
+      default:
+        return "status";
+    }
+  };
 
   // UPDATE ORDER STATUS
   const updateOrderStatus = async (orderId, status) => {
     try {
       setUpdatingOrder(orderId);
 
-      const token = getAdminToken();
+      const token = localStorage.getItem("adminToken");
 
       if (!token) {
-        alert("Admin login required. Please login again.");
+        alert("Please login as admin again");
         return;
       }
 
@@ -110,7 +189,7 @@ const Order = () => {
       } else {
         alert(
           response.data.message ||
-            "Unable to update order status"
+          "Unable to update order status"
         );
       }
     } catch (error) {
@@ -121,94 +200,37 @@ const Order = () => {
 
       alert(
         error.response?.data?.message ||
-          "Error updating order status"
+        "Error updating order status"
       );
     } finally {
       setUpdatingOrder("");
     }
   };
 
-  // ORDER CODE
-  const getOrderCode = (order) => {
-    return order?._id
-      ? order._id.slice(-8).toUpperCase()
-      : "N/A";
-  };
-
-  // CUSTOMER NAME
-  const getCustomerName = (order) => {
-    const firstName =
-      order?.customer?.firstName || "";
-
-    const lastName =
-      order?.customer?.lastName || "";
-
-    return `${firstName} ${lastName}`.trim() || "N/A";
-  };
-
-  // CUSTOMER EMAIL
-  const getCustomerEmail = (order) => {
-    return order?.customer?.email || "N/A";
-  };
-
-  // TOTAL AMOUNT
-  const getTotalAmount = (order) => {
-    return Number(order?.totalAmount || 0).toLocaleString(
-      "en-PK"
-    );
-  };
-
-  // ORDER STATUS
-  const getStatus = (order) => {
-    return order?.status || "Pending";
-  };
-
-  // ORDER DATE
-  const getOrderDate = (order) => {
-    return order?.createdAt
-      ? new Date(order.createdAt).toLocaleDateString(
-          "en-GB"
-        )
-      : "N/A";
-  };
-
-  // STATUS CSS CLASS
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "Pending":
-        return "status pending";
-
-      case "Cancelled":
-        return "status cancelled";
-
-      case "Shipping":
-        return "status shipped";
-
-      case "Delivered":
-        return "status delivered";
-
-      default:
-        return "status";
-    }
-  };
-
   return (
-    <div className="admin">
+    <div className="order-page">
       <Sidebar />
 
-      <div className="admin-content">
+      <div className="order-content">
         <Navbar />
 
-        <div className="orders-page">
-          <h2>All Orders</h2>
+        <div className="order-card">
+          <div className="page-header">
+            <h2>All Orders</h2>
+          </div>
 
           {loading ? (
-            <p>Loading orders...</p>
+            <div className="loading">
+              Loading orders...
+            </div>
           ) : orders.length === 0 ? (
-            <p>No orders found.</p>
+            <div className="empty-orders">
+              <h3>No Orders Found</h3>
+              <p>There are currently no customer orders.</p>
+            </div>
           ) : (
-            <div className="orders-table-container">
-              <table className="orders-table">
+            <div className="table-wrapper">
+              <table className="order-table">
                 <thead>
                   <tr>
                     <th>Order Code</th>
@@ -224,7 +246,7 @@ const Order = () => {
                 <tbody>
                   {orders.map((order) => (
                     <tr key={order._id}>
-                      <td>
+                      <td className="order-code">
                         #{getOrderCode(order)}
                       </td>
 
@@ -256,6 +278,7 @@ const Order = () => {
 
                       <td>
                         <select
+                          className="status-select"
                           value={getStatus(order)}
                           disabled={
                             updatingOrder === order._id
@@ -285,7 +308,7 @@ const Order = () => {
                         </select>
 
                         {updatingOrder === order._id && (
-                          <span> Updating...</span>
+                          <small>Updating...</small>
                         )}
                       </td>
                     </tr>
