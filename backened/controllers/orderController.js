@@ -1,6 +1,7 @@
 
 import orderModel from "../models/orderModel.js";
 import cartModel from "../models/cartModel.js";
+import userModel from "../models/userModel.js";
 
 const SIZE_REQUIRED_CATEGORIES = [
   "shoes",
@@ -11,6 +12,10 @@ const SIZE_REQUIRED_CATEGORIES = [
 
 const normalizeCategory = (category) =>
   String(category || "").trim().toLowerCase();
+
+// Escape special characters in email before using regex
+const escapeRegex = (value) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // PLACE ORDER
 const placeOrder = async (req, res) => {
@@ -29,6 +34,18 @@ const placeOrder = async (req, res) => {
       return res.status(401).json({
         success: false,
         message: "User not authenticated",
+      });
+    }
+
+    // GET LOGGED-IN USER
+    const loggedInUser = await userModel
+      .findById(userId)
+      .select("name email");
+
+    if (!loggedInUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User account not found",
       });
     }
 
@@ -52,7 +69,8 @@ const placeOrder = async (req, res) => {
       }
 
       const category = normalizeCategory(item.category);
-      const requiresSize = SIZE_REQUIRED_CATEGORIES.includes(category);
+      const requiresSize =
+        SIZE_REQUIRED_CATEGORIES.includes(category);
 
       if (requiresSize) {
         const rawSize = item.size;
@@ -80,9 +98,15 @@ const placeOrder = async (req, res) => {
       }
     }
 
+    // ALWAYS SAVE THE AUTHENTICATED USER'S EMAIL
+    const orderCustomer = {
+      ...(customer || {}),
+      email: loggedInUser.email,
+    };
+
     const newOrder = new orderModel({
       userId,
-      customer,
+      customer: orderCustomer,
       items: normalizedItems,
       subtotal,
       deliveryCharges,
@@ -117,7 +141,9 @@ const placeOrder = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: error.message || "Internal server error while placing order",
+      message:
+        error.message ||
+        "Internal server error while placing order",
     });
   }
 };
@@ -195,7 +221,7 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-// GET LOGGED-IN USER'S ORDERS
+// GET LOGGED-IN USER'S ORDERS BY USER ID AND EMAIL
 const getMyOrders = async (req, res) => {
   try {
     const userId = req.userId;
@@ -207,8 +233,33 @@ const getMyOrders = async (req, res) => {
       });
     }
 
+    // GET EMAIL FROM AUTHENTICATED USER ACCOUNT
+    const loggedInUser = await userModel
+      .findById(userId)
+      .select("email");
+
+    if (!loggedInUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User account not found",
+      });
+    }
+
+    const userEmail = loggedInUser.email.trim();
+
+    // MATCH ORDERS BY USER ID OR REGISTERED EMAIL
     const orders = await orderModel
-      .find({ userId })
+      .find({
+        $or: [
+          { userId },
+          {
+            "customer.email": {
+              $regex: `^${escapeRegex(userEmail)}$`,
+              $options: "i",
+            },
+          },
+        ],
+      })
       .sort({ createdAt: -1 });
 
     return res.status(200).json({
